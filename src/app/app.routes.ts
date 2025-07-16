@@ -110,7 +110,7 @@ export const routes: Routes = [
   },
   {
     path: "details-cv",
-    data: { layout: 'left' },
+    data: { layout: 'default' },
     loadComponent: () =>
       import('./features/cv/detailsCV/details-cv/details-cv.component').then(
         (c) => c.DetailsCVComponent
@@ -118,7 +118,7 @@ export const routes: Routes = [
   },
   {
     path: "short-cv",
-    data: { layout: 'left' },
+    data: { layout: 'default' },
     loadComponent: () =>
       import('./features/cv/shortCV/short-cv/short-cv.component').then(
         (c) => c.ShortCvComponent
