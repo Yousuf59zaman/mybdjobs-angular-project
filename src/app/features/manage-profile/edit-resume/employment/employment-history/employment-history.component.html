@@ -1,0 +1,233 @@
+
+<accordion-main-body
+  [accordionName]="'Employment History'"
+  buttonType="add"
+  buttonTitle="Add Employment History"
+  [isAccordionOpen]="isOpen()"
+  [isFormOpen]="isEmploymentHistoryNewFormOpen()"
+  (formToggleEmitter)="isEmploymentHistoryNewFormOpen.set(!isEmploymentHistoryNewFormOpen())"
+  (accordionToggleEmitter)="toggle()"
+>
+  <div class="my-5">
+    <div class="flex flex-wrap justify-between items-center gap-4">
+      <h3 class="text-lg font-semibold text-slate-700">
+        Employment History 1
+      </h3>
+      <div class="flex gap-4 items-center">
+        <!-- Edit Button - Show only icon on small screens -->
+        <button
+          class="flex items-center gap-1.5 text-[#B32D7D]"
+          aria-label="Edit Academic 1">
+          <img src="images/edit-05.svg" class="h-[15px] w-[15px]">
+          <span class="text-sm hidden sm:inline">Edit</span>
+        </button>
+        <!-- Delete Button - Show only icon on small screens -->
+        <button
+          class="flex items-center gap-1.5 text-slate-600"
+          aria-label="Delete Academic 1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" class="w-4 h-4">
+            <path d="M2 4H3.33333H14" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5.33325 4V2.66667C5.33325 2.48986 5.40349 2.32029 5.52851 2.19526C5.65354 2.07024 5.82311 2 5.99992 2H9.99992C10.1767 2 10.3463 2.07024 10.4713 2.19526C10.5963 2.32029 10.6666 2.48986 10.6666 2.66667V4" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12.6666 4V13.3333C12.6666 13.5101 12.5963 13.6797 12.4713 13.8047C12.3463 13.9298 12.1767 14 11.9999 14H3.99992C3.82311 14 3.65354 13.9298 3.52851 13.8047C3.40349 13.6797 3.33325 13.5101 3.33325 13.3333V4" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6.66675 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9.33325 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-sm hidden sm:inline">Delete</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+      <div>
+        <p class="text-sm text-gray-500">Company Name</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">Ocean Design</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Company Business</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">Product Design</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Designation</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">Designer</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Department</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">IT</p>
+      </div>
+      <div class="sm:col-span-2">
+        <p class="text-sm text-gray-500">Employment Period</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">11/02/2024 to 11/02/2024</p>
+      </div>
+      <div class="sm:col-span-2">
+        <p class="text-sm text-gray-500">Responsibilities</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">
+        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. 
+        The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,
+        as opposed to using 'Content here, content here', making it look like readable English.
+        Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text,
+        and a search for 'lorem ipsum' will uncover many web sites still in their infancy.
+        Various versions have evolved over the years, 
+        sometimes by accident, sometimes on purpose (injected humour and the like).</p>
+      </div>
+      <div class="sm:col-span-2">
+        <p class="text-sm text-gray-500">Company Location</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">Dhaka</p>
+      </div>
+      <div class="sm:col-span-2">
+        <p class="text-sm text-gray-500">Area of Expertise</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">Web Designer (5 months)</p>
+      </div>
+    
+    </div>
+  </div>
+  <div
+    [ngClass]="isEmploymentHistoryNewFormOpen()? 'mb-0' : 'mb-5'">
+    <button
+      class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 hover:bg-pink-50 transition-colors"
+      aria-label="Add Academic Summary"
+      (click)="isEmploymentHistoryNewFormOpen.set(true)">
+      <img src="images/plus.svg" alt="Add" />
+      <span class="leading-tight sm:inline hidden">Add Employment History</span>
+      <span class="leading-tight sm:hidden inline">Add</span>
+    </button>
+  </div>
+  <div
+    [hidden]="!isEmploymentHistoryNewFormOpen()"
+    class="my-5">
+    <h3 class="text-lg font-semibold text-slate-700">
+      Employment History 2
+    </h3>
+
+    <form class="mt-5 space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div>
+          <app-input [label]="'Company Name'" [placeholder]="'Enter your Company Name'" [isRequired]="true"
+            [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+        </div>
+        <div>
+          <app-input [label]="'Company Business'" [placeholder]="'Enter your Company Business'"
+            [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+        <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+          <app-input [label]="'Designation'" [placeholder]="'Enter your Designation'" [isRequired]="true"
+            [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+        </div>
+
+        <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+          <app-input [label]="'Department'" [placeholder]="'Enter your Department'"
+            [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-start sm:gap-6 gap-4">
+        <div class="w-full sm:w-1/2">
+          <app-date-single-date-picker [label]="'Employment Period Start Date'"
+            [placeholder]="'Select Employment Period Start'" [isRequired]="true"
+            (selectedStartDateChange)="onStartDateChanged($event)"></app-date-single-date-picker>
+        </div>
+        <div class="w-full sm:w-1/2">
+          <app-date-single-date-picker [label]="'Employment Period End Date'"
+            [placeholder]="'Select Employment Period End'" [isRequired]="true"
+            (selectedStartDateChange)="onStartDateChanged($event)"></app-date-single-date-picker>
+          <div class="flex gap-2 items-start mt-2">
+            <input type="checkbox" id="foreign-institute"
+              class="custom-checkbox w-4 h-4 rounded border border-gray-300 min-h-4 mt-1 focus:ring-0 focus:ring-offset-0 focus:outline-none">
+            <label for="foreign-institute" class="text-xs leading-[18px] text-slate-700 mt-[3px]">
+              Currently Working
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="flex gap-8 items-start mt-[8px] w-full max-md:max-w-full">
+        <div class="flex flex-col w-full max-md:max-w-ful">
+          <div class="flex flex-col w-full max-md:max-w-full">
+            <label class="flex gap-0.5 mb-[8px] items-start self-start text-sm font-medium leading-none">
+              <span class="text-sm leading-[20px] text-slate-700">Responsibility</span>
+              <span class="sr-only">(required)</span>
+            </label>
+          </div>
+          <div class="w-full">
+            <app-text-editor [label]="''" [type]="'Edit-Resume'" [height]="'112px'"
+              [placeholder]="'Enter your writing texts...'">
+            </app-text-editor>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-8 items-start mt-4 w-full">
+        <div class="w-full md:flex-1">
+          <app-input [label]="'Company Location'" [placeholder]="'Dhaka'" [isRequired]="true"
+            [customClasses]="'flex gap-2 items-center py-2.5 mt-2 w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1 items-start ">
+        <div class="flex flex-col">
+          <label class="text-sm font-medium text-slate-700 flex items-center gap-1">
+            Area of Expertise <span class="text-red-600">*</span>
+          </label>
+          <p class="text-xs text-gray-500 mt-1">Add your area of expertise with duration (max 3)</p>
+        </div>
+        <div class="flex flex-col gap-4 w-full">
+
+          <div class="flex items-center gap-3 w-full">
+
+            <div class=" min-w-[150px]">
+              <div
+                class="rounded-lg border border-[#D0D5DD] bg-white shadow-sm px-3.5 py-[2px] focus-within:border-pink-500 pl-[1px] pr-2">
+                <input type="text" placeholder="Enter your Area of Expertise"
+                  class="w-full text-xs sm:text-sm truncate text-gray-900 placeholder-gray-500 bg-transparent border-none outline-none focus:outline-none focus:ring-0" />
+              </div>
+
+            </div>
+            <div class="flex items-center gap-1 w-[140px] flex-shrink-0">
+              <div
+                class="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-white h-[42px] w-[180px]">
+                <!-- Increased width -->
+                <!-- Number Input (50% width) -->
+                <input type="text"
+                  class="w-1/2 px-3 py-2.5 bg-transparent text-[14px] outline-none border-none text-center text-gray-900"
+                  maxlength="2" pattern="[0-9]*" placeholder="00" aria-label="Duration in months for expertise" />
+                <!-- Month Label (50% width) -->
+                <div
+                  class="w-1/2 px-3 py-2.5 text-gray-500 bg-gray-50 border-l border-gray-300 text-[12px] whitespace-nowrap h-full flex items-center justify-center">
+                  Month
+                </div>
+              </div>
+
+              <button class="p-2 rounded-lg hover:bg-gray-100" aria-label="Remove">
+                <svg width="20" height="20" fill="none" stroke="#667085" stroke-width="1.67" stroke-linecap="round"
+                  stroke-linejoin="round" viewBox="0 0 20 20">
+                  <path
+                    d="M8.333 9.583v4.167M11.667 9.583v4.167M2.5 5h15M13.333 5V4.333c0-.933 0-1.4-.182-1.757a1.667 1.667 0 0 0-.728-.728C11.6 1.667 11.133 1.667 10.2 1.667H9.8c-.933 0-1.4 0-1.757.181a1.667 1.667 0 0 0-.728.728C7.133 2.933 7.133 3.4 7.133 4.333V5m8.7 0v9.333c0 1.4 0 2.1-.273 2.635a2.5 2.5 0 0 1-1.093 1.093c-.535.273-1.235.273-2.635.273H8.267c-1.4 0-2.1 0-2.635-.273a2.5 2.5 0 0 1-1.093-1.093C4.267 16.433 4.267 15.733 4.267 14.333V5" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button
+            class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-pink-700 border border-[#F0B1DE] bg-white rounded-lg shadow-sm hover:bg-pink-50 transition">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 4.16667V15.8333M4.16667 10H15.8333" stroke="#C11574" stroke-width="1.67" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            <span>Add New</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="mb-3 flex items-center gap-3">
+        <button
+          class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">Save</button>
+        <button (click)="isEmploymentHistoryNewFormOpen.set(false)"
+          class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold">Close</button>
+      </div>
+    </form>
+  </div>
+</accordion-main-body>
+

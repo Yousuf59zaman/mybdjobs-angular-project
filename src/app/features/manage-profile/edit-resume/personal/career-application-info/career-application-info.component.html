@@ -1,0 +1,174 @@
+<div class="bg-[#F9FAFB] border border-[#E4E7EC] mb-4" [ngClass]="isOpen() ? 'rounded-xl bg-white' : 'rounded-xl'">
+
+   <!-- Header -->
+   <div class="text-[#344054] cursor-pointer">
+       <div class="sm:px-6 px-3 py-5 flex justify-between items-center" *transloco="let t">
+           <p [ngClass]="isOpen()? 'text-[#101828] font-semibold' :'font-medium'" class=" text-base sm:text-xl  ">
+               {{t('editResumeCareerInfo.headline')}}</p>
+           @if (isOpen()) {
+           <div class="flex items-center gap-4">
+               @if (!isCareerFormOpen()) {
+               <div (click)="isCareerFormOpen.set(!isCareerFormOpen())"
+                   class="flex items-center gap-1.5 text-[#C63C92] sm:text-[#344054]">
+                   <span class="icon-edit sm:text-base text-sm sm:font-medium font-semibold"></span>
+                   <span class="sm:font-medium font-semibold text-sm">{{t('editResumeCareerInfo.edit')}}</span>
+               </div>
+               <p class="hidden sm:block w-px h-4 bg-[#D0D5DD]"></p>
+               }
+               <div (click)="toggle()" class="flex items-center space-x-2">
+                   <span
+                       class="text-[#C63C92] font-semibold sm:block hidden">{{t('editResumeCareerInfo.collapse')}}</span>
+                   <span class="icon-angle-bottom rotate-180 text-[#C63C92]"></span>
+               </div>
+           </div>
+           } @else {
+            <div (click)="toggle()" class="flex items-center space-x-2">
+                <span (click)="loadCareerInfo()"  class="text-[#344054] font-medium sm:block hidden">{{t('editResumeCareerInfo.expand')}}</span>
+                <span class="icon-angle-bottom transform  text-primary-700"></span>
+            </div>
+           }
+       </div>
+   </div>
+   @if(isOpen() || isCareerFormOpen()){
+   <div class="bg-white rounded-b-xl">
+       <div class="sm:px-6 px-3 pb-5">
+           <hr class="w-full" />
+       </div>
+       <div class="sm:mx-6 mx-3" *transloco="let t">
+           @if(isCareerFormOpen()){
+           <div>
+               <p class="text-primary-700 font-medium text-sm mb-1.5"> {{t('editResumeCareerInfo.objective')}}
+                   <span class="text-[#D92D20] font-medium text-sm">*</span>
+               </p>
+               <div class="text-primary-700 text-xs font-normal mb-3 flex items-center justify-between gap-6">
+                   {{t('editResumeCareerInfo.objectiveSummary')}}
+                   <div class="flex items-center text-primary-700 gap-3">
+                    <app-tooltips
+                          [imgUrl]="'images/icon-help.svg'"
+                          [tooltipArray]="tooltipArray"
+                          ></app-tooltips>
+                       {{t('editResumeCareerInfo.example')}}
+                   </div>
+               </div>
+           </div>
+           <div class="mb-5">
+               <app-text-editor [label]="''" [type]="'Edit-Resume'" [placeholder]="'Enter your writing texts...'"
+                   [control]="objectiveControl">
+               </app-text-editor>
+               <p class="text-xs text-gray-500">
+                   You wrote {{ objectiveLength() }} character(s)
+               </p>
+
+
+               <!-- required error -->
+               @if (objectiveControl.touched && objectiveControl.hasError('required')) {
+               <p class="text-red-600 text-sm">
+                   Objective cannot be empty.
+               </p>
+               }
+
+               <!-- maxLength error -->
+               @if (objectiveLength() >= MAX_OBJECTIVE_LENGTH) {
+               <p class="text-red-600 text-sm">
+                   Please stop writing on Objective, you are crossing the 250 letter limit!
+               </p>
+               }
+           </div>
+           <div class="mb-5 grid sm:grid-cols-2 grid-cols-1 gap-8">
+               <app-input [label]="t('editResumeCareerInfo.presentSalary')"
+                   [placeholder]="'Enter your Present Salary(/Month)'" [control]="currentSalaryControl"
+                   (input)="onPresentSalaryInput($event)">
+               </app-input>
+               @if (currentSalaryControl.touched && currentSalaryControl.hasError('pattern')) {
+               <p class="text-red-600 text-sm">Present Salary cannot exceed 9 digits</p>
+               }
+
+
+               <app-input [label]="t('editResumeCareerInfo.expectedSalary')"
+                   [placeholder]="'Enter your Expected Salary(/Month)'" [control]="expectedSalaryControl"
+                   (input)="onExpectedSalaryInput($event)">
+               </app-input>
+               @if (expectedSalaryControl.touched && expectedSalaryControl.hasError('pattern')) {
+               <p class="text-red-600 text-sm">Expected Salary cannot exceed 10 digits</p>
+               }
+               <div class="flex flex-col gap-4">
+                   <p class="text-[#344054] text-sm font-medium">{{t('editResumeCareerInfo.level')}}</p>
+                   <div
+                       class="grid grid-cols-2 justify-between sm:flex sm:flex-row sm:items-center sm:justify-start  sm:gap-3 gap-2">
+                       @for(level of jobLevel; track $index){
+                       <div class="flex items-center gap-2" [ngClass]="{ 'justify-end': $index % 2 === 1 }">
+                           <input type="radio" [id]="level.label" name="job_Level" [value]="level.value"
+                               [formControl]="jobLevelControl"
+                               class="form-radio text-[#C63C92] border border-[#D0D5DD] scale-90 focus:ring-0">
+                           <label [for]="level.label" class="text-sm text-[#344054] font-normal cursor-pointer">
+                               {{level.label}}
+                           </label>
+                       </div>
+                       }
+                   </div>
+               </div>
+
+               <div class="flex flex-col gap-4">
+                   <p class="text-[#344054] text-sm font-medium">{{t('editResumeCareerInfo.nature')}}</p>
+                   <div
+                       class="grid grid-cols-2 justify-between sm:flex sm:flex-row sm:items-center sm:flex-wrap sm:justify-start  sm:gap-3 gap-2">
+                       @for(nature of jobNature; track $index){
+                       <div class="flex items-center gap-2" [ngClass]="{ 'justify-end': $index % 2 === 1 }">
+                           <input type="radio" [id]="nature.label" name="job_Nature" [value]="nature.value"
+                               [formControl]="jobNatureControl"
+                               class="form-radio text-[#C63C92] border border-[#D0D5DD] scale-90 focus:ring-0">
+                           <label [for]="nature.label" class="text-sm text-[#344054] font-normal cursor-pointer">
+                               {{nature.label}}
+                           </label>
+                       </div>
+                       }
+                   </div>
+               </div>
+               <div class="mb-3 flex items-center gap-3">
+                   <button class="button-save" (click)="onSave()">{{t('editResumeCareerInfo.save')}}</button>
+                   <button (click)="closeCareerForm()"
+                       class="button-close">{{t('editResumeCareerInfo.close')}}</button>
+               </div>
+           </div>
+           }
+           @else if(isInfoAvailable){
+           <div class="mx-6 flex flex-col gap-1 mb-5" *transloco="let t">
+               <div class="text-sm text-[#101828] flex flex-col gap-1">
+                   <p class="text-[#667085] text-xs font-medium">{{t('editResumeCareerInfo.objective')}}</p>
+                   <div>
+                       <p class="text-[#101828] font-medium text-sm text-justify"
+                           [innerHTML]="careerForm.get('obj')?.value" style="white-space: pre-line;"></p>
+                   </div>
+               </div>
+               <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-[34px]">
+                   <div class="text-sm text-[#101828] flex flex-col gap-1">
+                       <p class="text-[#667085] text-xs font-medium">{{t('editResumeCareerInfo.presentSalary')}}</p>
+                       <p class="text-sm text-[#101828] font-medium"><span class="icon-taka text-xs mr-0.5"></span>{{
+                           careerForm.get('cur_Sal')?.value }}</p>
+                   </div>
+                   <div class="text-sm text-[#101828] flex flex-col gap-1">
+                       <p class="text-[#667085] text-xs font-medium">{{t('editResumeCareerInfo.expectedSalary')}}</p>
+                       <p class="text-sm text-[#101828] font-medium"><span class="icon-taka text-xs mr-0.5"></span>{{
+                           careerForm.get('exp_Sal')?.value }}</p>
+                   </div>
+                   <div class="text-sm text-[#101828] flex flex-col gap-1">
+                       <p class="text-[#667085] text-xs font-medium">{{t('editResumeCareerInfo.level')}}</p>
+                       <p class="text-sm text-[#101828] font-medium">{{ careerForm.get('available')?.value}} Level Job
+                       </p>
+                   </div>
+                   <div class="text-sm text-[#101828] flex flex-col gap-1">
+                       <p class="text-[#667085] text-xs font-medium">{{t('editResumeCareerInfo.nature')}}</p>
+                       <p class="text-sm text-[#101828] font-medium">{{ careerForm.get('pref')?.value }}</p>
+                   </div>
+               </div>
+           </div>
+           } @else {
+           <div *transloco="let t">
+               <app-no-details (openFormBtn)="isCareerFormOpen.set(true)"
+                   [btnText]="t('editResumeCareerInfo.AddCareer')"
+                   [description]="t('editResumeCareerInfo.noData')"></app-no-details>
+           </div>
+           }
+       </div>
+   </div>
+}

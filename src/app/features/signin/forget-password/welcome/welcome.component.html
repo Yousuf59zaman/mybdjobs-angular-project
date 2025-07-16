@@ -1,0 +1,135 @@
+<div class="md:w-[488px] sm:p-2 p-1" *transloco ="let t read: 'signin'">
+    <div class="px-4 sm:px-4  flex flex-col gap-10 justify-center">
+        <div class="flex flex-col items-center justify-center gap-1.5">
+            <p class="text-black text-xl sm:text-2xl font-semibold text-center">{{t('welcome.welcome')}}</p> 
+            <div class="w-full bg-[#F3F3F3] rounded-2xl px-4 py-3">
+                <div class="flex items-center gap-3">
+                    <img class="w-12 h-12 rounded-full" [src]="userInfo().profilePicture" alt="">
+                    <div class="flex items-center justify-between w-full">
+                        <div>
+                            <p class="text-base font-medium text-[#383E49]">{{userInfo().fullName}}</p>
+                            <p class="text-sm text-[#5D6679]">{{userInfo().email}}</p>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <div class="flex flex-col gap-3">
+            <p class="text-[#333] sm:text-lg text-base font-normal">
+              {{currentLang() === 'en' ? 'How do you want to reset your password?':'আপনি কীভাবে পাসওয়ার্ড পরিবর্তন করতে চান?'}}
+            </p>
+            <form (submit)="onSubmit($event)">
+                <div class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-3">
+                        <label class=" flex items-center gap-2 cursor-pointer">
+                            <div class="min-w-5 min-h-5 max-w-5 max-h-5 self-start relative">
+                              <input
+                                type="radio"
+                                name="resetType"
+                                [value]="'email'"
+                                [formControl]="resetType"
+                                class="opacity-0 absolute w-full h-full cursor-pointer"
+                              />
+                              @if (resetType.value === 'email') {
+                                <img src="images/radio_button_checked.svg" class="absolute top-1 left-0 w-5 h-5" />
+                              } @else {
+                                <img src="images/radio_button_unchecked.svg" class="absolute top-1 left-0 w-5 h-5" />
+                              }
+                            </div>
+                            <span [ngClass]="resetType.value === 'email' ? 'text-[#333] font-medium':'font-normal text-black'" class="mt-[1px]">
+                              {{currentLang() === 'en' ? 'Send code via email':'ইমেইলের মাধ্যমে কোড পাঠান'}}
+                            </span>
+                          </label>
+    
+                          <label class="flex items-center gap-2 cursor-pointer">
+                            <div class="min-w-5 min-h-5 max-w-5 max-h-5 self-start relative">
+                                <input
+                                  type="radio"
+                                  name="resetType"
+                                  [value]="'mobile'"
+                                  [formControl]="resetType"
+                                  class="opacity-0 absolute w-full h-full cursor-pointer"
+                                />
+                                @if (resetType.value === 'mobile') {
+                                  <img src="images/radio_button_checked.svg" class="absolute -top-[1.5px] left-0 w-5 h-5" />
+                                } @else {
+                                  <img src="images/radio_button_unchecked.svg" class="absolute -top-[1.5px] left-0 w-5 h-5" />
+                                }
+                              </div>
+                              
+                            
+                              <p class="self-center flex flex-col gap-1.5">
+                                <span [ngClass]="resetType.value === 'mobile' ? 'text-[#333] font-medium':'font-normal text-black'" class="text-sm sm:text-base  -mt-[5px]  ">
+                                  {{currentLang() === 'en' ? 'Send code via mobile SMS':'মোবাইল নম্বরে এসএমএস দিয়ে কোড পাঠান'}}
+                                </span>
+                                <span class="text-[#595959] font-normal text-xs sm:text-sm">+880 {{userInfo().phone}}</span>
+                              </p>
+                            
+                          </label>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <p>
+                          {{currentLang() === 'en' ? 'Want to login with your existing user id?':'আপনি কি আপনার বিদ্যমান ইউজার আইডি দিয়ে লগইন করতে চান?'}}
+                        </p>
+                        <label class=" flex items-center gap-2 cursor-pointer">
+                            <div class="min-w-5 min-h-5 max-w-5 max-h-5 self-start relative">
+                              <input
+                                type="radio"
+                                name="resetType"
+                                [value]="'password'"
+                                [formControl]="resetType"
+                                class="opacity-0 absolute w-full h-full cursor-pointer"
+                              />
+                              @if (resetType.value === 'password') {
+                                <img src="images/radio_button_checked.svg" class="absolute top-1 left-0 w-5 h-5" />
+                              } @else {
+                                <img src="images/radio_button_unchecked.svg" class="absolute top-1 left-0 w-5 h-5" />
+                              }
+                            </div>
+                           <span [ngClass]="resetType.value === 'password' ? 'text-[#333] font-medium':'font-normal text-black'">
+                            {{currentLang() === 'en' ? 'Enter Password to login':'লগইন করতে পাসওয়ার্ড দিন'}}
+                           </span> 
+                          </label>
+                    </div>
+                    @if(isSendOtpFailed()){
+                      <span class="text-[11px] text-[#AC2719] font-semibold">
+                        {{ currentLang() === 'en' ? 'You exceeded the limit. Try again after 4 hours!':'আপনি সীমা অতিক্রম করেছেন। ৪ ঘন্টা পরে আবার চেষ্টা করুন!'}}
+                      </span>
+                    } 
+                    
+                    
+                  </div>
+                  
+                <div class="flex gap-4 mt-5">
+                    <button 
+                    [disabled]="resetType.invalid"
+                    [ngClass]="resetType.invalid ? 'opacity-40 cursor-not-allowed':'opacity-100 cursor-pointer'"
+                    type="submit"
+                     class="bg-[#B32D7D] text-white text-sm font-semibold w-full h-12 rounded-full">
+                        {{currentLang() === 'en' ? 'Continue':'এগিয়ে যান'}} 
+                    </button>
+                    <button type="button" (click)="sharedService.updateType('username')"
+                        class="bg-[#FFF] border border-[#D0D5DD] text-[#344054] w-full h-12 rounded-full font-semibold text-sm">
+                        {{currentLang() === 'en' ? 'Not Now':'এখন নয়'}}
+                    </button>
+                    
+                </div>
+            </form>
+            <div class="flex flex-col gap-2 text-center mt-10 sm:mb-0 mb-28">
+                <a class="text-[#B32D7D] text-sm sm:text-base font-medium" role="button" (click)="sharedService.updateType('username')" >
+                  {{currentLang() === 'en' ? 'Sign in to a different account':'ভিন্ন একটি অ্যাকাউন্টে সাইন ইন করুন'}}
+                </a>
+                <div class="flex items-center justify-center gap-2">
+                    <p class="text-sm sm:text-base text-[#383E49] whitespace-nowrap">
+                      {{currentLang() === 'en' ? 'Don’t have a Bdjobs account?':'বিডিজবস অ্যাকাউন্ট নেই?'}}
+                    </p>
+                    <a role="button" (click)="sharedService.goToSignUpFlow()" class="text-[#B32D7D] text-sm sm:text-base font-medium">
+                      {{currentLang() === 'en' ? 'Sign Up':'রেজিস্টার করুন'}}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

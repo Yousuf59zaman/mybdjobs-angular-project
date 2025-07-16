@@ -1,0 +1,154 @@
+<div class="bg-white py-4 border-b border-[#BCBCBC] relative z-50">
+    <div class="max-w-[1140px] 2xl:max-w-[1440px] mx-auto px-4">
+        <div class="flex items-center justify-between">
+            <img class="h-10" src="images/bdjobsLogo.svg" alt="BDJobs Logo" />
+            <button class="md:hidden block" (click)="this.isMenuOpen.set(!this.isMenuOpen())">
+                @if(isMenuOpen()){
+                <img [src]="'images/cross.svg'" />
+                }
+                @else {
+                <img [src]="'images/ham.svg'" />
+                }
+                <!-- <span [ngClass]="isMenuOpen()? 'icon-tik-no':'icon-list'"></span> -->
+            </button>
+
+            <div class="hidden md:flex items-center gap-5 text-sm">
+                <div class=" border-r-2 pr-3">
+                    <!-- <img [src]="'images/mybdjobs.svg'" /> -->
+                    <a class=" flex items-center gap-2" [href]="'https://mybdjobs.bdjobs.com/mybdjobs/welcome.asp'"
+                        target="_blank">
+                        <img [src]="'images/mybdjobs_img.svg'" />
+                        <span class="icon-angle-down font-thin text-sm"></span>
+                    </a>
+
+                    @if(isMybdjobsItemShow()){
+                    <div class="hidden mt-[72px] fixed inset-0 bg-black/60 md:flex md:justify-center z-[9]">
+                        <div
+                            class="absolute top-1.5 right-[36%] w-0 h-0 border-l-[10px] border-r-[10px]
+                                                                         border-b-[10px] border-l-transparent border-r-transparent border-b-white z-10">
+                        </div>
+                        <div
+                            class="ml-[28.5rem] p-8 bg-white max-w-[696px] max-h-[226px] my-2 flex flex-col gap-4 rounded-md shadow-custom mt-4">
+                            <p class="text-[#8C8C8C] text-xs font-medium">JOBS</p>
+                            <div class="flex flex-wrap gap-4">
+                                @for(item of jobsItem; track $index){
+                                <a [href]="item.url" target="_blank" class="flex items-center gap-3 w-[200px]">
+                                    <img [src]="'images/'+item.imageUrl" [ngClass]="$index < 2 ? 'p-2':'p-0'"
+                                        class="bg-[#FCF3FA] rounded" />
+                                    <p class="text-[#344054] text-sm font-medium">{{item.title}}</p>
+                                </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    }
+
+                </div>
+                <div (click)="isJobItemShow.set(!isJobItemShow())" class="cursor-pointer border-r-2 pr-3 relative">
+                    <a class="text-[#475467] text-base font-medium">Jobs
+                        <span class="icon-angle-down font-thin text-sm"></span>
+                    </a>
+                    @if(isJobItemShow()){
+                    <div #dropdown class="hidden mt-[72px] fixed inset-0 bg-black/60 md:flex md:justify-center z-[9]">
+                        <div
+                            class="absolute top-1.5 right-[36%] w-0 h-0 border-l-[10px] border-r-[10px]
+                                                     border-b-[10px] border-l-transparent border-r-transparent border-b-white z-10">
+                        </div>
+                        <div
+                            class="ml-[28.5rem] p-8 bg-white max-w-[696px] max-h-[226px] my-2 flex flex-col gap-4 rounded-md shadow-custom mt-4">
+                            <p class="text-[#8C8C8C] text-xs font-medium">JOBS</p>
+                            <div class="flex flex-wrap gap-4">
+                                @for (item of jobsItem; track $index) {
+                                <!-- @let finalUrl = (isBanglaLang && item.bnUrl) ? item.bnUrl : item.url; -->
+                                <!-- @let finalTitle = (isBanglaLang && item.bnTitle) ? item.bnTitle : item.title; -->
+
+                                <a [href]="item.url" target="_blank" class="flex items-center gap-3 w-[200px]">
+                                    <img [src]="'images/' + item.imageUrl" [ngClass]="$index < 2 ? 'p-2' : 'p-0'"
+                                        class="bg-[#FCF3FA] rounded" />
+                                    <p class="text-[#344054] text-sm font-medium">{{ item.title }}</p>
+                                </a>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                    }
+
+                </div>
+                <a [href]="'https://mybdjobs.bdjobs.com/bdjobs-pro/bdjobs-pro-package-pricing'" target="_blank"><img
+                        src="images/bdjobs-pro.svg" /></a>
+
+                <div class="border-l-2 pl-4">
+                    <a class="text-[#475467] text-base font-medium" [href]="'https://mybdjobs.bdjobs.com/faq/'"
+                        target="_blank">FAQ</a>
+                </div>
+                <a [href]="'https://bdjobs.com/contact.asp'" target="_blank"
+                    class="border border-[#2F64A3] rounded-lg w-32 h-10 text-[#2F64A3] flex items-center justify-center gap-2 font-semibold">
+                    <!-- <span class="icon-call-icon"></span> -->
+                    <img [src]="'images/call-icon.svg'" />
+                    Contact Us
+                </a>
+                <div
+                    class="relative hidden md:inline-block w-[96px] shadow-sm rounded-full border border-gray-100 px-1 py-0.5">
+                    <input type="checkbox" id="changeLanguage" formControlName="isBanglaLang" class="sr-only peer" />
+                    <label for="changeLanguage"
+                        class="toggle-label block h-7 cursor-pointer overflow-hidden rounded-full bg-white"
+                        (click)="changeLanguage()"></label>
+
+                    <div
+                        class="toggle-button absolute top-0.5 left-0 h-[29px] w-[47px] rounded-full border-2 bg-[#c13e8a] transform transition-transform peer-checked:translate-x-full peer-checked:border-white">
+                    </div>
+
+                    <span
+                        class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-[21px] transform text-[10px] font-semibold text-white peer-checked:text-[#757575]">
+                        ENG
+                    </span>
+                    <span
+                        class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 h-[21px] transform text-[10px] font-semibold text-[#757575] peer-checked:text-white">
+                        বাংলা
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        @if (isMenuOpen()) {
+        <div
+            class="absolute top-16 left-0 z-20 w-full rounded-bl-lg rounded-br-lg shadow-xl bg-[#FFF] px-4 py-4 md:hidden flex flex-col gap-4">
+            <a [href]="'https://mybdjobs.bdjobs.com/mybdjobs/welcome.asp'" target="_blank"
+                class="flex items-center justify-between">
+                <img class="w-16 h-4" src="images/mybdjobs_img.svg" />
+                <span class="icon-angle-down text-xs text-primary-700"></span>
+            </a>
+            <div (click)="isJobItemShowSmall.set(!isJobItemShowSmall())" class="flex items-center justify-between">
+                <a class="text-[#212121] text-sm font-normal">Jobs</a>
+                <span class="icon-angle-down text-xs text-primary-700"></span>
+            </div>
+            @if(isJobItemShowSmall()){
+            <div class="flex flex-col gap-3">
+                @for (item of jobsItem; track $index) {
+                <!-- @let finalUrl = (isBanglaLang && item.bnUrl) ? item.bnUrl : item.url; -->
+                <!-- @let finalTitle = (isBanglaLang && item.bnTitle) ? item.bnTitle : item.title; -->
+
+                <a [href]="item.url" target="_blank" class="flex items-center gap-2">
+                    <img [src]="'images/' + item.imageUrl" [ngClass]="$index < 2 ? 'p-2' : 'p-0'"
+                        class="bg-[#FCF3FA] rounded" />
+                    <p class="text-[#344054] text-sm font-medium">{{ item.title }}</p>
+                </a>
+                }
+            </div>
+            }
+            <a href="'https://mybdjobs.bdjobs.com/bdjobs-pro/bdjobs-pro-package-pricing'" target="_blank">
+                <img class="w-20 h-4" src="images/bdjobs-pro.svg" />
+            </a>
+
+            <a [href]="'https://mybdjobs.bdjobs.com/faq/'" target="_blank"
+                class="text-[#212121] text-sm font-normal">FAQ</a>
+            <a [href]="'https://bdjobs.com/contact.asp'" target="_blank"
+                class="border border-[#2F64A3] rounded-lg w-full h-10 text-[#2F64A3] flex items-center justify-center gap-2 font-semibold">
+                <img [src]="'images/call-icon.svg'" />
+                Contact Us
+            </a>
+        </div>
+        }
+    </div>
+</div>

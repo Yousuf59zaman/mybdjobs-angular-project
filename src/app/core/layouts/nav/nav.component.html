@@ -1,0 +1,126 @@
+<header
+  class="bg-white text-sm py-3 border-b border-gray-200"
+  style="box-shadow: 0 6px 12px rgba(30, 10, 58, .04);">
+  <nav class="max-w-full mx-auto px-4 md:px-10 flex flex-row justify-between md:justify-center items-center">
+    <div class="flex items-center pe-2 md:pe-0 px-0 md:px-10 basis-1/5 min-w-fit">
+      <a class="flex items-center h-8" aria-label="MyBdjobs">
+        <img src="images/MyBdjobs.svg" alt="MyBdjobs" class="w-full"/>
+      </a>
+    </div>
+    <div class="flex items-center ps-0 md:ps-2 basis-4/5 w-full justify-end md:justify-between">
+      <div class="hidden md:flex items-center gap-10">
+        <div class="flex items-center gap-4">
+          <a href="#" class="ps-3 py-2 text-sm font-medium text-primary-700 hover:text-blue-600">Home</a>
+          <div class="">
+            <img src="images/vertical_line.svg" alt="" class="">
+          </div>
+          <button class="py-2 text-sm font-medium text-primary-700 hover:text-blue-600 inline-flex items-center">
+              Job
+              <svg class="ml-1 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clip-rule="evenodd" />
+              </svg>
+            </button>
+          <div class="">
+            <img src="images/vertical_line.svg" alt="" class="">
+          </div>
+          <a href="" class="">
+            <img src="images/BdjobsPro.svg" alt="" (click)="onClickBdjobsPro()">
+          </a>
+        </div>
+
+        <div class="block">
+          <div class="relative">
+            <input type="text" placeholder="Search jobs here"
+              class="pl-3 pr-10 py-1.5 w-64 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <button class="absolute inset-y-0.5 right-0.5 flex justify-center items-center py-2 px-[7px] rounded-[50%] bg-[#C63C92] text-[#fff]">
+              <svg class="h-[18px] w-[18px]" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-5 text-primary-700">
+
+        <div class="relative hidden md:inline-block w-[96px] shadow-sm rounded-full border border-gray-100 px-1 py-0.5">
+          <input
+            type="checkbox"
+            id="changeLanguage"
+            formControlName="isBanglaLang"
+            class="sr-only peer"
+          />
+          <label for="changeLanguage"
+            class="toggle-label block h-7 cursor-pointer overflow-hidden rounded-full bg-white"
+            (click)="changeLanguage()"></label>
+
+          <div
+            class="toggle-button absolute top-0.5 left-0 h-[29px] w-[47px] rounded-full border-2 bg-[#c13e8a] transform transition-transform peer-checked:translate-x-full peer-checked:border-white">
+          </div>
+
+          <span
+            class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-[21px] transform text-[10px] font-semibold text-white peer-checked:text-[#757575]">
+            ENG
+          </span>
+          <span
+            class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 h-[21px] transform text-[10px] font-semibold text-[#757575] peer-checked:text-white">
+            বাংলা 
+          </span>
+        </div>
+
+        <div class="flex items-center gap-5">
+          <button
+            class="text-gray-600 hover:text-gray-800 cursor-pointer"
+            (click)="onClickUnreadMessage()">
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+          </button>
+          <button
+            class="text-gray-600 hover:text-gray-800 relative cursor-pointer"
+            (click)="onClickNotification()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+          </button>
+
+          <div class="hidden md:flex relative">
+            <button class="flex items-center space-x-2">
+              <img [src]="profileImagePath()" alt="User Profile"
+                class="h-8 w-8 rounded-full object-cover border border-gray-200">
+              <div class="flex items-center">
+                <span class="text-sm font-medium text-gray-700">{{ userName }}</span>
+                <svg class="ml-1 w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                  fill="currentColor">
+                  <path fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd" />
+                </svg>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div [hidden]="isSidebarOpen()">
+          <div class="md:hidden flex items-center">
+            <button
+              type="button"
+              class="focus:outline-none"
+              (click)="hamburgerToggleEmitter.emit(true)">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

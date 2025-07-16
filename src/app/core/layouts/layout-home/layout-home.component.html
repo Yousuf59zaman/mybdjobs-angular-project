@@ -1,0 +1,17 @@
+<!-- <app-nav ></app-nav> -->
+<!-- <app-nav
+    (languageChange)="switchLanguage($event)"
+    (hamburgerToggleEmitter)="isSidebarOpen.set($event)"
+    [isSidebarOpen]="isSidebarOpen()"
+    [profileImagePath]="profileImagePath()"
+  ></app-nav> -->
+<app-nav-home (languageChange)="switchLanguage($event)"
+  (hamburgerToggleEmitter)="isSidebarOpen.set($event)"></app-nav-home>
+<router-outlet />
+<app-footer></app-footer>
+
+@if (isLoginLoader()) {
+<div class="fixed inset-0 z-50 bg-white">
+  <home-skeleton-loader />
+</div>
+}

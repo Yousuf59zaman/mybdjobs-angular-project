@@ -1,0 +1,57 @@
+<div class="flex flex-col md:flex-row min-h-screen px-4 mt-0 mr-0 mb-6 ml-0 bg-white">
+  <div class="p-4 rounded-lg">
+    <form [formGroup]="phyObstacle" (ngSubmit)="onSubmit()">
+      @for (question of questions; track question) {
+        <div class="mb-6">
+          <p class="text-[#333333] text-sm font-semibold leading-[19px] mb-2">{{ question.text }}</p>
+          <div class="sm:flex sm:flex-row flex flex-col gap-3">
+            @for (option of answerOptions[question.answerKey]; track option) {
+              <label class="flex items-center space-x-2 text-gray-600 cursor-pointer">
+                <app-radio [radioItems]="[option]" [control]="getQuestionControl(question.name)"></app-radio>
+              </label>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Disability ID Input -->
+      <div class="mb-6">
+        <label for="disabilityId" class="block text-sm text-gray-800 font-semibold mb-2">প্রতিবন্ধী আইডি</label>
+        <app-input [type]="'text'" 
+          [id]="'disabilityId'" 
+          [control]="disabilityIdControl" 
+          [classes]="'w-full p-3 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 placeholder-gray-500'"
+          placeholder="Enter ID" 
+          [maxValue]="99999999999999999999"
+          [minValue]="1111111111">
+        </app-input>
+
+        <!-- Validation Messages -->
+        @if (disabilityIdControl.touched && disabilityIdControl.invalid) {
+          <div class="error-messages text-red-600 text-sm mt-2">
+            @if (disabilityIdControl.errors?.['required']) {
+              <small>দয়া করে আপনার জাতীয় প্রতিবন্ধী আইডিটি প্রদান করুন</small>
+            }
+            @if (disabilityIdControl.value.length < 10) {
+              <small>আইডি ১০ সংখ্যার কম হবে না।</small>
+            }
+            @if (disabilityIdControl.value.length > 20) {
+              <small>আইডি ২০ সংখ্যার বেশি হবে না।</small>
+            }
+            @if (disabilityIdControl.errors?.['pattern']) {
+              <small>এই ফিল্ডে শুধুমাত্র সংখ্যা ব্যবহার করুন, স্পেস ব্যবহার করা যাবে না।</small>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="text-center">
+        <button type="submit"
+          class="bg-green-600 text-white text-lg font-medium px-6 py-3 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 transition-all">
+          পরবর্তী
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+

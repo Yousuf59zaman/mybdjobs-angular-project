@@ -1,0 +1,13 @@
+.fb-box-shadow{
+    box-shadow: 1px 1px 2px 0 rgba(150, 150, 150, .9);
+}
+
+.icon-change1 {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.icon-change1:hover {
+  transform: rotate(180deg);
+}
+.icon-change1:active {
+  transform: rotate(360deg);
+}

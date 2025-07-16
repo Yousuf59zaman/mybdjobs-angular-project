@@ -1,0 +1,155 @@
+<div class="w-full flex flex-col md:flex-row ">
+  <div class="w-full mx-auto" *transloco="let t">
+    <div
+      class=" p-6 md:p-8 w-full max-w-[800px] md:h-[500px] mt-[40px]"
+    >
+      <!-- <h2
+        class="text-2xl text-[#004db3] pb-[40px] mb-4 text-center md:text-left"
+      >
+        {{ t("address.YourPresentAddress") }}
+      </h2> -->
+
+      <form [formGroup]="addressForm">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- District Dropdown -->
+          <div>
+            <label
+              class="block font-semibold text-[#565656] mb-1"
+            >
+              {{ t("address.district") }}
+            </label>
+            <select
+              formControlName="districtId"
+              class="w-full border p-2 rounded bg-white"
+              (click)="onDistrictChange($event)"
+            >
+              <option value="">{{ t("address.selectDistrict") }}</option>
+              @for (district of districts; track district.id) {
+              <option [value]="district.id">
+                {{ currentLanguage === 'EN' ? district.nameinEnglish : district.nameinBangla }}
+              </option>
+              }
+            </select>
+            @if (addressForm.controls['districtId'].errors?.['required'] &&
+            (addressForm.controls['districtId'].touched || isSubmitted)) {
+            <p class="text-[#E71313] text-sm">
+              {{ t("address.districtRequired") }}
+            </p>
+            }
+          </div>
+
+          <!-- Thana Dropdown -->
+          <div>
+            <label
+              class="block font-semibold text-[#565656] mb-1"
+            >
+              {{ t("address.thana") }}
+            </label>
+            <select
+              formControlName="thanaId"
+              class="w-full border p-2 rounded bg-white"
+              (change)="onThanaChange($event)"
+            >
+              <option value="">{{ t("address.selectThana") }}</option>
+              @for (thana of thanas; track thana.id) {
+                <option [value]="thana.id">
+                  {{ currentLanguage === 'EN' ? thana.nameinEnglish : thana.nameinBangla }}
+                </option>
+              }
+            </select>
+            @if (addressForm.controls['thanaId'].errors?.['required'] &&
+            (addressForm.controls['thanaId'].touched || isSubmitted)) {
+            <p class="text-[#E71313] text-sm">
+              {{ t("address.thanaRequired") }}
+            </p>
+            }
+          </div>
+
+          <!-- Post Office Dropdown -->
+          <div>
+            <label
+              class="block font-semibold text-[#565656] mb-1"
+            >
+              {{ t("address.postOffice") }}
+            </label>
+            <select
+              formControlName="postOfficeId"
+              class="w-full border p-2 rounded bg-white"
+            >
+              <option value="">{{ t("address.selectPostOffice") }}</option>
+              @for (postoffice of postOffices; track postoffice.id) {
+              <option [value]="postoffice.id">
+                {{ currentLanguage === 'EN' ? postoffice.nameinEnglish : postoffice.nameinBangla }}
+              </option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <!-- House No. / Road / Village -->
+        <div class="mt-4">
+          <label class="block font-semibold text-[#565656] mb-1">
+            {{ t("address.houseRoadVillage") }}
+          </label>
+          <app-input
+            [type]="'text'"
+            [isNumericOnly]="false"
+            [control]="houseNoOrRoadVillageControl()"
+            [classes]="'input h-[50px] md:h-[60px]'"
+          ></app-input>
+          @if (houseNoOrRoadVillageControl().invalid &&
+          (houseNoOrRoadVillageControl().touched || isSubmitted)) {
+          <p class="text-[#E71313] text-sm">{{ t("address.houseRequired") }}</p>
+          }
+        </div>
+
+        <!-- Alternate Mobile Number -->
+        <div class="mt-4">
+          <label
+            class="font-semibold text-[#565656] mb-1 flex items-center"
+          >
+            {{ t("address.alternateMobile") }}
+            <div class="group relative inline-block ml-2">
+              <span class="text-gray-400 text-sm cursor-pointer">
+                <i class="icon-question text-[#565656]"></i>
+              </span>
+              <div
+                class="absolute hidden group-hover:block bg-white border border-black text-gray-600 text-sm p-2 rounded w-[250px] left-1/2 transform -translate-x-1/2 mb-2 bottom-full shadow-md"
+              >
+                {{ t("address.alternateMobileTooltip") }}
+              </div>
+            </div>
+          </label>
+          <input
+            type="text"
+            formControlName="AlternativePhone"
+            appNumericOnly
+            [isDecimalAllowed]="false"
+            class="w-full sm:w-3/4 md:w-1/2 border p-2 rounded bg-gray-100"
+          />
+          @if (addressForm.controls['AlternativePhone'].errors?.['required'] &&
+          (addressForm.controls['AlternativePhone'].touched || isSubmitted)) {
+          <p class="text-[#E71313] text-sm">
+            {{ t("address.alternateMobileRequired") }}
+          </p>
+          } @if (addressForm.controls['AlternativePhone'].errors?.['pattern']) {
+          <p class="text-[#E71313] text-sm">
+            {{ t("address.invalidPhoneFormat") }}
+          </p>
+          }
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-center">
+          <button
+            type="submit"
+            class="bg-[#008020] text-white w-1/4 text-[17px] md:min-w-[280px] py-2 mt-6 rounded hover:bg-[#00661A] transition"
+            (click)="onSubmit()"
+          >
+            {{ t("address.next") }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

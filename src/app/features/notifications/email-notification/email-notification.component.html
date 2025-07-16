@@ -1,0 +1,117 @@
+
+<div class="bg-white rounded-none md:rounded-2xl border border-[#E4E7EC] shadow-lg w-full shadow-[#d8d8d8] !h-full">
+  <div class="px-4 md:px-6 mt-5 flex flex-col items-start gap-1.5 w-full">
+    <h2 class="text-base md:text-2xl font-semibold text-primary-900">Email Notification</h2>
+    <span class="text-xs md:text-sm font-medium text-primary-500">
+      Choose which notifications you want to receive by email Hot Jobs, Trainings, Promotions, and Newsletters. You can select multiple options below.
+    </span>
+  </div>
+
+  <hr class="border my-2 md:my-5 mx-0">
+
+  <div class="px-4 mb-4 w-full">
+    <div class="w-full rounded-md border border-[#E4E7EC] p-4">
+      <div class="w-full flex justify-between items-center gap-5 pb-1.5">
+        <h4 class="text-primary-900 text-sm font-medium">Hot Job Notification</h4>
+        <label class="inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            value=""
+            class="sr-only peer"
+            [checked]="controlHotJob().value"
+            [formControl]="controlHotJob()">
+          <div class="relative w-[34px] md:w-11 h-[18px] md:h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-px md:after:top-0.5 after:start-px md:after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 md:after:h-5 after:w-4 md:after:w-5 after:transition-all peer-checked:bg-[#B32D7D]"></div>
+        </label>
+      </div>
+      <div class=" grid grid-cols-7">
+        <div class="col-span-full md:col-span-6">
+          <div class="flex flex-col items-start justify-center">
+            <div class="w-full py-1 text-[11px] text-primary-700">
+              <span>Get regular e-mail job notification of all the hot jobs that match your qualification.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="px-4 mb-4 w-full">
+    <div class="w-full rounded-md border border-[#E4E7EC] p-4">
+      <div class="w-full flex justify-between items-center gap-5 pb-1.5">
+        <h4 class="text-primary-900 text-sm font-medium">Workshop/Training Notification</h4>
+        <label class="inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            value=""
+            class="sr-only peer"
+            [checked]="controlTraining().value"
+            [formControl]="controlTraining()">
+          <div class="relative w-[34px] md:w-11 h-[18px] md:h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-px md:after:top-0.5 after:start-px md:after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 md:after:h-5 after:w-4 md:after:w-5 after:transition-all peer-checked:bg-[#B32D7D]"></div>
+        </label>
+      </div>
+      <div class=" grid grid-cols-7">
+        <div class="col-span-full md:col-span-6">
+          <div class="flex flex-col items-start justify-center">
+            <div class="w-full py-1 text-[11px] text-primary-700">
+              <span class="">
+                Stay in touch with latest and updated Bdjobs Professional Development Workshops.
+                <span class="md:grid hidden">
+                  This premium service will enable you to receive regular mail on Bdjobs workshops. Know about best practices in the industry and benchmark your performance.
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="px-4 mb-4 w-full">
+    <div class="w-full rounded-md border border-[#E4E7EC] p-4">
+      <div class="w-full flex justify-between items-center gap-5 pb-1.5">
+        <h4 class="text-primary-900 text-sm font-medium">Third-party Offers and Promotions</h4>
+        <label class="inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            value=""
+            class="sr-only peer"
+            [checked]="controlPromotion().value"
+            [formControl]="controlPromotion()">
+          <div class="relative w-[34px] md:w-11 h-[18px] md:h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-px md:after:top-0.5 after:start-px md:after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 md:after:h-5 after:w-4 md:after:w-5 after:transition-all peer-checked:bg-[#B32D7D]"></div>
+        </label>
+      </div>
+      <div class=" grid grid-cols-7">
+        <div class="col-span-full md:col-span-6">
+          <div class="flex flex-col items-start justify-center">
+            <div class="w-full py-1 text-[11px] text-primary-700">
+              <span>Offers and promotions (via email) from different organizations designed especially for Bdjobs.com members</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="px-4 mb-4 w-full">
+    <div class="w-full rounded-md border border-[#E4E7EC] p-4">
+      <div class="w-full flex justify-between items-center gap-5 pb-1.5">
+        <h4 class="text-primary-900 text-sm font-medium">Bdjobs.com Newsletter</h4>
+        <label class="inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            value=""
+            class="sr-only peer"
+            [checked]="controlNewsletter().value"
+            [formControl]="controlNewsletter()">
+          <div class="relative w-[34px] md:w-11 h-[18px] md:h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-px md:after:top-0.5 after:start-px md:after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 md:after:h-5 after:w-4 md:after:w-5 after:transition-all peer-checked:bg-[#B32D7D]"></div>
+        </label>
+      </div>
+      <div class=" grid grid-cols-7">
+        <div class="col-span-full md:col-span-6">
+          <div class="flex flex-col items-start justify-center">
+            <div class="w-full py-1 text-[11px] text-primary-700">
+              <span>Get regular e-mail job notification of all the hot jobs that match your qualification</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

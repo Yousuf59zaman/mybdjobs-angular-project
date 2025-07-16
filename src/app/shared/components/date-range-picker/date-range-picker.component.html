@@ -1,0 +1,219 @@
+<div class="relative inline-block w-full">
+<div class="absolute left-0 sm:right-0 sm:left-auto z-10 mt-1 bg-white border border-gray-300 shadow-lg rounded-lg p-3 w-[300px] sm:w-auto transform -translate-x-[14px] sm:translate-x-0 transition-all duration-300">
+
+    <div class="flex flex-col sm:flex-row sm:space-x-4">
+
+      <!-- First Calendar -->
+      <div class="w-full sm:w-72">
+        <div class="flex justify-between items-center px-1 sm:px-4 py-2 border-b border-gray-300">
+          <button (click)="previousMonth('start')" class="text-gray-800 hover:text-blue-600 text-xs sm:text-sm">←</button>
+          <div class="text-center text-xs sm:text-base font-medium cursor-pointer">
+        
+            <div class="relative inline-block z-30 ml-1">
+              <button (click)="toggleMonthDropdown('start')" class="hover:text-blue-600">
+                {{ months[startCurrentMonth] }}
+
+                @if (showStartMonthDropdown) {
+                  <span class="absolute left-0 mt-1 w-[120px] sm:w-24 max-h-[200px] overflow-y-auto bg-white border border-gray-300 rounded shadow-lg z-20">
+                    <div class="grid grid-cols-2 sm:grid-cols-1 gap-1 p-1">
+                      @for (month of months; track $index; let i = $index) {
+                        <button 
+                          (click)="selectMonth(i, 'start'); $event.stopPropagation()"
+                          class="p-1 text-[10px] sm:text-xs hover:bg-blue-100 rounded text-center"
+                        >
+                          {{ month }}
+                        </button>
+                      }
+                    </div>
+                  </span>
+                }
+              </button>
+            </div>
+
+            <div class="relative inline-block ml-1">
+              <button (click)="toggleYearDropdown('start')" class="hover:text-blue-600">
+                {{ selectedLang === 'bn' ? convertToBanglaNumber(startCurrentYear) : startCurrentYear }}
+                @if (showStartYearDropdown) {
+                  <span class="absolute left-0 mt-1 w-[120px] sm:w-24 max-h-[200px] overflow-y-auto bg-white border border-gray-300 rounded shadow-lg z-20">
+                    <div class="grid grid-cols-2 sm:grid-cols-1 gap-1 p-1">
+                      @for (year of getYearRange(); track year) {
+                        <button 
+                          (click)="selectYear(year, 'start'); $event.stopPropagation()"
+                          class="p-1 text-[10px] sm:text-xs hover:bg-[#F2F4F7] rounded text-center"
+                        >
+                          {{ selectedLang === 'bn' ? convertToBanglaNumber(year) : year }}
+                        </button>
+                      }
+                    </div>
+                  </span>
+                }
+              </button>
+            </div>
+          </div>
+          <button (click)="nextMonth('start')" class="text-gray-800 hover:text-blue-600 text-xs sm:text-sm">→</button>
+        </div>
+
+       <!-- Mobile Date Range Display (between header and calendar) -->
+<div class="sm:hidden px-3 py-2">
+  <div class="flex justify-between gap-2 text-xs text-gray-900">
+    <div class="w-28 h-8 border border-gray-300 rounded-md bg-white shadow-sm flex items-center justify-center">
+      <p class="truncate text-center">
+        {{ selectedStartDate ? formatDate(selectedStartDate) : 'Start date' }}
+      </p>
+    </div>
+    <div class="flex items-center text-gray-500">–</div>
+    <div class="w-28 h-8 border border-gray-300 rounded-md bg-white shadow-sm flex items-center justify-center">
+      <p class="truncate text-center">
+        {{ selectedEndDate ? formatDate(selectedEndDate) : 'End date' }}
+      </p>
+    </div>
+  </div>
+</div>
+
+        
+        <div class="grid grid-cols-7 text-[10px] sm:text-xs text-center text-gray-500 px-0 sm:px-4 py-1 sm:py-2">
+          @for (day of daysOfWeek; track $index) {
+            <span class="w-5 sm:w-8 font-semibold truncate block leading-tight">
+              {{ day }}
+            </span>
+          }
+        </div>
+
+        <div class="grid grid-cols-7 gap-0 sm:gap-1 px-0 sm:px-4">
+      <!-- For Start Calendar -->
+@for (day of getStartCalendarDays(); track $index) {
+  <button [ngClass]="{
+    'bg-pink-600 text-white': day && !isAdjacentMonth(day, 'start') && (isStartDate(day) || isEndDate(day)),
+    'bg-[#F2F4F7] text-gray-800': day && !isAdjacentMonth(day, 'start') && isInRange(day) && !isStartDate(day) && !isEndDate(day),
+    'text-gray-400': day && isAdjacentMonth(day, 'start'),
+    'cursor-not-allowed': day && isAdjacentMonth(day, 'start')
+  }"
+  (click)="day && !isAdjacentMonth(day, 'start') && selectDate(day)"
+  class="w-5 h-5 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-[10px] sm:text-sm transition duration-200"
+  [class.hover:bg-pink-500]="day && !isAdjacentMonth(day, 'start')"
+  [class.hover:text-white]="day && !isAdjacentMonth(day, 'start')">
+    {{ day ? (selectedLang === 'bn' ? convertToBanglaNumber(day.getDate()) : day.getDate()) : '' }}
+  </button>
+}
+
+
+        </div>
+      </div>
+
+      <div class="w-full sm:w-72 hidden sm:block">
+        <div class="flex justify-between items-center px-1 sm:px-4 py-2 border-b border-gray-300">
+          <button (click)="previousMonth('end')" class="text-gray-800 hover:text-blue-600 text-xs sm:text-sm">←</button>
+          <div class="text-center text-xs sm:text-base font-medium cursor-pointer">
+
+            <div class="relative inline-block">
+              <button (click)="toggleMonthDropdown('end')" class="hover:text-blue-600">
+                {{ months[endCurrentMonth] }}
+                @if (showEndMonthDropdown) {
+ <span class="absolute left-0 mt-1 w-[120px] sm:w-24 max-h-[200px] overflow-y-auto bg-white border border-gray-300 rounded shadow-lg z-20">
+    <div class="grid grid-cols-2 sm:grid-cols-1 gap-1 p-1">
+      @for (month of months; track $index) {
+        <button 
+          (click)="selectMonth($index, 'end'); $event.stopPropagation()"
+          class="p-1 text-xs hover:bg-blue-100 rounded"
+        >
+          {{ month }}
+        </button>
+      }
+    </div>
+  </span>
+}
+             
+              </button>
+            </div>
+
+            <div class="relative inline-block ml-1">
+              <button (click)="toggleYearDropdown('end')" class="hover:text-blue-600">
+                {{ selectedLang === 'bn' ? convertToBanglaNumber(endCurrentYear) : endCurrentYear }}
+                @if (showEndYearDropdown) {
+  <span class="absolute left-0 mt-1 w-24 h-48 overflow-y-auto bg-white border border-gray-300 rounded shadow-lg z-20">
+    <div class="grid grid-cols-1 gap-1 p-1">
+      @for (year of getYearRange(); track year) {
+        <button 
+          (click)="selectYear(year, 'end'); $event.stopPropagation()"
+          class="p-1 text-xs hover:bg-blue-100 rounded text-center"
+        >
+          {{ selectedLang === 'bn' ? convertToBanglaNumber(year) : year }}
+        </button>
+      }
+    </div>
+  </span>
+}
+             
+              </button>
+            </div>
+          </div>
+          <button (click)="nextMonth('end')" class="text-gray-800 hover:text-blue-600 text-xs sm:text-sm">→</button>
+        </div>
+        
+        <div class="grid grid-cols-7 text-[10px] sm:text-xs text-center text-gray-500 px-0 sm:px-4 py-1 sm:py-2">
+          @for (day of daysOfWeek; track $index) {
+            <span class="w-5 sm:w-8 font-semibold truncate block leading-tight">
+              {{ day }}
+            </span>
+          }
+        </div>
+
+        <div class="grid grid-cols-7 gap-0 sm:gap-1 px-0 sm:px-4">
+      <!-- For End Calendar -->
+@for (day of getEndCalendarDays(); track $index) {
+  <button [ngClass]="{
+    'bg-pink-600 text-white': day && !isAdjacentMonth(day, 'end') && (isStartDate(day) || isEndDate(day)),
+    'bg-[#F2F4F7] text-gray-800': day && !isAdjacentMonth(day, 'end') && isInRange(day) && !isStartDate(day) && !isEndDate(day),
+    'text-gray-400': day && isAdjacentMonth(day, 'end'),
+    'cursor-not-allowed': day && isAdjacentMonth(day, 'end')
+  }"
+  (click)="day && !isAdjacentMonth(day, 'end') && selectDate(day)"
+  class="w-5 h-5 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-[10px] sm:text-sm transition duration-200"
+  [class.hover:bg-pink-500]="day && !isAdjacentMonth(day, 'end')"
+  [class.hover:text-white]="day && !isAdjacentMonth(day, 'end')">
+    {{ day ? (selectedLang === 'bn' ? convertToBanglaNumber(day.getDate()) : day.getDate()) : '' }}
+  </button>
+}
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer for action buttons -->
+    <footer class="flex flex-wrap gap-2 sm:gap-3 items-center p-2 sm:p-4 border-t border-gray-200 max-w-[656px]">
+      <!-- Show date range summary only on larger screens -->
+      <div class="hidden sm:flex flex-1 gap-3 items-center text-base text-gray-900 min-w-60">
+        <div class="w-[120px] h-[40px]">
+          <div class="flex items-center justify-center w-full h-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm bg-white">
+            <p class="text-sm text-gray-900 leading-none truncate text-center">
+              {{ selectedStartDate ? formatDate(selectedStartDate) : 'Start date' }}
+            </p>
+          </div>
+        </div>
+        <span class="text-base text-gray-500 leading-[24px]" aria-hidden="true">–</span>
+        <div class="w-[120px] h-[40px]">
+          <div class="flex items-center justify-center w-full h-full px-3 py-2 rounded-lg border border-gray-300 shadow-sm bg-white">
+            <p class="text-sm text-gray-900 leading-none truncate text-center">
+              {{ selectedEndDate ? formatDate(selectedEndDate) : 'End date' }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex w-full sm:w-auto gap-2 sm:gap-3 text-[9px] sm:text-sm font-semibold">
+        <button
+          (click)="cancelSelection()"
+          class="w-1/2 sm:w-auto px-1 sm:px-4 py-1.5 bg-white text-slate-700 rounded-md border border-gray-300 shadow-sm"
+        >
+          <span>{{ selectedLang === 'en' ? 'Cancel' : 'বাতিল করুন' }}</span>
+        </button>
+        <button
+          (click)="confirmSelection()"
+          class="w-1/2 sm:w-auto px-1 sm:px-4 py-1.5 text-white bg-pink-600 rounded-md border-2 border-transparent shadow-sm"
+        >
+          <span>{{ selectedLang === 'en' ? 'Apply' : 'প্রয়োগ করুন' }}</span>
+        </button>
+      </div>
+    </footer>
+  </div>
+</div>

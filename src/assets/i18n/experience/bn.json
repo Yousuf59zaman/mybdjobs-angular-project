@@ -1,0 +1,21 @@
+{
+    "expTitle"  : "আপনার কাজের ধরন নির্বাচন করুন",
+    "select Category"  : "ক্যাটাগরি নির্বাচন ",
+    "selectWorkType"  : "কাজের ধরণ/ কাজের দক্ষতা নির্বাচন ( এক বা একাধিক দক্ষতা যোগ করুন)",
+    "select skill"  : "দক্ষতা নির্বাচন",
+    "How did you learn1" : "কিভাবে ",
+    "How did you learn2" : " কাজের দক্ষতা শিখেছেন?",
+    "Add job skills" : "কাজের দক্ষতা যোগ করুন",
+    "any experience"  :"আপনার কি কোন অভিজ্ঞতা আছে? (আবশ্যক)",
+    "Latest Company Name" : "বর্তমান কোম্পানির নাম (আবশ্যক)",
+    "Latest Designation" : "বর্তমান পদবী (আবশ্যক)",
+    "Employment Period " : "চাকরির সময়কাল",
+    "Currently Working" : "বর্তমানে কর্মরত",
+    "Next"  : "পরবর্তী",
+    "delete" : "মুছে ফেলুন",
+    "selfSkill":"নিজেই",
+    "jobSkill":"চাকরিতে",
+    "eduSkill":"শিক্ষা ক্ষেত্রে",
+    "trainingSkill":"ট্রেনিং-এ",
+    "ntvqfSkill":"এনটিভিকিউএফ"
+}

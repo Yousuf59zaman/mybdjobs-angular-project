@@ -1,0 +1,15 @@
+{
+    "title": "★ Shortlisted jobs",
+    "description": "Here you can view the list of shortlisted jobs, Company, Job Title and Deadline. In the search option you can search jobs using date and company name.",
+    "fromDate": "From Date",
+    "toDate": "To Date",
+    "companyName": "Company Name",
+    "selectDate" : "MM/DD/YYYY",
+    "placeholder": "Type company name",
+    "search": "Search",
+    "totalFound": "Total shortlisted jobs found: {{ count }}",
+    "company": "Company",
+    "jobTitle": "Job Title",
+    "deadline": "Deadline",
+    "delete": "Delete"
+}

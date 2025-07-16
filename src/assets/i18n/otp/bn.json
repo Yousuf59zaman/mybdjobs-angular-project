@@ -1,0 +1,18 @@
+{
+    "headlineMobile":"মোবাইল নাম্বার দিয়ে রেজিস্ট্রেশন",
+    "headlineEmail": "ই-মেইল দিয়ে রেজিস্ট্রেশন",
+    "phoneText": "আপনার মোবাইল - ",
+    "phoneNumber": "013456",
+    "emailText":"আপনার ই-মেইল- ",
+    "emailID": "<b><%=strEmailOrPhone%></b> ",
+    "codeText":"এ একটি কোড পাঠানো হয়েছে। কোডটি লিখুন। ",
+    "resendCode": "OTP কোড আবার পাঠান",
+    "nextButton": "পরবর্তী",
+
+    "requiredOtp": "ওটিপি কোডটি টাইপ করুন।",
+    "pattern": "সঠিক ৬ সংখ্যার কোড দিন।",
+    "verified": "ওটিপি সফলভাবে যাচাই করা হয়েছে!",
+    "validCodeType": "সঠিক ওটিপি কোডটি টাইপ করুন।"
+       
+      
+}

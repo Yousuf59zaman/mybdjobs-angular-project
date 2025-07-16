@@ -1,0 +1,44 @@
+/* hide header, sidebar, footer */
+app-nav,
+app-left-bar,
+app-footer {
+  display: none !important;
+}
+
+@media print{
+  .no-print {
+    display: none !important;
+  }
+}
+
+// /* make the main router outlet wrapper full‑width */
+// main {
+//   padding: 0 !important;
+
+//   > .mx-auto {
+//     max-width: none !important;
+//     width: 100% !important;
+//     padding: 0 !important;
+//   }
+
+//   > .mx-auto > .flex {
+//     display: block !important;  /* collapse the two‑column flex */
+//   }
+// }
+
+// /* Ensure no sidebar space is reserved */
+// .basis-1\/5 {
+//   display: none !important;
+// }
+
+// /* Make the main content take full width */
+// .basis-4\/5 {
+//   flex-basis: 100% !important;
+//   width: 100% !important;
+// }
+
+// /* Additional styles to ensure full width layout */
+// .flex-col.md\:flex-row {
+//   display: block !important;
+// }
+

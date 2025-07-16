@@ -1,0 +1,137 @@
+<div *transloco="let t">
+<accordion-main-body
+  [accordionName]="t('editResumeOtherRelevant.headline')"
+  buttonType="edit"
+  buttonTitle="{{t('editResumeOtherRelevant.edit')}}"
+  [isAccordionOpen]="isOpen()"
+  [isFormOpen]="isOtherFormOpen()"
+  (formToggleEmitter)="isOtherFormOpen.set(!isOtherFormOpen())"
+  (accordionToggleEmitter)="toggle()"
+>
+
+
+  @if(!isInfoAvailable) {
+    <app-no-details 
+      (openFormBtn)="onAddNewClick()"
+      [btnText]="t('editResumeOtherRelevant.AddOtherInfo')"
+      [description]="t('editResumeOtherRelevant.noData')"
+    ></app-no-details>
+  } @else {
+    <div class="my-5" [hidden]="isOtherFormOpen()">
+      <div class="mx-6 flex flex-col gap-5 mb-5" *transloco="let t">
+        <div class=" flex flex-col gap-1">
+            <p class="text-primary-500 text-xs font-medium"> {{t('editResumeOtherRelevant.CarSummary')}}</p>
+            <p class="text-primary-900 font-medium text-sm text-justify" [innerHTML]="otherForm.get('carSum')?.value" ></p>
+        </div>
+
+        <div class=" flex flex-col gap-1">
+            <p class="text-primary-500 text-xs font-medium">{{t('editResumeOtherRelevant.SpecQuali')}}</p>
+            <p class="text-primary-900 font-medium text-sm text-justify" [innerHTML]="otherForm.get('specQuali')?.value"></p>
+        </div>
+
+        <div class=" flex flex-col gap-1">
+            <p class="text-primary-500 text-xs font-medium">  {{t('editResumeOtherRelevant.keyword')}}</p>
+            <p class="text-primary-900 font-medium text-sm text-justify"  [innerHTML]="otherForm.get('keyWord')?.value"></p>
+          </div>
+        
+      </div>
+    </div>
+    <div class="my-5" [hidden]="!isOtherFormOpen()">
+      <div class="sm:mx-6 mx-3" *transloco="let t">
+        <div class="flex flex-col gap-5 ">
+          <div>
+            <div class="sm:flex sm:flex-col flex flex-row justify-between">
+              <p class="text-[#344054] font-medium text-sm mb-1.5 sm:mt-0 -mt-1">
+                {{t('editResumeOtherRelevant.CarSummary')}}
+              </p>
+              <div class="text-primary-700 text-xs font-normal mb-3 flex items-center justify-between gap-6">
+                <p class="sm:block hidden">
+                  {{t('editResumeOtherRelevant.Careerdescription')}}
+                </p>
+                <div class="self-start flex items-center text-primary-700 gap-3">
+                   <app-tooltips
+                          [imgUrl]="'images/icon-help.svg'"
+                          [tooltipArray]="tooltipCareer"
+                          ></app-tooltips>
+                  {{t('editResumeOtherRelevant.example')}}
+                </div>
+              </div>
+            </div>
+      
+            <app-text-editor [label]="''" [type]="'Edit-Resume'" [placeholder]="'Enter your writing texts...'"
+              [control]="carSumControl" [height]="'180px'">
+            </app-text-editor>
+            @if (carSumErrorMessage) {
+            <p class="text-red-500 text-xs mt-1">{{ carSumErrorMessage }}</p>
+            }
+          </div>
+      
+          <div>
+            <div class="sm:flex sm:flex-col flex flex-row justify-between">
+              <p class="text-[#344054] font-medium text-sm mb-1.5 sm:mt-0 -mt-1">
+                {{t('editResumeOtherRelevant.SpecQuali')}}
+              </p>
+              <div class="text-primary-700 text-xs font-normal mb-3 flex items-center justify-between gap-6">
+                <p class="sm:block hidden">
+                  {{t('editResumeOtherRelevant.QualificationDescription')}}
+                </p>
+                <div class="self-start flex items-center text-primary-700 gap-3">
+                   <app-tooltips
+                          [imgUrl]="'images/icon-help.svg'"
+                          [tooltipArray]="tooltipSpeQua"
+                          ></app-tooltips>
+                  {{t('editResumeOtherRelevant.example')}}
+                </div>
+              </div>
+            </div>
+      
+            <app-text-editor [label]="''" [type]="'Edit-Resume'" [placeholder]="'Enter your writing texts...'"
+              [control]="specQualiControl" [height]="'180px'">
+            </app-text-editor>
+            @if (specQualiErrorMessage) {
+            <p class="text-red-500 text-xs mt-1">{{ specQualiErrorMessage }}</p>
+            }
+          </div>
+      
+          <div>
+            <div class="sm:flex sm:flex-col flex flex-row  justify-between ">
+              <p class="text-[#344054] font-medium text-sm mb-1.5 sm:mt-0 -mt-1"> {{t('editResumeOtherRelevant.keyword')}}
+                <span class="text-[#D92D20] font-medium text-sm">*</span>
+              </p>
+              <div class=" text-primary-700 text-xs font-normal mb-3 flex items-center justify-between gap-6">
+                <p class="sm:block hidden">
+                  {{t('editResumeOtherRelevant.KeywordDescription')}}
+                </p>
+      
+                <div class="self-start flex items-center text-primary-700 gap-3">
+                  
+                  <app-tooltips
+                          [imgUrl]="'images/icon-help.svg'"
+                          [tooltipArray]="tooltipKeyword"
+                          ></app-tooltips>
+                    {{t('editResumeOtherRelevant.example')}}
+                </div>
+              </div>
+            </div>
+            <app-text-editor [label]="''" [type]="'Edit-Resume'" [placeholder]="'Enter your writing texts...'"
+              [control]="keywordsControl" [height]="'110px'">
+            </app-text-editor>
+            @if (keywordsControl.touched && keywordsErrorMessage) {
+            <p class="text-red-500 text-xs mt-1">{{ keywordsErrorMessage }}</p>
+            }
+          </div>
+        </div>
+      
+        <div class="mb-5">
+        </div>
+        <div class="mb-5 flex items-center gap-3">
+          <button class="button-save" (click)="onSave()">{{t('editResumeOtherRelevant.save')}}</button>
+          <button (click)="closeOtherForm()" class="button-close">{{t('editResumeOtherRelevant.close')}}</button>
+        </div>
+      </div>
+    </div>
+  }
+</accordion-main-body>
+</div>
+
+

@@ -1,0 +1,24 @@
+{
+    "educationalQualifications": "Educational Qualifications",
+    "descriptionOfInstitutionalEducation": "Description of Institutional Education",
+    "doYouHaveInstitutionalEducation": "Do you have Institutional education?",
+    "latestEducationStage": "Latest education stage",
+    "nameOfExaminationDegree": "Name of Examination/Degree",
+    "nameOfEducationalInstitution": "Name of educational institution",
+    "instituteName": "Institute Name",
+    "concentrationMajorGroup": "Concentration/ Major/ Group",
+    "enterConcentrationMajorGroupName": "Enter Concentration/ Major/ Group Name",
+    "board": "Board",
+    "yearOfPassing": "Year of Passing",
+    "yes": "Yes",
+    "no": "No",
+    "next": "Next",
+    "latest education stage is needed" : "Latest education stage is needed",
+    "select exam title": "Select exam title",
+    "select institution": "Select institution",
+    "select major group": "Select major group",
+    "select board": "Select board",
+    "select education year" : "Select education year",
+    "boardPlaceholder":"Select"
+  }
+  

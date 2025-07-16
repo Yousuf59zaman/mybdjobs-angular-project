@@ -1,0 +1,46 @@
+<div class="max-w-sm space-y-3">
+  <div>
+    <label
+      for="hs-trailing-button-add-on-with-icon"
+      [ngClass]="label() ? '' : 'sr-only'"
+      >{{ label() }}</label
+    >
+    <div class="flex rounded-lg shadow-sm" [ngClass]="label() ? 'mt-2' : ''">
+      <input
+        type="text"
+        id="hs-trailing-button-add-on-with-icon"
+        name="hs-trailing-button-add-on-with-icon"
+        [placeholder]="placeholder()"
+        #inpt
+        [attr.maxlength]="maxlength()" 
+        class="block w-full px-2 py-1 text-sm border border-gray-200 shadow-sm rounded-s-lg focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+        
+        />
+      <button
+        (click)="onSearchBtnClick(inpt.value)"
+        type="button"
+        class="w-[2.875rem] h-[2.25rem] flex-shrink-0 inline-flex justify-center items-center gap-x-2 text-xs font-semibold rounded-e-md border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+      >
+        @if (isIcon()) {
+        <svg
+          class="flex-shrink-0 size-4"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.3-4.3"></path>
+        </svg>
+        } @if (searchBtnLabel.length) {
+        {{ searchBtnLabel() }}
+        }
+      </button>
+    </div>
+  </div>
+</div>

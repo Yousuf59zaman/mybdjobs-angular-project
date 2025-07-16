@@ -1,0 +1,74 @@
+<div class="md:w-[488px] sm:p-2 p-1" *transloco="let t read: 'signin'">
+    <div class="px-4 sm:px-4  flex flex-col sm:gap-10 gap-8 justify-center">
+        <div class="flex flex-col items-center justify-center gap-1.5">
+            <img [src]="'images/security.svg'" alt="security.svg" class="">
+            <p class="text-black text-xl sm:text-2xl font-semibold text-center mb-0.5">
+                {{t('securityCode.enterSecurityCode')}}</p>
+            <p class="text-[#595959] text-sm sm:text-base font-normal text-center  ">
+                Please check your phone or a text message with your code.
+                Your code is <span class="font-semibold">6 characters</span> in length.
+        </div>
+        <div>
+            <form (submit)="onSubmit($event)">
+                @if(isEmail === 'true'){
+                <p class="text-[#333] max-w-full flex flex-wrap text-lg font-medium mb-3 text-center sm:px-0 ">
+                    {{t('securityCode.weSentCode')}}: {{userInfo()?.emailAddress}}</p>
+                }@else {
+                <p
+                    class="text-[#333] flex flex-wrap text-lg font-medium mb-3 items-center justify-center text-center sm:px-0 px-8">
+                    {{t('securityCode.weSentCode')}}: +880 {{userInfo()?.phoneNumber}}</p>
+                }
+
+                <app-input [type]="'text'" [isDecimalAllowed]="true" [isRequired]="true" [isNumericOnly]="true"
+                    [maxLength]="6" [placeholder]="'Enter code'" [control]="otpControl"
+                    (keyup.enter)="onSubmit($event)">
+                </app-input>
+                <p class="flex items-center justify-between px-1 mt-2">
+                    @let counting = isCounting();
+                    <span class="text-[#333] text-sm font-normal">
+                        {{t('securityCode.timeRemaining')}}: {{ formattedTime() }}
+                    </span>
+                    <button type="button" class="text-[#B32D7D] font-medium text-base" [class.opacity-40]="counting"
+                        [class.opacity-100]="!counting" [disabled]="counting" (click)="startResendCountdown()">
+                        {{t('securityCode.resendCode')}}
+                    </button>
+                </p>
+                @if(isOtpControlInvalid()){
+                <p class="flex gap-1 items-center mt-1 text-[#AC2719] text-[11px] font-medium px-1"><img
+                        src="images/info-red.svg" alt="info-red" class="self-start sm:self-center">
+                    <span>{{t('securityCode.invalidOrExpiredCode')}}</span>
+                </p>
+                }
+                @if(isExceedLimit()){
+                <p class="flex gap-1 items-center mt-1 text-[#AC2719] text-[11px] font-medium px-1"><img
+                        src="images/info-red.svg" alt="info-red" class="self-start sm:self-center">
+                    <span>{{t('securityCode.exceededLimit')}}</span>
+                </p>
+                }
+
+                <div class="flex gap-4 mt-5">
+                    <button [disabled]="otpControl.invalid" [class.opacity-40]="otpControl.invalid"
+                        [class.opacity-100]="otpControl.valid" type="submit"
+                        class="bg-[#B32D7D] text-white text-sm font-semibold w-full h-12 rounded-full">
+                        {{t('continue')}}
+                    </button>
+
+                    <button type="button" (click)="sharedService.updateType('username')"
+                        class="bg-[#FFF] border border-[#D0D5DD] text-[#344054] w-full h-12 rounded-full font-semibold text-sm">{{t('notNow')}}
+                    </button>
+
+                </div>
+            </form>
+            <div class="flex flex-col gap-2 text-center mt-10 sm:mb-0 mb-32">
+                <a class="text-[#B32D7D] text-sm sm:text-base font-medium" role="button"
+                    (click)="sharedService.updateType('username')">{{t('signinToDifferentAccount')}}</a>
+                <div class="flex items-center justify-center gap-2">
+                    <p class="text-sm sm:text-base text-[#383E49] whitespace-nowrap">{{t('donotHaveAnAccount')}}</p>
+                    <a (click)="sharedService.goToSignUpFlow()"
+                        class="cursor-pointer text-[#B32D7D] text-sm sm:text-base font-medium">{{t('SignUp')}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

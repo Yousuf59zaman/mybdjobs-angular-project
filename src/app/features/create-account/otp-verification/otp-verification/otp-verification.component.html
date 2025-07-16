@@ -1,0 +1,189 @@
+@if(userNameType.toLowerCase() === "mobile" && accountType.toLowerCase() === 'w') {
+<div class="w-full bg-white px-10 py-[30px] shadow-md font-inherit" *transloco="let t">
+    <div id="left-cont" role="main" class="bg-white  p-6">
+        <div
+            class="font-size: var(--text-2xl) line-height: var(--text-2xl--line-height) text-[#004db3] font-normal mb-4">
+            <h2>{{t('otp.headlineMobile')}}</h2>
+        </div>
+        <div class="text-center my-4">
+            <img src="images/Mob-v-c.png" alt="verification code sample" class="mx-auto">
+        </div>
+        <div class="text-center">
+            <h2 class="text-sm text-gray-700">{{t('otp.phoneText')}}
+                <strong class="text-lg font-bold text-gray-900">{{ userNumber }}</strong> {{t('otp.codeText')}}
+            </h2>
+        </div>
+
+        <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="mt-4">
+            <div class="flex justify-center items-center mt-4">
+                <div class="w-[320px]">
+                    <app-input
+                        [type]="'text'" [control]="otpControl()"
+                        [maxValue]="999999" [isRequired]="true" [placeholder]="'Type the code'"
+                        [maxLength]="6"
+                        [isForOTP]="true"
+                        [classes]="'!text-center'">
+                    </app-input>
+                    @if (otpForm.controls.otpCode.dirty && validationText().length) {
+                        <div class="text-center error-messages text-[#FF6666] text-sm font-semibold mt-2">
+                            {{ validationText() }}
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="text-center mt-6">
+                <button type="submit"
+                    class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700">{{t('otp.nextButton')}}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+} @else if(userNameType.toLowerCase() === 'email' && accountType.toLowerCase() === 'w') {
+<div class="w-full bg-white px-10 py-[30px] shadow-md font-inherit" *transloco="let t">
+    <div id="left-cont" role="main" class="bg-white  p-6">
+        <div
+            class="font-size: var(--text-2xl) line-height: var(--text-2xl--line-height) text-[#004db3] font-normal mb-4">
+            <h2>{{t('otp.headlineEmail')}}</h2>
+        </div>
+        <div class="text-center my-4">
+            <img src="images/Mob-v-c.png" alt="verification code sample" class="mx-auto">
+        </div>
+        <div class="text-center">
+            <h2 class="text-sm text-gray-700">{{t('otp.emailText')}}
+                <strong class="text-lg font-bold text-gray-900">{{ userEmail }}</strong> {{t('otp.codeText')}}
+            </h2>
+        </div>
+
+        <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="mt-4">
+            <div class="flex justify-center items-center mt-4">
+                <div class="w-[320px]">
+                    <app-input 
+                        [type]="'text'" [control]="otpControl()"
+                        [maxValue]="999999" [isRequired]="true" [placeholder]="'Type the code'"
+                        [maxLength]="6"
+                        [isForOTP]="true"
+                        [classes]="'!text-center'">
+                    </app-input>
+                    @if (otpForm.controls.otpCode.dirty && validationText().length) {
+                        <div class="text-center error-messages text-[#FF6666] text-sm font-semibold mt-2">
+                            {{ validationText() }}
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="text-center mt-6">
+                <button type="submit"
+                    class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700">{{t('otp.nextButton')}}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+} @else if(userNameType.toLowerCase() === "mobile" && accountType.toLowerCase() === 'b') {
+<div class="w-full bg-white px-10 py-[30px] shadow-md font-inherit" *transloco="let t">
+    <div id="left-cont" role="main" class="bg-white  p-6">
+        <div
+            class="font-size: var(--text-2xl) line-height: var(--text-2xl--line-height) text-[#004db3] font-normal mb-4">
+            <h2>{{t('otp.headlineMobile')}}</h2>
+        </div>
+        <div class="text-center my-4">
+            <img src="images/Mob-v-c.png" alt="verification code sample" class="mx-auto">
+        </div>
+        <div class="text-center">
+            <h2 class="text-sm text-gray-700">{{t('otp.phoneText')}}
+                <strong class="text-lg font-bold text-gray-900">{{ userNumber }}</strong> {{t('otp.codeText')}}
+            </h2>
+        </div>
+
+        <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="mt-4">
+
+            <div class="flex justify-center items-center mt-4">
+                <div class="w-[320px]">
+                    <app-input 
+                        [type]="'text'" [control]="otpControl()"
+                        [maxValue]="999999" [isRequired]="true" [placeholder]="'Type the code'"
+                        [maxLength]="6"
+                        [isForOTP]="true"
+                        [classes]="'!text-center'">
+                    </app-input>
+                    @if (otpForm.controls.otpCode.dirty && validationText().length) {
+                        <div class="text-center error-messages text-[#FF6666] text-sm font-semibold mt-2">
+                            {{ validationText() }}
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="text-center text-[13px] pt-6 pb-5 mt-4">
+                <p class="font-medium text-gray-600 font-inter">
+                    কোডটি পুনরায় পাঠাতে
+                    <a href="#" class="text-blue-500 hover:underline" (click)="resendOtp()">ক্লিক</a>
+                    করুন।
+                </p>
+            </div>
+
+            <div class="text-center mt-6">
+                <button type="submit"
+                    class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700">{{t('otp.nextButton')}}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+}
+@else if(userNameType === 'mobile' && accountType ==='d') {
+<div class="w-full bg-white px-10 py-[30px] shadow-md font-inherit">
+    <div id="left-cont" role="main" class="bg-white  p-6">
+        <div
+            class="font-size: var(--text-2xl) line-height: var(--text-2xl--line-height) text-[#004db3] font-normal mb-4">
+            <h2>মোবাইল নাম্বার দিয়ে রেজিস্ট্রেশন</h2>
+        </div>
+
+        <div class="text-center my-4">
+            <img src="images/Mob-v-c.png" alt="verification code sample" class="mx-auto">
+        </div>
+
+        <div class="text-center">
+            <h2 class="text-sm text-gray-700">
+                <strong class="text-lg font-bold text-gray-900">{{ userNumber }}</strong>
+                নম্বরে একটি কোড পাঠানো হয়েছে,<br> অনুগ্রহ করে কোডটি টাইপ করুন।
+            </h2>
+        </div>
+
+        <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="mt-4">
+
+            <div class="flex justify-center items-center mt-4">
+                <div class="w-[320px]">
+                    <app-input 
+                        [type]="'text'" [control]="otpControl()"
+                        [maxValue]="999999" [isRequired]="true" [placeholder]="'Type the code'"
+                        [maxLength]="6"
+                        [isForOTP]="true"
+                        [classes]="'!text-center'">
+                    </app-input>
+                    @if (otpForm.controls.otpCode.dirty && validationText().length) {
+                        <div class="text-center error-messages text-[#FF6666] text-sm font-semibold mt-2">
+                            {{ validationText() }}
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="text-center text-[13px] pt-6 pb-5 mt-4">
+                <p class="font-medium text-gray-600 font-inter">
+                    কোডটি পুনরায় পাঠাতে
+                    <a href="#" class="text-blue-500 hover:underline" (click)="resendOtp()">ক্লিক</a>
+                    করুন।
+                </p>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700">
+                    পরবর্তী
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+}

@@ -1,0 +1,373 @@
+
+<accordion-main-body
+  [accordionName]="'References'"
+  buttonType="add"
+  buttonTitle="Add References"
+  [isAccordionOpen]="isOpen()"
+  [isFormOpen]="isReferencesNewFormOpen()"
+  (formToggleEmitter)="isReferencesNewFormOpen.set(!isReferencesNewFormOpen())"
+  (accordionToggleEmitter)="toggle()"
+>
+  <div class="my-5">
+    <ng-container *ngIf="editingSummary?.id === 1; else readMode">
+      <!-- Editable mode (same as Training 2 form) -->
+      <form class="mt-5 space-y-4" [formGroup]="form">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="flex items-center gap-0.5 text-sm font-medium text-slate-700">
+              Name<span class="text-red-600">*</span>
+            </label>
+            <input type="text" formControlName="title" required placeholder="Enter your Name"
+              class="w-full mt-[8px] p-2.5 text-sm text-gray-500 rounded-lg border border-gray-300 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] h-10">
+          </div>
+  
+          <div>
+            <label class="flex items-center gap-0.5 text-sm font-medium text-slate-700">
+              Designation<span class="text-red-600">*</span>
+            </label>
+            <input type="text" formControlName="country" required placeholder="Enter your Designation"
+              class="w-full mt-[8px] p-2.5 text-sm text-gray-500 rounded-lg border border-gray-300 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] h-10">
+          </div>
+        </div>
+  
+        <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+            <div class="flex flex-col w-full">
+              <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                <span class="text-sm leading-[20px] text-slate-700">Organization(required)
+                </span>
+              </label>
+              <input type="text" formControlName="topics" required placeholder="Enter your Organization(required)"
+                class="flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors">
+            </div>
+          </div>
+  
+          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+            <div class="flex flex-col w-full">
+              <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                <span class="text-sm leading-[20px] text-slate-700">Email</span>
+              </label>
+              <input type="text" formControlName="topics" required placeholder="Enter your Email"
+                class="flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors">
+            </div>
+          </div>
+        </div>
+  
+        <div class="flex flex-wrap gap-8 items-start mt-4 w-full">
+          <div class="w-full md:flex-1">
+            <app-selectbox [options]="year()" [label]="'Relation'" [control]="resultControl" [isRequired]="true"
+              [placeholder]="'Select your Relation'">
+            </app-selectbox>
+          </div>
+  
+          <div class="w-full md:flex-1 relative">
+            <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+              <div class="flex flex-col w-full">
+                <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                  <span class="text-sm leading-[20px] text-slate-700">Mobile</span>
+                </label>
+                <input type="text" formControlName="topics" required placeholder="Enter your Mobile"
+                  class="flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors">
+              </div>
+            </div>
+          </div>
+        </div>
+  
+  
+        <div class="flex flex-wrap gap-8 items-start mt-4 w-full">
+          <div class="w-full md:flex-1">
+            <div class="flex flex-col w-full">
+              <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                <span class="text-sm leading-[20px] text-slate-700">Phone (Office)</span>
+  
+              </label>
+              <input type="text" formControlName="institute" required placeholder="Enter your Phone (Office)"
+                class="flex gap-2 items-center py-2.5 mt-2 w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors">
+            </div>
+          </div>
+  
+          <div class="w-full md:flex-1 relative">
+            <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+              <div class="flex flex-col w-full">
+                <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                  <span class="text-sm leading-[20px] text-slate-700">Phone (Residential)</span>
+                </label>
+                <input type="text" formControlName="topics" required placeholder="Enter your Phone (Residential)"
+                  class="flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors">
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="flex flex-wrap gap-8 items-start mt-4 w-full">
+          <div class="w-full md:flex-1">
+            <div class="flex flex-col w-full">
+              <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                <span class="text-sm leading-[20px] text-slate-700">Address</span>
+              </label>
+              <div class="w-full mt-[8px]">
+                <app-text-editor [label]="''" [type]="'Edit-Resume'" [height]="'112px'"
+                  [placeholder]="'Enter your writing texts...'">
+                </app-text-editor>
+              </div>
+  
+            </div>
+          </div>
+  
+  
+  
+  
+        </div>
+  
+        <div class="mb-3 flex items-center gap-3">
+          <button (click)="saveTrainingSummary()"
+            class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">Save</button>
+          <button (click)="closeForm()"
+            class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold">Close</button>
+        </div>
+      </form>
+    </ng-container>
+  
+    <ng-template #readMode>
+      <!-- Read-only card like original design -->
+      <div class="flex flex-wrap justify-between items-center gap-4">
+        <h3 class="text-lg font-semibold text-slate-700">
+          References 1
+        </h3>
+        <div class="flex gap-4 items-center">
+          <!-- Edit Button -->
+          <button class="flex items-center gap-1.5 text-[#B32D7D]" aria-label="Edit Training 1"
+            (click)="editSummary(trainingSummaries[0])">
+            <img src="images/edit-05.svg" class="h-[15px] w-[15px]">
+            <span class="text-sm hidden sm:inline">Edit</span>
+          </button>
+  
+          <!-- Delete Button -->
+          <button class="flex items-center gap-1.5 text-slate-600" aria-label="Delete Training 1"
+            (click)="deleteSummary(trainingSummaries[0].id)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"
+              class="w-4 h-4">
+              <path d="M2 4H3.33333H14" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path
+                d="M5.33325 4V2.66667C5.33325 2.48986 5.40349 2.32029 5.52851 2.19526C5.65354 2.07024 5.82311 2 5.99992 2H9.99992C10.1767 2 10.3463 2.07024 10.4713 2.19526C10.5963 2.32029 10.6666 2.48986 10.6666 2.66667V4"
+                stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path
+                d="M12.6666 4V13.3333C12.6666 13.5101 12.5963 13.6797 12.4713 13.8047C12.3463 13.9298 12.1767 14 11.9999 14H3.99992C3.82311 14 3.65354 13.9298 3.52851 13.8047C3.40349 13.6797 3.33325 13.5101 3.33325 13.3333V4"
+                stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M6.66675 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M9.33325 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            <span class="text-sm hidden sm:inline">Delete</span>
+          </button>
+        </div>
+      </div>
+  
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+        <div>
+          <p class="text-sm text-gray-500">Name</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">dew</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Designation</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">ere</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Organization</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">rrr</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Email</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">---</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Relation</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">Family Friend</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Mobile</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">--</p>
+        </div>
+  
+        <div>
+          <p class="text-sm text-gray-500">Phone (Office)</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">---</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Phone (Residential)</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">---</p>
+        </div>
+  
+  
+        <div class="sm:col-span-2">
+          <p class="text-sm text-gray-500">Address</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">---</p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <div
+    [ngClass]="isReferencesNewFormOpen()? 'mb-0' : 'mb-5'">
+    <button
+      class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 hover:bg-pink-50 transition-colors"
+      aria-label="Add Academic Summary"
+      (click)="isReferencesNewFormOpen.set(true)">
+      <img src="images/plus.svg" alt="Add" />
+      <span class="leading-tight">Add References</span>
+    </button>
+  </div>
+
+  <div
+    class="my-5"
+    [hidden]="!isReferencesNewFormOpen()">
+    <h3 class="text-lg font-semibold text-slate-700">
+      References 2
+    </h3>
+  
+    <form class="mt-5 space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div>
+          <label class="flex items-center gap-0.5 text-sm font-medium text-slate-700">
+            Name<span class="text-red-600">*</span>
+          </label>
+          <input type="text" required placeholder="Enter your Name"
+            class="w-full mt-[8px] p-2.5 text-sm text-gray-500 rounded-lg border border-gray-300 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] h-10">
+  
+        </div>
+  
+        <div>
+          <label class="flex items-center gap-0.5 text-sm font-medium text-slate-700">
+            Designation <span class="text-red-600">*</span>
+          </label>
+          <input type="text" required placeholder="Enter your Designation*"
+            class="w-full mt-[8px] p-2.5 text-sm text-gray-500 rounded-lg border border-gray-300 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] h-10">
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+        <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+          <div class="flex flex-col  w-full max-md:max-w-full">
+            <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+              <span class="text-sm leading-[20px] text-slate-700">Organization</span>
+              <span class="sr-only">(required)</span>
+            </label>
+            <input type="text" required aria-required="true" placeholder="Enter your Topics Organization"
+              class="flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors">
+          </div>
+        </div>
+  
+        <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+            <div class="flex flex-col  w-full max-md:max-w-full">
+              <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                <span class="text-sm leading-[20px] text-slate-700">Email</span>
+                <span class="sr-only">(required)</span>
+              </label>
+              <input type="text" required aria-required="true" placeholder="Enter your Topics Email "
+                class="flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-8 items-start mt-4 w-full">
+        <!-- Institute -->
+        <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+            <div class="flex flex-col  w-full max-md:max-w-full relative">
+              <app-selectbox [options]="year()" [label]="'Relation '" [control]="resultControl"
+                [placeholder]="'Select your Relation '">
+              </app-selectbox>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full md:flex-1 relative" #container>
+          <div class="flex flex-col w-full">
+            <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+              <span class="text-sm leading-[20px] text-slate-700">Mobile </span>
+              <span class="sr-only">(required)</span>
+            </label>
+  
+            <div class="relative w-full mt-2">
+              <input type="text" required aria-required="true" placeholder="Enter your Mobile"
+                class="w-full text-sm text-gray-500 rounded-lg border border-gray-300 shadow-sm bg-white pl-9 pr-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors"
+                (click)="toggleCalendar()" [value]="dateRangeString" readonly />
+  
+              <!-- Calendar icon button (absolute inside input wrapper) -->
+              <button type="button" aria-label="Open calendar"
+                class="absolute left-2.5 top-1/2 -translate-y-1/2 h-5 w-5 cursor-pointer bg-transparent border-0 p-0"
+                (click)="toggleCalendar()">
+                <img src="images/calendar.svg" alt="Calendar icon" class="h-5 w-5" />
+              </button>
+            </div>
+            <!-- Date Range Picker Component -->
+            @if (calendarVisible) {
+            <app-date-range-picker [(selectedStartDate)]="selectedStartDate" [(selectedEndDate)]="selectedEndDate"
+              (selectedStartDateChange)="onStartDateChange($event)"
+              (selectedEndDateChange)="onEndDateChange($event)"></app-date-range-picker>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+        <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+          <div class="flex flex-col  w-full max-md:max-w-full">
+            <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+              <span class="text-sm leading-[20px] text-slate-700">Phone (Office)</span>
+              <span class="sr-only">(required)</span>
+            </label>
+            <input type="text" required aria-required="true" placeholder="Enter your Phone (Office)"
+              class="flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors">
+          </div>
+        </div>
+  
+        <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+            <div class="flex flex-col  w-full max-md:max-w-full">
+              <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                <span class="text-sm leading-[20px] text-slate-700">Phone (Residential)  </span>
+                <span class="sr-only">(required)</span>
+              </label>
+              <input type="text" required aria-required="true" placeholder="Enter your Phone (Residential)  "
+                class="flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-8 items-start mt-[8px] w-full max-md:max-w-full">
+        <div class="flex flex-col w-full max-md:max-w-ful">
+          <div class="flex flex-col w-full max-md:max-w-full">
+            <label class="flex gap-0.5 mb-[8px] items-start self-start text-sm font-medium leading-none">
+              <span class="text-sm leading-[20px] text-slate-700">Address</span>
+              <span class="sr-only">(required)</span>
+            </label>
+          </div>
+          <div class="w-full">
+            <app-text-editor [label]="''" [type]="'Edit-Resume'" [height]="'112px'"
+              [placeholder]="'Enter your writing texts...'">
+            </app-text-editor>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3 flex items-center gap-3">
+        <button
+          class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">Save</button>
+        <button (click)="isReferencesNewFormOpen.set(false)"
+          class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold ">Close</button>
+      </div>
+    </form>
+  </div>
+</accordion-main-body>
+
+
+
+
+
+

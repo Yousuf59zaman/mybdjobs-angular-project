@@ -1,0 +1,62 @@
+<div class="md:w-[488px] sm:p-2 p-1" *transloco="let t read:'signin'">
+    <div class="px-4 sm:px-4  flex flex-col gap-10 justify-center">
+        <div class="flex flex-col items-center justify-center gap-1.5">
+            <img [src]="'images/find_account.svg'" alt="findaccount.svg" class="">
+            <p class="text-black text-xl sm:text-2xl font-semibold text-center mb-0.5">{{t('findAccount.findYourAccount')}}</p>
+            @if(currentLang() ==='en'){
+                <p class="text-[#595959] text-sm sm:text-base font-normal text-center  ">Please enter 
+                <span class="font-semibold">User Id / Email Address / Mobile Number</span>
+                 that you have used in your
+                 MyBdjobs account in order to access your user id or password.
+            </p>
+            }@else {
+                <p class="text-[#595959] text-sm sm:text-base font-normal text-center  ">
+                    দয়া করে আপনার মাই বিডিজবস অ্যাকাউন্টে ব্যবহার করা ইউজার আইডি / ইমেইল ঠিকানা / মোবাইল নম্বর লিখুন,
+                     যাতে আপনি আপনার ইউজার আইডি বা পাসওয়ার্ড পুনরুদ্ধার করতে পারেন।
+                </p>
+            }
+            
+        </div>
+        <div>
+            <form (submit)="onSubmit($event)">
+                <p class="text-[#48505E] text-sm font-medium mb-1.5">{{t('signin.usernamEmailORMobile')}}</p>
+                <app-input [type]="'text'"
+                  [isDecimalAllowed]="true"
+                  [isRequired]="true"
+                  [isNumericOnly]="false"
+                  [control]="usernameControl" 
+                 >
+                </app-input>
+                @if(validationText()){
+                    <p>{{validationText()}}</p>
+                }
+                @if(isWrongUsername()){
+                    <p class="flex gap-2 mt-1 text-[#AC2719] text-[11px] font-medium"><img src="images/info-red.svg"
+                        alt="info-red">{{t('error.couldnotFindYourBdjobsAccount')}}
+                    </p>
+                }
+                
+                <div class="flex gap-4 mt-5">
+                    <button  
+                    type="submit"
+                    [disabled]="usernameControl.invalid"
+                    [class.opacity-40]="usernameControl.invalid"
+                    [class.opacity-100]="usernameControl.valid"
+                    [class.cursor-not-allowed] ="usernameControl.invalid" 
+                     class="bg-[#B32D7D] text-white text-sm font-semibold w-full h-12 rounded-full">
+                       {{t('continue')}}
+                    </button>
+                    
+                </div>
+            </form>
+            <div class="flex flex-col gap-2 text-center mt-10 sm:mb-0 mb-28">
+                <a class="text-[#B32D7D] text-sm sm:text-base font-medium" role="button" (click)="goToHome()">{{t('signinToDifferentAccount')}}</a>
+                <div class="flex items-center justify-center gap-2">
+                    <p class="text-sm sm:text-base text-[#383E49] whitespace-nowrap">{{t('donotHaveAnAccount')}}</p>
+                    <a role="button" (click)="sharedService.goToSignUpFlow()" class="text-[#B32D7D] text-sm sm:text-base font-medium">{{t('SignUp')}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

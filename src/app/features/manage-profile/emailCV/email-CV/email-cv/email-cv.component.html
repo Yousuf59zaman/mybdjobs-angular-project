@@ -1,0 +1,98 @@
+<div class="w-full pl-[15px] pr-[15px] pb-4" *transloco="let t">
+  <div class="flex items-center justify-between bg-[#546e7a] p-[10px_15px] w-[815.5px]">
+    <div class="flex items-center">
+      <i class="icon-emailed-resume text-white mr-[10px]"></i>
+      <span class="text-white text-[18px] font-medium">{{t('emailCV.headline')}}</span>
+    </div>
+    <i class="icon-video-help icon-padding text-white"></i>
+  </div>
+  <div class="w-[815.5px] p-6 bg-white rounded-b-md shadow">
+    <div class="mb-5">
+      <p class="text-gray-600 text-[15px] leading-relaxed">
+        <strong>{{t('emailCV.paragraph')}}</strong>
+      </p>
+      <div class="pl-5 mb-5">
+        <ul class="mt-2 list-decimal list-inside text-gray-700 text-[15px] space-y-1">
+          <li>{{t('emailCV.1stLine')}}</li>
+          <li>{{t('emailCV.2ndLine')}}</li>
+        </ul>
+      </div>
+    </div>
+   
+    <div class="pt-5">
+      <h2 class="text-[18px] font-semibold mb-[20px]">{{t('emailCV.emailheadline')}}</h2>
+
+      <div class="w-full">
+        <form [formGroup]="Cvmail">
+          <div class="mb-[15px]">
+            <p class="text-gray-700 text-[15px] mb-2">{{t('emailCV.myMail')}}</p>
+            <app-input 
+              [type]="'text'" 
+              [control]="myEmail" 
+              [placeholder]="'Please Type Your Email Address.'" 
+              [isNumericOnly]="false"
+              icon="glyphicon icon-envelope">
+            </app-input>
+          </div>
+          <div class="mb-[15px]">
+            <p class="text-gray-700 text-[15px] mb-2">{{t('emailCV.comMail')}}</p>
+            <app-input 
+              [type]="'text'"
+              [control]="companyName" 
+              [isNumericOnly]="false"
+              [placeholder]="'Company Email Address'" 
+              icon="glyphicon icon-envelope">
+            </app-input>
+          </div>
+          <div class="mb-[15px]">
+            <p class="text-gray-700 text-[15px] mb-2">{{t('emailCV.subject')}} </p>
+            <app-input 
+              [type]="'text'" 
+              [control]="subjectType" 
+              [placeholder]="'Type a Subject'" 
+              [isNumericOnly]="false"
+              icon="file">
+            </app-input>
+          </div>
+          <div class="mb-[15px]">
+            <label class="text-gray-700 text-[15px] font-bold mb-2">{{t('emailCV.cvType')}}</label>
+            <div class="relative">
+              <app-radio [radioItems]="cvType" [control]="bdjobsProfileControl"
+                [isHorizontalOption]="true"></app-radio>
+              <div class="flex gap-[30px]  text-sm mt-1 ml-6">
+                <a href="http://localhost:4200/jobseeker-panel/details-cv" class="text-blue-600 hover:underline" (click)="openDetailsCv($event)">(View your details CV)</a>
+                <a href="http://localhost:4200/jobseeker-panel/short-cv" class="text-blue-600 hover:underline"  (click)="openShortCv($event)">(View your short CV)</a>
+                <div>
+                  <a href="" class="text-blue-600 hover:underline">(Upload your resume)</a>
+                  <p class="text-green-600 text-sm mt-1">[This option will be available after uploading your CV]</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+         <div class="mb-[15px]">
+            <label class="text-gray-700 text-[15px] font-bold mb-2 block">{{t('emailCV.message')}}</label>
+            <app-input 
+              [type]="'text'" 
+              [control]="message" 
+              [placeholder]="'Your Message...'" 
+              [isNumericOnly]="false"
+              class="w-full">
+            </app-input>
+          </div> 
+          <div class="mb-[15px]">
+            <button type="submit"
+              class="bg-green-700 hover:bg-green-800 rounded-md px-4 py-2 text-white text-sm font-semibold"
+              (click)="onSubmit()">
+              Send CV
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+
+    
+  </div>
+</div>

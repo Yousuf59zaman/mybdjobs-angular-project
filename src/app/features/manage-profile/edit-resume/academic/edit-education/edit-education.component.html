@@ -1,0 +1,511 @@
+<accordion-main-body
+  [accordionName]="'Academic Summary'"
+  buttonType="add"
+  buttonTitle="Add Academic Summary"
+  [isAccordionOpen]="isOpen()"
+  [isFormOpen]="isAcademicSummaryNewFormOpen()"
+  (formToggleEmitter)="isAcademicSummaryNewFormOpen.set(!isAcademicSummaryNewFormOpen())"
+  (accordionToggleEmitter)="toggle()"
+>
+
+  <div class="my-5" *ngFor="let summary of academicSummaries()">
+    <ng-container *ngIf="editingSummaries().has(summary.id); else readMode">
+        <h3 class="text-lg font-semibold text-slate-700">
+          Academic {{ summary.id }}
+        </h3>
+        <form class="mt-5 space-y-4" [formGroup]="summaryForms().get(summary.id)!">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <app-selectbox
+                [options]="educationLevels()"
+                [label]="'Level of Education'"
+                [control]="educationLevelControl()"
+                [isRequired]="true"
+                [placeholder]="'Select your Level of Education'"
+                class="mt-[8px] text-sm sm:text-base"
+              ></app-selectbox>
+              <div class="flex items-center mt-[8px] gap-2">
+                <input type="checkbox" id="show-degree" class="w-4 h-4 rounded border-gray-300 focus:ring-0">
+                <label for="show-degree" class="text-xs text-slate-700">
+                  Show this degree in summary view at employer's end
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <app-selectbox
+                [options]="degreeTitles()"
+                [label]="'Exam/Degree Title'"
+                [control]="degreeTitleControl()"
+                [isRequired]="true"
+                [placeholder]="'Select your Exam/Degree Title'"
+                class="mt-[8px] text-sm sm:text-base"
+              ></app-selectbox>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+            <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+              <app-input
+                [control]="majorControl()"
+                [isNumericOnly]="false"
+                [label]="'Concentration/ Major/Group'"
+                [placeholder]="'Enter your Concentration/ Major/Group'"
+                [isRequired]="true"
+                [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+            </div>
+
+            <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+              <app-input
+                [control]="instituteControl()"
+                [isNumericOnly]="false"
+                [label]="'Institute Name'"
+                [placeholder]="'Enter your Institute Name'"
+                [isRequired]="true"
+                [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+              <div class="flex gap-2 items-start self-start mt-[8px]">
+                <input type="checkbox" id="foreign-institute"
+                  class="custom-checkbox w-4 h-4 rounded border border-solid border-gray-300 min-h-4 mt-0.5 focus:ring-0 focus:ring-offset-0 focus:outline-none">
+                <label for="foreign-institute" class="text-xs leading-[18px] text-slate-700">
+                  This is a foreign institute
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-8 items-start mt-4 w-full max-md:max-w-full">
+            <div class="flex flex-col w-full max-md:max-w-full">
+              <app-input
+                [control]="countryControl()"
+                [isNumericOnly]="false"
+                [label]="'Country of Foreign University'"
+                [placeholder]="'Enter country name'"
+                [isRequired]="true"
+                [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-8 items-start w-full max-md:max-w-full">
+            <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+              <app-selectbox
+                [options]="result()"
+                [label]="'Result'"
+                [control]="resultControl()"
+                [isRequired]="true"
+                [placeholder]="'Enter your Result'">
+              </app-selectbox>
+            </div>
+
+            <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+              <app-input
+                [control]="marksControl()"
+                [label]="'Marks(%)'"
+                [placeholder]="'Enter your Marks(%)'"
+                [isRequired]="true"
+                [type]="'number'"
+                [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+            <div class="flex-1 shrink basis-0 min-w-[calc(50%-16px)] max-md:min-w-full">
+              <app-selectbox
+                [control]="passingYearControl()"
+                [options]="year()"
+                [label]="'Year of Passing'"
+                [isRequired]="true"
+                [placeholder]="'Enter your Year of Passing'">
+              </app-selectbox>
+            </div>
+
+            <div class="flex-1 shrink basis-0 min-w-[calc(50%-16px)] max-md:min-w-full">
+              <app-input
+                [control]="durationControl()"
+                [label]="'Duration (Years)'"
+                [placeholder]="'Enter your Duration (Years)'"
+                [isRequired]="true"
+                [type]="'number'"
+                [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+            </div>
+          </div>
+
+          <div class="flex gap-8 items-start mt-[8px] w-full max-md:max-w-full">
+            <div class="flex flex-col w-full max-md:max-w-ful">
+              <div class="flex flex-col w-full max-md:max-w-full">
+                <label class="flex gap-0.5 mb-[8px] items-start self-start text-sm font-medium leading-none">
+                  <span class="text-sm leading-[20px] text-slate-700">Achievement</span>
+                  <span class="sr-only">(required)</span>
+                </label>
+              </div>
+              <div class="w-full">
+                <app-text-editor
+                  [control]="achievementControl()"
+                  [label]="''"
+                  [type]="'Edit-Resume'"
+                  [height]="'112px'"
+                  [placeholder]="'Enter your writing texts...'">
+                </app-text-editor>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3 flex items-center gap-3">
+            <button
+              type="button" 
+              (click)="saveAcademicSummary()"
+              class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">
+              Save
+            </button>
+            <button
+              type="button"
+              (click)="closeForm()"
+              class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold">
+              Close
+            </button>
+          </div>
+
+
+        </form>
+    </ng-container>
+
+    <ng-template #readMode>
+
+      <div class="flex flex-wrap justify-between items-center gap-4">
+        <h3 class="text-lg font-semibold text-slate-700">
+          Academic {{ summary.id }}
+        </h3>
+        <div class="flex gap-4 items-center">
+          <button class="flex items-center gap-1.5 text-[#B32D7D]" [attr.aria-label]="'edit Academic ' + summary.id"
+            (click)="editSummary(summary)">
+            <img src="images/edit-05.svg" class="h-[15px] w-[15px]">
+            <span class="text-sm hidden sm:inline">Edit</span>
+          </button>
+          <button class="flex items-center gap-1.5 text-slate-600" [attr.aria-label]="'Delete Academic ' + summary.id"
+            (click)="deleteSummary(summary.id)" (click)="openDeleteModal()" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"
+              class="w-4 h-4">
+              <path d="M2 4H3.33333H14" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path
+                d="M5.33325 4V2.66667C5.33325 2.48986 5.40349 2.32029 5.52851 2.19526C5.65354 2.07024 5.82311 2 5.99992 2H9.99992C10.1767 2 10.3463 2.07024 10.4713 2.19526C10.5963 2.32029 10.6666 2.48986 10.6666 2.66667V4"
+                stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path
+                d="M12.6666 4V13.3333C12.6666 13.5101 12.5963 13.6797 12.4713 13.8047C12.3463 13.9298 12.1767 14 11.9999 14H3.99992C3.82311 14 3.65354 13.9298 3.52851 13.8047C3.40349 13.6797 3.33325 13.5101 3.33325 13.3333V4"
+                stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M6.66675 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M9.33325 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            <span (click)="openDeleteModal()" class="text-[#B32D7D] font-semibold text-sm cursor-pointer">Delete</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+        <div>
+          <p class="text-sm text-gray-500">Level of Education</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">
+            {{ getEducationLevelLabel(summary.educationLevel) }}
+          </p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Exam/Degree Title</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">
+            {{ getDegreeTitleLabel(summary.degreeTitle) }}
+          </p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Concentration/ Major/Group</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.major }}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Institute Name</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.institute }}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Result</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.result }}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Marks(%)</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.marks }}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Year of Passing</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.passingYear }}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Duration (Years)</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.duration }}</p>
+        </div>
+        <div class="sm:col-span-2">
+          <p class="text-sm text-gray-500">Achievement</p>
+          <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.achievement }}</p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <ng-container *ngIf="isAcademicSummaryNewFormOpen()">
+    <div class="my-5">
+      <h3 class="text-lg font-semibold text-slate-700">
+        Academic {{ academicSummaries().length + 1 }}
+      </h3>
+
+      <form class="mt-5 space-y-4" [formGroup]="form">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <app-selectbox
+              [options]="educationLevels()"
+              [label]="'Level of Education'"
+              [control]="educationLevelControl()"
+              [isRequired]="true"
+              [placeholder]="'Select your Level of Education'"
+              class="mt-[8px] text-sm sm:text-base"
+            ></app-selectbox>
+            <div class="flex items-center mt-[8px] gap-2">
+              <input type="checkbox" id="show-degree" class="w-4 h-4 rounded border-gray-300 focus:ring-0">
+              <label for="show-degree" class="text-xs text-slate-700">
+                Show this degree in summary view at employer's end
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <app-selectbox
+              [options]="degreeTitles()"
+              [label]="'Exam/Degree Title'"
+              [control]="degreeTitleControl()"
+              [isRequired]="true"
+              [placeholder]="'Select your Exam/Degree Title'"
+              class="mt-[8px] text-sm sm:text-base"
+            ></app-selectbox>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+            <app-input
+              [control]="majorControl()"
+              [isNumericOnly]="false"
+              [label]="'Concentration/ Major/Group'"
+              [placeholder]="'Enter your Concentration/ Major/Group'"
+              [isRequired]="true"
+              [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+          </div>
+
+          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+            <app-input
+              [control]="instituteControl()"
+              [isNumericOnly]="false"
+              [label]="'Institute Name'"
+              [placeholder]="'Enter your Institute Name'"
+              [isRequired]="true"
+              [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+            <div class="flex gap-2 items-start self-start mt-[8px]">
+    <input
+      type="checkbox"
+      id="foreign-institute"
+      class="custom-checkbox w-4 h-4 rounded border border-solid border-gray-300 min-h-4 mt-0.5 focus:ring-0 focus:ring-offset-0 focus:outline-none"
+      (change)="toggleForeignInstitute($event)"
+    />
+    <label for="foreign-institute" class="text-xs leading-[18px] text-slate-700">
+      This is a foreign institute
+    </label>
+  </div>
+
+          </div>
+        </div>
+
+      <div class="flex gap-8 items-start mt-4 w-full max-md:max-w-full" *ngIf="showForeignInstituteCountry()">
+    <div class="flex flex-col w-full max-md:max-w-full">
+      <app-input
+        [control]="countryControl()"
+        [isNumericOnly]="false"
+        [label]="'Country of Foreign University'"
+        [placeholder]="'Enter country name'"
+        [isRequired]="true"
+        [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'">
+      </app-input>
+    </div>
+  </div>
+
+
+        <div class="flex flex-wrap gap-8 items-start w-full max-md:max-w-full">
+          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+            <app-selectbox
+              [options]="result()"
+              [label]="'Result'"
+              [control]="resultControl()"
+              [isRequired]="true"
+              [placeholder]="'Enter your Result'">
+            </app-selectbox>
+          </div>
+
+          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+            <app-input
+              [control]="marksControl()"
+              [label]="'Marks(%)'"
+              [placeholder]="'Enter your Marks(%)'"
+              [isRequired]="true"
+              [type]="'number'"
+              [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+          <div class="flex-1 shrink basis-0 min-w-[calc(50%-16px)] max-md:min-w-full">
+            <app-selectbox
+              [control]="passingYearControl()"
+              [options]="year()"
+              [label]="'Year of Passing'"
+              [isRequired]="true"
+              [placeholder]="'Enter your Year of Passing'">
+            </app-selectbox>
+          </div>
+
+          <div class="flex-1 shrink basis-0 min-w-[calc(50%-16px)] max-md:min-w-full">
+            <app-input
+              [control]="durationControl()"
+              [label]="'Duration (Years)'"
+              [placeholder]="'Enter your Duration (Years)'"
+              [isRequired]="true"
+              [type]="'number'"
+              [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+          </div>
+        </div>
+
+        <div class="flex gap-8 items-start mt-[8px] w-full max-md:max-w-full">
+          <div class="flex flex-col w-full max-md:max-w-ful">
+            <div class="flex flex-col w-full max-md:max-w-full">
+              <label class="flex gap-0.5 mb-[8px] items-start self-start text-sm font-medium leading-none">
+                <span class="text-sm leading-[20px] text-slate-700">Achievement</span>
+                <span class="sr-only">(required)</span>
+              </label>
+            </div>
+            <div class="w-full">
+              <app-text-editor
+                [control]="achievementControl()"
+                [label]="''"
+                [type]="'Edit-Resume'"
+                [height]="'112px'"
+                [placeholder]="'Enter your writing texts...'">
+              </app-text-editor>
+            </div>
+          </div>
+        </div>
+          
+          <div class="mb-3 flex items-center gap-3">
+            <button
+              (click)="saveAcademicSummary()"
+              class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">Save</button>
+            <button
+              (click)="closeForm()"
+              class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold">Close</button>
+          </div>
+
+
+          
+
+          
+      </form>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!isAcademicSummaryNewFormOpen() && !editingSummary()">
+      <div class="mb-5">
+        <button
+          [disabled]="isAnyFormOpen()"
+          [class.opacity-50]="isAnyFormOpen()"
+          [class.cursor-not-allowed]="isAnyFormOpen()"
+          [class.pointer-events-none]="isAnyFormOpen()"
+          class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 mt-8 hover:bg-pink-50 transition-colors"
+          aria-label="Add Academic Summary"
+          (click)="!isAnyFormOpen() && isAcademicSummaryNewFormOpen.set(true)">
+          <img src="images/plus.svg" alt="Add" />
+          <span class="leading-tight sm:inline hidden">Add Academic Summary</span>
+          <span class="leading-tight sm:hidden inline">Add</span>
+        </button>
+      </div>
+  </ng-container>
+
+
+  <ng-container *ngIf="isAcademicSummaryNewFormOpen()">
+      <div class="mb-5">
+      <button
+    [disabled]="isAnyFormOpen()"
+    [class.opacity-50]="isAnyFormOpen()"
+    [class.cursor-not-allowed]="isAnyFormOpen()"
+    [class.pointer-events-none]="isAnyFormOpen()"
+    class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none 
+          text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] 
+          focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 mt-8 
+          hover:bg-pink-50 transition-colors"
+    aria-label="Add Academic Summary"
+    type="button"
+    (click)="!isAnyFormOpen() && isAcademicSummaryNewFormOpen.set(true)">
+    <img src="images/plus.svg" alt="Add" />
+    <span class="leading-tight sm:inline hidden">Add Academic Summary</span>
+    <span class="leading-tight sm:hidden inline">Add</span>
+  </button>
+
+      </div>
+      
+  </ng-container>
+</accordion-main-body>
+
+
+@if(isDeleteModalOpen()){
+<div class="fixed inset-0 bg-[#101828]/50 flex items-center justify-center z-[9999]">
+    <div class="bg-white w-[476px] h-[216px] p-10 rounded-lg shadow-md flex flex-col justify-between">
+        <p class="text-primary-900 text-center font-semibold text-[24px] leading-[32px]">
+            Are you sure you want to delete Image?
+        </p>
+        <div class="flex justify-center gap-6 mt-6">
+            <button (click)="closeDeleteModal()"
+                class="px-4 py-2 text-sm rounded-lg border border-[#E4E7EC] bg-white shadow-sm text-primary-900 hover:bg-gray-100">
+                Cancel
+            </button>
+            <button (click)="openDeleteModal()"class="px-4 py-2 text-sm rounded-lg bg-[#C63C92] shadow-sm text-white hover:bg-pink-700">
+                Delete
+            </button>
+        </div>
+    </div>
+</div>
+}
+
+
+<!-- 
+<div class="flex flex-col gap-4 mt-4">
+  <div
+    class="flex flex-col bg-[#F9FAFB] justify-center self-stretch pt-6 pb-6 px-4 sm:px-6 border border-solid border-gray-200 rounded-xl cursor-pointer transition-all duration-300 overflow-hidden h-[68px]"
+    (click)="toggleDropdown()" aria-labelledby="army-experience-title">
+    <div class="flex flex-row justify-between items-center gap-4 pointer-events-auto ml-0 sm:ml-5">
+      <h2 id="army-experience-title" class="text-lg font-medium leading-7 text-gray-800 whitespace-nowrap -ml-5">
+        Army Experience
+      </h2>
+      <button (click)="toggleDropdown(); $event.stopPropagation()"
+        class="flex items-center gap-2 text-[16px] font-semibold text-gray-600 hover:text-gray-800 focus:outline-none p-1 rounded-md transition-colors"
+        [attr.aria-expanded]="isExpanded" aria-controls="army-experience-content">
+        <span class="whitespace-nowrap">{{ isExpanded ? 'Collapse' : 'Expand' }}</span>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5 transition-transform duration-300" [class.rotate-180]="isExpanded">
+          <path d="M5 7.5L10 12.5L15 7.5" stroke="#475467" stroke-width="1.66667" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="army-experience-content"
+    class="transition-all duration-300 rounded-xl border border-solid border-gray-200 bg-white shadow-sm"
+    [class.hidden]="!isExpanded">
+    <div class="p-6">
+      <app-no-details-training-summary
+        [description]="'If you are a retired army person then you can give that information by clicking on the following button.'"
+        [btnText]="'Add Experience at Bangladesh Army'" (openFormBtn)="handleAddExperience()">
+      </app-no-details-training-summary>
+    </div>
+  </div>
+</div> -->

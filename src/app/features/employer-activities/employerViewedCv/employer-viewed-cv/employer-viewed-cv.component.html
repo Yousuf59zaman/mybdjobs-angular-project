@@ -1,0 +1,174 @@
+<div class="w-full mb-5 bg-white border border-transparent rounded-[2px] py-[60px] px-[15px] md:py-[0px] md:px-[0px]"  *transloco="let t">
+    <div
+        class=" px-[15px] py-[10px] border-b border-transparent rounded-t-[3px] bg-[#546e7a] text-white text-[14px] font-semibold min-h-[45px] pt-[12px]">
+        <i class="icon-view-resume text-white" aria-hidden="true"></i>
+        {{ t("employersViewedCv.Employer Viewed CV") }}
+    </div>
+
+    <div class="flex justify-center p-[20px_25px_30px_25px]">
+        <form class="w-full" [formGroup]="CvViewSearchForm">
+            <div class="bg-[#f5f5f5] border border-[#e0e0e0] p-5 rounded">
+
+                <div class="flex flex-wrap gap-4 text-[#595959]">
+                    <div class="w-full md:flex-1">
+                        <label class="text-[#595959] inline-block mb-2 font-semibold">{{ t("employersViewedCv.From Date") }}</label>
+                        <app-datepicker [widthClass]="'w-full'" [pickerType]="'calendar'" [control]="fromDateControl()"
+                            placeholder="MM/DD/YYYY" [minDate]="minDate">
+                        </app-datepicker>
+                    </div>
+
+                    <div class="w-full md:flex-1">
+                        <label class="text-[#595959] inline-block mb-2 font-semibold">{{ t("employersViewedCv.To Date") }}</label>
+                        <app-datepicker [widthClass]="'w-full'" [pickerType]="'calendar'"  [control]="toDateControl()"
+                            placeholder="MM/DD/YYYY" [minDate]="minDate">
+                        </app-datepicker>
+                    </div>
+
+                    <div class="w-full md:flex-1">
+                        <label class="text-[#595959] inline-block mb-2 font-semibold">{{ t("employersViewedCv.Company Name") }}</label>
+                        <app-input [type]="'text'" [maxLength]="100" [isNumericOnly]="false" [control]="compNameControl()"
+                            placeholder="{{t('employersViewedCv.Type Company Name')}}">
+                        </app-input>
+                    </div>
+
+                    <div class="w-full md:flex-1">
+                        <label for="txtStatus" class="text-[#595959] mb-2 inline-block font-semibold">{{ t("employersViewedCv.Status") }}</label>
+                        <app-select class="-my-1" [options]="cvType" [falseOption]="false" [control]="cvTypeControl()">
+                        </app-select>
+                    </div>
+                </div>
+
+                <div class="w-full text-center">
+                    <button class="font-semibold p-[5px_60px] text-[14px] mt-[30px] bg-[#008020] text-white border rounded" (click)="onSearch()">
+                        {{ t("employersViewedCv.Search") }}
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    @if (isLoading()) {
+        <div class="flex items-center justify-center py-[50px]">
+            <img [src]="'images/loading.gif'" alt="Loading...">
+        </div>
+    } 
+    @else {
+
+        @if(proUser){
+            @if(totalViewed<=0 || this.showNoMatchedHistory){
+                <app-no-matched-history></app-no-matched-history>
+            }
+            @else {
+                <div id="txtResult">
+                    <div class="flex flex-wrap">
+                        <div class="w-full md:w-1/3">
+                            <div class="totalcnt" class="pt-[30px] pr-[10px] pb-0 pl-[20px] text-base">
+                                <span class="text-[#008020] font-semibold">{{ t("employersViewedCv.Total Viewed") }}: {{convertToBanglaDigits(totalViewed.toString(),this.currentLanguage)}}</span>
+                            </div>
+                        </div>
+            
+                        <div class="w-full md:w-2/3">
+                            <div class="rounded-[4px] border border-[#E0E0E0] bg-[#F5F5F5] mr-[25px] p-[15px_8px]">
+                                <div class="inline-block pl-2 pr-1 py-1 text-sm">
+                                    <i class="icon-file mr-[8px] text-[#008020]" aria-hidden="true"></i>
+                                    <a href="https://mybdjobs.bdjobs.com/mybdjobs/masterview.asp" class="text-[#004db3]">{{ t("employersViewedCv.Bdjobs Profile") }}</a>
+                                </div>
+                                <div class="inline-block pl-2 pr-1 py-1 text-sm">
+                                    <i class="icon-ownformat-resume mr-[8px] text-[#D20000]" aria-hidden="true"></i>
+                                    <a href="https://mybdjobs.bdjobs.com/mybdjobs/file_upload.asp" class="text-[#004db3]">{{ t("employersViewedCv.Personalized CV") }}</a>
+                                </div>
+                                <div class="inline-block pl-2 pr-1 py-1 text-sm">
+                                    <i class="icon-vdeo-resume mr-[8px] text-[#B32D7D]" aria-hidden="true"></i>
+                                    <a href="https://mybdjobs.bdjobs.com/mybdjobs/videoResume/video_resume_home.asp" class="text-[#004db3]">{{ t("employersViewedCv.Video CV") }}</a>
+                                </div>
+            
+                                <div class="inline-block pl-2 pr-1 py-1 text-sm">
+                                    <i class="icon-text-box-search-outline mr-[8px] text-[#3167A8]" aria-hidden="true"></i>
+                                    <a href="https://mybdjobs.bdjobs.com/mybdjobs/cv_summary_view.asp" class="text-[#004db3]">{{ t("employersViewedCv.Summary Viewed") }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="mainWrapForBorder">
+                        @for(value of employerViewCvItem; track value){
+                            <div class="m-[16px_25px] rounded-[4px] border border-[#E0E0E0] p-4 text-[#595959]">
+                                <div class="flex flex-wrap">
+                                    <div class="w-full md:w-1/3">
+                                        <h3 class="text-base font-semibold text-[#008020] mb-2.5">{{value.companyName}}</h3>
+                                        <div class="text-sm text-[#595959] mt-2 mb-1.5">{{ t("employersViewedCv.Profile Viewed") }}: 
+                                            <span class="text-[#008020] font-semibold">{{convertToBanglaDigits(value.numberOfTotalViewed.toString(),this.currentLanguage)}}</span>
+                                        </div>
+                                        <div class="text-sm text-[#595959] mt-2 mb-1.5"><i class="icon-calendar"></i> {{formatDate(value.viewedOn,currentLanguage)}}</div>
+                                    </div>
+                                    <div class="w-full md:w-1/3">
+                                        <h4 class="text-sm text-[#595959] mb-2.5 font-[638]">{{ t("employersViewedCv.Viewed from") }}</h4>
+                                        <div class="text-sm text-[#595959] mt-2 mb-1.5"><span>{{value.viewedFrom}}</span></div>
+                                        <div class="text-sm text-[#595959] mt-2 mb-1.5">
+                                            <span class="text-sm text-[#595959] mt-2 mb-1.5">{{value.jobTitle}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="w-full md:w-1/3">
+                                        <h4 class="text-sm text-[#595959] mb-2.5 font-[638]">{{ t("employersViewedCv.Types of CV") }}</h4>
+                                        <div class="flex items-center gap-2">                        
+                                            
+                                            @if(value.viewBdjobsResume){
+                                                <span class="inline-block text-[#008020] text-[15px] cursor-pointer" aria-label="Bdjobs Profile">
+                                                    <app-tooltip
+                                                    [iconSizeClass]="'icon-file'"
+                                                    [toolText]="'Bdjobs Profile'"/>
+                                                </span>       
+                                            }
+                                            @if(value.viewPersonalizedResume){
+                                                <span class="inline-block text-[#D20000] text-[15px] cursor-pointer" aria-label="Personalized CV">
+                                                    <app-tooltip
+                                                    [iconSizeClass]="'icon-ownformat-resume'"
+                                                    [toolText]="'Personalized CV'"/>
+                                                </span>
+                                            }
+                                            @if (value.viewVideoResume) {
+                                                <span class="inline-block text-[#B32D7D] text-[15px] cursor-pointer" aria-label="Video CV">
+                                                    <app-tooltip
+                                                    [iconSizeClass]="'icon-vdeo-resume'"
+                                                    [toolText]="'Video CV'"/>
+                                                </span>
+                                                
+                                            }
+                                            @if (value.viewSummaryView) {
+                                                <span class="inline-block text-[#004db3] text-[15px] cursor-pointer" aria-label="Summery View">
+                                                    <app-tooltip
+                                                    [iconSizeClass]="'icon-text-box-search-outline'"
+                                                    [toolText]="'Summery View'"/>
+                                                </span>  
+                                                
+                                            }
+                
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        
+                    </div>
+                </div>
+    
+                <app-pagination-table
+                [totalItems]="totalViewed"
+                [itemsPerPage]="pageSize"
+                [currentPage]="currentPage"
+                (pageChanged)="onPageChange($event)">
+                ></app-pagination-table>
+            }
+        }
+        @else {
+            <div *transloco="let t">
+                <app-free-user-dialogue-box [totalCvView]="convertToBanglaDigits(totalViewed.toString(),currentLanguage)" [title] = "t('employersViewedCv.freeUserTitle')" [subTitle] ="t('employersViewedCv.freeUserSubTitle')" [iconName]="'icon-employer-viewed'"></app-free-user-dialogue-box>
+            </div>
+        }    
+
+    }
+        
+
+
+</div>

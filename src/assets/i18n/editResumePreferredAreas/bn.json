@@ -1,0 +1,31 @@
+{
+  "titlePreferredAreas": "পছন্দসই নির্বাচিত তথ্য",
+
+  "editBtn":"এডিট",
+  "expandBtn":"প্রসারিত",
+  "collapseBtn":"সংকুচিত",
+
+  "preferredJobCategory":"চাকরির ক্যাটাগরি",
+  "prefJobCatDescription":"পছন্দের চাকরির ক্যাটাগরি আপনার কাঙ্ক্ষিত কর্মক্ষেত্রের ধরণ প্রতিনিধিত্ব করে। সর্বোচ্চ ৩টি করে ফাংশনাল অথবা স্পেশাল স্কিলড ক্যাটাগরি নির্বাচন করতে পারেন।",
+  "functionalSkill":"ফাংশনাল ক্যাটাগরি",
+  "specialSkill":"স্পেশাল স্কিলড ক্যাটাগরি",
+  "maxCat":"(সর্বোচ্চ ৩)",
+  "prefJobCatValidation":"ফাংশনাল অথবা স্পেশাল স্কিলড ক্যাটাগরি থেকে অন্তত একটি ক্যাটাগরি নির্বাচন করুন।",
+
+  "preferredJobLocation":"চাকরির লোকেশন",
+  "prefJobLocDescription": "সুবিধাময় স্থান <span class=\"text-primary-900 text-xs font-medium\">(ভৌগোলিক স্থান)</span> নির্ধারণ করুন ,যেখানে আপনি চাকরি করতে পছন্দ করেন। প্রায়োরিটি অনুযায়ী যেসব লোকেশনে চাকরি করতে পছন্দ করেন সেসব লোকেশন যোগ করুন। যেমন- ১মঃ ঢাকা, ২য়ঃ সিলেট, ৩য়ঃ খুলনা।",
+  "insideLocLabel":"বাংলাদেশের অভ্যন্তরে",
+  "insideLocExtraLabel":"জেলা (সর্বোচ্চ ১৫)",
+  "insideLocPlaceholder":"আপনার পছন্দের জেলা লিখুন",
+  "outsideLocLabel":"বাংলাদেশের বাহিরে",
+  "outsideLocExtraLabel":"দেশ (সর্বোচ্চ ১০)",
+  "outsideLocPlaceholder":"আপনার পছন্দের দেশ লিখুন",
+  "prefJobLocValidation":"পছন্দের কাজের স্থান নির্বাচন করুন।",
+
+  "prefOrgLabel":"প্রতিষ্ঠানের ধরন (সর্বোচ্চ ১২)",
+  "prefOrgPlaceholder":"আপনার পছন্দের প্রতিষ্ঠানের ধরন লিখুন",
+
+  "save":"সেভ",
+  "close":"ক্লোজ"
+}
+

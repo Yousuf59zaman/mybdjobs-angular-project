@@ -1,0 +1,78 @@
+// @media print {
+//   /* hide anything you don’t want in the printed output */
+//   .no-print,
+//   button,
+//   .icon-printer,
+//   .no-print * {
+//     display: none !important;
+//   }
+
+//   /* make the scroll wrapper expand to show everything */
+//   .overflow-y-scroll,
+//   .h-\[600px\] {
+//     overflow: visible !important;
+//     height: auto !important;
+//   }
+
+//   /* target the resume-content container to fill the page */
+//   #resume-content {
+//     position: static !important;
+//     width: 100% !important;
+//     margin: 0 !important;
+//     border: none !important;
+//     overflow: visible !important;
+//     height: auto !important;
+//   }
+
+//   /* ensure body doesn’t clip anything */
+//   body, html {
+//     height: auto !important;
+//     overflow: visible !important;
+//   }
+// }
+
+
+/* Add these print-specific styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  #resume-content, #resume-content * {
+    visibility: visible;
+  }
+  
+  #resume-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    
+    #details-cv-container,
+    #short-cv-container {
+      width: 210mm !important;
+      min-height: 297mm !important;
+      margin: 0 auto !important;
+      padding: 15mm !important; // Standard print padding
+      box-sizing: border-box;
+    }
+  }
+  
+  .no-print, .no-print * {
+    display: none !important;
+  }
+  
+  @page {
+    size: A4;
+    margin: 15mm 15mm 15mm 15mm;
+  }
+}
+
+/* Ensure the content fits the print page */
+#printable-area {
+  width: 210mm;
+  min-height: 297mm;
+}

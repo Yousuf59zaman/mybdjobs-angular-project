@@ -1,0 +1,126 @@
+
+<div class="w-full flex flex-col gap-2.5 sticky top-[60px] max-h-[84vh] md:max-h-[92vh] bg-[#fff] pb-2">
+  <div class="mx-5 pt-3 md:pt-6">
+    <div class="flex flex-row md:flex-col items-center gap-2 ">
+      <!-- image with circle -->
+      <div class="relative size-[70px]">
+        <svg class="size-full rotate-180" width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="16" fill="none" class="stroke-current text-[#BDDBC4]" stroke-width="1.5"></circle>
+          <g class="origin-center transform -rotate-90">
+            <circle cx="18" cy="18" r="16" fill="none" class="text-[#C63C92] stroke-current" stroke-width="1.5"
+              stroke-dasharray="100"
+              [attr.stroke-dashoffset]="100 - (profileCompleteScore() || 0)"
+            ></circle>
+          </g>
+        </svg>
+        <!-- Percentage Text -->
+        <div class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 start-1/2">
+          <div class="rounded-full w-[56px] bg-red-200">
+            <img src="images/profile-avatar.jpeg" alt="" class="rounded-full">
+          </div>
+          <div
+            class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-white rounded-full px-2 py-px text-pink-700 font-semibold text-[10px] border border-[#F7F7F9]"
+            [hidden]="profileCompleteScore() === 100"
+            style="font-size: 0.75rem; z-index: 20;">
+            {{ profileCompleteScore() }}%
+          </div>
+          <!-- <span class="text-center text-sm font-bold"
+                    >{{ profileCompleteScore() }}%</span
+                  > -->
+        </div>
+      </div>
+      <div class="flex flex-col items-start md:items-center gap-2">
+        <h3 class="text-lg text-primary-900 font-medium">
+          {{ userName() }}
+        </h3>
+        <button
+          class="border border-[#ABEFC6] bg-[#ECFDF3] py-0.5 px-2 rounded-full text-[#067647] font-medium text-xs"
+          (click)="onClickGetPro()">
+          Get Bdjobs Pro
+        </button>
+      </div>
+    </div>
+  </div>
+  <hr class="border border-[#E4E7EC] mx-8">
+  <div class="overflow-y-auto">
+    <div class="px-4 w-full">
+      @for(item of sideBarItems; track $index) {
+        @if(item.id.includes('main-')) {
+          <button
+            class="px-3 py-2 flex items-center justify-between border-none bg-transparent w-full"
+            [ngClass]="item.isActive ? 'text-[#C63C92]' : 'text-primary-700'"
+            (click)="onClickMenuItem(item)">
+            <div
+              class="flex items-center gap-3 text-base">
+              <span [class]="item.icon"></span>
+              <span>{{ item.title }}</span>
+            </div>
+            @if(item.items.length) {
+              <span [ngClass]="isOpen(item.id) ? 'icon-angle-up' : 'icon-angle-down'"></span>
+            } @else {
+              <div class=""></div>
+            }
+          </button>
+          @if(isOpen(item.id)) {
+            <div class="ps-6 flex flex-col">
+              @for(child of item.items; track $index) {
+                <button
+                  class="py-2 ps-5 pe-3 border-s-2"
+                  [ngClass]="
+                    child.isSelected
+                      ? 'border-s-[#C63C92] bg-gradient-to-r from-[#FCF3FA] to-[#fff] text-[#C63C92]'
+                      : 'text-primary-700'
+                  "
+                  (click)="onClickChildItem(item.id, child)">
+                  <div class="flex items-center gap-2 text-sm">
+                    <span [class]="child.iconClass"></span>
+                    <span class="max-w-[16ch] truncate">{{ child.title }}</span>
+                  </div>
+                </button>
+              }
+            </div>
+          }
+        }
+      }
+    </div>
+    <hr class="border border-[#E4E7EC] mx-8">
+    <div class="px-4 w-full">
+      <div class="px-3">
+        <div class="flex items-center justify-between mt-3 mb-1.5">
+          <p class="text-primary-500 text-sm">My Personal Hiring</p>
+          <button class="rounded-full bg-[#EEF4FF] border border-[#C7D7FE] px-2 py-0.5 text-xs text-[#3538CD] cursor-text" disabled>New</button>
+        </div>
+      </div>
+      <div class="flex flex-col gap-1 text-base text-primary-700">
+        @for(item of sideBarItems; track $index) {
+          @if(item.id.includes('ph-')) {
+            <button
+              class="px-3 py-2 flex items-center gap-3"
+              [ngClass]="item.isActive ? 'text-[#C63C92]' : 'text-primary-700'"
+              (click)="onClickMenuItem(item)">
+              <span class="icon-home"></span>
+              <span class="">{{ item.title }}</span>
+            </button>
+          }
+        }
+      </div>
+    </div>
+    <hr class="border border-[#E4E7EC] mx-8 mb-3">
+    <div class="px-4 w-full">
+      <div class="flex flex-col gap-1 text-base text-primary-700">
+        @for(item of sideBarItems; track $index) {
+          @if(item.id.includes('acc-')) {
+            <button
+              class="px-3 py-2 flex items-center gap-3"
+              [ngClass]="item.isActive ? 'text-[#C63C92]' : 'text-primary-700'"
+              (click)="onClickMenuItem(item)">
+              <span class="icon-home"></span>
+              <span class="">{{ item.title }}</span>
+            </button>
+          }
+        }
+      </div>
+    </div>
+  </div>
+</div>
+

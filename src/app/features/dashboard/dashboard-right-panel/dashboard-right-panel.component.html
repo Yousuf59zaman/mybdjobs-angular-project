@@ -1,0 +1,157 @@
+<div class="flex flex-col gap-4">
+  <div class="border border-[#E4E7EC] rounded-lg p-3 sm:p-4">
+    <p class="text-primary-900 font-semibold text-base mb-5">Your Profile Progress</p>
+    <div class="flex items-center gap-1.5 relative">
+      @for(btn of buttons; track $index){
+      <div class="relative flex flex-col items-center">
+        <button class=" text-xs text-primary-700  font-medium px-1" [ngClass]="{ 'font-semibold': selectedBtn === btn }"
+          [ngStyle]="{ color: selectedBtn === btn ? '#C63C92' : '' }" (click)="selectedBtn = btn">
+          {{ btn }}
+        </button>
+        @if(selectedBtn === btn){
+        <div class="absolute h-0.5 -bottom-[5px] bg-[#C63C92] w-full"></div>
+        }
+
+      </div>
+      }
+    </div>
+    <hr class="mt-1">
+    @if(selectedBtn === 'Bdjobs Profile'){
+    <div class="flex items-center justify-center my-5">
+      <app-ring-chart [achievedProgress]="profileProgression"></app-ring-chart>
+    </div>
+
+    <div class="flex items-center justify-between gap-3 sm:gap-4 mb-4">
+      <button
+        class="flex items-center gap-1.5 text-[#B32D7D] font-semibold text-sm border border-[#B32D7D] px-2 md:px-3 py-2 rounded-lg">
+        <span class="icon-eye"></span>
+        View Profile
+      </button>
+      <button class="px-10 py-2.5 bg-[#B32D7D] text-white flex items-center gap-1.5
+           text-sm font-semibold rounded-lg custome-border shadow-skeu">
+        <span class="icon-edit "></span>
+        Edit
+      </button>
+    </div>
+
+    <div class="flex flex-col gap-4">
+      @for(section of profileSection; track $index){
+      <a [routerLink]="section.url" [queryParams]="section.queryParams"
+        class="cursor-pointer flex items-center justify-between group">
+        <p class="text-primary-700 font-medium text-sm flex items-center gap-2.5 group-hover:text-[#0E73A9]">
+          <img [src]="section.isCompleted ? 'images/checkmark.svg':'images/cross-mark.svg'"
+            [alt]="section.isCompleted ? 'checkmark.svg':'cross-mark.svg'">
+          <span class="underline underline-offset-4">{{section.title}}</span>
+        </p>
+        <span class="icon-angle-right-n inline-block transform -rotate-45
+              opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        </span>
+
+      </a>
+      }
+
+    </div>
+
+
+
+
+    }
+
+    @if(selectedBtn === 'Video CV'){
+    @if(isVideoCvAvailable()){
+    <div class="flex items-center justify-center my-5">
+      <app-ring-chart [achievedProgress]="videoCvProgression"></app-ring-chart>
+    </div>
+
+    <div class="flex items-center justify-between gap-3 sm:gap-4 mb-4">
+      <button
+        class="flex items-center gap-1.5 text-[#B32D7D] font-semibold text-sm border border-[#B32D7D] px-2 md:px-3 py-2 rounded-lg">
+        <span class="icon-eye"></span>
+        View Profile
+      </button>
+      <button class="px-10 py-2.5 bg-[#B32D7D] text-white flex items-center gap-1.5
+             text-sm font-semibold rounded-lg custome-border shadow-skeu">
+        <span class="icon-edit "></span>
+        Edit
+      </button>
+    </div>
+    <div class="flex flex-col gap-4">
+      @for(section of videoCvSection; track $index){
+      <a [href]="section.id" class="cursor-pointer flex items-center justify-between group">
+        <p class="text-primary-700 font-medium text-sm flex items-center  gap-2.5 group-hover:text-[#0E73A9] mr-2.5">
+          <img [src]="section.isCompleted ? 'images/checkmark.svg':'images/cross-mark.svg'"
+            [alt]="section.isCompleted ? 'checkmark.svg':'cross-mark.svg'">
+          <span class="underline underline-offset-4">{{section.title}}</span>
+        </p>
+        <span class="icon-angle-right-n inline-block transform -rotate-45
+                opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
+
+      </a>
+      }
+
+    </div>
+    }
+    @else {
+    <div>
+      <div class="flex flex-col items-center justify-center gap-5 mt-5">
+        <span class="bg-[#FEF3F2] p-5 rounded-[50%]">
+          <img [src]="'images/video_cv.svg'" alt="video_cv">
+        </span>
+        <p class="text-primary-700 text-sm text-center">
+          You have no Video Resume. Please create your Video Resume.
+        </p>
+
+        <button class="w-full text-white text-sm flex items-center justify-center gap-2 bg-[#C63C92]
+               rounded-lg custom-border shadow-skeu py-2.5">
+          <span class="icon-plus font-thin"></span>
+          Create Video Resume
+        </button>
+      </div>
+    </div>
+    }
+
+    }
+
+    @if(selectedBtn === 'Customized CV'){
+    @if(isCustomizedCvAvailable()){
+    <div class="flex flex-col items-center justify-center  mt-5">
+      <span class="bg-[#FEF3F2] p-5 rounded-[50%]">
+        <img [src]="'images/pdf.svg'" alt="pdf">
+      </span>
+      <span class="text-center text-primary-700 text-sm mt-4 mb-2.5">Sajeeb Molla.docx</span>
+      <span class="text-center text-primary-700 text-sm mb-2.5">Last updated on: 12 May 2025</span>
+
+      <button class="w-full text-white text-sm flex items-center justify-center gap-2 bg-[#C63C92]
+             rounded-lg custom-border shadow-skeu py-2.5">
+        View
+      </button>
+    </div>
+    }
+    @else {
+    <div>
+      <div class="flex flex-col items-center justify-center gap-5 mt-5">
+        <span class="bg-[#FEF3F2] p-5 rounded-[50%]">
+          <img [src]="'images/customized_cv.svg'" alt="customized_cv">
+        </span>
+        <p class="text-primary-700 text-sm text-center">
+          You have no Customized CV. Please create your Customized CV.
+        </p>
+
+        <button class="w-full text-white text-sm flex items-center justify-center gap-2 bg-[#C63C92]
+               rounded-lg custom-border shadow-skeu py-2.5">
+          <img [src]="'images/upload_cv.svg'" alt="">
+          Upload Personalize Resume
+        </button>
+      </div>
+    </div>
+    }
+    }
+
+  </div>
+  <div>
+    <img [src]="'images/right-ad.svg'" alt="">
+  </div>
+  <div>
+    <img [src]="'images/scanner.svg'" alt="">
+  </div>
+</div>

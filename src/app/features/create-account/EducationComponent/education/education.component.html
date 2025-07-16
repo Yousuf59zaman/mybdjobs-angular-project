@@ -1,0 +1,191 @@
+<div class="flex flex-col w-full md:flex-row font-Inter">
+  <div class="w-full" *transloco="let t">
+    <div  class="max-w-[750px] ml-auto p-6 h-auto min-h-[468px] mt-[40px]">
+      <!-- <h2
+        class="text-[24px] font-inherit w-full h-auto md:h-[130px] md:pt-[20px] pb-4 md:pb-[20px] text-[#004db3]"
+      >
+        {{ t("education.educationalQualifications") }}
+      </h2> -->
+
+      <p class="text-black-700 text-[18px] mb-2 font-semibold">
+        {{ t("education.descriptionOfInstitutionalEducation") }}
+      </p>
+
+      <div class="flex flex-col mb-4">
+        <p class="text-gray-600 mb-2">
+          {{ t("education.doYouHaveInstitutionalEducation") }}
+        </p>
+        <div class="flex flex-row">
+          <label class="flex items-center mr-5">
+            <app-radio
+              [radioItems]="educationRadioItem"
+              [control]="hasEducationControl()"
+              (selectionChange)="onRadioSelectionChange($event)"
+            ></app-radio>
+          </label>
+        </div>
+      </div>
+
+      <!-- Example of applying disabled state -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <div>
+          <label class="text-gray-700 font-medium mb-2 block">
+            {{ t("education.latestEducationStage") }}
+          </label>
+          <app-select
+            [ngClass]="{ 'cursor-not-allowed': isDisabled() }"
+            class="text-gray-700 font-medium block bg-[#bcbcbc] rounded"
+            [options]="educationOptions()"
+            [control]="additionalListControl()"
+            [falseOption]="true"
+            [isDisabled]="isDisabled()"
+          ></app-select>
+          @if (additionalListControl().invalid
+          &&(additionalListControl().touched || additionalListControl().dirty) )
+          {
+            <p class="text-[#E71313] text-sm">
+              {{ t("education.latest education stage is needed") }}
+            </p>
+          }
+        </div>
+        <!--exam portion-->
+
+        <div>
+          <label class="text-gray-700 font-medium mb-2 block">
+            {{ t("education.nameOfExaminationDegree") }}
+          </label>
+          <app-select
+            [ngClass]="{ 'cursor-not-allowed': isDisabled() }"
+            class="text-gray-700 font-medium block bg-[#bcbcbc] rounded"
+            [options]="examTitleOptions()"
+            [control]="nameofexaminationControl()"
+            [falseOption]="true"
+            [isDisabled]="isDisabled()"
+          ></app-select>
+          @if(nameofexaminationControl().value === '0') {
+          <app-input
+            [ngClass]="{ 'cursor-not-allowed': isDisabled() }"
+            type="text"
+            placeholder="Enter exam title"
+            class="text-gray-700 mt-1 p-0 font-medium block border-none"
+            [control]="nameofexaminationControl()"
+            [isDisabled]="isDisabled()"
+            [isNumericOnly]="false"
+          ></app-input>
+          } @if (nameofexaminationControl().invalid
+          &&(nameofexaminationControl().touched ||
+          nameofexaminationControl().dirty) ) {
+          <p class="text-[#E71313] text-sm">
+            {{ t("education.select exam title") }}
+          </p>
+          }
+        </div>
+        <!--end of exam portion-->
+
+        <div>
+          <label class="text-gray-700 font-medium mb-2 block">
+            {{ t("education.nameOfEducationalInstitution") }}
+          </label>
+          <app-input
+            [type]="'text'"
+            [control]="educationalInstitutionControl()"
+            [isNumericOnly]="false"
+            [classes]="'text-gray-700 font-medium block'"
+            placeholder="{{ t('education.instituteName') }}"
+            [isDisabled]="isDisabled()"
+          ></app-input>
+          <!-- Suggestion list -->
+          @if(instituteSuggestions().length > 0) {
+            <div class="suggestions-list bg-white border border-gray-300 mt-1">
+              <ul>
+                @for(institute of instituteSuggestions(); track institute.instituteID) {
+                <li
+                  (click)="selectInstitute(institute)"
+                  class="cursor-pointer p-2 hover:bg-gray-100"
+                >
+                  {{ institute.instituteName }}
+                </li>
+                }
+              </ul>
+            </div>
+          } @if (educationalInstitutionControl().invalid &&
+            (educationalInstitutionControl().touched || educationalInstitutionControl().dirty)) {
+            <p class="text-[#E71313] text-sm">
+              {{ t("education.select institution") }}
+            </p>
+          }
+        </div>
+
+        <div>
+          <label class="text-gray-700 font-medium mb-2 block">
+            {{ t("education.concentrationMajorGroup") }}
+          </label>
+          <app-input
+            [ngClass]="{ 'cursor-not-allowed': isDisabled() }"
+            [type]="'text'"
+            [isNumericOnly]="false"
+            [classes]="'text-gray-700 font-medium block'"
+            placeholder="{{ t('education.enterConcentrationMajorGroupName') }}"
+            [isDisabled]="isDisabled()"
+            [control]="majorgroupControl()"
+          ></app-input>
+          @if (majorgroupControl().invalid &&(majorgroupControl().touched ||
+          majorgroupControl().dirty) ) {
+          <p class="text-[#E71313] text-sm">
+            {{ t("education.select major group") }}
+          </p>
+          }
+        </div>
+        @if(additionalListControl().value && additionalListControl().value < 3) {
+          <div>
+            <label class="text-gray-700 font-medium mb-2 block">
+              {{ t("education.board") }}
+            </label>
+            <app-select
+              [ngClass]="{ 'cursor-not-allowed': isDisabled() }"
+              class="text-gray-700 font-medium block bg-[#bcbcbc] rounded"
+              [options]="boardOptions()"
+              [falseOptionText]="t('education.boardPlaceholder')"
+              [isDisabled]="isDisabled()"
+              [control]="boardControl()"
+            ></app-select>
+            @if (boardControl().invalid &&(boardControl().touched || boardControl().dirty) ) {
+              <p class="text-[#E71313] text-sm">
+                {{ t("education.select board") }}
+              </p>
+            }
+          </div>
+        }
+        <div>
+          <label class="text-gray-700 font-medium mb-2 block">
+            {{ t("education.yearOfPassing") }}
+          </label>
+          <app-select
+            [ngClass]="{ 'cursor-not-allowed': isDisabled() }"
+            class="text-gray-700 font-medium block bg-[#bcbcbc] rounded"
+            [options]="yearListOptions()"
+            [falseOptionText]="t('education.select education year')"
+            [isDisabled]="isDisabled()"
+            [control]="educationyearControl()"
+          ></app-select>
+          @if (educationyearControl().invalid &&(educationyearControl().touched
+          || educationyearControl().dirty) ) {
+          <p class="text-[#E71313] text-sm">
+            {{ t("education.select education year") }}
+          </p>
+          }
+        </div>
+      </div>
+
+      <div class="mt-4 text-center">
+        <button
+          class="bg-[#008020] text-white min-w-[280px] py-2 mt-1 rounded hover:bg-[#00661A]"
+          type="submit"
+          (click)="onSubmit()"
+        >
+          {{ t("education.next") }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

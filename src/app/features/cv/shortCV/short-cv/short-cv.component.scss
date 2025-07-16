@@ -1,0 +1,12 @@
+/* hide header, sidebar, footer */
+app-nav,
+app-left-bar,
+app-footer {
+  display: none !important;
+}
+
+@media print{
+  .print-bg{
+    background-color: gray;
+  }
+}

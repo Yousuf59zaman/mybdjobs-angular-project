@@ -1,0 +1,43 @@
+{
+    "home": "Home",
+    "manageProfile": "MANAGE PROFILE",
+    "viewProfile": "View profile",
+    "dashboard": "Dashboard",
+    "editProfile": "Edit Bdjobs Profile",
+    "videoCv": "Video Cv",
+    "customCv": "Customized Cv",
+    "emailedCv": "Emailed Cv",
+  
+    "invitation": "INVITATION",
+    "liveInterview": "Live Interview",
+    "videoInterview": "Video Interview",
+    "generalInterview": "General Interview",
+    "onlineTest": "Online Test",
+    "voiceTest": "Personal Test by Voice",
+  
+    "myActivities": "MY ACTIVITIES",
+    "appliedJobs": "Applied Jobs",
+    "emailedResume": "Emailed Resume",
+    "shortlistedJob": "Shortlisted Job",
+    "followingEmployer": "Following Employer",
+    "transactionOverview": "Transaction Overview",
+  
+    "pointsRewards": "POINTS & REWARDS",
+    "myPoints": "My Points",
+    "howToEarnPoints": "How do I earn points?",
+  
+    "employerActivities": "EMPLOYER ACTIVITIES",
+    "viewedCv": "Employer Viewed CV",
+    "employerMessage": "Employer Message",
+    "employerInterested": "Employer Interested",
+  
+    "personalization": "PERSONALIZATION",
+    "favouriteSearch": "Favourite Search",
+    "smsJobAlert": "SMS Job Alert",
+    "myTrainings": "My Trainings",
+  
+    "accountSettings": "Account Settings",
+    "helpVideos": "Help Videos",
+    "signOut": "Sign Out"
+  }
+  

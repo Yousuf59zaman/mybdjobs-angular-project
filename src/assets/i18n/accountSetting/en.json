@@ -1,0 +1,15 @@
+{
+    "accountSettings": "Account Settings",
+    "welcomeToAccountSettings": "Welcome to account settings",
+    "accountSettingsDescription": "Here you will be able to change your password, resume privacy, notification settings, delete account and set / change User ID at any time.",
+    
+    "setChangeUserId": "Set / Change User ID",
+    "changePassword": "Change Password",
+    "emailNotification": "Email Notification",
+    "smsJobAlertSettings": "SMS Job Alert Settings",
+    "resumePrivacy": "Resume Privacy",
+    "deleteResume": "Delete Resume",
+    "deleteAccount": "Delete Account",
+    "signOutFromAllDevices": "Sign out from all devices"
+  }
+  

@@ -1,0 +1,22 @@
+{
+  "title": "Favourite Search",
+  "feedback": "Feedback",
+  "instruction_1": "Here you will get the job list of Favourite Search",
+  "instruction_2": "Save another Search as Favourite-",
+  "step_1": "First, go to the job search portion.",
+  "step_2": "Select at least one category.",
+  "step_3": "Click on Save as Favourite and type your favourite search name then save.",
+  "step_4": "You can change your SMS preferences from",
+  "total_count": "Total Favourite Search:",
+  "buy_sms": "Buy SMS",
+  "sms_settings": "SMS settings",
+  "name": "Favourite Search Name",
+  "jobs": "Available Jobs",
+  "alert": "SMS Job Alert",
+  "subscribe": "Subscribe",
+  "unsubscribe" : "UnSubscribe",
+  "delete": "Delete",
+  "modified": "Modified on:",
+  "sl" : "SL",
+  "action" : "Action"
+}

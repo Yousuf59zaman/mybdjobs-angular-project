@@ -1,0 +1,90 @@
+<div class="" #parentDivRef>
+  @if (isFullWidth()) {
+  <div class="w-full pb-1">
+    <label for="input-label" class="block text-primary-900 text-sm font-medium mb-2">{{
+      searchLabelText
+    }}
+    @if(extraLabel()){
+      <span class="text-primary-500 font-medium text-xs"> {{extraLabelText}}</span>
+    }
+  </label>
+    <input
+      type="text"
+      id="input-label"
+      name="input-label-name"
+      class="py-2 px-3  block w-full text-primary-700 text-sm rounded-md border border-gray-300 focus:ring-0 focus:outline-none focus:border-2 focus:border-[#C63C92]"
+      [placeholder]="placeholderText"
+      (focus)="onSearchInputFocus()"
+      (blur)="onSearchInputBlur()"
+      [(ngModel)]="searchQueryInput"
+    />
+  </div>
+  } @else {
+  <div class="flex items-center mb-4">
+    <label for="input-label" class="text-primary-900 text-sm font-medium mr-4">{{
+      searchLabelText
+    }}</label>
+    @if (isSearchBox()) {
+    <input
+      type="text"
+      id="input-label"
+      name="input-label-name"
+      class="flex-grow rounded border border-gray-300 px-3 py-2 focus:outline-none"
+      [placeholder]="placeholderText"
+      [(ngModel)]="searchQueryInput"
+    />
+    }
+  </div>
+  } @if (isOverLayVisible()) {
+  <div
+    class="cursor-pointer bg-white rounded shadow border border-gray-300 overflow-y-auto max-h-[150px] mb-4 px-2 py-1"
+  >
+    <ul class="">
+      @for (item of suggestions(); track $index) {
+      <li
+        class="flex items-center px-2 py-2.5 hover:bg-[#F9FAFB] hover:rounded-md "
+        (click)="toggleSelection(item)"
+        (keypress)="handleKeypress($event, item)"
+      >
+        @if (checkBoxVisible()) {
+        <div class="flex items-center mr-2 ">
+          @if (item.isSelected) {
+          <div
+            class="w-5 h-5 border-2 border-primary rounded-sm bg-blue-500 flex items-center justify-center"
+          >
+            <svg
+              class="w-4 h-4 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
+          </div>
+          } @else {
+          <div class="w-5 h-5 border-2 border-gray-300 rounded-sm"></div>
+          }
+        </div>
+        }
+
+        <label for="{{ item.selectId }}" class="text-xs">{{
+          item.label
+        }}</label>
+      </li>
+      }
+
+      @if (searchQueryInput().trim() && suggestions().length === 0) {
+      <li class="px-4 py-2.5">
+        <p>No Item found!</p>
+      </li>
+      }
+    </ul>
+  </div>
+  }
+</div>

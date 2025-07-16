@@ -1,0 +1,15 @@
+<div class="bg-white w-full">
+    <div class="my-6 max-w-xl mx-auto flex flex-col items-center gap-6">
+        <img [src]="'images/notes.svg'" class="w-[100px] h-20">
+        <div class="flex flex-col items-center gap-10">
+            <p class="text-black text-base font-normal text-center">
+                {{description()}}
+            </p>
+            <button (click)="handleClick()" class="text-[#B32D7D] max-w-fit text-sm font-semibold flex items-center gap-1.5 border border-[#F0B1DE] px-3 py-2 rounded-lg">
+                <span class="icon-plus">
+                </span>{{btnText()}}
+            </button>
+        </div>
+        
+    </div>
+</div>

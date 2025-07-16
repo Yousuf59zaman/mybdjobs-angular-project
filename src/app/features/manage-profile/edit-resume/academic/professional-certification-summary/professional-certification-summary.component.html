@@ -1,0 +1,324 @@
+<div class="flex flex-col gap-4 mt-10">
+  @if (!isAcademicSummaryExpanded) {
+    <div
+      class="flex flex-col bg-[#F9FAFB] justify-center self-stretch py-4 px-4 sm:px-6 border border-solid border-gray-200 rounded-xl transition-all duration-300 overflow-hidden"
+      aria-labelledby="academic-summary-title"
+    >
+      <div class="flex flex-row justify-between items-center gap-4 pointer-events-auto">
+        <h2
+          id="academic-summary-title"
+          class="text-base sm:text-lg font-medium leading-6 sm:leading-7 text-gray-800 whitespace-nowrap sm:whitespace-normal"
+        >
+          Professional Summary
+        </h2>
+
+        <!-- Clickable Button Area Only -->
+        <button
+          (click)="toggleAcademicSummary(); $event.stopPropagation()"
+          class="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base font-semibold text-gray-600 hover:text-gray-800 focus:outline-none p-1 rounded-md transition-colors cursor-pointer"
+          [attr.aria-expanded]="isAcademicSummaryExpanded"
+          aria-controls="academic-content"
+        >
+          <span class="whitespace-nowrap hidden sm:inline">
+            {{ isAcademicSummaryExpanded ? 'Collapse' : 'Expand' }}
+          </span>
+
+          <!-- Icon with pointer cursor -->
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5 transition-transform duration-300 cursor-pointer"
+            [class.rotate-180]="isAcademicSummaryExpanded"
+          >
+            <path
+              d="M5 7.5L10 12.5L15 7.5"
+              stroke="#475467"
+              stroke-width="1.66667"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Professional Certification Content -->
+  <div id="academic-content"
+    class="relative transition-all duration-300 rounded-xl border border-solid border-gray-200 bg-white shadow-sm"
+    [class.hidden]="!isAcademicSummaryExpanded">
+
+    <div class="p-6">
+      <div class="flex flex-col gap-4">
+        <!-- Header row -->
+        <div class="flex justify-between items-center w-full">
+          <h2 class="text-sm sm:text-lg font-semibold text-gray-900">
+            Professional Certification
+          </h2>
+
+          <div class="flex items-center gap-2">
+            <button 
+              class="flex items-center gap-2 text-sm md:text-base font-semibold text-[#B32D7D] focus:outline-none p-1 rounded-md transition-colors"
+              aria-label="Add Professional Certification">
+              <img src="images/plus.svg" class="w-4 h-4 sm:w-5 sm:h-5" alt="Add" />
+              <span class="leading-tight hidden sm:inline">Add Professional Certification</span>
+              <span class="leading-tight sm:hidden">Add</span>
+              <svg
+                (click)="toggleAcademicSummary(); $event.stopPropagation()"
+                width="16"
+                height="16"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 transition-transform duration-300 sm:hidden"
+                [class.rotate-180]="isAcademicSummaryExpanded">
+                <path d="M5 7.5L10 12.5L15 7.5" stroke="#475467" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <div class="h-5 w-px bg-gray-300 rounded-full hidden sm:block" role="separator"></div>
+
+            <button
+              (click)="toggleAcademicSummary(); $event.stopPropagation()"
+              class="hidden sm:flex items-center gap-2 text-sm md:text-base font-semibold text-[#B32D7D] focus:outline-none p-1 rounded-md transition-colors"
+              [attr.aria-expanded]="isAcademicSummaryExpanded">
+              <span class="leading-tight">{{ isAcademicSummaryExpanded ? 'Collapse' : 'Expand' }}</span>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 transition-transform duration-300"
+                [class.rotate-180]="isAcademicSummaryExpanded">
+                <path d="M5 7.5L10 12.5L15 7.5" stroke="#475467" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <hr class="my-4 border-gray-200">
+        
+        <div class="mt-6">
+          <div class="flex flex-wrap justify-between items-center gap-4">
+            <h3 class="text-sm sm:text-lg font-semibold text-slate-700">
+              Professional Certification 1
+            </h3>
+            <div class="flex gap-4 items-center">
+              <button
+                class="flex items-center gap-1.5 text-[#B32D7D]"
+                aria-label="Edit Training 1">
+                <img src="images/edit-05.svg" class="h-[15px] w-[15px]">
+                <span class="text-sm hidden sm:inline">Edit</span>
+              </button>
+              <button
+                class="flex items-center gap-1.5 text-slate-600"
+                aria-label="Delete Training 1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" class="w-4 h-4">
+                  <path d="M2 4H3.33333H14" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M5.33325 4V2.66667C5.33325 2.48986 5.40349 2.32029 5.52851 2.19526C5.65354 2.07024 5.82311 2 5.99992 2H9.99992C10.1767 2 10.3463 2.07024 10.4713 2.19526C10.5963 2.32029 10.6666 2.48986 10.6666 2.66667V4" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12.6666 4V13.3333C12.6666 13.5101 12.5963 13.6797 12.4713 13.8047C12.3463 13.9298 12.1767 14 11.9999 14H3.99992C3.82311 14 3.65354 13.9298 3.52851 13.8047C3.40349 13.6797 3.33325 13.5101 3.33325 13.3333V4" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6.66675 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M9.33325 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="text-sm hidden sm:inline">Delete</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+            <div>
+              <p class="text-sm text-gray-500">Certification</p>
+              <p class="mt-1 text-sm font-medium text-gray-900">Corporate Secretarial</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Institute</p>
+              <p class="mt-1 text-sm font-medium text-gray-900">Bangladesh</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Location</p>
+              <p class="mt-1 text-sm font-medium text-gray-900">Law, Business Communication</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Duration</p>
+              <p class="mt-1 text-sm font-medium text-gray-900">2</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <button
+            class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 mt-8  hover:bg-pink-50 transition-colors"
+            aria-label="Add Professional Certification">
+            <img src="images/plus.svg" alt="Add" />
+            <span class="leading-tight sm:inline hidden">Add Professional Certification</span>
+            <span class="leading-tight sm:hidden inline">Add</span>
+          </button>
+        </div>
+
+        <hr class="my-4 border-gray-200">
+
+        <div >
+          <h3 class="text-lg font-semibold text-slate-700">
+            Professional Certification 2
+          </h3>
+
+          <form class="mt-5 space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <app-input
+                  [label]="'Certification'"
+                  [placeholder]="'Enter your Certification'"
+                  [isRequired]="true"
+                
+                  [customClasses]="'w-full mt-[8px] p-2.5 text-sm text-gray-500 rounded-lg border border-gray-300 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] h-10'"
+                ></app-input>
+              </div>
+
+              <div>
+                <app-input
+                  [label]="'Institute'"
+                  [placeholder]="'Enter your Institute'"
+                  [isRequired]="true"
+               
+                  [customClasses]="'w-full mt-[8px] p-2.5 text-sm text-gray-500 rounded-lg border border-gray-300 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] h-10'"
+                ></app-input>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-8 items-start mt-4 w-full">
+              <div class="w-full md:flex-1">
+                <app-input
+                  [label]="'Location'"
+                  [placeholder]="'Enter your Location'"
+                  [isRequired]="true"
+               
+                  [customClasses]="'flex gap-2 items-center py-2.5 mt-2 w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"
+                ></app-input>
+              </div>
+
+              <!-- Duration -->
+              <div class="w-full md:flex-1 relative" #container>
+                <div class="flex flex-col w-full">
+                  <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                    <span class="text-sm leading-[20px] text-slate-700">Duration</span>
+                    <span class="text-sm text-red-600 leading-[20px]" aria-hidden="true">*</span>
+                    <div class="relative inline-flex">
+                      <button 
+                        type="button" 
+                        class="text-gray-400 hover:text-gray-500 focus:outline-none ml-1" 
+                        aria-label="Help"
+                        (mouseenter)="showTooltip = true"
+                        (mouseleave)="showTooltip = false">
+                        <img src="images/help-circle.svg" alt="Help" class="h-4 w-4">
+                      </button>
+                      @if (showTooltip) {
+                        <div class="absolute z-10 w-48 px-2 py-1 text-xs text-white bg-gray-800 rounded shadow-lg bottom-full left-1/2 transform -translate-x-1/2 mb-1">
+                          This is the duration of your experience
+                          <div class="absolute w-2 h-2 bg-gray-800 rotate-45 -bottom-1 left-1/2 -translate-x-1/2"></div>
+                        </div>
+                      }
+                    </div>
+                    <span class="sr-only">(required)</span>
+                  </label>
+
+                  <div class="relative w-full mt-2">
+                    <input
+                      type="text"
+                      required
+                      aria-required="true"
+                      placeholder="Select your duration month"
+                      class="w-full text-sm text-gray-500 rounded-lg border border-gray-300 shadow-sm bg-white pl-9 pr-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors"
+                      (click)="toggleCalendar()"
+                      [value]="dateRangeString"
+                      readonly
+                    />
+                    <button
+                      type="button"
+                      aria-label="Open calendar"
+                      class="absolute left-2.5 top-1/2 -translate-y-1/2 h-5 w-5 cursor-pointer bg-transparent border-0 p-0"
+                      (click)="toggleCalendar()">
+                      <img src="images/calendar.svg" alt="Calendar icon" class="h-5 w-5">
+                    </button>
+                  </div>
+                  @if (calendarVisible) {
+                    <app-date-range-picker
+                      [(selectedStartDate)]="selectedStartDate"
+                      [(selectedEndDate)]="selectedEndDate"
+                      (selectedStartDateChange)="onStartDateChange($event)"
+                      (selectedEndDateChange)="onEndDateChange($event)">
+                    </app-date-range-picker>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-8 items-start mt-4 w-full">
+              <div class="w-full md:flex-1 relative">
+                <!-- Additional content if needed -->
+              </div>
+            </div>
+
+            <div class="mb-3 flex items-center gap-3">
+              <button class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">Save</button>
+              <button (click)="closeForm()" class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="flex flex-col gap-4 mt-4">
+  <div
+    class="flex flex-col bg-[#F9FAFB] justify-center self-stretch pt-6 pb-6 px-4 sm:px-6 border border-solid border-gray-200 rounded-xl cursor-pointer transition-all duration-300 overflow-hidden h-[68px]"
+    (click)="toggleDropdown()"
+    aria-labelledby="army-experience-title"
+  >
+    <div class="flex flex-row justify-between items-center gap-4 pointer-events-auto ml-0 sm:ml-5">
+      <h2 id="army-experience-title" class="text-lg font-medium leading-7 text-gray-800 whitespace-nowrap -ml-5">
+        Army Experience
+      </h2>
+      <button
+        (click)="toggleDropdown(); $event.stopPropagation()"
+        class="flex items-center gap-2 text-[16px] font-semibold text-gray-600 hover:text-gray-800 focus:outline-none p-1 rounded-md transition-colors"
+        [attr.aria-expanded]="isExpanded"
+        aria-controls="army-experience-content"
+      >
+        <span class="whitespace-nowrap">{{ isExpanded ? 'Collapse' : 'Expand' }}</span>
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5 transition-transform duration-300"
+          [class.rotate-180]="isExpanded"
+        >
+          <path d="M5 7.5L10 12.5L15 7.5" stroke="#475467" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="army-experience-content"
+    class="transition-all duration-300 rounded-xl border border-solid border-gray-200 bg-white shadow-sm"
+    [class.hidden]="!isExpanded"
+  >
+    <div class="p-6">
+      <app-no-details-training-summary 
+        [description]="'If you are a retired army person then you can give that information by clicking on the following button.'"
+        [btnText]="'Add Experience at Bangladesh Army'"
+        (openFormBtn)="handleAddExperience()">
+      </app-no-details-training-summary>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+.radio-label input[type="radio"]:checked + span {
+    color: green;
+    font-weight: 500;
+  }
+  
+  /* If you're using Tailwind, you can add these classes to your component's CSS */
+  .radio-label input[type="radio"]:checked + span {
+    @apply font-medium;
+    color: rgb(0, 128, 32);
+  }

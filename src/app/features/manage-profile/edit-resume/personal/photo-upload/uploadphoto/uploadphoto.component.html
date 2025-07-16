@@ -1,0 +1,36 @@
+<section class="flex flex-col items-center justify-center p-6 bg-gray-50 rounded-lg border  border-gray-300 max-w-4xl mx-auto">
+  <div class="relative w-full h-[333px] rounded-lg bg-gray-50 border border-dashed border-gray-300 flex flex-col items-center justify-center">
+
+    <div class="flex items-center justify-center w-20 h-20 rounded-full bg-blue-600 bg-opacity-10 mb-4">
+     <img src="images/user-02.svg" alt="User-Icon">
+    </div>
+    <p class="text-center text-gray-900 mb-4 max-w-md">
+      <span class="font-semibold text-[#C63C92]">Click here</span>
+      <span class="font-normal text-gray-900"> to upload or drop media here</span>
+      <br>
+      <span class="font-normal text-gray-900">Upload your Profile image JPG or PNG, 5MB max</span>
+    </p>
+
+    <!-- Hidden file input -->
+    <input
+      #fileInput
+      type="file"
+      accept="image/png, image/jpeg"
+      class="hidden"
+      (change)="onFileSelected($event)"
+    />
+
+    <button
+      class="px-4 py-2 bg-[#C63C92] text-white rounded-lg border-2 border-white/10 shadow-sm hover:bg-pink-700 transition-colors"
+      (click)="fileInput.click()"
+    >
+      <span class="text-sm font-semibold leading-5">Upload Image</span>
+    </button>
+
+    <!-- implement validatoin message -->
+    <div *ngIf="errorMessage" class="mt-2 text-red-600 text-sm font-semibold">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+</section>

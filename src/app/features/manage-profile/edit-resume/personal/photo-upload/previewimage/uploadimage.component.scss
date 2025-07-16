@@ -1,0 +1,13 @@
+:host {
+  display: block;
+
+  canvas {
+    border: 1px solid #ccc;
+    display: block;
+    max-width: 100%;
+  }
+
+  .crop-box {
+    cursor: move;
+  }
+}

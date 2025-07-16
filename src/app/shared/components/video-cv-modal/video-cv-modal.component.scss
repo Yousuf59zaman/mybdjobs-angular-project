@@ -1,0 +1,20 @@
+video {
+  width: 100%;
+  height: auto;
+}
+
+
+/* Add this to your component's SCSS file */
+.group:hover .group-hover\\:block {
+  display: block !important;
+}
+
+/* Ensure dropdown appears above other elements */
+.relative {
+  position: relative;
+}
+
+.z-10 {
+  z-index: 10;
+}
+

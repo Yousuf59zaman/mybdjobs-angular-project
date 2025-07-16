@@ -1,0 +1,17 @@
+<div class="flex flex-col justify-center gap-1.5">
+    <span class="flex items-center justify-between">
+      <label class="text-primary-700 text-xs">{{label()}}</label>
+      <span class=" font-semibold text-xs"
+      [style.color]="progressBarColor()"
+      >{{achievedProgress()}}</span>
+    </span>
+    <div class="flex w-full h-1.5 bg-[{{backgroundColor()}}] rounded-full overflow-hidden" role="progressbar"
+        [style.background]="backgroundColor()"
+    >
+      <div class="h-1.5 flex flex-col justify-center rounded-full overflow-hidden bg-[{{progressBarColor()}}] text-xs
+       text-white text-center whitespace-nowrap transition duration-500"
+       [style.width]="width()"
+       [style.background]="progressBarColor()"
+       ></div>
+    </div>
+  </div>

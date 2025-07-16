@@ -1,0 +1,76 @@
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow ml-4" style="min-height: 848px;" *transloco="let t">
+  <!-- Header -->
+  <h2 class="text-[18px] font-semibold text-[#333]">{{t('accountSetting.accountSettings')}}</h2>
+  <br/>
+  <div class="text-black-600 mb-6 leading-snug">
+    <h3 class="text-[18px] text-[#333]" style="font-weight: 500;">{{ t('accountSetting.welcomeToAccountSettings') }}</h3>
+    <p class="mt-1 text-[#333]">{{ t('accountSetting.accountSettingsDescription') }}</p>
+  </div>
+
+  <!-- Grid of Buttons -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <!-- 1: Set / Change User ID -->
+    <a href="https://mybdjobs.bdjobs.com/mybdjobs/set_userId/mobile_step_01.asp" class="flex flex-col items-center justify-center p-4 border border-gray-300 rounded-md sm:flex-row sm:items-center sm:justify-start hover:bg-gray-50">
+      <div class="flex items-center justify-center w-[62px] h-[62px] bg-[#00BCD4] text-white rounded-full mr-4">
+        <i class="icon-user-identification text-2xl"></i>
+      </div>
+      <span class="text-[#757575] font-medium">{{ t('accountSetting.setChangeUserId') }}</span>
+    </a>
+
+    <!-- 2: Change Password -->
+    <a href="https://mybdjobs.bdjobs.com/mybdjobs/edit_account.asp" class="flex flex-col items-center justify-center p-4 border border-gray-300 rounded-md sm:flex-row sm:items-center sm:justify-start hover:bg-gray-50">
+      <div class="flex items-center justify-center w-[62px] h-[62px] bg-[#008020] text-white rounded-full mr-4">
+        <i class="icon-change text-2xl"></i>
+      </div>
+      <span class="text-[#757575] font-medium">{{ t('accountSetting.changePassword') }}</span>
+    </a>
+
+    <!-- 3: Email Notification -->
+    <a href="https://mybdjobs.bdjobs.com/mybdjobs/email_notify.asp" class="flex flex-col items-center justify-center p-4 border border-gray-300 rounded-md sm:flex-row sm:items-center sm:justify-start hover:bg-gray-50">
+      <div class="flex items-center justify-center w-[62px] h-[62px] bg-[#607D8B] text-white rounded-full mr-4">
+        <i class="icon-bell text-2xl"></i>
+      </div>
+      <span class="text-[#757575] font-medium">{{ t('accountSetting.emailNotification') }}</span>
+    </a>
+
+    <!-- 4: SMS Job Alert Settings -->
+    <a href="https://mybdjobs.bdjobs.com/mybdjobs/sms/sms-setting.asp" class="flex flex-col items-center justify-center p-4 border border-gray-300 rounded-md sm:flex-row sm:items-center sm:justify-start hover:bg-gray-50">
+      <div class="flex items-center justify-center w-[62px] h-[62px] bg-[#737373] text-white rounded-full mr-4">
+        <i class="icon-sms-setting text-2xl"></i>
+      </div>
+      <span class="text-[#757575] font-medium">{{ t('accountSetting.smsJobAlertSettings') }}</span>
+    </a>
+
+    <!-- 5: Resume Privacy -->
+    <a href="https://mybdjobs.bdjobs.com/mybdjobs/block_emp.asp" class="flex flex-col items-center justify-center p-4 border border-gray-300 rounded-md sm:flex-row sm:items-center sm:justify-start hover:bg-gray-50">
+      <div class="flex items-center justify-center w-[62px] h-[62px] bg-[#ffa000] text-white rounded-full mr-4">
+        <i class="icon-file-lock text-2xl"></i>
+      </div>
+      <span class="text-[#757575] font-medium">{{ t('accountSetting.resumePrivacy') }}</span>
+    </a>
+
+    <!-- 6: Delete Resume -->
+    <a href="https://mybdjobs.bdjobs.com/mybdjobs/del_resume.asp" class="flex flex-col items-center justify-center p-4 border border-gray-300 rounded-md sm:flex-row sm:items-center sm:justify-start hover:bg-gray-50">
+      <div class="flex items-center justify-center w-[62px] h-[62px] bg-[#7E57C2] text-white rounded-full mr-4">
+        <i class="icon-file-delete text-2xl"></i>
+      </div>
+      <span class="text-[#757575] font-medium">{{ t('accountSetting.deleteResume') }}</span>
+    </a>
+
+    <!-- 7: Delete Account -->
+    <a href="https://mybdjobs.bdjobs.com/mybdjobs/del_step_01.asp" class="flex flex-col items-center justify-center p-4 border border-gray-300 rounded-md sm:flex-row sm:items-center sm:justify-start hover:bg-gray-50">
+      <div class="flex items-center justify-center w-[62px] h-[62px] bg-[#ff6b6b] text-white rounded-full mr-4">
+        <i class="icon-user-delete text-2xl"></i>
+      </div>
+      <span class="text-[#757575] font-medium">{{ t('accountSetting.deleteAccount') }}</span>
+    </a>
+
+    <!-- 8: Sign out from all devices -->
+    <a href="https://mybdjobs.bdjobs.com/mybdjobs/f-logout-home.asp" class="flex flex-col items-center justify-center p-4 border border-gray-300 rounded-md sm:flex-row sm:items-center sm:justify-start hover:bg-gray-50">
+      <div class="flex items-center justify-center w-[62px] h-[62px] bg-[#AFB42B] text-white rounded-full mr-4">
+        <i class="icon-devices text-2xl"></i>
+      </div>
+      <span class="text-[#757575] font-medium">{{ t('accountSetting.signOutFromAllDevices') }}</span>
+    </a>
+  </div>
+</div>

@@ -1,0 +1,228 @@
+
+<accordion-main-body
+  [accordionName]="'Skill'"
+  buttonType="add"
+  buttonTitle="Add Skill"
+  [isAccordionOpen]="isOpen()"
+  [isFormOpen]="isSkillNewFormOpen()"
+  (formToggleEmitter)="addNewSkill()"
+  (accordionToggleEmitter)="toggle()"
+>
+  <!-- Skills -->
+  <div class="my-5">
+    @if(!skills.length) {
+      <app-no-details
+        (openFormBtn)="isSkillNewFormOpen.set(true)"
+        [btnText]="'Add Skill'"
+        [description]="'Currently no data exists! Please click on the following button to add your skill.'"
+      ></app-no-details>
+    } @else {
+      @if(!isSkillNewFormOpen() && !isSkillEditFormOpen()) {
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-32">
+          @for (skill of skills; track $index; let i = $index) {
+            <hr
+              class="my-5 border-gray-200"
+              [ngClass]="(i > 0 && !(i%2)) ? 'col-span-2' : 'hidden'">
+            <div class="flex justify-between items-center gap-6">
+              <div class="flex flex-col items-start">
+                <p class="text-xs text-primary-900 font-medium">{{ skill.skillName }}</p>
+                <p class="mt-1 text-xs text-primary-500 ">
+                  @for(learnMethod of skill.learnedMethods; track $index) {
+                    {{ learnMethod+(($index === skill.learnedMethods.length - 1) ? '' : ',') }}
+                  }
+                </p>
+              </div>
+              <div class="flex items-center">
+                <button (click)="editSkill(i)" class="flex items-center px-3 py-2 text-primary-900" aria-label="Edit Skill">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[15px] w-[15px] text-slate-600">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                  <!-- <span class="text-sm hidden sm:inline">Edit</span> -->
+                </button>
+                <button  class="flex items-center px-3 py-2 text-primary-900" aria-label="Delete Skill">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" class="w-4 h-4">
+                    <path d="M2 4H3.33333H14" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M5.33325 4V2.66667C5.33325 2.48986 5.40349 2.32029 5.52851 2.19526C5.65354 2.07024 5.82311 2 5.99992 2H9.99992C10.1767 2 10.3463 2.07024 10.4713 2.19526C10.5963 2.32029 10.6666 2.48986 10.6666 2.66667V4" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.6666 4V13.3333C12.6666 13.5101 12.5963 13.6797 12.4713 13.8047C12.3463 13.9298 12.1767 14 11.9999 14H3.99992C3.82311 14 3.65354 13.9298 3.52851 13.8047C3.40349 13.6797 3.33325 13.5101 3.33325 13.3333V4" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6.66675 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.33325 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <!-- <span class="text-sm hidden sm:inline">Delete</span> -->
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="my-5">
+          <form class="mt-5 space-y-4" (ngSubmit)="saveSkill()">
+            <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+              <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+                <label class="text-sm font-semibold text-primary-700">
+                  Skill <span class="text-[#d92c20] text-xs">*</span>
+                </label>
+                <input type="text" [(ngModel)]="skillForm.skillName" name="skillName"
+                  class="flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors"
+                  placeholder="Enter your Skill" required>
+        
+                <div class="flex gap-2 items-start self-start mt-[8px]">
+                  <div class="flex w-full flex-col gap-2">
+                    <label class="text-sm font-medium text-[#344054]"> How did you learn the skill? </label>
+                    <div class="flex w-full flex-wrap gap-2 items-center">
+                      @for (method of ['Self', 'Job', 'Educational', 'Professional Training', 'NTVQF']; track method) {
+                        <div class="inline-flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            [id]="'method-' + method"
+                            [checked]="skillForm.learnedMethods.includes(method)"
+                            (change)="toggleMethod(method)"
+                            class="rounded"/>
+                          <label [for]="'method-' + method" class="text-sm whitespace-nowrap text-[#344054]">
+                            {{ method }}
+                          </label>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+            <div class="mb-3 flex items-center gap-3">
+              <button
+                type="submit"
+                class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">
+                {{ isSkillNewFormOpen() ? 'Add Skill' : 'Save ' }}
+              </button>
+              <button type="button" (click)="cancelEdit()"
+                class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Description -->
+  <div class="my-5">
+    @if(!isDescFormOpen()) {
+      @if( !skillDescription().length ) {
+        <div class="rounded-xl border border-[#E4E7EC]">
+          <app-no-details
+            (openFormBtn)="isDescFormOpen.set(true)"
+            [btnText]="'Add Skill Description'"
+            [description]="'Currently no data exists! Please click on the following button to add your Skill Description.'"
+          />
+        </div>
+      } @else {
+        <div class="flex flex-col items-start gap-1.5">
+          <div class="flex items-center justify-between w-full">
+            <p class="text-xs text-primary-500 font-medium">Description</p>
+            <div class="flex items-center">
+                <button (click)="onClickDescEdit()" class="flex items-center px-3 py-2 text-primary-900" aria-label="Edit Skill Desc">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-[15px] w-[15px] text-slate-600">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                  <!-- <span class="text-sm hidden sm:inline">Edit</span> -->
+                </button>
+                <button  class="flex items-center px-3 py-2 text-primary-900" aria-label="Delete Skill Desc">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" class="w-4 h-4">
+                    <path d="M2 4H3.33333H14" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M5.33325 4V2.66667C5.33325 2.48986 5.40349 2.32029 5.52851 2.19526C5.65354 2.07024 5.82311 2 5.99992 2H9.99992C10.1767 2 10.3463 2.07024 10.4713 2.19526C10.5963 2.32029 10.6666 2.48986 10.6666 2.66667V4" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.6666 4V13.3333C12.6666 13.5101 12.5963 13.6797 12.4713 13.8047C12.3463 13.9298 12.1767 14 11.9999 14H3.99992C3.82311 14 3.65354 13.9298 3.52851 13.8047C3.40349 13.6797 3.33325 13.5101 3.33325 13.3333V4" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6.66675 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.33325 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <!-- <span class="text-sm hidden sm:inline">Delete</span> -->
+                </button>
+              </div>
+          </div>
+          <p class="mt-1 text-xs text-primary-900"> 
+              {{ skillDescription() }}
+          </p>
+        </div>
+      }
+    } @else {
+      <div class="flex flex-col w-full max-md:max-w-full">
+        <div class="flex flex-col w-full max-md:max-w-full">
+          <label class="flex gap-0.5 mb-[8px] items-start self-start text-sm font-medium leading-none">
+            <span class="text-sm leading-[20px] text-slate-700">Skill Description</span>
+            <span class="text-[#d92c20]">*</span>
+          </label>
+        </div>
+        <div class="w-full">
+          <app-text-editor
+            [control]="descriptionControl"
+            [label]="''"
+            [type]="'Edit-Resume'"
+            [height]="'112px'"
+            [placeholder]="'Enter your writing texts...'">
+          </app-text-editor>
+        </div>
+        <div class="my-3 flex items-center gap-3">
+          <button
+            (click)="onClickDescSave()"
+            class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">
+            Save
+          </button>
+          <button type="button" (click)="onClickDescCancel()"
+            class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold">
+            Cancel
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</accordion-main-body>
+
+<!-- 
+<div class="flex flex-col gap-4 mt-4">
+  <div
+    class="flex flex-col bg-[#F9FAFB] justify-center self-stretch pt-6 pb-6 px-4 sm:px-6 border border-solid border-gray-200 rounded-xl cursor-pointer transition-all duration-300 overflow-hidden h-[68px]"
+    (click)="toggleDropdown()"
+    aria-labelledby="army-experience-title"
+  >
+    <div class="flex flex-row justify-between items-center gap-4 pointer-events-auto ml-0 sm:ml-5">
+      <h2 id="army-experience-title" class="text-lg font-medium leading-7 text-gray-800 whitespace-nowrap -ml-5">
+        Army Experience
+      </h2>
+      <button
+        (click)="toggleDropdown(); $event.stopPropagation()"
+        class="flex items-center gap-2 text-[16px] font-semibold text-gray-600 hover:text-gray-800 focus:outline-none p-1 rounded-md transition-colors"
+        [attr.aria-expanded]="isExpanded"
+        aria-controls="army-experience-content"
+      >
+        <span class="whitespace-nowrap">{{ isExpanded ? 'Collapse' : 'Expand' }}</span>
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5 transition-transform duration-300"
+          [class.rotate-180]="isExpanded"
+        >
+          <path d="M5 7.5L10 12.5L15 7.5" stroke="#475467" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="army-experience-content"
+    class="transition-all duration-300 rounded-xl border border-solid border-gray-200 bg-white shadow-sm"
+    [class.hidden]="!isExpanded"
+  >
+    <div class="p-6">
+      <app-no-details-training-summary 
+        [description]="'If you are a retired army person then you can give that information by clicking on the following button.'"
+        [btnText]="'Add Experience at Bangladesh Army'"
+        (openFormBtn)="handleAddExperience()">
+      </app-no-details-training-summary>
+    </div>
+  </div>
+</div> -->

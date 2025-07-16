@@ -1,0 +1,19 @@
+<div class="w-full flex flex-col md:flex-row min-h-screen px-4 mt-0 mr-0 mb-6 ml-0 ">
+    <div class="w-full bg-white shadow-lg max-w-[750px] p-4 rounded-lg">
+        <p class="px-10 py-7 text-2xl font-semibold text-[#004db3]">
+            {{ getHeadingText() }}
+        </p>
+
+        @if (showStepper) {
+            <app-stepper
+              [parentStep]="currentStep"
+              [type]="type"
+              [visibleSteps]="getVisibleSteps()"
+            ></app-stepper>
+        }
+
+        <div class="step-content">
+          <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

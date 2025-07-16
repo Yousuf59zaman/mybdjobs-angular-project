@@ -1,0 +1,65 @@
+<div class="p-4 border border-[#E4E7EC] rounded-lg">
+    <div class="flex flex-col gap-4">
+        <p class="title-design">Your Invitation</p>
+        <div class="sm:flex sm:flex-row sm:items-center flex flex-col gap-5 justify-between">
+            @for(board of invitationCard(); track $index){
+            <div class="relative flex items-center gap-2">
+                <span class=" py-1.5 px-1 pb-1 rounded bg-[#F7EAF2]">
+                    <img [src]="board.imageUrl" alt="" class="">
+                </span>
+                <span class="sub-title-design">{{board.title}}</span>
+                @if(board.count > 0){
+                <span class="absolute -top-2.5 left-7 px-[5px] py-[1px] flex items-center justify-center
+                        text-xs font-medium text-white bg-[#D92D20] rounded-[50%]">{{board.count}}</span>
+                }
+
+            </div>
+            }
+
+        </div>
+        <div class="w-full flex flex-col gap-3">
+            <p class="flex justify-between items-center">
+                <span class="title-design">Upcoming Invitation</span>
+                <span class="cursor-pointer text-[#C63C92] font-medium text-sm">View More</span>
+            </p>
+
+
+            <div class="relative w-full">
+                <div class="w-full relative border border-[#E4E7EC] rounded-md p-2 sm:p-4">
+                    <div class="w-full flex items-center gap-3 sm:gap-4 transition-all duration-300 ease-in-out"
+                        *ngIf="cards[activeIndex()] as card" [@cardFadeSlide] [@.disabled]="false">
+                        <span class=" py-1.5 px-1 pb-1 rounded bg-[#F7EAF2]">
+                            <img [src]="card.image" alt="" class="min-w-6 min-h-6 sm:min-h-8 sm:min-w-8">
+                        </span>
+
+                        <div class="border-r-2 border-[#E4E7EC] h-8 sm:block hidden"></div>
+
+                        <div>
+                            <span class="text-primary-700 text-xs sm:text-base font-normal">
+                                <span class="text-[#344054] font-medium text-xs sm:text-base">“{{ card.title }}”</span>
+                                {{card.description}}</span>
+                        </div>
+                    </div>
+
+                    <span (click)="prev()" class="cursor-pointer absolute z-[999999] icon-angle-left-o top-[38%] sm:top-[30%] -left-5 px-2.5 py-2.5 bg-[#FAE9F6] text-[#C63C92]
+                        rounded-[50%] font-light hover:bg-[#C63C92] hover:text-white text-xs"></span>
+
+                    <span (click)="next()"
+                        class="cursor-pointer absolute icon-angle-right-o top-[38%] sm:top-[30%] -right-4 px-2.5 py-2.5 rounded-[50%] font-light bg-[#FAE9F6] text-[#C63C92] hover:bg-[#C63C92] hover:text-white text-xs"></span>
+                </div>
+
+
+                <div class="text-center flex items-center justify-center gap-2 mt-4">
+                    @for(card of cards; track $index; let idx = $index){
+                    <div [ngClass]="{
+                                'bg-[#C63C92] rounded-full w-6 h-[8px]': activeIndex() === idx,
+                                'bg-[#D0D5DD] rounded-[50%] w-2 h-2': activeIndex() !== idx
+                        }" (click)="goTo(idx)" class="cursor-pointer transition-all duration-300 ease-in-out"></div>
+                    }
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

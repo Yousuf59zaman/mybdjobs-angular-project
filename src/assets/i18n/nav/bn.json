@@ -1,0 +1,18 @@
+{
+    "jobMenu": "চাকরির খবর",
+    "mybdjobsMenu": "আমার বিডিজবস",
+    "elearningMenu": "ই-লার্নিং",
+    "tenderMenu": "টেন্ডার/ইওআই",
+    "postJobMenu": "জব পোস্ট করুন",
+
+    "quickLinks"  : "কুইক লিংকস",
+    "newJobs"  : "নতুন চাকরি",
+    "deadlineTomorrow"  : "ডেডলাইন আগামীকাল",
+    "partTime"  : "খন্ডকালীন চাকরি",
+    "contructual"  : "চুক্তিভিত্তিক চাকরি",
+    "government"  : "সরকারী চাকরি",
+    "locationWise"  : "এলাকাভিত্তিক চাকরি",
+
+    "employerList"  : "এমপ্লয়ার লিস্ট",
+    "FAQ"  : "প্রশ্নাবলী"
+}

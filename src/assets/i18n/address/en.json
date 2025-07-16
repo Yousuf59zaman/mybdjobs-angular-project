@@ -1,0 +1,18 @@
+{
+    "YourPresentAddress": "Your Present Address",
+    "district": "District",
+    "selectDistrict": "Select District",
+    "districtRequired": "District is required",
+    "thana": "Thana/Upazila",
+    "selectThana": "Select Thana/Upazila",
+    "thanaRequired": "Thana is required",
+    "postOffice": "Post Office",
+    "selectPostOffice": "Select Post Office",
+    "houseRoadVillage": "House No./ Road/ Village",
+    "houseRequired": "House No or Road/Village is required",
+    "alternateMobile": "Alternate Mobile Number",
+    "alternateMobileRequired": "Alternative Phone is required",
+    "next": "Next",
+    "invalidPhoneFormat": "Give valid number",
+    "alternateMobileTooltip": "Enter Alternate Mobile Number"
+}

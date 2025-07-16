@@ -1,0 +1,17 @@
+<!-- <div class="min-h-screen flex flex-col">
+  <app-nav *ngIf="showLayout"></app-nav>
+
+  <main class="flex-grow">
+    <router-outlet></router-outlet>
+  </main>
+
+  <app-footer *ngIf="showLayout"></app-footer>
+</div> -->
+
+<ng-container *ngIf="isSignInRoute; else defaultLayout">
+  <app-layout-home></app-layout-home>
+</ng-container>
+<ng-template #defaultLayout>
+  <app-layout></app-layout>
+</ng-template>
+

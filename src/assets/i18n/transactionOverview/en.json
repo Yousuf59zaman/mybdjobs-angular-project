@@ -1,0 +1,20 @@
+{
+   "title": "Transaction Overview",
+   "description": "Check all your purchase and transaction history here, such as Bdjobs Pro, Job Apply Limits, SMS Alerts, My Personal Hiring, Expert Search, and others.",
+   "fromDate" : "From Date",
+   "toDate": "To Date",
+   "select": "Select",
+   "service":"Service",
+   "bdjobsProBasic": "Bdjobs Pro Basic",
+   "bdjobsProStandard":"Bdjobs Pro Standard",
+   "bdjobsProPremium": "Bdjobs Pro Premium",
+   "renew": "Renew",
+   "jobApplyLimit": "Job Apply Limit",
+   "sms": "SMS Job Alert",
+   "brjobsPr": "Bdjobs Pro",
+   "expertSearch": "Expert Search",
+   "jobPost": "job Post:",
+   "total": "Total Found",
+   "search": "Search",
+   "postName": "Post Name"
+}

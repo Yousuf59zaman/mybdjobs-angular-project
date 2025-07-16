@@ -1,0 +1,230 @@
+<!-- delete-account.component.html -->
+<!-- Assumes Tailwind CSS is installed and configured in your project -->
+<div class="min-h-screen bg-gray-100" *transloco="let t">
+  <!-- Header -->
+  <header class="bg-[#546e7a] text-white text-md font-semibold px-4 py-2 text-[14px]">
+   <i class="icon-trush-can"></i> {{t('accountDelete.Delete Account')}}
+  </header>
+
+  <!-- Warning Banner -->
+  <div
+    class="flex items-start bg-[#f2dede] border border-red-400 text-[#a94442] m-6 px-4 py-3 rounded mt-6"
+    role="alert"
+  >
+    <p class="ml-3 text-sm font=[#a94442]">
+      <span><i class="icon-warning font-[#a94442]"></i></span>
+      {{t('accountDelete.warning_message')}}
+    </p>
+  </div>
+
+  <!-- Feature Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 m-6 p-2">
+    <!-- Matched Job Card -->
+    <div
+      class="relative bg-white shadow rounded-lg p-6 flex flex-col items-center text-center cursor-pointer transform transition duration-200 hover:shadow-[0_10px_20px_rgba(0,0,0,0.4)] hover:scale-105"
+    >
+      <div class="relative">
+        <div
+          class="h-[64px] w-[64px] bg-[#008020] rounded-full flex items-center justify-center"
+        >
+          <!-- Icon -->
+          <span class="text-[28px] text-white"><i class="icon-files"></i></span>
+        </div>
+        <span
+        class="absolute -top-[5px] -right-[10px] bg-[#757575] text-white text-xs font-bold rounded-[20px] h-[22px] w-[26px] flex items-center justify-center border-2 border-white"
+          >0</span
+        >
+      </div>
+      <h3 class="mt-4 text-lg font-medium text-gray-900">{{t('accountDelete.Matched Job')}}</h3>
+      <p class="mt-1 text-sm text-gray-600">{{t('accountDelete.Explore your desired jobs')}}</p>
+    </div>
+
+    <!-- Employer Viewed Resume Card -->
+    <div
+    class="relative bg-white shadow rounded-lg p-6 flex flex-col items-center text-center cursor-pointer transform transition duration-200 hover:scale-105 hover:shadow-[0_10px_20px_rgba(0,0,0,0.4)]"
+    >
+      <div class="relative">
+        <div
+          class="h-[64px] w-[64px] bg-[#29b6f6] rounded-full flex items-center justify-center"
+        >
+          <span class="text-[28px] text-white"
+            ><i class="icon-view-resume"></i
+          ></span>
+        </div>
+        <span
+        class="absolute -top-[5px] -right-[10px] bg-[#757575] text-white text-xs font-bold rounded-[20px] h-[22px] w-[26px] flex items-center justify-center border-2 border-white"
+          >2</span
+        >
+      </div>
+      <h3 class="mt-4 text-lg font-medium text-gray-900">
+        {{t('accountDelete.Employer Viewed Resume')}}
+      </h3>
+      <p class="mt-1 text-sm text-gray-600">{{t('accountDelete.See who viewed your resume')}}</p>
+    </div>
+
+    <!-- Employer's Message Card -->
+    <div
+      class="relative bg-white shadow rounded-lg p-6 flex flex-col items-center text-center cursor-pointer transform transition duration-200 hover:shadow-[0_10px_20px_rgba(0,0,0,0.4)] hover:scale-105"
+    >
+      <div class="relative">
+        <div
+          class="h-[64px] w-[64px] bg-[#757575] rounded-full flex items-center justify-center"
+        >
+          <span class="text-[28px] text-white"><i class="icon-message"></i></span>
+        </div>
+        <span
+          class="absolute -top-[5px] -right-[10px] bg-[#757575] text-white text-xs font-bold rounded-[20px] h-[22px] w-[26px] flex items-center justify-center border-2 border-white"
+          >0</span
+        >
+      </div>
+      <h3 class="mt-4 text-lg font-medium text-gray-900">{{t('accountDelete.Employers Message')}}</h3>
+      <p class="mt-1 text-sm text-gray-600">{{t('accountDelete.See your message history')}}</p>
+    </div>
+
+    <!-- Employer's Invitation Card -->
+    <div
+      class="relative bg-white shadow rounded-lg p-6 flex flex-col items-center text-center cursor-pointer transform transition duration-200 hover:shadow-[0_10px_20px_rgba(0,0,0,0.4)] hover:scale-105"
+    >
+      <div class="relative">
+        <div
+          class="h-[64px] w-[64px] bg-[#7E57C2] rounded-full flex items-center justify-center"
+        >
+          <span class="text-[28px] text-white"><i class="icon-job-offer"></i></span>
+        </div>
+        <span
+          class="absolute -top-[5px] -right-[10px] bg-[#757575] text-white text-xs font-bold rounded-[20px] h-[22px] w-[26px] flex items-center justify-center border-2 border-white"
+          >0</span
+        >
+      </div>
+      <h3 class="mt-4 text-lg font-medium text-gray-900">
+        {{t('accountDelete.Employers Invitation')}}
+      </h3>
+      <p class="mt-1 text-sm text-gray-600">
+        {{t('accountDelete.Find out your invitation from employer')}}
+      </p>
+    </div>
+
+    <!-- Shortlisted Jobs Card -->
+    <div
+      class="relative bg-white shadow rounded-lg p-6 flex flex-col items-center text-center cursor-pointer transform transition duration-200 hover:shadow-[0_10px_20px_rgba(0,0,0,0.4)] hover:scale-105"
+    >
+      <div class="relative">
+        <div
+          class="h-[64px] w-[64px] bg-[#ffa000] rounded-full flex items-center justify-center"
+        >
+          <span class="text-[28px] text-white"><i class="icon-star"></i></span>
+        </div>
+        <span
+          class="absolute -top-[5px] -right-[10px] bg-[#757575] text-white text-xs font-bold rounded-[20px] h-[22px] w-[26px] flex items-center justify-center border-2 border-white"
+          >2</span
+        >
+      </div>
+      <h3 class="mt-4 text-lg font-medium text-gray-900">{{t('accountDelete.Shortlisted Jobs')}}</h3>
+      <p class="mt-1 text-sm text-gray-600">
+        {{t('accountDelete.Review jobs those you have shortlisted')}}
+      </p>
+    </div>
+
+    <!-- Following Employers Card -->
+    <div
+      class="relative bg-white shadow rounded-lg p-6 flex flex-col items-center text-center cursor-pointer transform transition duration-200 hover:shadow-[0_10px_20px_rgba(0,0,0,0.4)] hover:scale-105"
+    >
+      <div class="relative">
+        <div
+          class="h-[64px] w-[64px] bg-[#00BCD4] rounded-full flex items-center justify-center"
+        >
+          <span class="text-[28px] text-white"><i class="icon-career"></i></span>
+        </div>
+        <span
+          class="absolute -top-[5px] -right-[10px] bg-[#757575] text-white text-xs font-bold rounded-[20px] h-[22px] w-[26px] flex items-center justify-center border-2 border-white"
+          >5</span
+        >
+      </div>
+      <h3 class="mt-4 text-lg font-medium text-gray-900">
+        {{t('accountDelete.Following Employers')}}
+      </h3>
+      <p class="mt-1 text-sm text-gray-600">
+        {{t('accountDelete.Find out jobs of your followed companies')}}
+      </p>
+    </div>
+
+    <!-- Favourite Search Card -->
+    <div
+      class="relative bg-white shadow rounded-lg p-6 flex flex-col items-center text-center cursor-pointer transform transition duration-200 hover:shadow-[0_10px_20px_rgba(0,0,0,0.4)] hover:scale-105"
+    >
+      <div class="relative">
+        <div
+          class="h-[64px] w-[64px] bg-[#ff6b6b] rounded-full flex items-center justify-center"
+        >
+          <span class="text-[28px] text-white"><i class="icon-files"></i></span>
+        </div>
+        <span
+          class="absolute -top-[5px] -right-[10px] bg-[#757575] text-white text-xs font-bold rounded-[20px] h-[22px] w-[26px] flex items-center justify-center border-2 border-white"
+          >10</span
+        >
+      </div>
+      <h3 class="mt-4 text-lg font-medium text-gray-900">{{t('accountDelete.Favourite Search')}}</h3>
+      <p class="mt-1 text-sm text-gray-600">{{t('accountDelete.Review your Favourite search')}}</p>
+    </div>
+
+    <!-- Employability Certification Card -->
+    <div
+      class="relative bg-white shadow rounded-lg p-6 flex flex-col items-center text-center cursor-pointer transform transition duration-200 hover:shadow-[0_10px_20px_rgba(0,0,0,0.4)] hover:scale-105"
+    >
+      <div class="relative">
+        <div
+          class="h-[64px] w-[64px] bg-[#5C6BC0] rounded-full flex items-center justify-center"
+        >
+          <span class="text-[28px] text-white"
+            ><i class="icon-assessment-empty"></i
+          ></span>
+        </div>
+        <span
+          class="absolute -top-[5px] -right-[10px] bg-[#757575] text-white text-xs font-bold rounded-[20px] h-[22px] w-[26px] flex items-center justify-center border-2 border-white"
+          >20
+        </span>
+      </div>
+      <h3 class="mt-4 text-lg font-medium text-gray-900">
+        {{t('accountDelete.Employability Certification')}}
+      </h3>
+      <p class="mt-1 text-sm text-gray-600">
+        {{t('accountDelete.Access your attended test activity')}}
+      </p>
+    </div>
+    <div
+      class="relative bg-white shadow rounded-lg p-6 flex flex-col items-center text-center cursor-pointer transform transition duration-200 hover:shadow-[0_10px_20px_rgba(0,0,0,0.4)] hover:scale-105"
+    >
+      <div class="relative">
+        <div
+          class="h-[64px] w-[64px] bg-[#FF4081] rounded-full flex items-center justify-center"
+        >
+          <span class="text-[28px] text-white"><i class="icon-activity"></i></span>
+        </div>
+        <span
+          class="absolute -top-[5px] -right-[10px] bg-[#757575] text-white text-xs font-bold rounded-[20px] h-[22px] w-[26px] flex items-center justify-center border-2 border-white"
+          >20
+        </span>
+      </div>
+      <h3 class="mt-4 text-lg font-medium text-gray-900">
+        {{t('accountDelete.Assessment (for specific job)')}}
+      </h3>
+      <p class="mt-1 text-sm text-gray-600">
+        {{t('accountDelete.Your attended test & result overview')}}
+      </p>
+    </div>
+  </div>
+  <!-- Confirmation Footer -->
+  <div class="mt-8 bg-white rounded-sm shadow p-6 text-center">
+    <h1 class="text-gray-800 mb-4 text-[18px] font-semibold">
+      {{t('accountDelete.confirmation_question')}}
+    </h1>
+    <div class="flex justify-center space-x-4">
+      <button class="bg-[#40682C] hover:bg-green-800 text-white font-medium px-5 py-2 rounded">
+        {{t('accountDelete.No, I dont want to continue')}}
+      </button>
+      <button class="bg-red-600 hover:bg-red-700 text-white font-medium px-5 py-2 rounded">
+        {{t('accountDelete.Yes, I want to continue')}}
+      </button>
+    </div>
+  </div>
+</div>

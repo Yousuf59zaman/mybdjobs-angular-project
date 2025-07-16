@@ -1,0 +1,19 @@
+
+
+<div class="flex flex-col gap-2 w-full">
+  <div id="1">
+    <app-portfolio [isPortfolioOpen]="subTabDetails().id === 1"/>
+  </div>
+  <div id="2">
+    <app-publications [isPublicationsOpen]="subTabDetails().id === 2"/>
+  </div>
+  <div id="3">
+    <app-awards [isAwardHonorsOpen]="subTabDetails().id === 3"/>
+  </div>
+  <div id="4">
+    <app-project [isProjectsOpen]="subTabDetails().id === 4"/>
+  </div>
+  <div id="5">
+    <app-others [isOthersSectionOpen]="subTabDetails().id === 5"/>
+  </div>
+</div>

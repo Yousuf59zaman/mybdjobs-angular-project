@@ -1,0 +1,771 @@
+<div class=" bg-white">
+  @if (isLoading) {
+  <div class="flex items-center justify-center py-12">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#C63C92]"></div>
+      <span class="ml-3 text-gray-600">Loading Details CV...</span>
+  </div>
+  }@else if (errorMessage) {
+  <div class="text-center text-red-500 py-8">{{errorMessage}}</div>
+  } @else {
+  <div class="w-full flex flex-col lg:flex-row text-black border-gray-400 font-sans overflow-hidden">
+    <div class="w-full mx-auto p-4 bg-white text-gray-800 font-sans">
+      <!-- Personal Information with Photo -->
+      <table class="w-full mb-6 border-collapse">
+        <tr>
+          <!-- Left side: Details -->
+          <td class="align-top w-4/5 pr-4">
+            <h2 class="text-[18px] pl-[7px] font-bold text-[#333399] font-sans">
+              {{ cvData.fullName }}
+            </h2>
+            <p class="text-[11px] pl-[7px] pt-[2px] pb-[2px]">
+              Address:
+              @if (getAddressByType(1) === null || getAddressByType(1) === '') {
+              {{getAddressByType(2)}}
+              } @else {
+              {{getAddressByType(1)}}
+              }
+            </p>
+            <p class="text-[11px] pl-[7px] pt-[2px] pb-[2px]">
+              Primary Mobile No: {{ cvData.mobileNumber }}
+
+            </p>
+            <p class="text-[11px] pl-[7px] pt-[2px] pb-[2px]">
+              Secondary Mobile No: {{ cvData.officePhone }}
+            </p>
+            <p class="text-[11px] pl-[7px] pt-[2px] pb-[2px]">
+              Emergency Contact No: {{ cvData.homePhone }}
+            </p>
+            <p class="text-[11px] pl-[7px] pt-[2px] pb-[2px]">
+
+              Primary Email: {{ cvData.primaryEmail }}
+            </p>
+            <p class="text-[11px] pl-[7px] pt-[2px] pb-[2px]">
+              Alternate Email: {{ cvData.secondaryEmail }}
+            </p>
+          </td>
+
+          <!-- Right side: Photo -->
+          <td class="align-top w-1/5">
+            @if (cvData.folderName && cvData.photoName) {
+              <img class="h-32 w-32 object-cover"
+                   [src]="'https://storage.googleapis.com/bdjobs/mybdjobs/photos/' + cvData.folderName + '/' + cvData.photoName + '.jpg'"
+                   alt="Profile Image"
+                   onerror="this.src='assets/images/default-profile.png'" />
+            } @else {
+            }
+          </td>
+        </tr>
+      </table>
+
+
+      <div class="border-b border-black my-4"></div>
+
+      <!-- Career Objective -->
+      <div class="mb-0.5">
+        <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">
+          Career Objective:
+        </h3>
+        <p class="text-sm pl-[5px] pt-[7px] pb-[10px] break-words">
+          {{ cvData.objective }}
+        </p>
+      </div>
+
+
+      <!-- Career Summary -->
+      <div class="mb-0.5">
+        <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">Career Summary:</h3>
+        <p class="text-sm pl-[5px] pt-[7px] pb-[10px] break-words">{{cvData.careerSummary}}</p>
+      </div>
+
+      <!-- Special Qualification -->
+      <div class="mb-0.5">
+        <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">Special Qualification:</h3>
+        <p class="text-sm pl-[5px] pt-[7px] pb-[10px] break-words">{{cvData.specialQualifications}}</p>
+      </div>
+
+      <!-- Employment History -->
+      <div class="mb-4">
+        <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">
+          Employment History:
+        </h3>
+        @if (cvData.totalExperience) {
+        <p class="text-[11px] pl-[5px] pt-[7px] pb-[10px] break-words">
+          <strong>Total Year of Experience:</strong> {{convertMonthsToYears(cvData.totalExperience)}}
+        </p>
+        }
+
+        <div class="mb-4">
+          <!-- Civilian Experiences -->
+          @for (item of experiences; track $index) {
+          <div class="mb-3 text-[11px]">
+            <div class="flex">
+              <div class="w-6">{{$index + 1}}.</div>
+              <div class="flex-1">
+                @if (item.jobPosition) {
+                <div class="font-bold text-[11px]">
+                  {{item.jobPosition}}
+                  @if (item.employmentStartDate) {
+                  ({{calculateEmploymentDuration(item.employmentStartDate, item.employmentEndDate, item.isCurrentlyServing)}})
+                  }
+                </div>
+                }
+
+                @if (item.employmentStartDate) {
+                <div class="text-[11px]">
+                  ({{formatDate(item.employmentStartDate)}} -
+                  @if (item.isCurrentlyServing === 1) {
+                    Continuing
+                  } @else if (item.employmentEndDate) {
+                    {{formatDate(item.employmentEndDate)}}
+                  }
+                  )
+                </div>
+                }
+
+                @if (item.companyName) {
+                <div class="mt-1">
+                  <strong>{{item.companyName}}</strong>
+                </div>
+                @if (item.companyLocation) {
+                <div>{{item.companyLocation}}</div>
+                }
+                }
+
+                @if (item.skillName) {
+                <div class="mt-1">
+                  <strong>Area of Expertise</strong>
+                  <div>{{formatSkillExperience(item.skillName)}}</div>
+                </div>
+                }
+
+                @if (item.jobDuties) {
+                <div class="mt-1">
+                  <strong>Duties/Responsibilities</strong>
+                  <div>{{item.jobDuties}}</div>
+                </div>
+                }
+              </div>
+            </div>
+          </div>
+          }
+
+          <!-- Military Experience -->
+          @if (cvData.primaryBadgeNumber != null) {
+          <div class="mb-3 text-[11px]">
+            <div class="flex">
+              <div class="w-6">{{experiences.length + 1}}.</div>
+              <div class="flex-1">
+                <div class="font-bold text-[11px]">Bangladesh Army ({{totalMilitaryExperience()}} yrs)</div>
+                @if (cvData.commissionDate && cvData.retirementDate) {
+                <div>({{formatDate(cvData.commissionDate)}} - {{formatDate(cvData.retirementDate)}})</div>
+                }
+                @if (cvData.primaryBadgeNumber) {
+                <div>BA NO: {{cvData.primaryBadgeNumber}}{{cvData.secondaryBadgeNumber ? '/' +
+                  cvData.secondaryBadgeNumber : ''}}</div>
+                }
+                @if (cvData.militaryRank) {
+                <div>Rank: {{cvData.militaryRank}}</div>
+                }
+                @if (cvData.serviceBranch) {
+                <div>Arms: {{cvData.serviceBranch}}</div>
+                }
+                @if (cvData.militaryTrade) {
+                <div>Military Trade: {{cvData.militaryTrade}}</div>
+                }
+                @if (cvData.militaryCourse) {
+                <div>Course: {{cvData.militaryCourse}}</div>
+                }
+                @if (cvData.serviceBranch && cvData.militaryTrade && cvData.serviceBranch !== cvData.militaryTrade) {
+                <div>Trade: {{cvData.serviceBranch}}</div>
+                }
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+
+
+
+
+      <!-- Academic Qualification -->
+      <div class="mb-4">
+        <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">Academic Qualification:</h3>
+        <div class="pt-[10px]">
+          <table class="w-full border border-gray-600">
+            <thead>
+              <tr class="bg-white">
+                <th class="border border-gray-600 text-center text-[11px]">Exam Title</th>
+                <th class="border border-gray-600 text-center text-[11px]">Concentration / Major</th>
+                <th class="border border-gray-600 text-center text-[11px]">Institute</th>
+                <th class="border border-gray-600 text-center text-[11px]">Result</th>
+                <th class="border border-gray-600 text-center text-[11px]">Pas.Year</th>
+                <th class="border border-gray-600 text-center text-[11px]">Duration</th>
+                <th class="border border-gray-600 text-center text-[11px]">Achievement</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (edu of educations; track edu) {
+              <tr class="text-sm">
+                <td class="border border-gray-600 text-center text-[11px]">{{edu.degree}}</td>
+                <td class="border border-gray-600 text-center text-[11px]">{{edu.majorSubject}}</td>
+                <td class="border border-gray-600 text-center text-[11px]">{{edu.instituteName}}</td>
+                <td class="border border-gray-600 text-center text-[11px]">{{edu.resultStatus}}</td>
+                <td class="border border-gray-600 text-center text-[11px]">{{edu.passingYear}}</td>
+                <td class="border border-gray-600 text-center text-[11px]">{{edu.courseDurationInMonths}}</td>
+                <td class="border border-gray-600 text-center text-[11px]" [innerHTML]="edu.achievements"></td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      @if(bdJamCertificate != null && bdJamCertificate.length > 0) { 
+        <div class="mb-4">
+          <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">Bdjobs-AMCAT Employability Certificates:</h3>
+          <div class="pt-[10px]">
+            <table class="w-full border border-gray-600">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="border border-gray-600 text-center w-3/5 text-[11px]">Test Name</th>
+                  <th class="border border-gray-600 text-center w-2/5 text-[11px]">Test Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (cert of bdJamCertificate; track cert) {
+                <tr class="text-[11px]">
+                  <td class="border border-gray-600 text-center">
+                    <strong>{{cert.jobRole}}</strong><br>
+                    {{cert.moduleName}}
+                  </td>
+                  <td class="border border-gray-600 p-2 text-center">{{formatDate(cert.examDate)}}</td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+
+      <!-- Professional Qualification -->
+      @if(qualifications != null && qualifications.length > 0) {
+        <div class="mb-4">
+          <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">Professional Qualification:</h3>
+          <div class="pt-[10px]">
+            <table class="w-full border border-gray-600">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="border border-gray-600 text-center text-[11px]">Certification</th>
+                  <th class="border border-gray-600 text-center text-[11px]">Institute</th>
+                  <th class="border border-gray-600 text-center text-[11px]">Location</th>
+                  <th class="border border-gray-600 text-center text-[11px]">From</th>
+                  <th class="border border-gray-600 text-center text-[11px]">To</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (qual of qualifications; track qual) {
+                <tr class="text-sm">
+                  <td class="border border-gray-600 text-center text-[11px]">{{qual.projectName}}</td>
+                  <td class="border border-gray-600 text-center text-[11px]">{{qual.projectInstitute}}</td>
+                  <td class="border border-gray-600 text-center text-[11px]">{{qual.projectLocation}}</td>
+                  <td class="border border-gray-600 text-center text-[11px]">{{formatDate(qual.projectStartDate)}}</td>
+                  <td class="border border-gray-600 text-center text-[11px]">{{formatDate(qual.projectEndDate)}}</td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+
+      <!-- Training Summary -->
+      <div class="mb-4">
+        <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">Training Summary:</h3>
+        <div class="pt-[10px]">
+          <table class="w-full border border-gray-600">
+            <thead>
+              <tr class="bg-gray-100">
+                <th class="border border-gray-600 text-center text-[11px]">Training Title</th>
+                <th class="border border-gray-600 text-center text-[11px]">Topic</th>
+                <th class="border border-gray-600 text-center text-[11px]">Institute</th>
+                <th class="border border-gray-600 text-center text-[11px]">Country</th>
+                <th class="border border-gray-600 text-center text-[11px]">Location</th>
+                <th class="border border-gray-600 text-center text-[11px]">Year</th>
+                <th class="border border-gray-600 text-center text-[11px]">Duration</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (train of trainings; track train) {
+              <tr class="text-sm">
+                <td class="border border-gray-600 text-center text-[11px]">{{train.trainingName}}</td>
+                <td class="border border-gray-600 text-center text-[11px]">{{train.trainingTopics}}</td>
+                <td class="border border-gray-600 text-center text-[11px]">{{train.trainingInstitute}}</td>
+                <td class="border border-gray-600 text-center text-[11px]">{{train.trainingCountry}}</td>
+                <td class="border border-gray-600 text-center text-[11px]">{{train.trainingLocation}}</td>
+                <td class="border border-gray-600 text-center text-[11px]">{{train.trainingYear}}</td>
+                <td class="border border-gray-600 text-center text-[11px]">{{train.trainingDuration}}</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Career and Application Information -->
+      <div class="mb-4">
+        <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">Career and Application Information:
+        </h3>
+        <div class="pt-[10px]">
+          <table class="w-full">
+            <tbody>
+              <tr class="text-sm">
+                <td class="w-1/3">Preferred Job Category</td>
+                <td class="w-1/12 text-center">:</td>
+                <td class="w-7/12">
+                  @for (cat of cvData.category; track cat) {
+                  {{cat.categoryname}}{{!$last ? ', ' : ''}}
+                  }
+                </td>
+              </tr>
+              <tr class="text-sm">
+                <td>Looking For</td>
+                <td class="text-center">:</td>
+                <td>{{cvData.preferences}} Level Job</td>
+              </tr>
+              <tr class="text-sm">
+                <td>Present Salary</td>
+                <td class="text-center">:</td>
+                <td>Tk. {{cvData.currentSalary}}</td>
+              </tr>
+              <tr class="text-sm">
+                <td>Expected Salary</td>
+                <td class="text-center">:</td>
+                <td>Tk. {{cvData.expectedSalary}}</td>
+              </tr>
+              <tr class="text-sm">
+                <td>Preferred District</td>
+                <td class="text-center">:</td>
+                <td>
+                  @for (dist of cvData.preferredDistrict; track dist) {
+                  {{dist.preferredDistrictLocationName}}{{!$last ? ', ' : ''}}
+                  }
+                </td>
+              </tr>
+              <tr class="text-sm">
+                <td>Preferred Country</td>
+                <td class="text-center">:</td>
+                <td>
+                  @for (country of cvData.preferredCountry; track country) {
+                  {{country.preferredCountryLocationName}}{{!$last ? ', ' : ''}}
+                  }
+                </td>
+              </tr>
+              <tr class="text-sm">
+                <td>Preferred Organization Types</td>
+                <td class="text-center p-1">:</td>
+                <td>
+                  @for (org of cvData.organization; track org) {
+                  {{org.organizationname}}{{!$last ? ', ' : ''}}
+                  }
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Specialization -->
+      <div class="mb-4">
+        <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">Specialization:</h3>
+        <div class="pt-[10px]">
+          <table class="w-full border border-gray-600">
+            <thead>
+              <tr class="bg-gray-100">
+                <th class="border border-gray-600 text-center text-[11px] w-2/5">Fields of Specialization</th>
+                <th class="border border-gray-600 text-center text-[11px] w-3/5">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-sm">
+                <td class="border border-gray-600 p-2">
+                  <ul class="list-disc pl-5">
+                    @for (field of skills; track field) {
+                    <li>{{field.nameOfSkill}}</li>
+                    }
+                  </ul>
+                </td>
+                <td class="border border-gray-600 p-2">{{cvData.skillDescription}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Accomplishments -->
+      <div class="mb-4">
+        <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">Accomplishment</h3>
+
+        @if (accomplishments.portfolio.length > 0) {
+        <div class="mb-4">
+          <h4 class="text-[11px]">Portfolio</h4>
+          @for (item of accomplishments.portfolio; track $index) {
+          <div class="mb-3 text-[11px]">
+            <div class="flex">
+              <div class="w-6">{{$index + 1}}.</div>
+              <div class="flex-1">
+                @if (item.accomplishmenttitle) {
+                <div>{{item.accomplishmenttitle}}</div>
+                }
+                @if (item.accomplishmenturl) {
+                <div>URL: {{item.accomplishmenturl}}</div>
+                }
+                @if (item.accomplishmentdescription) {
+                <div>{{item.accomplishmentdescription}}</div>
+                }
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+        }
+
+        @if (accomplishments.publication.length > 0) {
+        <div class="mb-4">
+          <h4 class="text-[11px]">Publications</h4>
+          @for (item of accomplishments.publication; track $index) {
+          <div class="mb-3 text-[11px]">
+            <div class="flex">
+              <div class="w-6">{{$index + 1}}.</div>
+              <div class="flex-1">
+                @if (item.accomplishmenttitle) {
+                <div>{{item.accomplishmenttitle}}</div>
+                }
+                @if (item.accomplishmenturl) {
+                <div>URL: {{item.accomplishmenturl}}</div>
+                }
+                @if (item.accomplishmentdescription) {
+                <div>{{item.accomplishmentdescription}}</div>
+                }
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+        }
+
+        @if (accomplishments.award.length > 0) {
+        <div class="mb-4">
+          <h4 class="text-[11px]">Awards</h4>
+          @for (item of accomplishments.award; track $index) {
+          <div class="mb-3 text-[11px]">
+            <div class="flex">
+              <div class="w-6">{{$index + 1}}.</div>
+              <div class="flex-1">
+                @if (item.accomplishmenttitle) {
+                <div>{{item.accomplishmenttitle}}</div>
+                }
+                @if (item.accomplishmenturl) {
+                <div>URL: {{item.accomplishmenturl}}</div>
+                }
+                @if (item.accomplishmentdescription) {
+                <div>{{item.accomplishmentdescription}}</div>
+                }
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+        }
+
+        @if (accomplishments.project.length > 0) {
+        <div class="mb-4">
+          <h4 class="text-[11px]">Projects</h4>
+          @for (item of accomplishments.project; track $index) {
+          <div class="mb-3 text-[11px]">
+            <div class="flex">
+              <div class="w-6">{{$index + 1}}.</div>
+              <div class="flex-1">
+                @if (item.accomplishmenttitle) {
+                <div>{{item.accomplishmenttitle}}</div>
+                }
+                @if (item.accomplishmenturl) {
+                <div>URL: {{item.accomplishmenturl}}</div>
+                }
+                @if (item.accomplishmentdescription) {
+                <div>{{item.accomplishmentdescription}}</div>
+                }
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Extra Curricular Activities -->
+       @if(cvData.extraCurricularActivities != null){
+
+         <div class="mb-0.5">
+           <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">Extra Curricular Activities:</h3>
+           <p class="text-[11px] pl-[5px] pt-[7px] pb-[10px] break-words">{{cvData.extraCurricularActivities}}</p>
+         </div>
+       }
+    
+
+      <!-- Language Proficiency -->
+      @if(languages!= null && languages.length > 0){
+      <div class="mb-4">
+        <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">Language Proficiency:</h3>
+        <div class="pt-[10px]">
+          <table class="w-full border border-gray-600">
+            <thead>
+              <tr class="bg-white">
+                <th class="border border-gray-600 text-center text-[11px]">Language</th>
+                <th class="border border-gray-600 text-center text-[11px]">Reading</th>
+                <th class="border border-gray-600 text-center text-[11px]">Writing</th>
+                <th class="border border-gray-600 text-center text-[11px]">Speaking</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (lang of languages; track lang) {
+              <tr class="text-sm">
+                <td class="border border-gray-600 text-center text-[11px]">{{lang.languageName}}</td>
+                <td class="border border-gray-600 text-center text-[11px]">{{lang.languageReading}}</td>
+                <td class="border border-gray-600 text-center text-[11px]">{{lang.languageWriting}}</td>
+                <td class="border border-gray-600 text-center text-[11px]">{{lang.languageSpeaking}}</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
+
+      <!-- Personal Details -->
+        <div class="mb-4">
+          <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">Personal Details:</h3>
+          <div class="pl-[2px] pt-[7px] pb-[10px]">
+            <table class="w-full">
+              <tbody>
+                @if(cvData.fatherName) {
+                <tr class="text-sm">
+                  <td class="w-1/4 pl-[5px]">Father's Name</td>
+                  <td class="w-1/12 text-center">:</td>
+                  <td class="w-2/3">{{cvData.fatherName}}</td>
+                </tr>
+                }
+                
+                @if(cvData.motherName) {
+                <tr class="text-sm">
+                  <td class="pl-[5px]">Mother's Name</td>
+                  <td class="text-center">:</td>
+                  <td class="">{{cvData.motherName}}</td>
+                </tr>
+                }
+                
+                @if(cvData.dateOfBirth) {
+                <tr class="text-sm">
+                  <td class="pl-[5px]">Date of Birth</td>
+                  <td class="text-center">:</td>
+                  <td class="">{{formatDate(cvData.dateOfBirth)}}</td>
+                </tr>
+                }
+                
+                @if(cvData.gender) {
+                <tr class="text-sm">
+                  <td class="pl-[5px]">Gender</td>
+                  <td class="text-center">:</td>
+                  @if(cvData.gender=='F'){
+                  <td class="">Female</td>}
+                  @else {
+                  <td class="">Male</td>
+                  }
+                </tr>
+                }
+                
+                @if(cvData.maritalStatus) {
+                <tr class="text-sm">
+                  <td class="pl-[5px]">Marital Status</td>
+                  <td class="text-center">:</td>
+                  @if(cvData.maritalStatus=='1'){
+                  <td class="">Married</td>}
+                  @else {
+                  <td class="">Unmarried</td>
+                  }
+                </tr>
+                }
+                
+                @if(cvData.nationality) {
+                <tr class="text-sm">
+                  <td class="pl-[5px]">Nationality</td>
+                  <td class="text-center">:</td>
+                  <td class="">{{cvData.nationality}}</td>
+                </tr>
+                }
+                
+                @if(cvData.nationalID) {
+                <tr class="text-sm">
+                  <td class="pl-[5px]">National Id No.</td>
+                  <td class="text-center">:</td>
+                  <td class="">{{cvData.nationalID}}</td>
+                </tr>
+                }
+                
+                @if(cvData.religion) {
+                <tr class="text-sm">
+                  <td class="pl-[5px]">Religion</td>
+                  <td class="text-center">:</td>
+                  <td class="">{{cvData.religion}}</td>
+                </tr>
+                }
+                
+                @if(cvData.passportNumber) {
+                <tr class="text-sm">
+                  <td class="pl-[5px]">Passport No</td>
+                  <td class="text-center">:</td>
+                  <td class="">{{cvData.passportNumber}}</td>
+                </tr>
+                }
+                
+                @if(cvData.passportIssueDate) {
+                <tr class="text-sm">
+                  <td class="pl-[5px]">Passport Issue Date</td>
+                  <td class="text-center">:</td>
+                  <td class="">{{formatDate(cvData.passportIssueDate)}}</td>
+                </tr>
+                }
+                
+                @if(getAddressByType(2)) {
+                <tr class="text-sm">
+                  <td class="pl-[5px]">Permanent Address</td>
+                  <td class="text-center">:</td>
+                  <td class="p-1">{{getAddressByType(2)}}</td>
+                </tr>
+                }
+                
+                @if(getAddressByType(1)) {
+                <tr class="text-sm">
+                  <td class="pl-[5px]">Current Location</td>
+                  <td class="text-center">:</td>
+                  <td class="p-1">{{getAddressByType(1)}}</td>
+                </tr>
+                }
+                
+                @if(cvData.bloodGroup) {
+                <tr class="text-sm">
+                  <td class="pl-[5px]">Blood Group</td>
+                  <td class="text-center">:</td>
+                  <td class="">{{cvData.bloodGroup}}</td>
+                </tr>
+                }
+                
+                @if(cvData.heightInCm) {
+                <tr class="text-sm">
+                  <td class="pl-[5px]">Height (Meter):</td>
+                  <td class="text-center">:</td>
+                  <td class="">{{cvData.heightInCm}}</td>
+                </tr>
+                }
+                
+                @if(cvData.weightInKg) {
+                <tr class="text-sm">
+                  <td class="pl-[5px]">Weight (Kg):</td>
+                  <td class="text-center">:</td>
+                  <td class="">{{cvData.weightInKg}}</td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Difficulties -->
+          @if(disability && disability.length > 0) {
+          <div class="mt-4">
+            <p class="text-sm">I have some difficulties, my difficulty(s) is given below</p>
+            <ul class="list-disc pl-5 text-sm">
+              @for (diff of disability; track diff) {
+              <li>
+                <strong>{{diff.disabilityName}}</strong> ({{diff.disabilityLevel}})
+              </li>
+              }
+            </ul>
+          </div>
+          }
+        </div>
+
+      <!-- References -->
+       @if(reference!= null && reference.length > 0){
+      <div class="mb-4">
+        <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">Reference (s):</h3>
+        @if (reference && reference.length > 0) {
+          <div class="grid grid-cols-2 gap-4 pt-[10px]">
+            @for (ref of reference; track ref.referenceId) {
+              @if (ref.referenceName || ref.referenceOrganization || ref.referenceDesignation || 
+                  ref.referenceAddress || ref.referencePhone || ref.referenceHomePhone || 
+                  ref.referenceMobile || ref.referenceEmail || ref.referenceRelation) {
+                <div class="border-r border-gray-300 pr-4">
+                  <table class="w-full text-sm">
+                    <tbody>
+                      @if (ref.referenceName?.trim()) {
+                      <tr class="text-sm">
+                        <td class="w-1/3 pl-[5px] align-top">Name</td>
+                        <td class="w-2/3">: {{ref.referenceName}}</td>
+                      </tr>
+                      }
+                      @if (ref.referenceOrganization?.trim()) {
+                      <tr class="text-sm">
+                        <td class="pl-[5px] align-top">Organization</td>
+                        <td>: {{ref.referenceOrganization}}</td>
+                      </tr>
+                      }
+                      @if (ref.referenceDesignation?.trim()) {
+                      <tr class="text-sm">
+                        <td class="pl-[5px] align-top">Designation</td>
+                        <td>: {{ref.referenceDesignation}}</td>
+                      </tr>
+                      }
+                      @if (ref.referenceAddress?.trim()) {
+                      <tr class="text-sm">
+                        <td class="pl-[5px] align-top">Address</td>
+                        <td>: {{ref.referenceAddress}}</td>
+                      </tr>
+                      }
+                      @if (ref.referencePhone?.trim() || ref.referenceHomePhone?.trim() || ref.referenceMobile?.trim()) {
+                      <tr class="text-sm">
+                        <td class="pl-[5px] align-top">Contact</td>
+                        <td>
+                          : @if (ref.referencePhone?.trim()) {Phone: {{ref.referencePhone}}<br>}
+                          @if (ref.referenceHomePhone?.trim()) {Home: {{ref.referenceHomePhone}}<br>}
+                          @if (ref.referenceMobile?.trim()) {Mobile: {{ref.referenceMobile}}}
+                        </td>
+                      </tr>
+                      }
+                      @if (ref.referenceEmail?.trim()) {
+                      <tr class="text-sm">
+                        <td class="pl-[5px] align-top">Email</td>
+                        <td>: {{ref.referenceEmail}}</td>
+                      </tr>
+                      }
+                      @if (ref.referenceRelation?.trim()) {
+                      <tr class="text-sm">
+                        <td class="pl-[5px] align-top">Relation</td>
+                        <td>: {{ref.referenceRelation}}</td>
+                      </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+            }
+          </div>
+        }
+      </div>
+    }
+      
+
+    </div>
+  </div>
+  }
+</div>

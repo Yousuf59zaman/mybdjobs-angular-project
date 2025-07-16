@@ -1,0 +1,286 @@
+
+<!-- leftbar.component.html -->
+<ng-container *transloco="let t">
+  <div *ngIf="isOpen" class="lg:hidden fixed inset-0 z-[10000]">
+    <!-- Backdrop -->
+    <div
+      class="absolute inset-0 bg-black/50 transition-opacity transition-opacity duration-700"
+      (click)="onCloseClick()"
+    ></div>
+    <!-- Sidebar Content -->
+    <div
+      class="absolute left-0 top-0 h-full w-64 bg-white shadow-xl transform transition-transform duration-700 w-[80%]"
+      [class.translate-x-0]="isOpen"
+      [class.-translate-x-full]="!isOpen"
+    >
+      <!-- Close Button -->
+      <button
+        (click)="onCloseClick()"
+        class="absolute right-4 top-4 z-50 p-2 hover:text-[#008020]"
+      >
+        <span class="font-inter text-md text-green-700">x</span>
+      </button>
+
+      <!-- Rest of sidebar content -->
+      <div class="h-full overflow-y-auto pt-10">
+        <!-- Your existing sidebar items -->
+        <a
+        href="https://mybdjobs.bdjobs.com/mybdjobs/welcome.asp"
+        class="text-sm text-[#616161] px-5 py-2 border-l-4 border-transparent hover:bg-gray-100 hover:text-[#008020] hover:border-l-4 hover:border-l-[#008020] focus:bg-gray-100 focus:border-l-4 focus:border-l-[#008020]"
+      >
+        <span class="icon-home pl-[2px]"></span
+        ><span class="pl-3">{{ t("leftbar.home") }}</span>
+      </a>
+        <ng-container *ngFor="let item of sidebarItems">
+          <div
+            class="hs-accordion"
+            [class.active]="item.isActive"
+            [id]="item.id"
+          >
+            <button
+              class="hs-accordion-toggle px-5 py-2 hs-accordion-active:text-[#008020] text-[13px] inline-flex items-center gap-x-3 w-full font-extrabold text-start text-[#008020] disabled:pointer-events-none"
+              (click)="toggleAccordion(item)"
+              [attr.aria-expanded]="item.isActive"
+              [attr.aria-controls]="'#' + item.id + '-collapse'"
+            >
+              <ng-container *ngIf="!item.isActive">
+                <svg
+                  class="block size-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m6 9 6 6 6-6"></path>
+                </svg>
+              </ng-container>
+              <ng-container *ngIf="item.isActive">
+                <svg
+                  class="block size-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m18 15-6-6-6 6"></path>
+                </svg>
+              </ng-container>
+              {{ t("leftbar." + item.title) }}
+              <span
+                *ngIf="item.hasNotification"
+                class="icon-circle notact text-[#D912A1] text-[7px]"
+              ></span>
+            </button>
+
+            <div
+              [id]="item.id + '-collapse'"
+              class="hs-accordion-content w-full overflow-hidden transition-[height] duration-500 text-sm text-[#616161]"
+              [class.hidden]="!item.isActive"
+              role="region"
+              [attr.aria-labelledby]="item.id"
+            >
+              <div class="flex flex-col">
+                <ng-container *ngFor="let subItem of item.items">
+                  <a
+                    [href]="subItem.link"
+                    class="relative px-5 py-2 border-l-4 border-transparent hover:bg-gray-100 hover:text-[#008020] hover:border-l-[#008020]"
+                  >
+                    <span [ngClass]="subItem.iconClass + ' pl-[2px]'"></span>
+                    <span class="pl-3">{{ t("leftbar." + subItem.text) }}</span>
+
+                    <span
+                      *ngIf="subItem.badge"
+                      class="absolute text-[10px] px-[6px] py-[2px] rounded-full leading-none font-extrabold"
+                      [style.color]="subItem.badge.color"
+                      [style.background-color]="subItem.badge.bgColor"
+                      [style.border]="
+                        subItem.badge.borderColor
+                          ? '1px solid ' + subItem.badge.borderColor
+                          : 'none'
+                      "
+                      [ngClass]="subItem.badge.position"
+                    >
+                      {{ subItem.badge.text }}
+                    </span>
+                  </a>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div class="flex flex-col text-sm text-[#616161] ">
+          <a
+            href="https://mybdjobs.bdjobs.com/bn/mybdjobs/accountsettingbn.asp"
+            class="px-5 py-2 border-l-4 border-transparent hover:bg-gray-100 hover:text-[#008020] hover:border-l-4 hover:border-l-[#008020] focus:bg-gray-100 focus:border focus:border-l-[#008020]"
+          >
+            <span class="icon-cogs pl-[2px]"></span
+            ><span class="pl-3 font-extrabold">{{
+              t("leftbar.accountSettings")
+            }}</span>
+          </a>
+          <a
+            href="https://mybdjobs.bdjobs.com/bn/mybdjobs/videoHelpbn.asp"
+            class="px-5 py-2 border-l-4 border-transparent hover:bg-gray-100 hover:text-[#008020] hover:border-l-4 hover:border-l-[#008020] focus:bg-gray-100 focus:border focus:border-l-[#008020]"
+          >
+            <span class="icon-video-help pl-[2px]"></span
+            ><span class="pl-3">{{ t("leftbar.helpVideos") }}</span>
+          </a>
+          <a
+            href="https://mybdjobs.bdjobs.com/bn/mybdjobs/logoutbn.asp"
+            class="px-5 py-2 border-l-4 border-transparent hover:bg-gray-100 hover:text-[#008020] hover:border-l-4 hover:border-l-[#008020] focus:bg-gray-100 focus:border focus:border-l-[#008020]"
+          >
+            <span class="icon-sign-out pl-[2px]"></span
+            ><span class="pl-3">{{ t("leftbar.signOut") }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<!--orginal leftbar-->
+<div class="lg:block">
+  <div
+    class="custom-font bg-[#fff] border border-[#e0e0e0] rounded-s py-4 hidden lg:block w-[262px] max-w-xs"
+    *transloco="let t"
+  >
+    <a
+      href="https://mybdjobs.bdjobs.com/mybdjobs/welcome.asp"
+      class="text-sm text-[#616161] px-5 py-2 border-l-4 border-transparent hover:bg-gray-100 hover:text-[#008020] hover:border-l-4 hover:border-l-[#008020] focus:bg-gray-100 focus:border-l-4 focus:border-l-[#008020]"
+    >
+      <span class="icon-home pl-[2px]"></span
+      ><span class="pl-3">{{ t("leftbar.home") }}</span>
+    </a>
+
+    <div class="hs-accordion-group mt-[10px] mb-[8px] overflow-y-auto">
+      @for (item of sidebarItems; track item.id) {
+      <div class="hs-accordion" [class.active]="item.isActive" [id]="item.id">
+        <button
+          class="hs-accordion-toggle px-5 py-2 hs-accordion-active:text-[#008020] text-[13px] inline-flex items-center gap-x-3 w-full font-extrabold text-start text-[#008020] disabled:pointer-events-none"
+          (click)="toggleAccordion(item)"
+          [attr.aria-expanded]="item.isActive"
+          [attr.aria-controls]="'#' + item.id + '-collapse'"
+        >
+          @if (!item.isActive) {
+          <svg
+            class="block size-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+          } @if (item.isActive) {
+          <svg
+            class="block size-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m18 15-6-6-6 6"></path>
+          </svg>
+          }
+          {{ t("leftbar." + item.title) }}
+          @if (item.hasNotification) {
+          <span class="icon-circle notact text-[#D912A1] text-[7px]"></span>
+          }
+        </button>
+
+        <div
+          [id]="item.id + '-collapse'"
+          class="hs-accordion-content w-full overflow-hidden transition-[height] duration-500 text-sm text-[#616161]"
+          [class.hidden]="!item.isActive"
+          role="region"
+          [attr.aria-labelledby]="item.id"
+        >
+          <div class="flex flex-col">
+            @for (subItem of item.items; track subItem.text) {
+            <a
+              [href]="subItem.link"
+              class="relative px-5 py-2 border-l-4 border-transparent hover:bg-gray-100 hover:text-[#008020] hover:border-l-4 hover:border-l-[#008020] focus:bg-gray-100 focus:border-l-4 focus:border-l-[#008020]"
+            >
+              <span [class]="subItem.iconClass + ' pl-[2px]'"></span>
+              <span class="pl-3">{{ t("leftbar." + subItem.text) }}</span>
+              @if (subItem.badge) {
+              <span
+                class="absolute text-[10px] px-[6px] py-[2px] rounded-full leading-none font-extrabold"
+                [style.color]="subItem.badge.color"
+                [style.background-color]="subItem.badge.bgColor"
+                [style.border]="
+                  subItem.badge.borderColor
+                    ? '1px solid ' + subItem.badge.borderColor
+                    : 'none'
+                "
+                [class]="subItem.badge.position"
+              >
+                {{ subItem.badge.text }}
+              </span>
+              } @if (item.customBadge) {
+              <span
+                class="absolute text-[10px] px-[6px] py-[2px] border rounded-full leading-none"
+                [style.color]="item.customBadge.color"
+                [style.border-color]="item.customBadge.borderColor"
+                [class]="item.customBadge.position"
+              >
+                {{ item.customBadge.text }}
+              </span>
+              }
+            </a>
+            }
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+
+    <hr class="py-[6px]" />
+
+    <div class="flex flex-col text-sm text-[#616161]">
+      <a
+        href="https://mybdjobs.bdjobs.com/bn/mybdjobs/accountsettingbn.asp"
+        class="px-5 py-2 border-l-4 border-transparent hover:bg-gray-100 hover:text-[#008020] hover:border-l-4 hover:border-l-[#008020] focus:bg-gray-100 focus:border focus:border-l-[#008020]"
+      >
+        <span class="icon-cogs pl-[2px]"></span
+        ><span class="pl-3 font-extrabold">{{
+          t("leftbar.accountSettings")
+        }}</span>
+      </a>
+      <a
+        href="https://mybdjobs.bdjobs.com/bn/mybdjobs/videoHelpbn.asp"
+        class="px-5 py-2 border-l-4 border-transparent hover:bg-gray-100 hover:text-[#008020] hover:border-l-4 hover:border-l-[#008020] focus:bg-gray-100 focus:border focus:border-l-[#008020]"
+      >
+        <span class="icon-video-help pl-[2px]"></span
+        ><span class="pl-3">{{ t("leftbar.helpVideos") }}</span>
+      </a>
+      <a
+        href="https://mybdjobs.bdjobs.com/bn/mybdjobs/logoutbn.asp"
+        class="px-5 py-2 border-l-4 border-transparent hover:bg-gray-100 hover:text-[#008020] hover:border-l-4 hover:border-l-[#008020] focus:bg-gray-100 focus:border focus:border-l-[#008020]"
+      >
+        <span class="icon-sign-out pl-[2px]"></span
+        ><span class="pl-3">{{ t("leftbar.signOut") }}</span>
+      </a>
+    </div>
+  </div>
+</div>

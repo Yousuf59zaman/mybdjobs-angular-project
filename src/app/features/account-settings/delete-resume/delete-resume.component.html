@@ -1,0 +1,61 @@
+
+<div class="bg-white rounded-none md:rounded-2xl border border-[#E4E7EC] shadow-lg w-full shadow-[#d8d8d8] !h-full">
+    <div class="px-4 md:px-6 mt-5 flex flex-col items-start gap-1.5 w-full">
+    <h2 class="text-base md:text-2xl font-semibold text-primary-900">Delete Resume</h2>
+    <span class="text-xs md:text-sm font-medium text-primary-500">
+      Permanently remove your uploaded and posted resume. This won't affect your account.
+    </span>
+  </div>
+
+  <hr class="border my-2 md:my-5 mx-0">
+
+  <div class="max-w-[668px] mx-auto">
+    <div class="w-full p-5">
+      <div class="flex flex-col gap-1">
+        <div class="rounded-full p-0.5 pe-1 flex items-center gap-1 bg-[#FCF3FA] border border-[#F6D4ED] w-fit">
+          <img src="images/profile-avatar.jpeg" alt="" class="size-3.5 rounded-full">
+          <span class="text-[10px] text-[#B32D7D]">{{ profileUsername() }}</span>
+        </div>
+        <h3 class="text-primary-900 font-semibold text-[17px]">Delete your resume</h3>
+      </div>
+      <div class="my-3 md:my-7 w-full font-medium flex flex-col gap-2">
+        <span class="text-sm text-primary-900">*Note</span>
+        <span class="text-xs text-[#344054]">
+          This will remove your posted and uploaded resume. Your account will be available after this operation.
+        </span>
+      </div>
+      <div class="w-full mb-3 md:mb-5">
+        <label for="password-confirm" class="text-[13px] md:text-xs font-medium text-primary-700">Password</label>
+        <div class="w-full relative">
+          <input
+            id="password-confirm"
+            type="password"
+            class="rounded-md w-full px-3 py-2 border text-[13px] border-[#D0D5DD] focus:ring-0 focus:border-[#B32D7D]"
+            appNumericOnly
+            [isNumericOnly]="false"
+            placeholder="Type password"
+          >
+          <span
+            class="icon-eye text-primary-500 text-sm absolute right-3 top-3.5 cursor-pointer"
+            (click)="onClickTogglePassword()"
+          ></span>
+        </div>
+      </div>
+      <div class="w-full mb-3 md:mb-5">
+        <label for="confirm-reason" class="text-[13px] md:text-xs font-medium text-primary-700">Reason To Delete Resume</label>
+        <textarea
+          name="confirm-reason"
+          id="confirm-reason"
+          class="rounded-md w-full px-3 py-2 border text-[13px] border-[#D0D5DD] focus:ring-0 focus:border-[#B32D7D]"
+          rows="4"
+          placeholder="Type reason"
+        ></textarea>
+      </div>
+      <button
+        class="bg-[#C63C92] text-white text-xs px-3.5 py-2.5 rounded-lg border border-[#ccc] font-semibold"
+        (click)="onClickConfirmDelete()">
+        Confirm
+      </button>
+    </div>
+  </div>
+</div>

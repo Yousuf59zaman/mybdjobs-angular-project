@@ -1,0 +1,114 @@
+<div class="flex h-full md:h-[750px] bg-[#FDFBFC]" *transloco="let t read:'signin'">
+    <div class="hidden md:block w-3/5 border-r border-[#BCBCBC]">
+        <app-carousel></app-carousel>
+    </div>
+    <div class="md: w-full md:w-3/4">
+       
+        @switch (currentPanel()) {
+            
+            @case('username'){
+                <div class="mt-10 md:mt-0 md:flex  items-center justify-center h-full">
+                    <app-user-authentication></app-user-authentication>
+                </div>
+            }
+            @case('password'){
+                <div class="h-full">
+                    <button (click)="backPage('username')" class="text-[#5D6679] text-sm font-normal ml-4 mt-4 md:ml-8 md:mt-8"><span class="icon-angle-left-long mr-2"></span>{{t('back')}}</button>
+                  <div class="mt-10 md:mt-0 md:flex items-center justify-center h-[85%]">
+                      <app-password></app-password>
+                  </div>
+                </div>
+            }
+
+            @case('otp'){
+                <div class="h-full">
+                    <button (click)="backPage('username')" class="text-[#5D6679] text-sm font-normal ml-4 mt-4 md:ml-8 md:mt-8"><span class="icon-angle-left-long mr-2"></span>{{t('back')}}</button>
+                  <div class="mt-10 md:mt-0 md:flex items-center justify-center h-[85%]">
+                      <app-special-skilled-otp></app-special-skilled-otp>
+                  </div>
+                </div>
+            }
+            @case('find-acc'){
+                <div class="h-full">
+                    <button (click)="backPage('username')" class="text-[#5D6679] text-sm font-normal ml-4 mt-4 md:ml-8 md:mt-8"><span class="icon-angle-left-long mr-2"></span>{{t('back')}}</button>
+                  <div class="mt-10 md:mt-0 md:flex items-center justify-center h-[85%]">
+                      
+                       <app-find-account></app-find-account>
+                  </div>
+                </div>
+            }
+            @case('choose_acc'){
+                <div class="h-full">
+                    <button (click)="backPage('find-acc')" class="text-[#5D6679] text-sm font-normal ml-4 mt-4 md:ml-8 md:mt-8"><span class="icon-angle-left-long mr-2"></span>{{t('back')}}</button>
+                  <div class="mt-10 md:mt-0 md:flex items-center justify-center h-[85%]">
+                      <app-choose-your-account></app-choose-your-account>
+                  </div>
+                </div>
+            }
+            @case('google'){
+                <div class="h-full">
+                    <button (click)="backPage('choose_acc')" class="text-[#5D6679] text-sm font-normal ml-4 mt-4 md:ml-8 md:mt-8"><span class="icon-angle-left-long mr-2"></span>{{t('back')}}</button>
+                  <div class="mt-10 md:mt-0 md:flex items-center justify-center h-[85%]">
+                      <app-access-account></app-access-account>
+                  </div>
+                </div>
+            }
+            @case('linkedin'){
+                <div class="h-full">
+                    <button (click)="backPage('choose_acc')" class="text-[#5D6679] text-sm font-normal ml-4 mt-4 md:ml-8 md:mt-8"><span class="icon-angle-left-long mr-2"></span>{{t('back')}}</button>
+                  <div class="mt-10 md:mt-0 md:flex items-center justify-center h-[85%]">
+                      <app-access-account></app-access-account>
+                  </div>
+                </div>
+            }
+            @case('welcome'){
+                <div class="h-full">
+                    <button (click)="backPage('choose_acc')" class="text-[#5D6679] text-sm font-normal ml-4 mt-4 md:ml-8 md:mt-8"><span class="icon-angle-left-long mr-2"></span>{{t('back')}}</button>
+                  <div class="mt-10 md:mt-0 md:flex items-center justify-center h-[85%]">
+                      <app-welcome></app-welcome>
+                  </div>
+                </div>
+            }
+
+            @case('sec_code'){
+                <div class="h-full">
+                    <button (click)="backPage('welcome')" class="text-[#5D6679] text-sm font-normal ml-4 mt-4 md:ml-8 md:mt-8"><span class="icon-angle-left-long mr-2"></span>{{t('back')}}</button>
+                  <div class="mt-10 md:mt-0 md:flex items-center justify-center h-[85%]">
+                      <app-security-code></app-security-code>
+                  </div>
+                </div>
+            }
+
+            @case('access_acc'){
+                <div class="h-full">
+                    <button (click)="backPage('welcome')" class="text-[#5D6679] text-sm font-normal ml-4 mt-4 md:ml-8 md:mt-8"><span class="icon-angle-left-long mr-2"></span>{{t('back')}}</button>
+                  <div class="mt-10 md:mt-0 md:flex items-center justify-center h-[85%]">
+                      <app-access-account></app-access-account>
+                  </div>
+                </div>
+            }
+
+            @case('reset_pass'){
+                <div class="h-full">
+                    <button (click)="backPage('sec_code')" class="text-[#5D6679] text-sm font-normal ml-4 mt-4 md:ml-8 md:mt-8"><span class="icon-angle-left-long mr-2"></span>{{t('back')}}</button>
+                  <div class="mt-10 md:mt-0 md:flex items-center justify-center h-[85%]">
+                      <app-create-new-pass></app-create-new-pass>
+                  </div>
+                </div>
+            }
+            @case('success'){
+                <div class="h-full">
+                    <button (click)="backPage('reset_pass')" class="text-[#5D6679] text-sm font-normal ml-4 mt-4 md:ml-8 md:mt-8"><span class="icon-angle-left-long mr-2"></span>{{t('back')}}</button>
+                  <div class="mt-10 md:mt-0 md:flex items-center justify-center h-[85%]">
+                      <app-password-reset-successfull></app-password-reset-successfull>
+                  </div>
+                </div>
+            }
+
+
+        }
+        
+      
+        
+    </div>
+</div>

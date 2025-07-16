@@ -1,0 +1,108 @@
+<div class="md:w-full w-[80%] mx-auto  md:mt-0 md:mb-5 mt-7 mb-5" *transloco="let t">
+    <div class="p-10 ">
+        <!-- <h2 class="text-[#004db3] text-2xl pb-5">{{t('photo.title')}}</h2> -->
+            @if(!croppedImage && !filePreview()){
+                <div class="pt-[70px] flex itemcenter justify-center mb-12 ">
+                    <img [src]="'images/User.svg'" alt="" class="">
+                </div>
+            }
+            
+
+            <div class="mt-4 flex flex-col gap-4 ">
+                <div class="text-center flex items-center justify-center">
+
+            <div class="mt-4 flex flex-col   " >
+                
+                    
+                    
+                    @if((filePreview()) && isSkipCropping()) {
+                        <img [src]="filePreview()" class="bg-black max-w-[504px] max-h-[260px]" />
+                    }
+
+                    <div>     
+                        @if(isCropped()){
+                            <img [src]="croppedImage" class="bg-black max-w-fit max-h-fit flex items-center justify-center" />
+                        }
+                    </div>
+                    
+
+                    @if(imageChangedEvent && !isCropped() && !isSkipCropping()){
+                        <div class="w-full max-w-[504px] h-[260px] mx-auto overflow-hidden">
+                            <image-cropper
+                                [imageChangedEvent]="imageChangedEvent"
+                                [maintainAspectRatio]="false"
+                                [aspectRatio]="3/4"
+                                [cropperMinWidth]="50"
+                                [allowMoveImage]="true"
+                                format="jpeg"
+                                outputType="blob"
+                                [roundCropper]="false"
+                                
+                                [hideResizeSquares]="false"
+                                (imageCropped)="imageCropped($event)"
+                                [alignImage]="'center'"
+                                (loadImageFailed)="loadImageFailed()"
+                                [resizeToWidth]="504"
+                                [resizeToHeight]="260"
+                                class="custom-cropper h-[260px]"
+                            ></image-cropper>
+                        </div>   
+                    }
+                    
+                     
+                    
+                    
+                    @if(imageChangedEvent){
+                        @if(!isSkipCropping()){
+                            <div class="sm:flex sm:flex-row sm:items-center sm:justify-center flex flex-col items-center justify-center gap-4 my-6 mb-8 mt-10">
+                                <button class="bg-[#008020] px-4  text-white text-sm w-full sm:w-[200px] h-[35px]" (click)="isSkipCropping.set(true)" >{{t('photo.skipCropping')}}</button>
+                                <button class="bg-[#008020] px-4  text-white text-sm w-full sm:w-[200px] h-[35px]" (click)="uploadPhoto()" >{{t('photo.cropAndUpload')}}</button>  
+                            </div>
+                        }
+                            
+                        
+                        <!--if i click on skip cropping then this works-->
+                        @if(isSkipCropping()){
+                            <div class="flex items-center justify-center my-12 mb-3">
+                                <button class="bg-[#008020] px-4  text-white text-sm w-[200px] h-[35px]" [routerLink]="'/welcome'" (click)="uploadPhoto()">{{t('photo.upload')}}</button>
+                            </div>
+                        }
+                        
+                    }
+                    
+                </div>
+                
+                
+                
+            </div>
+        
+        <div>
+            
+            <div class="flex flex-col items-center pb-12">
+                <label   for="fileInput" class="w-full sm:w-[280px] h-[45px]
+                  bg-[#737373] text-white text-sm sm:text-base border border-[#737373]  sm:px-4 sm:py-2 p-2
+                   rounded cursor-pointer flex items-center justify-center gap-2">
+                    <img [src]="'images/Upload-icn.svg'" alt="" class="">  {{t('photo.uploadAndComplete')}}
+                </label>
+                <input id="fileInput" type="file" (change)="fileChangeEvent($event)" class="hidden" />
+                @if(errorMessage()){
+                    <p  class="text-red-600 text-base my-2 font-semibold break-words">{{ errorMessage() }}</p>
+                }
+
+                <!-- @if(showCroppedImage()){
+                    <img [src]="filePreview()" alt="">
+                } -->
+
+              </div>
+              
+        </div>
+
+    </div>
+</div>
+
+<style>
+
+
+</style>
+
+                    

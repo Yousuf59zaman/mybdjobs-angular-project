@@ -1,0 +1,21 @@
+{
+    "expTitle": "Select your job type",
+    "select Category": "Select Category",
+    "selectWorkType": "Select Work Type/Skills (One or multiple can be added)",
+    "select skill": "Select Skill",
+    "How did you learn1": "How did you learn this ",
+    "How did you learn2": " skill",
+    "Add job skills": "Add job skills",
+    "any experience": "Do you have any experience? (required)",
+    "Latest Company Name": "Latest Company Name (required)",
+    "Latest Designation": "Latest Designation (required)",
+    "Employment Period": "Employment Period (required)",
+    "Currently Working": "Currently Working",
+    "Next": "Next",
+    "delete": "Delete",
+    "selfSkill":"Self",
+    "jobSkill":"Job",
+    "eduSkill":"Educational",
+    "trainingSkill":"Professional Training",
+    "ntvqfSkill":"NTVQF"
+}

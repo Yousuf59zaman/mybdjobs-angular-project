@@ -1,0 +1,133 @@
+{   
+    "signinToDifferentAccount":"Sign in to a different account",
+    "donotHaveAnAccount":"Don't have an account?",
+    "back":"Back",
+    "usernamEmailORMobile":"Username, Email or Mobile",
+    "SignIn": "Sign In",
+    "SignUp": "Sign Up",
+    "submit":"Submit",
+    "continue":"Continue",
+    "notNow":"Not Now",
+    "signin":{
+        "signin":"Sign In",
+        "signup":"Sign Up",
+        "signInTo": "Sign in to",
+        "SignIn": "Sign In",
+        "SignUp": "Sign Up",
+        "username":"Username",
+        "email":"Email",
+        "mobile":"Mobile",
+        "usernamEmailORMobile":"Username, Email or Mobile",
+        "ForgotUserIdOrPassword":"Forgot User ID or Password?",
+        "continue":"Continue",
+        "signInWithMail":"Or Sign in with mail",
+        "signinWithGoogle":"Sign in with Google",
+        "signinWithLinkedIn":"Sign in with LinkedIn",
+        "accessAllOfBdjobsServices":"Access all of Bdjobs Services",
+        "or":"or",
+        "couldnotFindYourBdjobsAccount":"Couldn't find your Bdjobs Account",
+        "signinToDifferentAccount":"Sign in to a different account"
+    },
+
+    "signup":{
+        "createFreeBdjobsAccount":"Create your free Bdjobs account now",
+        "createAccount":"Create Account",
+        "general":{
+            "generalCategory":"General Category",
+            "doctor":"Doctor",
+            "accountant":"Accountant",
+            "projectManager":"Project Manager",
+            "engineer":"Engineer",
+            "lecturer":"Lecturer",
+            "merchendiser":"Merchendiser"
+        },
+        "sps":{
+            "nurse":"nurse",
+            "pathologist":"Pathologist",
+            "driver":"Driver",
+            "engineer":"Engineer",
+            "mechanic":"Mechanic",
+            "electrician":"Electrician",
+            "securityguard":"Security Guard",
+            "chef":"Chef",
+            "peon":"Peon"
+        }
+    },
+    "password":{
+        "welcomeBack":"Welcome Back!",
+        "change":"Change",
+        "password":"Password",
+        "accessAllOfBdjobsServices":"Access all of Bdjobs Services",
+        "SignIn": "Sign in",
+        "SignUp": "Sign Up",
+        "plsEnterPassword":"Please enter password",
+        "wrongPassword":"Wrong password. Try again or click forgot password to reset it."
+        
+    },
+    "otp":{
+        "welcomeBack":"Welcome Back!",
+        "enterCode":"Enter Code",
+        "plsTypetheCodeSentTo":"Please type the code send to",
+        "continue":"Continue",
+        "notNow":"Not Now",
+        "plsEnterOtp":"Please enter Otp",
+        "wrongOtp":"Your OTP didn’t match"
+    },
+
+    "error":{
+        "couldnotFindYourBdjobsAccount":"Couldn't find your MyBdjobs Account!",
+        "plsEnterUsernameEmailOrMobile":"Please enter Username, Email or Mobile",
+        "plsEnterPassword":"Please enter password",
+        "wrongPassword":"Wrong password. Try again or click forgot password to reset it."
+    },
+    "button":{
+        "continue":"Continue"
+    },
+    "findAccount":{
+        "findYourAccount":"Find Your Account",
+        "findAccountText":"",
+        "username_required": "Please provide a valid username"
+        
+    },
+    "chooseAccount":{
+        "chooseYourAccount":"Choose Your Account",
+        "nameIs":"Name is",
+        "userIdIs":"User ID is",
+        "lastLogin":"Last Login"
+    },
+    "welcome": {
+        "welcome": "Welcome",
+        "howDoYouWantToResetYourPassword": "How do you want to reset your password?",
+        "sendCodeViaEmail": "Send code via email",
+        "sendCodeViaMobileSMS": "Send code via mobile SMS",
+        "wantToLoginWithYourExistingUserId": "Do you want to login with your existing User ID?",
+        "enterPasswordToLogin": "Enter password to login"
+    },
+    "securityCode":{
+        "enterSecurityCode": "Enter Security Code",
+        "weSentCode":"We sent your code to",
+        "timeRemaining":"Time Remaining",
+        "resendCode":"Resend Code",
+        "invalidOrExpiredCode":"The code is not correct or expired or you have used this code once.",
+        "exceededLimit":"You exceeded the limit. Try again after 4 hours!"
+    },
+    "resetPass":{
+        "createNewPassword":"Create New Password",
+        "enterNewPassword":"Enter your new Password",
+        "reEnterPassword":"Re-enter your Password",
+        "emptyPassword": "New password can not be empty",
+        "minLength": "Password cannot be less than 8 characters.",
+        "maxLength": "Password cannot be more than 15 characters.",
+        "passwordMismatch": "These passwords do not match.",
+        "noSpecialCharacter": "Password does not allow \", \\, %, &, (, ), <, > or space."
+        
+    },
+    "accessAccount":{
+        "accessYourAccount":"Access Your Account",
+        "accessAccountText":"To access your MyBdjobs account through social media please click on the following button."
+    },
+    "success":{
+        "succesfully":"Succesfully",
+        "passwordChanged": "Your password has been changed"
+    }
+}

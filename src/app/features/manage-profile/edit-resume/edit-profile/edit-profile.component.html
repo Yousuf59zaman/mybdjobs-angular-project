@@ -1,0 +1,22 @@
+
+<div class="bg-white rounded-none md:rounded-2xl border border-gray-200 shadow-sm w-full">
+  <app-edit-profile-tabs (subTabEmitter)="getSubTab($event)"/>
+  
+  <div class="my-4 mx-6">
+    @switch (mainTabGetter()) {
+      @case (mainTabs[0].value) {
+        <app-personal-info [subTabDetails]="subTab()"/>
+      } @case (mainTabs[1].value) {
+        <app-education-training [subTabDetails]="subTab()"/>
+      } @case (mainTabs[2].value) {
+        <app-employment [subTabDetails]="subTab()"/>
+      } @case (mainTabs[3].value) {
+        <app-other-info [subTabDetails]="subTab()"/>
+      } @case (mainTabs[4].value) {
+        <app-accomplishment-info [subTabDetails]="subTab()"/>
+      }
+    }
+  </div>
+</div>
+<!-- <div class="flex-grow overflow-auto">
+</div> -->

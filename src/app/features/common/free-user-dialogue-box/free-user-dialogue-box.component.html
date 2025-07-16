@@ -1,0 +1,36 @@
+<div class="flex justify-center px-4 md:px-20 py-5">
+    <div class="border border-[#E393C3] shadow-[0px_2px_4px_0px_rgba(0,0,0,0.25)] py-7 px-4 sm:px-8 text-center flex flex-col items-center gap-8 w-full max-w-3xl">
+  
+      <div class="flex items-center justify-center">
+        <div class="flex items-center justify-center w-[60px] h-[60px] rounded-full bg-[#F0D5E5] shadow-[0px_2px_4px_rgba(0,0,0,0.25)] text-[32px] font-semibold">
+          <span class="{{iconName}} text-[#B32D7D] tracking-[0.48px]"></span>
+        </div>
+      </div>
+  
+      <div class="px-2 sm:px-0">
+        <h3 class="text-[#333] font-inter text-[18px] sm:text-[20px] font-semibold leading-[24px] pb-2">
+          <span class="text-[#B32D7D] font-bold mr-1 text-[20px] sm:text-[22px]">{{totalCvView}}</span>
+          {{title}}
+        </h3>
+  
+        <p class="text-[#333] text-[16px] leading-[22px]">{{subTitle}}</p>
+  
+        <div class="mt-4" *transloco="let t">
+          <span class="flex flex-col md:flex-row justify-center items-center gap-1 mb-1">
+            <img class="bdjobs-pro-img" src="./images/bdjobs Pro.svg" alt="bdjobs pro">
+            <p class="text-[#B32D7D] text-[15px] leading-[20px] m-0">
+              {{t('employerInterest.subscription')}}
+            </p>
+          </span>
+          <p class="text-[#B32D7D] text-[15px] leading-[20px]"> {{t('employerInterest.exclusiveFeature')}}</p>
+        </div>
+      </div>
+  
+      <div class="flex justify-center bg-[#008020] px-6 py-2 text-white text-[14px] font-medium rounded-[4px] hover:bg-[#006a1a] transition-colors duration-200" *transloco="let t">
+        <a target="_blank" href="https://mybdjobs.bdjobs.com/mybdjobs/package-info.asp" class="mr-2">{{t('employerInterest.getBdJobsPro')}}</a>
+        <i class="icon-angle-right-n mt-1"></i>
+      </div>
+  
+    </div>
+  </div>
+  

@@ -1,0 +1,187 @@
+<div class="flex flex-col md:flex-row justify-between items-start gap-4 px-6 py-5 w-full">
+  <div class="w-fit">
+    <h1 class="text-2xl font-semibold text-primary-900">Edit Bdjobs Profile</h1>
+    <p class="text-xs md:text-sm text-primary-500 mt-1">Update your Bdjobs profile anytime. Stay ready for the next opportunity.</p>
+  </div>
+  <div class="flex gap-2 w-full md:w-fit flex-row items-center justify-between md:justify-normal md:items-start">
+    <div class="flex justify-between items-center px-1.5 md:px-3 py-1 gap-0.5 md:gap-2 bg-[#F9FAFB] border border-[#E4E7EC] rounded-md w-auto">
+      <span class="text-xs font-medium text-primary-700 max-w-[24ch] truncate hidden md:block">Share Resume with Employers</span>
+      <span class="text-xs font-medium text-primary-700 max-w-[8ch] truncate md:hidden block">Profile Privacy</span>
+      <img src="images/help-circle.svg" alt="" class="w-0 hidden md:block md:w-fit">
+      <div class="flex items-center gap-1 px-2 py-1 bg-[#ECFDF3] border border-[#ABEFC6] rounded-md">
+        <span class="text-xs font-medium text-[#067647]">Public</span>
+        <span class="icon-lock-open text-[10px] font-light text-[#17B26A]"></span>
+      </div>
+    </div>
+    <div class="flex justify-between items-center px-1.5 md:px-3 py-1 gap-0.5 md:gap-2 bg-[#F9FAFB] border border-[#E4E7EC] rounded-md w-auto">
+      <span class="text-xs font-medium text-primary-700 max-w-[24ch] truncate hidden md:block">Open to Work Immediately</span>
+      <span class="text-xs font-medium text-primary-700 max-w-[8ch] truncate md:hidden block">Immediately Available</span>
+      <img src="images/help-circle.svg" alt="" class="w-0 hidden md:block md:w-fit">
+      <div class="flex items-center gap-1 px-2 py-1 bg-[#FEDF89] border border-[#ABEFC6] rounded-md">
+        <span class="text-xs font-medium text-[#B54708]">No</span>
+        <span class="icon-times-o text-[10px] font-light text-[#F79009]"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="border my-2 md:my-5 mx-5 md:mx-0">
+
+<div class="px-6 my-5 hidden md:grid w-full">
+  <div class="border border-[#F2F4F7] bg-gradient-to-t from-[#FEF3F2] to-[#fff] p-5 rounded-xl">
+    <div class="flex items-center w-full justify-between">
+      <div class="flex items-center gap-5">
+        <!-- 100% -->
+        <div class="relative size-[4.5rem]">
+          <svg class="size-full" width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="18" r="16" fill="none" class="stroke-current text-[#BDDBC4]" stroke-width="3"></circle>
+            <g class="origin-center transform -rotate-90">
+              <circle cx="18" cy="18" r="16" fill="none" class="text-[#C63C92] stroke-current" stroke-width="3"
+                stroke-dasharray="101" [attr.stroke-dashoffset]="
+                  100 - (profileMatchingScore() || 0)
+                "></circle>
+            </g>
+          </svg>
+          <!-- Percentage Text -->
+          <div class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 start-1/2">
+            <span class="text-center text-sm font-bold">{{ profileMatchingScore() }}%</span>
+          </div>
+        </div>
+        <div class="">
+          <p class="text-xl font-semibold">
+            We've built a resume based on your profile
+          </p>
+          <span class="flex items-center gap-3 text-sm text-[#667085]">
+            <p class="font-medium">Last Update Date:</p>
+            <p class="font-semibold">{{ lastUpdateDate() | date: 'dd MMM yyyy' }}</p>
+          </span>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 text-sm">
+        <button class="flex items-center gap-1 text-[#C63C92] bg-transparent border-none px-3 py-2 "
+          (click)="onClickDownloadResume()">
+          Download Resume
+          <span class="icon-download"></span>
+        </button>
+        <button class="button-save" (click)="showResumeDrawer()"> <!-- Changed to call showResumeDrawer directly -->
+          View Resume
+          <span class="icon-eye"></span>
+        </button>
+        <!-- <button
+          class="button-save"
+          (click)="onClickViewResume()">
+          View Resume
+          <span class="icon-eye"></span>
+        </button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- edit profile tabs -->
+<div class=" sticky top-[56px] z-10 w-full bg-[#fff] hidden md:grid">
+  <div class="rounded-md mx-6">
+    <div class="flex justify-between w-full">
+      @for (tab of mainTabs; track tab.value) {
+      <button (click)="setMainTab(tab)"
+        class="flex items-center justify-center w-full px-3 py-3 text-lg gap-2 font-medium rounded-t-lg relative"
+        [ngClass]="{
+            'text-[#C63C92] bg-[#F9FAFB] border border-[#E4E7EC] border-b-0': isMainTabActive(tab.value),
+            'text-primary-700 botder border-b border-[#E4E7EC]': !isMainTabActive(tab.value),
+          }">
+        <span [class]="tab.iconClass || ''"
+          [ngClass]="isMainTabActive(tab.value) ? 'text-[#C63C92]' : 'text-[#344054]'"></span>
+
+        {{ tab.name }}
+      </button>
+      }
+    </div>
+  </div>
+
+  <div class="pt-2 pb-1 px-3 mx-6 bg-[#F9FAFB] border-l border-r border-b border-[#E4E7EC] rounded-b-lg">
+    <div class="flex space-x-5 w-full">
+      @for (subtab of subTabs(); track subtab.value) {
+      <button (click)="setSubtab(subtab)" class="pb-3 pt-3 text-base font-medium px-3" [ngClass]="{
+            'text-[#C63C92] bg-[#F9FAFB] border-b-[3px] border-[#C63C92]': isSubtabActive(subtab.value),
+            'text-primary-700': !isSubtabActive(subtab.value),
+          }">
+        {{ subtab.name }}
+      </button>
+      }
+    </div>
+  </div>
+</div>
+
+<hr class="border my-5">
+
+@if (isResumeDrawerOpen) {
+<div class="fixed inset-0 z-50 overflow-hidden">
+  <div class="absolute inset-0 bg-black bg-opacity-50" (click)="closeResumeDrawer()"></div>
+  <div
+    class="absolute inset-y-0 right-0 w-full max-w-7xl bg-white shadow-xl transform transition-transform duration-300 ease-in-out"
+    [class.translate-x-full]="!isResumeDrawerOpen" [class.translate-x-0]="isResumeDrawerOpen">
+    <div class="flex flex-col h-full">
+      <div class="flex-1 overflow-y-auto">
+        <app-view-resume (close)="closeResumeDrawer()"></app-view-resume>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+@if(isDownloadResumeDrawerOpen) {
+
+<div class="fixed inset-0 z-50 overflow-hidden">
+  <div class="absolute inset-0 bg-black bg-opacity-50" (click)="closeDownloadResumeDrawer()"></div>
+  <div
+    class="absolute inset-y-0 right-0 w-full max-w-7xl bg-white shadow-xl transform transition-transform duration-300 ease-in-out"
+    [class.translate-x-full]="!isDownloadResumeDrawerOpen" [class.translate-x-0]="isDownloadResumeDrawerOpen">
+    <div class="flex flex-col h-full">
+      <div class="flex-1 overflow-y-auto">
+        <app-download-resume (close)="closeDownloadResumeDrawer()"></app-download-resume>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- responsive tabs -->
+<div class="sticky top-[56px] z-10 w-full bg-[#fff] grid md:hidden ps-6 border-b">
+  <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar">
+    @for (tab of mainTabs; track tab.value) {
+      <div class="hs-dropdown relative inline-flex">
+        <button id="hs-dropdown-with-icons" type="button"
+          class="hs-dropdown-toggle py-1 px-2 inline-flex items-center gap-x-2 text-xs font-medium hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none min-w-fit"
+          [ngClass]="{
+            'text-[#C63C92]': isMainTabActive(tab.value),
+            'text-primary-700': !isMainTabActive(tab.value),
+          }"
+          (click)="setMainTab(tab)"
+          aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+          <span [class]="tab.iconClass"></span>
+          {{ tab.name }}
+        </button>
+      
+        <div
+          class="hs-dropdown-menu z-30 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-1 space-y-0.5 mt-2 divide-y divide-gray-200"
+          role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-with-icons">
+          <div class="py-1 first:pt-0 last:pb-0 flex flex-col">
+            @for(subtab of subTabs(); track subtab.value){
+              <button 
+                (click)="setSubtab(subtab)"
+                class="pb-3 pt-3 text-xs font-medium px-3 rounded hover:bg-[#F9FAFB] w-full text-start"
+                [ngClass]="{
+                  'text-[#C63C92] bg-[#FCF3FA]': isSubtabActive(subtab.value),
+                  'text-primary-700': !isSubtabActive(subtab.value),
+                }">
+                {{ subtab.name }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<hr class="border mt-0 mb-1 md:mt-5 md:mb-5 mx-5 md:mx-0">

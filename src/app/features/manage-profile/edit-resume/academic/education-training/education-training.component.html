@@ -1,0 +1,11 @@
+<div class="flex flex-col gap-2 w-full">
+  <div id="1">
+    <app-edit-education [isAcademicSummaryOpen]="subTabDetails().id === 1"/>
+  </div>
+  <div id="2">
+    <app-training [isTrainingFormOpen]="subTabDetails().id === 2"/>
+  </div>
+  <div id="3">
+    <app-professional-certification-summary [isProfCertificateSummaryOpen]="subTabDetails().id === 3"/>
+  </div>
+</div>

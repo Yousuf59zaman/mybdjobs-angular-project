@@ -1,0 +1,207 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+  <div class="flex flex-col items-center justify-center bg-white rounded-2xl w-full max-w-2xl shadow-xl overflow-hidden">
+    <header class="w-full p-6 border-b border-gray-200">
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-gray-800">
+          <span class="font-bold">Question {{ questionNumber }}:</span>
+          {{ questionText }}
+        </h2>
+        <button (click)="closeModal()" class="text-gray-500 hover:text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="w-full p-6 overflow-y-auto max-h-[80vh]">
+      <div class="flex flex-col items-center w-full">
+        <div class="relative w-full aspect-video bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+          <ng-container *ngIf="!videoUrl; else playback">
+          <video #videoPreview 
+         autoplay 
+         muted 
+         playsinline 
+         class="w-full h-full object-cover rounded-lg transform -scale-x-100"
+         [class.hidden]="isCameraOff"></video>
+         </ng-container>
+
+        <ng-template #playback>
+      <div class="relative w-full h-full">
+        <video #recordedVideo
+          class="w-full h-full object-cover rounded-lg"
+          [src]="videoUrl"
+          [autoplay]="false"
+          [controls]="false"
+          [muted]="false"
+          [class.opacity-100]="!playbackStarted"
+          (ended)="playbackStarted = false"></video>
+
+    <button
+      *ngIf="!playbackStarted"
+      (click)="playRecordedVideo()"
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-transparent p-0 m-0 border-none outline-none">
+      <img src="images/pause.svg" alt="Play video" class="w-12 h-12 pointer-events-none" />
+    </button>
+  </div>
+    </ng-template>
+
+          <div *ngIf="isCameraOff" class="w-full h-full bg-gray-800 flex items-center justify-center text-white p-4">
+            <div class="flex items-center gap-x-2">
+              <img src="images/cameradisabled.svg" class="w-5 h-5" alt="Camera off" />
+              <span class="text-sm">Turn on your microphone and camera</span>
+            </div>
+          </div>
+          
+          <div *ngIf="isRecording" class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+            <div class="w-[100px] h-12 rounded-full bg-white flex items-center justify-center shadow-inner backdrop-blur-sm">
+              <div class="flex gap-[4px]">
+
+                  <button 
+  (click)="onSaveButtonClick()" 
+  class="w-10 h-10 rounded-full flex items-center justify-center bg-red-500 hover:bg-red-600"
+  [disabled]="!isRecording"
+>
+  <img [src]="isRecordingPaused ? 'images/stop-video.svg' : 'images/stop.svg'" 
+       [alt]="isRecordingPaused ? 'Stop video' : 'Stop recording'" 
+       class="w-5 h-5"/>
+</button>
+              <button (click)="pauseRecording()" 
+        class="w-10 h-10 rounded-full flex items-center justify-center shadow transition-colors"
+        [class.bg-white]="isRecordingPaused"
+        [class.hover:bg-white]="isRecordingPaused">
+  <img [src]="isRecordingPaused ? 'images/play-circle.svg' : 'images/pause-circle.svg'"
+       [alt]="isRecordingPaused ? 'Resume recording' : 'Pause recording'" 
+       class="w-9 h-9 filter invert-0 brightness-0" />
+</button>
+
+        
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="isRecording" class="absolute top-2 bg-red-600 text-white text-sm px-2 py-1 rounded-full">
+            {{ formatElapsedTime(elapsedTime) }} | {{ formatElapsedTime(maxRecordingTime) }}
+          </div>
+
+          <div *ngIf="isMicMuted" class="absolute top-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded-full flex items-center">
+            <img [src]="micOffIcon" class="w-3 h-3 mr-1" alt="Muted" />
+            <span>Muted</span>
+          </div>
+        </div>
+
+
+        <div *ngIf="isRecording" class="w-full bg-gray-200 rounded-full h-2 mt-4">
+          <div class="bg-pink-600 h-2 rounded-full" [style.width.%]="(elapsedTime / 30000) * 100"></div>
+        </div>
+
+       <section
+        *ngIf="videoUrl"
+        class="w-full flex gap-4 justify-between items-center mt-6 p-4"
+        role="toolbar"
+        aria-label="Video Controls"
+        >
+      <div class="flex gap-1">
+       <button
+        class="flex items-center gap-2 px-4 py-2 text-gray-700"
+        type="button"
+        aria-label="Rerecord Video"
+        (click)="reRecordVideo()"
+       >
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1.66797 8.33333C1.66797 8.33333 3.33879 6.05685 4.69616 4.69854C6.05354 3.34022 7.9293 2.5 10.0013 2.5C14.1434 2.5 17.5013 5.85786 17.5013 10C17.5013 14.1421 14.1434 17.5 10.0013 17.5C6.58206 17.5 3.69723 15.2119 2.79444 12.0833M1.66797 8.33333V3.33333M1.66797 8.33333H6.66797"
+          stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Rerecord</span>
+    </button>
+
+  
+    <button
+      class="flex items-center gap-2 px-4 py-2 text-gray-700 "
+      type="button"
+      aria-label="Delete Video"
+      (click)="deleteVideo()"
+    >
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.5 2.5H12.5M2.5 5H17.5M15.8333 5L15.2489 13.7661C15.1612 15.0813 15.1174 15.7389 14.8333 16.2375C14.5833 16.6765 14.206 17.0294 13.7514 17.2497C13.235 17.5 12.5759 17.5 11.2578 17.5H8.74221C7.42409 17.5 6.76503 17.5 6.24861 17.2497C5.79396 17.0294 5.41674 16.6765 5.16665 16.2375C4.88259 15.7389 4.83875 15.0813 4.75107 13.7661L4.16667 5M8.33333 8.75V12.9167M11.6667 8.75V12.9167"
+          stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Delete</span>
+    </button>
+  </div>
+
+  <button
+    class="flex items-center gap-2 px-4 py-2 text-white bg-pink-600 rounded-lg hover:bg-pink-700"
+    type="button"
+    aria-label="Save and Exit"
+    (click)="saveAndExit()"
+  >
+    <span>Save and Exit</span>
+  </button>
+</section>
+
+<app-video-cv-rerecord-warning-modal
+  *ngIf="showRerecordConfirm"
+  (close)="closeRerecordWarning()"
+  (okClick)="confirmRerecord()"
+></app-video-cv-rerecord-warning-modal>
+
+<app-video-cv-delete-warning-modal
+  *ngIf="showDeleteConfirm"
+  (close)="closeWarningModal()"
+  (okClick)="handleOkClick()"
+></app-video-cv-delete-warning-modal>
+
+<div *ngIf="!videoUrl || isRecording" class="flex flex-col items-center justify-center w-full mt-6">
+  <div class="flex gap-4 items-center w-full justify-center">
+    <div  *ngIf="!isRecording" class="flex gap-2">
+      <button (click)="toggleMic()" 
+              class="w-10 h-10 flex items-center justify-center transition-all duration-200"
+              [class.bg-gray-200]="!isMicMuted"
+              [class.bg-red-100]="isMicMuted"
+              [class.rounded-full]="!isMicMuted"
+              [class.rounded-lg]="isMicMuted">
+        <img [src]="isMicMuted ? micOffIcon : micOnIcon" 
+            [class.w-10]="isMicMuted"
+            [class.h-10]="isMicMuted"
+            [class.w-5]="!isMicMuted"
+            [class.h-5]="!isMicMuted"
+            [alt]="isMicMuted ? 'Mic off' : 'Mic on'" />
+      </button>
+
+      <button (click)="toggleCamera()" 
+              class="w-10 h-10 flex items-center justify-center transition-all duration-200"
+              [class.bg-gray-200]="!isCameraOff"
+              [class.bg-red-100]="isCameraOff"
+              [class.rounded-full]="!isCameraOff"
+              [class.rounded-lg]="isCameraOff">
+        <img [src]="isCameraOff ? cameraOffIcon : cameraOnIcon" 
+            [class.w-10]="isCameraOff"
+            [class.h-10]="isCameraOff"
+            [class.w-5]="!isCameraOff"
+            [class.h-5]="!isCameraOff"
+            [alt]="isCameraOff ? 'Camera off' : 'Camera on'" />
+      </button>
+    </div>
+
+    <button
+      *ngIf="!isRecording"
+      (click)="toggleRecording()"
+      class="flex items-center gap-2 px-4 py-2 text-white rounded-lg shadow-sm transition-colors"
+      [class.bg-pink-600]="true"
+      [class.hover:bg-pink-700]="!disableRecordingButton"
+      [disabled]="disableRecordingButton"
+    >
+      <img
+        [src]="recordIcon"
+        class="w-5 h-5"
+        alt="Record icon"
+      />
+          <span>{{ recordingButtonText }}</span>
+        </button>
+        </div>
+       </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,214 @@
+<div class="min-h-screen bg-gray-100 text-[#333]" *transloco="let t">
+  <!-- Header -->
+  <header
+    class="bg-[#546e7a] text-white text-md font-semibold px-4 py-2 text-[14px]"
+  >
+    <i class="icon-trush-can"></i> {{ t("accountDelete.Delete Account") }}
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-6 space-y-4">
+    <p class="text-[14px] font-bold">
+      {{
+        t(
+          "accountDelete.Please let us know why you want to delete your Bdjobs account?"
+        )
+      }}
+      <br />
+      {{ t("accountDelete.Select one reason—") }}
+    </p>
+
+    <!-- Explicit Radios -->
+    <label class="flex items-center text-sm radio-label font-semibold">
+      <input
+        type="radio"
+        formControlName="reason"
+        value="multiple"
+        class="form-radio h-[14px] w-[14px] text-blue-600 focus:ring-blue-500 focus:ring-0 focus:ring-offset-0"
+      />
+      <span class="ml-2">{{
+        t("accountDelete.I have multiple accounts")
+      }}</span>
+    </label>
+    <p
+      class="ml-4 rounded text-sm text-gray-800"
+      [hidden]="form.value.reason !== 'multiple'"
+    >
+      {{
+        t(
+          "accountDelete.Your bdjobs account will be deleted and you will no longer be able to get any service from Bdjobs.com."
+        )
+      }}
+    </p>
+
+    <label class="flex items-center text-sm radio-label font-semibold">
+      <input
+        type="radio"
+        formControlName="reason"
+        value="employed"
+        class="form-radio h-[14px] w-[14px] text-blue-600 focus:ring-blue-500 focus:ring-0 focus:ring-offset-0"
+      />
+      <span class="ml-2">{{
+        t(
+          "accountDelete.I am already employed and do not want to switch my job"
+        )
+      }}</span>
+    </label>
+    <p
+      class="ml-4 rounded text-sm text-gray-800"
+      [hidden]="form.value.reason !== 'employed'"
+    >
+      {{
+        t(
+          "accountDelete.You may find better opportunities if you stay connected to Bdjobs; check out {link} here."
+        )
+      }}
+      <a
+        href="https://jobs.bdjobs.com/jobsearch.asp?fcatId=65"
+        class="text-blue-500"
+        >{{ t("accountDelete.related jobs") }}</a
+      >
+      here.
+    </p>
+
+    <label class="flex items-center text-sm radio-label font-semibold">
+      <input
+        type="radio"
+        formControlName="reason"
+        value="privacy"
+        class="form-radio h-[14px] w-[14px] text-blue-600 focus:ring-blue-500 focus:ring-0 focus:ring-offset-0"
+      />
+      <span class="ml-2">{{ t("accountDelete.I have privacy concern") }}</span>
+    </label>
+    <p
+      class="ml-4 rounded text-sm text-gray-800"
+      [hidden]="form.value.reason !== 'privacy'"
+    >
+      {{
+        t(
+          "accountDelete.You can change your privacy settings—please check your {link} here."
+        )
+      }}
+      <a
+        href="https://mybdjobs.bdjobs.com/mybdjobs/block_emp.asp"
+        class="text-blue-500"
+      >
+        {{ t("accountDelete.privacy settings") }}</a
+      >
+      here.
+    </p>
+
+    <label class="flex items-center text-sm radio-label font-semibold">
+      <input
+        type="radio"
+        formControlName="reason"
+        value="notUseful"
+        class="form-radio h-[14px] w-[14px] text-blue-600 focus:ring-blue-500 focus:ring-0 focus:ring-offset-0"
+      />
+      <span class="ml-2">{{ t("accountDelete.I do not find it useful") }}</span>
+    </label>
+    <!-- "Not Useful" sub-checkboxes -->
+    <div class="pl-6 space-y-2" [hidden]="form.value.reason !== 'notUseful'">
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          (change)="onCheckNotUseful('viewNoResume', $event)"
+          class="form-checkbox h-[14px] w-[14px] text-blue-600 rounded focus:ring-0 focus:ring-offset-0 border-black-300 focus:ring-0 focus:ring-offset-0 border-black-300"
+        />
+        <span class="ml-2">{{
+          t("accountDelete.Employers do not view my resume")
+        }}</span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          (change)="onCheckNotUseful('noContact', $event)"
+          class="form-checkbox h-[14px] w-[14px] text-blue-600 rounded focus:ring-0 focus:ring-offset-0 border-black-300 focus:ring-0 focus:ring-offset-0 border-black-300"
+        />
+        <span class="ml-2">{{
+          t("accountDelete.Employers view my resume but do not contact me")
+        }}</span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          (change)="onCheckNotUseful('noMatch', $event)"
+          class="form-checkbox h-[14px] w-[14px] text-blue-600 rounded focus:ring-0 focus:ring-offset-0 border-black-300 focus:ring-0 focus:ring-offset-0 border-black-300"
+        />
+        <span class="ml-2">{{
+          t(
+            "accountDelete.I do not find jobs matching my preferred area of interest"
+          )
+        }}</span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          (change)="onCheckNotUseful('difficult', $event)"
+          class="form-checkbox h-[14px] w-[14px] text-blue-600 rounded focus:ring-0 focus:ring-offset-0 border-black-300 focus:ring-0 focus:ring-offset-0 border-black-300"
+        />
+        <span class="ml-2">{{ t("accountDelete.I find it difficult") }}</span>
+      </label>
+      <label class="flex items-center">
+        <input
+          type="checkbox"
+          (change)="onCheckNotUseful('others', $event)"
+          class="form-checkbox h-[14px] w-[14px] text-blue-600 rounded focus:ring-0 focus:ring-offset-0 border-black-300  border-black-300"
+        />
+        <span class="ml-2">{{ t("accountDelete.Others") }}</span>
+      </label>
+
+      <!-- nested "Others" textarea -->
+      <textarea
+        formControlName="notUsefulOther"
+        rows="3"
+        placeholder="{{
+          t('accountDelete.Please briefly elaborate your opinion—')
+        }}"
+        class="w-full mt-2 p-2 border rounded focus:outline-none focus:ring"
+        [hidden]="!notUsefulChecks.value.includes('others')"
+      >
+      </textarea>
+    </div>
+
+    <label class="flex items-center text-sm radio-label font-semibold">
+      <input
+        type="radio"
+        formControlName="reason"
+        value="others"
+        class="form-radio h-[14px] w-[14px] text-blue-600 focus:ring-blue-500 focus:ring-0 focus:ring-offset-0"
+      />
+      <span class="ml-2">{{ t("accountDelete.Others") }}</span>
+    </label>
+
+    <!-- Global "Others" textarea -->
+    <textarea
+      formControlName="othersText"
+      rows="3"
+      placeholder="{{
+        t('accountDelete.Please briefly elaborate your reason—')
+      }}"
+      class="w-full p-2 border rounded focus:outline-none focus:ring"
+      [hidden]="form.value.reason !== 'others'"
+    >
+    </textarea>
+
+    <!-- Buttons -->
+    <div
+      class="flex flex-col sm:flex-row justify-center gap-3 sm:space-x-3 pt-4 w-full sm:w-auto"
+    >
+      <button
+        type="button"
+        class="px-4 py-2 bg-[#40682C] text-white rounded hover:bg-green-700 w-full sm:w-auto"
+        (click)="form.reset()"
+      >
+        {{ t("accountDelete.Cancel") }}
+      </button>
+      <button
+        type="submit"
+        class="px-4 py-2 bg-[#dc362c] text-white rounded hover:bg-red-700 disabled:opacity-50 w-full sm:w-auto"
+      >
+        {{ t("accountDelete.Proceed") }}
+      </button>
+    </div>
+  </form>
+</div>

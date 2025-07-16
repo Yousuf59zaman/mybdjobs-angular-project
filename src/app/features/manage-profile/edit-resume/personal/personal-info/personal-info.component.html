@@ -1,0 +1,22 @@
+
+
+<div class="flex flex-col gap-2 w-full">
+  <div id="1">
+    <app-personal-information [isPersonalDetailsOpen]="subTabDetails().id === 1"/>
+  </div>
+  <div id="2">
+    <app-address-details [isAddressdetailsOpen]="subTabDetails().id === 2"/>
+  </div>
+  <div id="3">
+    <app-career-application-info [isCareerSectionOpen]="subTabDetails().id === 3"/>
+  </div>
+  <div id="4">
+    <app-preferred-areas [isPreferredSectionOpen]="subTabDetails().id === 4"/>
+  </div>
+  <div id="5">
+    <app-other-relevant-info [isOtherSectionOpen]="subTabDetails().id === 5"/>
+  </div>
+  <div id="6">
+    <app-disability-info [isDisabilityInfoOpen]="subTabDetails().id === 6"/>
+  </div>
+</div>

@@ -1,0 +1,131 @@
+{   
+    "signinToDifferentAccount":"ভিন্ন একটি অ্যাকাউন্টে সাইন ইন করুন",
+    "donotHaveAnAccount":"বিডিজবস অ্যাকাউন্ট নেই?",
+    "back":"পূর্বের পাতা",
+    "SignIn": "সাইন ইন",
+    "SignUp": "রেজিস্টার করুন",
+    "submit":"জমা দিন",
+    "continue":"এগিয়ে যান",
+    "notNow":"এখন নয়",
+    "signin":{
+        "signin":"সাইন ইন",
+        "signup":"রেজিস্টার করুন",
+        "signInTo": "সাইন ইন করুন",
+        "username":"ইউজারের নাম",
+        "SignIn": "সাইন ইন",
+        "SignUp": "রেজিস্টার করুন",
+        "email":"ইমেইল ",
+        "mobile":"Mobile",
+        "usernamEmailORMobile":"ইউজারনেম, ইমেইল অথবা মোবাইল নম্বর",
+        "ForgotUserIdOrPassword":"ইউজার আইডি /পাসওয়ার্ড ভুলে গেছেন?",
+        "continue":"এগিয়ে যান",
+        "signInWithMail":"অথবা অন্য কোনো মাধ্যমে সাইন ইন করুন",
+        "signinWithGoogle":"গুগল দিয়ে সাইন ইন করুন",
+        "signinWithLinkedIn":"লিঙ্কডইন দিয়ে সাইন ইন করুন",
+        "accessAllOfBdjobsServices":"বিডিজবস-এর সব সেবা ব্যবহার করুন",
+        "or":"অথবা",
+        "couldnotFindYourBdjobsAccount":"আপনার বিডিজবস অ্যাকাউন্ট খুঁজে পাওয়া যায়নি",
+        "signinToDifferentAccount":"ভিন্ন একটি অ্যাকাউন্টে সাইন ইন করুন"
+    },
+    "signup":{
+        "createFreeBdjobsAccount":"এখনই বিনামূল্যে আপনার বিডিজবস অ্যাকাউন্ট তৈরি করুন।",
+        "createAccount":"অ্যাকাউন্ট তৈরী ",
+        "general":{
+            "generalCategory":"জেনারেল ক্যাটাগরি",
+            "doctor":"ডাক্তার",
+            "accountant":"অ্যাকাউন্ট্যান্ট",
+            "projectManager":"প্রজেক্ট ম্যানেজার",
+            "engineer":"ইঞ্জিনিয়ার",
+            "lecturer":"লেকচারার",
+            "merchendiser":"মার্চেনডাইজার"
+        },
+        "sps":{
+            "nurse":"নার্স",
+            "pathologist":"প্যাথোলজিস্ট",
+            "driver":"ড্রাইভার",
+            "mechanic":"মেকানিক",
+            "electrician":"ইলেকট্রিশিয়ান",
+            "securityguard":"সিকিউরিটি গার্ড,",
+            "chef":"শেফ/বাবুর্চী",
+            "peon":"পিয়ন"
+        }
+    },
+    "password": {
+        "welcomeBack": "স্বাগতম",
+        "change": "পরিবর্তন করুন",
+        "password": "পাসওয়ার্ড",
+        "accessAllOfBdjobsServices":"বিডিজবস-এর সব সেবা ব্যবহার করুন",
+        "SignIn": "সাইন ইন",
+        "SignUp": "রেজিস্টার করুন",
+        "plsEnterPassword": "দয়া করে পাসওয়ার্ড দিন",
+        "wrongPassword": "ভুল পাসওয়ার্ড। আবার চেষ্টা করুন অথবা পাসওয়ার্ড রিসেট করুন।",
+        "signinToDifferentAccount":"ভিন্ন একটি অ্যাকাউন্টে সাইন ইন করুন"
+    },
+    "otp":{
+        "welcomeBack": "স্বাগতম",
+        "enterCode": "কোড দিন",
+        "plsTypetheCodeSentTo": "অনুগ্রহ করে পাঠানো কোডটি লিখুন",
+        "continue":"এগিয়ে যান",
+        "notNow": "এখন নয়",
+        "plsEnterOtp": "অনুগ্রহ করে ওটিপি দিন",
+        "wrongOtp": "আপনার ওটিপি মিলেনি"
+    },
+    "error":{
+        "couldnotFindYourBdjobsAccount":"আপনার বিডিজবস অ্যাকাউন্ট খুঁজে পাওয়া যায়নি",
+        "plsEnterUsernameEmailOrMobile":"ইউজারের নাম, ইমেইল অথবা মোবাইল নাম্বার লিখুন।"
+        
+    },
+    "button":{
+        "continue":"এগিয়ে যান"
+    },
+    "findAccount":{
+        "findYourAccount":"আপনার অ্যাকাউন্ট খুঁজুন",
+        "findAccountText":"",
+        "username_required": "দয়া করে একটি সঠিক ব্যবহারকারীর নাম প্রদান করুন"
+    },
+     "chooseAccount":{
+        "chooseYourAccount":"আপনার অ্যাকাউন্ট নির্বাচন করুন",
+        "nameIs":"নাম",
+        "userIdIs":"ইউজার আইডি",
+        "lastLogin":"সর্বশেষ লগইন"
+
+    },
+    "welcome":{
+        "welcome": "স্বাগতম",
+        "howDoYouWantToResetYourPassword":"আপনার পাসওয়ার্ড কিভাবে রিসেট করতে চান?",
+        "sendCodeViaEmail":"ইমেইলের মাধ্যমে কোড পাঠান",
+        "sendCodeViaMobileSMS":"মোবাইল এসএমএসের মাধ্যমে কোড পাঠান",
+        "wantToLoginWithYourExistingUserId":"আপনার বিদ্যমান ইউজার আইডি দিয়ে লগইন করতে চান?",
+        "enterPasswordToLogin":"লগইন করতে পাসওয়ার্ড প্রবেশ করুন"
+    },
+    "securityCode": {
+        "enterSecurityCode": "নিরাপত্তা কোড লিখুন",
+        "weSentCode": "আমরা আপনার কোড পাঠিয়েছি",
+        "timeRemaining": "বাকি সময়",
+        "resendCode": "কোড পুনরায় পাঠান",
+        "invalidOrExpiredCode":"কোডটি সঠিক নয়, মেয়াদ উত্তীর্ণ হয়েছে, অথবা আপনি এই কোডটি ইতোমধ্যে ব্যবহার করেছেন।",
+        "exceededLimit": "আপনি সীমা অতিক্রম করেছেন। ৪ ঘণ্টা পর আবার চেষ্টা করুন!"
+    },
+    "resetPass": {
+        "createNewPassword": "নতুন পাসওয়ার্ড তৈরি করুন",
+        "enterNewPassword": "আপনার নতুন পাসওয়ার্ড লিখুন",
+        "reEnterPassword": "পুনরায় পাসওয়ার্ড লিখুন",
+        "emptyPassword": "নতুন পাসওয়ার্ড ফাঁকা রাখা যাবে না।",
+        "minLength": "পাসওয়ার্ড ৮ অক্ষরের কম হতে পারবে না।",
+        "maxLength": "পাসওয়ার্ড ১৫ অক্ষরের বেশি হতে পারবে না।",
+        "passwordMismatch": "পাসওয়ার্ড দুটি মেলে না।",
+        "noSpecialCharacter": "পাসওয়ার্ডে \", \\, %, &, (, ), <, > অথবা স্পেস ব্যবহার করা যাবে না।"
+    },
+    "accessAccount": {
+        "accessYourAccount": "আপনার অ্যাকাউন্টে প্রবেশ করুন",
+        "accessAccountText": "সোশ্যাল মিডিয়ার মাধ্যমে আপনার MyBdjobs অ্যাকাউন্টে প্রবেশ করতে নিচের বাটনে ক্লিক করুন।"
+    },
+    "success": {
+        "succesfully": "সফলভাবে",
+        "passwordChanged": "আপনার পাসওয়ার্ড পরিবর্তন করা হয়েছে"
+    }
+
+
+    
+
+}

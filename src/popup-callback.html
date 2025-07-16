@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Auth Callback</title>
+</head>
+
+<body>
+    <script>
+        // Parse tokens from URL hash
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        const idToken = params.get('id_token');
+        const accessToken = params.get('access_token');
+
+        // Send token data back to opener
+        if (window.opener && idToken && accessToken) {
+            window.opener.postMessage({
+                type: 'google-auth-success',
+                idToken,
+                accessToken
+            }, window.location.origin);
+            window.close();
+        } else {
+            window.close();
+        }
+    </script>
+</body>
+
+</html>

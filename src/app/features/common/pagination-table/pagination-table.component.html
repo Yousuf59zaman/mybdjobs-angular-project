@@ -1,0 +1,55 @@
+
+<div class="flex justify-center my-4">
+  <div class="inline-flex rounded-lg border border-gray-300 shadow-sm overflow-hidden">
+    <!-- Previous Button -->
+    <div class="flex items-center px-4 py-2 bg-white border-r border-gray-300 gap-2 cursor-pointer hover:bg-gray-50"
+         [class.opacity-50]="currentPage === 1"
+         [class.cursor-not-allowed]="currentPage === 1"
+         (click)="currentPage > 1 ? goToPage(currentPage - 1) : null">
+      <div class="w-5 h-5 relative">
+        <svg class="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+      </div>
+      <span class="text-sm font-semibold text-gray-700">Previous</span>
+    </div>
+
+    <!-- Page 1 -->
+    <div class="flex items-center justify-center w-10 h-10 px-2 py-2 border-r border-gray-300 cursor-pointer"
+         [class.bg-gray-50]="currentPage === 1"
+         (click)="goToPage(1)">
+      <span class="text-sm font-semibold" [class.text-gray-900]="currentPage === 1" [class.text-gray-700]="currentPage !== 1">1</span>
+      <span *ngIf="displayPages[0] > 2" class="text-sm font-semibold text-gray-700">..</span>
+    </div>
+
+    <!-- Middle Pages -->
+    <div *ngFor="let page of displayPages" 
+         class="flex items-center justify-center w-10 h-10 px-2 py-2 border-r border-gray-300 cursor-pointer"
+         [class.bg-gray-50]="page === currentPage"
+         (click)="goToPage(page)">
+      <span class="text-sm font-semibold" [class.text-gray-900]="page === currentPage" [class.text-gray-700]="page !== currentPage">{{ formatNumber(page) }}</span>
+    </div>
+
+    <!-- Last Page -->
+    <div *ngIf="totalPages > 1" 
+         class="flex items-center justify-center w-10 h-10 px-2 py-2 border-r border-gray-300 cursor-pointer"
+         [class.bg-gray-50]="currentPage === totalPages"
+         (click)="goToPage(totalPages)">
+      <span *ngIf="displayPages[displayPages.length - 1] < totalPages - 1" class="text-sm font-semibold text-gray-700">..</span>
+      <span class="text-sm font-semibold" [class.text-gray-900]="currentPage === totalPages" [class.text-gray-700]="currentPage !== totalPages">{{ formatNumber(totalPages) }}</span>
+    </div>
+
+    <!-- Next Button -->
+    <div class="flex items-center px-4 py-2 bg-white gap-2 cursor-pointer hover:bg-gray-50"
+         [class.opacity-50]="currentPage === totalPages"
+         [class.cursor-not-allowed]="currentPage === totalPages"
+         (click)="currentPage < totalPages ? goToPage(currentPage + 1) : null">
+      <span class="text-sm font-semibold text-gray-700">Next</span>
+      <div class="w-5 h-5 relative">
+        <svg class="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>

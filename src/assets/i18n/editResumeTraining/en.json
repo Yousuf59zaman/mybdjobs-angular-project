@@ -1,0 +1,22 @@
+{
+  "headline": "Training Summary",
+  "trainingNo": "Training ",
+  "title": "Training Title",
+  "country": "Country",
+  "year": "Training Year",
+  "topic": "Topics Covered",
+  "institute": "Institute",
+  "duration": "Duration",
+  "location": "Location",
+  "save": "Save",
+  "close": "Close",
+  "delete": "Delete",
+  "example": "Example",
+  "edit": "Edit",
+  "expand": "Expand",
+  "collapse": "Collapse",
+  "add": "Add Training Summary",
+  "noData": "Currently no data exists! Please click on the following button to add your details address.",
+  "AddCareer": "Add Career Application Information"
+
+}  

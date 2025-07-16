@@ -1,0 +1,780 @@
+@font-face {
+  font-family: 'mybdjobs';
+  src:  url('../fonts/mybdjobs.eot?fuh6j4');
+  src:  url('../fonts/mybdjobs.eot?fuh6j4#iefix') format('embedded-opentype'),
+    url('../fonts/mybdjobs.ttf?fuh6j4') format('truetype'),
+    url('../fonts/mybdjobs.woff?fuh6j4') format('woff'),
+    url('../fonts/mybdjobs.svg?fuh6j4#mybdjobs') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'mybdjobs' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-multiple-users:before {
+  content: "\e900";
+}
+.icon-question:before {
+  content: "\e901";
+}
+.icon-angle-right-n:before {
+  content: "\e902";
+}
+.icon-trush-can:before {
+  content: "\e903";
+}
+.icon-twitter:before {
+  content: "\e904";
+}
+.icon-flag:before {
+  content: "\e905";
+}
+.icon-files:before {
+  content: "\e906";
+}
+.icon-printer:before {
+  content: "\e907";
+}
+.icon-linkedin:before {
+  content: "\e908";
+}
+.icon-angle-down:before {
+  content: "\e909";
+}
+.icon-angle-up:before {
+  content: "\e90a";
+}
+.icon-bd-map:before {
+  content: "\e90b";
+}
+.icon-bell:before {
+  content: "\e90c";
+}
+.icon-briefcase:before {
+  content: "\e90d";
+}
+.icon-cloud-upload:before {
+  content: "\e90e";
+}
+.icon-minus:before {
+  content: "\e90f";
+}
+.icon-envelope:before {
+  content: "\e910";
+}
+.icon-google-plus:before {
+  content: "\e911";
+}
+.icon-hot-jobs:before {
+  content: "\e912";
+}
+.icon-list:before {
+  content: "\e913";
+}
+.icon-phone:before {
+  content: "\e914";
+}
+.icon-right-angle-double:before {
+  content: "\e915";
+}
+.icon-plus:before {
+  content: "\e916";
+}
+.icon-mouse-click:before {
+  content: "\e917";
+}
+.icon-buildings:before {
+  content: "\e918";
+}
+.icon-live:before {
+  content: "\e919";
+}
+.icon-sort-down:before {
+  content: "\e91a";
+}
+.icon-sort-up:before {
+  content: "\e91b";
+}
+.icon-angle-left-o:before {
+  content: "\e91c";
+}
+.icon-angle-right-o:before {
+  content: "\e91d";
+}
+.icon-fly-menu:before {
+  content: "\e91e";
+}
+.icon-message:before {
+  content: "\e91f";
+}
+.icon-video-help:before {
+  content: "\e920";
+}
+.icon-envelope-bell:before {
+  content: "\e921";
+}
+.icon-career:before {
+  content: "\e922";
+}
+.icon-job-offer:before {
+  content: "\e923";
+}
+.icon-emailed-resume:before {
+  content: "\e924";
+}
+.icon-assessment-empty:before {
+  content: "\e925";
+}
+.icon-training:before {
+  content: "\e926";
+}
+.icon-stats:before {
+  content: "\e927";
+}
+.icon-job-agent:before {
+  content: "\e928";
+}
+.icon-blocked-employer:before {
+  content: "\e929";
+}
+.icon-home:before {
+  content: "\e92a";
+}
+.icon-bn:before {
+  content: "\e92b";
+}
+.icon-calendar:before {
+  content: "\e92c";
+}
+.icon-puzzle:before {
+  content: "\e92d";
+}
+.icon-angle-bottom:before {
+  content: "\e92e";
+}
+.icon-sign-out:before {
+  content: "\e92f";
+}
+.icon-applied:before {
+  content: "\e930";
+}
+.icon-star:before {
+  content: "\e931";
+}
+.icon-file-settings:before {
+  content: "\e932";
+}
+.icon-view-resume:before {
+  content: "\e933";
+}
+.icon-edit:before {
+  content: "\e934";
+}
+.icon-switching:before {
+  content: "\e935";
+}
+.icon-send-email:before {
+  content: "\e936";
+}
+.icon-building-plus:before {
+  content: "\e937";
+}
+.icon-user:before {
+  content: "\e938";
+}
+.icon-lock:before {
+  content: "\e939";
+}
+.icon-sort-right:before {
+  content: "\e93a";
+}
+.icon-employer:before {
+  content: "\e93b";
+}
+.icon-chat:before {
+  content: "\e93c";
+}
+.icon-times-o:before {
+  content: "\e93d";
+}
+.icon-square:before {
+  content: "\e93e";
+}
+.icon-search:before {
+  content: "\e93f";
+}
+.icon-tag:before {
+  content: "\e940";
+}
+.icon-angle-top:before {
+  content: "\e941";
+}
+.icon-activity:before {
+  content: "\e942";
+}
+.icon-youtube:before {
+  content: "\e943";
+}
+.icon-facebook:before {
+  content: "\e944";
+}
+.icon-laptop-user:before {
+  content: "\e945";
+}
+.icon-angle-right-long:before {
+  content: "\e946";
+}
+.icon-list-angle-right:before {
+  content: "\e947";
+}
+.icon-user-call-o:before {
+  content: "\e948";
+}
+.icon-customer-care:before {
+  content: "\e949";
+}
+.icon-calculator:before {
+  content: "\e94a";
+}
+.icon-taka:before {
+  content: "\e94b";
+}
+.icon-content:before {
+  content: "\e94c";
+}
+.icon-laptop-cog:before {
+  content: "\e94d";
+}
+.icon-quote:before {
+  content: "\e94e";
+}
+.icon-play-video:before {
+  content: "\e94f";
+}
+.icon-user-call:before {
+  content: "\e950";
+}
+.icon-hand-shake:before {
+  content: "\e951";
+}
+.icon-camera:before {
+  content: "\e952";
+}
+.icon-graduation-cap:before {
+  content: "\e953";
+}
+.icon-assessment:before {
+  content: "\e954";
+}
+.icon-pencil-o:before {
+  content: "\e955";
+}
+.icon-video-help-o:before {
+  content: "\e956";
+}
+.icon-undo:before {
+  content: "\e957";
+}
+.icon-angle-left-long:before {
+  content: "\e958";
+}
+.icon-pie-chart:before {
+  content: "\e959";
+}
+.icon-pdf:before {
+  content: "\e95a";
+}
+.icon-engineering:before {
+  content: "\e95b";
+}
+.icon-layer:before {
+  content: "\e95c";
+}
+.icon-star-empty:before {
+  content: "\e95d";
+}
+.icon-clipboard:before {
+  content: "\e95e";
+}
+.icon-assessment-badge:before {
+  content: "\e95f";
+}
+.icon-file:before {
+  content: "\e960";
+}
+.icon-file-arrows:before {
+  content: "\e961";
+}
+.icon-file-times:before {
+  content: "\e962";
+}
+.icon-file-download:before {
+  content: "\e963";
+}
+.icon-language:before {
+  content: "\e964";
+}
+.icon-ribbon:before {
+  content: "\e965";
+}
+.icon-rank:before {
+  content: "\e966";
+}
+.icon-progress-arrow:before {
+  content: "\e967";
+}
+.icon-warning:before {
+  content: "\e968";
+}
+.icon-check-sign:before {
+  content: "\e969";
+}
+.icon-certificate-hand:before {
+  content: "\e96a";
+}
+.icon-archive:before {
+  content: "\e96b";
+}
+.icon-certified-badge:before {
+  content: "\e96c";
+}
+.icon-growth:before {
+  content: "\e96d";
+}
+.icon-flag-o:before {
+  content: "\e96e";
+}
+.icon-eye:before {
+  content: "\e96f";
+}
+.icon-eye-slash:before {
+  content: "\e970";
+}
+.icon-smart-phone:before {
+  content: "\e971";
+}
+.icon-info:before {
+  content: "\e972";
+}
+.icon-bdjobs-android:before {
+  content: "\e973";
+}
+.icon-gender-female:before {
+  content: "\e974";
+}
+.icon-gender-male:before {
+  content: "\e975";
+}
+.icon-gender-others:before {
+  content: "\e976";
+}
+.icon-building:before {
+  content: "\e977";
+}
+.icon-calendar-time:before {
+  content: "\e978";
+}
+.icon-filter:before {
+  content: "\e979";
+}
+.icon-location:before {
+  content: "\e97a";
+}
+.icon-newspaper:before {
+  content: "\e97b";
+}
+.icon-category:before {
+  content: "\e97c";
+}
+.icon-heart-o:before {
+  content: "\e97d";
+}
+.icon-user-delete:before {
+  content: "\e97e";
+}
+.icon-file-lock:before {
+  content: "\e97f";
+}
+.icon-file-delete:before {
+  content: "\e980";
+}
+.icon-cogs:before {
+  content: "\e981";
+}
+.icon-change:before {
+  content: "\e982";
+}
+.icon-user-identification:before {
+  content: "\e983";
+}
+.icon-envelope-send:before {
+  content: "\e984";
+}
+.icon-Exclamation:before {
+  content: "\e985";
+}
+.icon-reseheduled:before {
+  content: "\e986";
+}
+.icon-decline:before {
+  content: "\e987";
+}
+.icon-map:before {
+  content: "\e988";
+}
+.icon-taka-bag:before {
+  content: "\e989";
+}
+.icon-desk:before {
+  content: "\e98a";
+}
+.icon-certificate:before {
+  content: "\e98b";
+}
+.icon-calendar-clock:before {
+  content: "\e98c";
+}
+.icon-reschedule:before {
+  content: "\e98d";
+}
+.icon-clock:before {
+  content: "\e98e";
+}
+.icon-direction:before {
+  content: "\e98f";
+}
+.icon-ms-word:before {
+  content: "\e990";
+}
+.icon-exclamation-triangle:before {
+  content: "\e991";
+}
+.icon-add-plus:before {
+  content: "\e992";
+}
+.icon-credit-card:before {
+  content: "\e993";
+}
+.icon-sitfortest:before {
+  content: "\e994";
+}
+.icon-taka-bag-cross:before {
+  content: "\e995";
+}
+.icon-credit-card-cross:before {
+  content: "\e996";
+}
+.icon-payment-receipt:before {
+  content: "\e997";
+}
+.icon-archive-sign:before {
+  content: "\e998";
+}
+.icon-been-here-marker:before {
+  content: "\e999";
+}
+.icon-calendar-with-a-clock-time-tools:before {
+  content: "\e99a";
+}
+.icon-devices:before {
+  content: "\e99b";
+}
+.icon-plus-sign:before {
+  content: "\e99c";
+}
+.icon-minus-sign:before {
+  content: "\e99d";
+}
+.icon-failed-sms:before {
+  content: "\e99e";
+}
+.icon-Bell-not:before {
+  content: "\e99f";
+}
+.icon-transaction-history:before {
+  content: "\e9a0";
+}
+.icon-sms-setting:before {
+  content: "\e9a1";
+}
+.icon-sms-package-service:before {
+  content: "\e9a2";
+}
+.icon-cross-normal:before {
+  content: "\e9a3";
+}
+.icon-favorite-heart-button:before {
+  content: "\e9a4";
+}
+.icon-taka-sign:before {
+  content: "\e9a5";
+}
+.icon-icon-training-board:before {
+  content: "\e9a6";
+}
+.icon-sms-pakage:before {
+  content: "\e9a7";
+}
+.icon-history:before {
+  content: "\e9a8";
+}
+.icon-desk-times:before {
+  content: "\e9a9";
+}
+.icon-video-camera:before {
+  content: "\e9aa";
+}
+.icon-video-play:before {
+  content: "\e9ab";
+}
+.icon-meeting:before {
+  content: "\e9ac";
+}
+.icon-writtentest:before {
+  content: "\e9ad";
+}
+.icon-puzzle-others:before {
+  content: "\e9ae";
+}
+.icon-recording-attempt:before {
+  content: "\e9af";
+}
+.icon-external-link:before {
+  content: "\e9b0";
+}
+.icon-more:before {
+  content: "\e9b1";
+}
+.icon-download:before {
+  content: "\e9b2";
+}
+.icon-doubletick:before {
+  content: "\e9b3";
+}
+.icon-live-video:before {
+  content: "\e9b4";
+}
+.icon-job-seeker-app:before {
+  content: "\e9b5";
+}
+.icon-maximize:before {
+  content: "\e9b6";
+}
+.icon-pdf-file:before {
+  content: "\e9b7";
+}
+.icon-acsbi-person:before {
+  content: "\e9b8";
+}
+.icon-monochrome:before {
+  content: "\e9b9";
+}
+.icon-screen-reader:before {
+  content: "\e9ba";
+}
+.icon-audio:before {
+  content: "\e9bb";
+}
+.icon-circle:before {
+  content: "\e9bc";
+}
+.icon-pause:before {
+  content: "\e9bd";
+}
+.icon-play:before {
+  content: "\e9be";
+}
+.icon-arrow-expand:before {
+  content: "\e9bf";
+}
+.icon-user-tie:before {
+  content: "\e9c0";
+}
+.icon-Shortlist-for-other:before {
+  content: "\e9c1";
+}
+.icon-Shortlist-for-Face-to-Face:before {
+  content: "\e9c2";
+}
+.icon-shortlist-written:before {
+  content: "\e9c3";
+}
+.icon-file-cog:before {
+  content: "\e9c4";
+}
+.icon-inbox:before {
+  content: "\e9c5";
+}
+.icon-inbox-outline:before {
+  content: "\e9c6";
+}
+.icon-invert-colors:before {
+  content: "\e9c7";
+}
+.icon-large-cursor:before {
+  content: "\e9c8";
+}
+.icon-linkh:before {
+  content: "\e9c9";
+}
+.icon-headerh:before {
+  content: "\e9ca";
+}
+.icon-reading-guide:before {
+  content: "\e9cb";
+}
+.icon-video-resume:before {
+  content: "\e9cc";
+}
+.icon-videoint-tutorial:before {
+  content: "\e9cd";
+}
+.icon-vdeo-resume:before {
+  content: "\e9ce";
+}
+.icon-ownformat-resume:before {
+  content: "\e9cf";
+}
+.icon-view-dashboard:before {
+  content: "\e9d0";
+}
+.icon-view-status:before {
+  content: "\e9d1";
+}
+.icon-text-box-search-outline:before {
+  content: "\e9d2";
+}
+.icon-lock-open-check:before {
+  content: "\e9d3";
+}
+.icon-lock-open:before {
+  content: "\e9d4";
+}
+.icon-purchase-trolly:before {
+  content: "\e9d5";
+}
+.icon-message-bulleted-off:before {
+  content: "\e9d6";
+}
+.icon-clipboard-text-multiple:before {
+  content: "\e9d7";
+}
+.icon-Invitation:before {
+  content: "\e9d8";
+}
+.icon-instagram:before {
+  content: "\e9d9";
+}
+.icon-onlinetest:before {
+  content: "\e9da";
+}
+.icon-credit-point-system:before {
+  content: "\e9db";
+}
+.icon-userguid:before {
+  content: "\e9dc";
+}
+.icon-employer-interest:before {
+  content: "\e9dd";
+}
+.icon-job-apply-limit:before {
+  content: "\e9de";
+}
+.icon-job-information:before {
+  content: "\e9df";
+}
+.icon-upload-video:before {
+  content: "\e9e0";
+}
+.icon-employer-interested:before {
+  content: "\e9e1";
+}
+.icon-employer-viewed:before {
+  content: "\e9e2";
+}
+.icon-explore-job-details:before {
+  content: "\e9e3";
+}
+.icon-icon-explore-job-details:before {
+  content: "\e9e4";
+}
+.icon-skill-note-book1:before {
+  content: "\e9e5";
+}
+.icon-VideoInterview2:before {
+  content: "\e9e6";
+}
+.icon-Group:before {
+  content: "\e9e7";
+}
+.icon-shorlist1:before {
+  content: "\e9e8";
+}
+.icon-FacetoFace2:before {
+  content: "\e9e9";
+}
+.icon-WrittenTest3:before {
+  content: "\e9ea";
+}
+.icon-Vector1:before {
+  content: "\e9eb";
+}
+.icon-redeem-points:before {
+  content: "\e9ec";
+}
+.icon-ai-audio:before {
+  content: "\e9ed";
+}
+.icon-audio_file:before {
+  content: "\e9ee";
+}
+.icon-send-message:before {
+  content: "\e9ef";
+}
+.icon-Boostingicon2:before {
+  content: "\e9f0";
+}
+.icon-change1:before {
+  content: "\e9f1";
+}
+.icon-ProfilePreference1:before {
+  content: "\e9f2";
+}
+.icon-clipboard-copy:before {
+  content: "\e9f3";
+}
+.icon-promo-code:before {
+  content: "\e9f4";
+}
+.icon-personal_hiring:before {
+  content: "\e9f5";
+}
+.icon-Voice11:before {
+  content: "\e9f6";
+}
+.icon-question_mark_black_24dp13:before {
+  content: "\e9f7";
+}
+.icon-dashboard_customize_24dp_5F636811:before {
+  content: "\e9f8";
+}
+.icon-add_black_24dp31:before {
+  content: "\e9f9";
+}
+.icon-comments:before {
+  content: "\aa967";
+}

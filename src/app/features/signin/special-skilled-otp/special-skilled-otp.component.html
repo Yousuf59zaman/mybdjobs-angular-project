@@ -1,0 +1,54 @@
+<div class="md:w-[488px] p-2" *transloco="let t read:'signin.otp'">
+    <div>
+        <p class="text-[#000000] text-2xl font-semibold text-center">{{t('welcomeBack')}}</p>
+    </div>
+    <div class="bg-[#F3F3F3] rounded-2xl px-3 py-2 mt-6 mb-10">
+        <div class="flex items-center gap-3">
+            <img class="w-12 h-12 rounded-full" [src]="getPhoto(userObj()?.photoUrl ?? '')" alt="userphoto.jpg">
+            <div>
+                <p class="text-base font-medium text-[#383E49]">{{userObj()?.fullName}}</p>
+                <p class="text-sm text-[#5D6679]">{{userObj()?.emailAddress}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mb-6">
+        <p class="text-[#667085] text-base font-medium">{{t('plsTypetheCodeSentTo')}}</p>
+        <p class="text-[#344054] text-xl font-semibold">"{{userObj()?.phoneNumber}}"</p>
+    </div>
+    <div>
+        <form (submit)="onSubmit($event)">
+            <p class="text-[#48505E] text-sm font-medium">{{t('enterCode')}}</p>
+            <app-input [type]="'text'"
+             [isDecimalAllowed]="true"
+              [placeholder]="'Type the code'"
+              [maxLength]="maxLength"
+             [control]="otpControl"
+             (keyup.enter)="onSubmit($event)">
+            </app-input>
+            @if(isOtpEmpty()){
+                <p class="flex gap-2 mt-1 text-[#AC2719] text-[11px] font-medium"><img src="images/info-red.svg" class="self-start"
+                    alt="info-red">
+                    <span>{{t('plsEnterOtp')}}</span>
+                </p>
+            }
+            @else if(isWrongOtp()){
+                <p class="flex gap-2 mt-1 text-[#AC2719] text-[11px] font-medium"><img src="images/info-red.svg"
+                    alt="info-red">{{t('wrongOtp')}}
+                </p>
+            }
+            <div class="flex gap-4 mt-5">
+                <button type="submit" class="bg-[#B32D7D] text-white w-full h-12 rounded-full">{{t('continue')}}</button>
+                <button (click)="backPage()" type="button"
+                    class="bg-[#FFF] border border-[#D0D5DD] text-[#344054] w-full h-12 rounded-full font-semibold text-sm">{{t('notNow')}}
+                </button>
+            </div>
+        </form>
+        <div class="text-center mt-10 sm:mb-0 mb-36" *transloco="let t read:'signin'">
+            <a class="cursor-pointer text-[#B32D7D] text-base font-medium" (click)="sharedService.updateType('username')">{{t('signinToDifferentAccount')}}</a>
+            <div class="cursor-pointer flex items-center justify-center gap-2">
+                <p class="text-sm text-[#667085] whitespace-nowrap cursor-default">{{t('donotHaveAnAccount')}}</p>
+                <a (click)="sharedService.goToSignUpFlow()" class="text-[#B32D7D] text-base font-medium">{{t('SignUp')}}</a>
+            </div>
+        </div>
+    </div>
+</div>

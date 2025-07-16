@@ -1,0 +1,19 @@
+{
+  "headline": "Link Account",
+  "link": "Link",
+  "save": "Save",
+  "close": "Close",
+  "edit": "Edit",
+  "delete": "Delete",
+  "deletePop" : "Delete",
+  "cancel":"Cancel",
+  "expand": "Expand",
+  "collapse": "Collapse",
+  "Addlink": "Add Link Account",
+  "addAcc":"Add Account",
+  "chooseAcc":"Choose Account",
+  "noData": "No linked accounts found.",
+  "deleteMsg": "Are you sure, you want to delete this record?"
+
+  
+}  

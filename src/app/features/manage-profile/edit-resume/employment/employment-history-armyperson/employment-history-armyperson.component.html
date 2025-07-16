@@ -1,0 +1,168 @@
+
+<accordion-main-body
+  [accordionName]="'Employment History(For Retired Army Person)'"
+  buttonType="none"
+  [isAccordionOpen]="isOpen()"
+  [isFormOpen]="isEmploymentArmyHistoryNewFormOpen()"
+  (formToggleEmitter)="isEmploymentArmyHistoryNewFormOpen.set(!isEmploymentArmyHistoryNewFormOpen())"
+  (accordionToggleEmitter)="toggle()"
+>
+  <div
+    class="my-5"
+    [ngClass]="{'hidden': isEmploymentArmyHistoryEditFormOpen()}">
+    <div class="flex flex-wrap justify-between items-center gap-4">
+      <h3 class="text-lg font-semibold text-slate-700">
+        Information
+      </h3>
+      <div class="flex gap-4 items-center">
+        <button
+          class="flex items-center gap-1.5 text-[#B32D7D]"
+          aria-label="Edit Academic 1"
+          (click)="isEmploymentArmyHistoryEditFormOpen.set(true)">
+          <img src="images/edit-05.svg" class="h-[15px] w-[15px]">
+          <span class="text-sm hidden sm:inline">Edit</span>
+        </button>
+        <button
+          class="flex items-center gap-1.5 text-slate-600"
+          aria-label="Delete Academic 1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" class="w-4 h-4">
+            <path d="M2 4H3.33333H14" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5.33325 4V2.66667C5.33325 2.48986 5.40349 2.32029 5.52851 2.19526C5.65354 2.07024 5.82311 2 5.99992 2H9.99992C10.1767 2 10.3463 2.07024 10.4713 2.19526C10.5963 2.32029 10.6666 2.48986 10.6666 2.66667V4" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12.6666 4V13.3333C12.6666 13.5101 12.5963 13.6797 12.4713 13.8047C12.3463 13.9298 12.1767 14 11.9999 14H3.99992C3.82311 14 3.65354 13.9298 3.52851 13.8047C3.40349 13.6797 3.33325 13.5101 3.33325 13.3333V4" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6.66675 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9.33325 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-sm hidden sm:inline">Delete</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+      <div>
+        <p class="text-sm text-gray-500">BA No</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">BA - 1214</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Ranks</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">2Lt</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Type</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">Officer</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Arms</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">AC</p>
+      </div>
+      <div >
+        <p class="text-sm text-gray-500">Trade</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">Dhaka</p>
+      </div>
+      <div >
+        <p class="text-sm text-gray-500">Course</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">
+        Dhaka</p>
+      </div>
+      <div >
+        <p class="text-sm text-gray-500">Date of Commission</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">11/02/2024</p>
+      </div>
+      <div >
+        <p class="text-sm text-gray-500">Date of Retirement</p>
+        <p class="mt-1 text-sm font-medium text-gray-900">11/02/2024</p>
+      </div>
+    
+    </div>
+  </div>
+
+  <div
+    class="my-5"
+    [ngClass]="{'hidden': !isEmploymentArmyHistoryEditFormOpen()}">
+    <h3 class="text-lg font-semibold text-slate-700">
+      Information
+    </h3>
+
+    <form class="mt-5 space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div>
+          <div class="grid grid-cols-2 gap-4 items-center relative">
+            <!-- Dropdown -->
+            <div class="flex flex-col">
+              <app-selectbox [label]="'BA No'" [isRequired]="true" [placeholder]="placeholderText"
+                [customClasses]="'min-w-0 w-full truncate text-sm text-gray-500 rounded-lg border border-gray-300 shadow-sm px-3 py-2 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] placeholder:text-xs xs:placeholder:text-sm'"></app-selectbox>
+            </div>
+
+            <!-- Input Field -->
+            <div class="flex flex-col mt-6">
+              <app-input [placeholder]="'Enter your BA No'" [isRequired]="true"
+                [customClasses]="'min-w-0 w-full truncate text-sm text-gray-500 rounded-lg border border-gray-300 shadow-sm px-3 py-2 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] placeholder:text-xs xs:placeholder:text-sm'"></app-input>
+            </div>
+
+            <!-- Vector (−) Symbol for Responsive Screens -->
+            <div class="absolute left-1/2 mt-5 -translate-x-1/2 text-gray-400 text-xl block lg:hidden">
+              &minus;
+            </div>
+          </div>
+
+
+
+
+        </div>
+
+        <div>
+          <app-selectbox [label]="'Ranks'" [placeholder]="'Enter your ranks'"></app-selectbox>
+        </div>
+
+      </div>
+
+      <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+        <!-- Designation Selectbox -->
+        <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+          <app-selectbox [label]="'Type'" [placeholder]="'Enter your Type'" [isRequired]="true"
+            [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-selectbox>
+        </div>
+
+        <!-- Department Selectbox -->
+        <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+          <app-selectbox [label]="'Arms'" [placeholder]="'Enter your Arms'"
+            [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-selectbox>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+        <!-- Designation Selectbox -->
+        <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+          <app-input [label]="'Trade'" [placeholder]="'Enter your Trade'"
+            [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+        </div>
+
+        <!-- Department Selectbox -->
+        <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+          <app-input [label]="'Course'" [placeholder]="'Enter your Course'"
+            [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-start sm:gap-6 gap-4">
+        <div class="w-full sm:w-1/2">
+          <app-date-single-date-picker [label]="'Date of Commission'" [placeholder]="'mm/dd/yy'" [isRequired]="true"
+            (selectedStartDateChange)="onStartDateChanged($event)"></app-date-single-date-picker>
+        </div>
+        <div class="w-full sm:w-1/2">
+          <app-date-single-date-picker [label]="'Date of Retirement'" [placeholder]="'mm/dd/yy'" [isRequired]="true"
+            (selectedStartDateChange)="onStartDateChanged($event)"></app-date-single-date-picker>
+        </div>
+      </div>
+
+      <div class="mb-3 flex items-center gap-3">
+        <button
+          class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">Save</button>
+        <button (click)="isEmploymentArmyHistoryEditFormOpen.set(false)"
+          class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold">Close</button>
+      </div>
+    </form>
+  </div>
+</accordion-main-body>
+
+
+

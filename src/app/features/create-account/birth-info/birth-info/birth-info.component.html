@@ -1,0 +1,85 @@
+<div role="main" *transloco="let t">
+  <div class=" mb-16 min-h-[468px]">
+    <div class="p-10">
+      <!-- <h2 class="text-2xl text-blue-700 mb-[70px]">Other Information</h2> -->
+      <div class="px-10 pb-5">
+        <div class="mx-auto max-w-[420px]">
+          <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+            <div>
+              <div class="text-base text-[#565656] font-bold mb-2">Date of Birth</div>
+              <div class="flex space-x-4">
+                <div class="w-1/3">
+                  <select
+                    name="day"
+                    id="day"
+                    class="border border-[#757575] input-box-shadow rounded w-full px-3 py-1.5 text-[#555] text-sm"
+                    aria-label="Date of birth select Day"
+                    [formControl]="day()"
+                  >
+                    <option value="" selected>day</option>
+                    <option *ngFor="let option of dayOptions()" [value]="option.value">{{ option.label }}</option>
+                  </select>
+                  @if (day().invalid && (day().dirty || day().touched)) {
+                    <div class="text-red-600 text-sm mt-1">{{ getDayErrorMessage(day()) }}</div>
+                  }
+                </div>
+                <div class="w-1/3">
+                  <select
+                    name="month"
+                    id="month"
+                    class="border border-[#757575] input-box-shadow rounded w-full px-3 py-1.5 text-[#555] text-sm"
+                    aria-label="Date of birth select Month"
+                    [formControl]="month()"
+                  >
+                    <option value="" selected>month</option>
+                    <option *ngFor="let option of monthOptions()" [value]="option.value">{{ option.label }}</option>
+                  </select>
+                  @if (month().invalid && (month().dirty || month().touched)) {
+                    <div class="text-red-600 text-sm mt-1">{{ getMonthErrorMessage(month()) }}</div>
+                  }
+                </div>
+                <div class="w-1/3">
+                  <select
+                    name="year"
+                    id="year"
+                    class="border border-[#757575] input-box-shadow rounded w-full px-3 py-1.5 text-[#555] text-sm"
+                    aria-label="Date of birth select Year"
+                    [formControl]="year()"
+                  >
+                    <option value="" selected>year</option>
+                    <option *ngFor="let option of yearOptions()" [value]="option.value">{{ option.label }}</option>
+                  </select>
+                  @if (year().invalid && (year().dirty || year().touched)) {
+                    <div class="text-red-600 text-sm mt-1">{{ getYearErrorMessage(year()) }}</div>
+                  }
+                </div>
+              </div>
+              <div class="text-center text-base text-[#565656] mt-5">- or -</div>
+              <div class="text-base text-[#565656] font-bold mb-2">Age</div>
+              <input
+                class="border border-gray-600 w-full px-3 py-1.5 rounded input-box-shadow text-[#555]"
+                placeholder="Year"
+                type="tel"
+                name="age"
+                id="age"
+                maxlength="2"
+                aria-label="Or you can type your age here"
+                [formControl]="age()"
+              >
+              @if (age().invalid && (age().dirty || age().touched)) {
+                <div class="text-red-600 text-sm mt-1">{{ getAgeErrorMessage(age()) }}</div>
+              }
+              <div class="text-center py-5">
+                <button
+                  type="submit"
+                  class="bg-green-700 text-white py-2 px-3 mb-2.5 rounded h-[45px] min-w-[280px]"
+                  [disabled]="!formGroup.valid"
+                >Next</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

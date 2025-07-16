@@ -1,0 +1,30 @@
+{
+  "Address Details": "Address Details",
+  "Present Address": "Present Address",
+  "Inside Bangladesh": "Inside Bangladesh",
+  "Outside Bangladesh": "Outside Bangladesh",
+  "District": "District",
+  "Thana": "Thana",
+  "PO": "P.O",
+  "houseRoadVillage": "House No./ Road/ Village",
+  "Country": "Country",
+  "Permanent Address": "Permanent Address",
+  "Same as Present Address": "Same as Present Address",
+  "Save" : "Save",
+  "Close": "Close",
+  "Edit": "Edit",
+  "Expand" : "Expand",
+  "Collapse": "Collapse",
+
+  "Select your District": "Select your District",
+  "Select your Thana": "Select your Thana",
+  "Select your PO": "Select your P.O",
+  "Select your Country": "Select your Country",
+
+  "noData": "Currently no data exists! Please click on the following button to add your details address.",
+
+  "Add Address": "Add Address"
+
+
+
+}

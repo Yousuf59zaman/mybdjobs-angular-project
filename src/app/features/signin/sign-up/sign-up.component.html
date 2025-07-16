@@ -1,0 +1,87 @@
+<div *transloco="let t read:'signin.signup'">
+    <p class="text-sm  md:text-lg text-[#383E49]  font-medium text-center flex items-center justify-center gap-2">
+        {{t('createFreeBdjobsAccount')}} <span class="self-start">
+            <!-- <img src="images/info.svg" alt=""> -->
+            <div class="relative group inline-block">
+                <img src="images/info.svg" alt="Info" class="mt-2">
+
+                <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block
+                          bg-black text-white text-xs rounded px-4 py-2.5 z-10 whitespace-nowrap">
+                    This is a tooltip
+
+                    <!-- Triangle -->
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 
+                            border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-black">
+                    </div>
+                </div>
+            </div>
+
+
+        </span>
+    </p>
+    <div class="mt-6 space-y-4">
+        <a [href]="'https://gateway.bdjobs.com/jobseeker-panel/create-account/create-account-form?type=w'"
+            class="flex gap-4">
+            <img src="images/general.svg" alt="">
+            <div>
+                <p class="text-[#0B6041] text-base font-semibold">{{t('general.generalCategory')}}</p>
+                <p class="text-[#595959] text-sm font-normal mt-2">{{t('general.doctor')}},
+                    {{t('general.accountant')}},
+                    {{t('general.projectManager')}},
+                    {{t('general.engineer')}},
+                    {{t('general.lecturer')}},
+                    {{t('general.merchendiser')}}</p>
+                <div class="hidden md:block">
+                    <button
+                        class="text-[#0B6041] text-sm font-semibold bg-[#F2F9F2] w-full h-10 rounded-full mt-3 flex items-center justify-center gap-1">{{t('createAccount')}}
+                        <span><img src="images/link-green.svg" alt=""></span></button>
+                </div>
+            </div>
+        </a>
+        <div class="block md:hidden">
+            <button
+                class="text-[#0B6041] text-sm font-semibold bg-[#F2F9F2] w-full h-10 rounded-full mt-3 flex items-center justify-center gap-1">{{t('createAccount')}}
+                <span><img src="images/link-green.svg" alt=""></span></button>
+        </div>
+        <a class="flex gap-4"
+            [href]="'https://gateway.bdjobs.com/jobseeker-panel/create-account/create-account-form?type=b'">
+            <img src="images/special.svg" alt="">
+            <div>
+                <p class="text-sm md:text-base text-[#2F64A3] font-semibold">স্পেশাল স্কিল্‌ড ক্যাটাগরি</p>
+                <p class="text-[#595959] text-sm font-normal mt-2">
+                    নার্স, প্যাথোলজিস্ট, ড্রাইভার, মেকানিক, ইলেকট্রিশিয়ান, সিকিউরিটি গার্ড,শেফ/বাবুর্চী,পিয়ন
+                </p>
+                <div class="hidden md:block">
+                    <button
+                        class="text-[#2F64A3] text-sm font-semibold bg-[#EEF6FF] w-full h-10 rounded-full mt-3 flex items-center justify-center gap-1">
+                        অ্যাকাউন্ট তৈরী<span><img src="images/link-blue.svg" alt=""></span>
+                    </button>
+                </div>
+            </div>
+        </a>
+        <div class="block md:hidden">
+            <button
+                class="text-[#2F64A3] text-sm font-semibold bg-[#EEF6FF] w-full h-10 rounded-full mt-3 flex items-center justify-center gap-1">অ্যাকাউন্ট
+                তৈরী<span><img src="images/link-blue.svg" alt=""></span></button>
+        </div>
+        <a [href]="'https://gateway.bdjobs.com/jobseeker-panel/create-account/create-account-form?type=d'"
+            class="flex gap-4">
+            <img src="images/general.svg" alt="">
+            <div>
+                <p class="text-sm md:text-base text-[#6035B1]  font-semibold">প্রতিবন্ধীদের জন্য</p>
+                <p class="text-[#595959] text-sm font-normal mt-2">প্রতিবন্ধীরা ম্যানেজার, কম্পিউটার অপারেটর, গ্রাফিক্স
+                    ডিজাইনারসহ বিভিন্ন পদে আবেদন করতে পারবেন।</p>
+                <div class="hidden md:block">
+                    <button
+                        class="text-[#6035B1] text-sm font-semibold bg-[#F3EFFB] w-full h-10 rounded-full mt-3 flex items-center justify-center gap-1">অ্যাকাউন্ট
+                        তৈরী<span><img src="images/link-purple.svg" alt=""></span></button>
+                </div>
+            </div>
+        </a>
+        <div class="block md:hidden">
+            <button
+                class="text-[#6035B1] text-sm font-semibold bg-[#F3EFFB] w-full h-10 rounded-full mt-3 flex items-center justify-center gap-1">অ্যাকাউন্ট
+                তৈরী<span><img src="images/link-purple.svg" alt=""></span></button>
+        </div>
+    </div>
+</div>

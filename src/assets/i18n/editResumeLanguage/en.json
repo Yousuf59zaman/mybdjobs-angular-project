@@ -1,0 +1,17 @@
+{
+  "headline": " Language Proficiency",
+  "title":" Language Proficiency",
+  "languages": "Language",
+  "speak": "Speaking",
+  "write": "Writing",
+  "read": "Reading",
+  "save": "Save",
+  "close": "Close",
+  "example": "Example",
+  "edit": "Edit",
+  "delete":"Delete",
+  "expand": "Expand",
+  "collapse": "Collapse",
+  "AddLanguage": "Add Language",
+  "noData": "Currently no data exists! Please click on the following button to add your language proficiency."
+}

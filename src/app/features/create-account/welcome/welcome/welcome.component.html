@@ -1,0 +1,39 @@
+<div class="w-full bg-white px-10 py-[30px] font-inherit" *transloco="let t">
+    <div class="text-center mb-6">
+        <img src="images/Welcome-cup.svg" alt="Congratulations" class="mx-auto w-[140px] h-[140px]" />
+    </div>
+    <div class="col-sm-12 text-center pl-[15px] pr-[15px]">
+        <span class="mb-[10px] pt-[30px] block text-base text-blue-600 text-[24px] font-semibold">
+            {{t('welcome.translatedText')}}
+        </span>
+    </div>
+    <div class="col-sm-12 text-center pl-[15px] pr-[15px]">
+        <span class="pb-[30px] text-[18px] block text-base text-gray-800 font-medium">
+            {{t('welcome.successmsg')}}
+        </span>
+    </div>
+
+    <div class="space-y-2">
+        <div class="flex justify-center">
+            <a href="https://jobs.bdjobs.com//bn/jobsearchbn.asp?fcatId=8" class="bg-[#2e64a3] p-2 rounded-sm flex justify-between items-center text-white w-full sm:w-2/5 text-xs h-19">
+                <div>
+                    <h3 class="text-base text-[18px] font-medium">{{t('welcome.jobSearchTitle')}}</h3>
+                    <span class="text-[16px]">{{t('welcome.jobSearchSubtitle')}}</span>
+                </div>
+                <img src="images/right-arrow.png" alt="arrow" class="w-4 h-4" />
+            </a>
+        </div>
+
+        <div class="flex justify-center">
+            <a [routerLink]="['/edit-profile']"
+                class="bg-[#008020] p-2 rounded-sm flex justify-between items-center text-white w-full sm:w-2/5 text-ls h-19">
+                <div>
+                    <h3 class="text-base text-[18px] font-medium" [innerHTML]="t('welcome.resumeTitle')"></h3>
+                    <span class="text-[16px]">{{t('welcome.resumeSubtitle')}}</span>
+                </div>
+                <img src="images/right-arrow.png" alt="arrow" class="w-4 h-4" />
+            </a>
+        </div>
+    </div>
+</div>
+

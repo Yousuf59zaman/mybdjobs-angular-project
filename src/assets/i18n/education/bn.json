@@ -1,0 +1,24 @@
+{
+    "educationalQualifications": "শিক্ষাগত যোগ্যতা",
+    "descriptionOfInstitutionalEducation": "প্রাতিষ্ঠানিক শিক্ষার বিবরণী",
+    "doYouHaveInstitutionalEducation": "প্রাতিষ্ঠানিক শিক্ষা আছে?",
+    "latestEducationStage": "সর্বশেষ শিক্ষা পর্যায়",
+    "nameOfExaminationDegree": "পরীক্ষার নাম/ডিগ্রি",
+    "nameOfEducationalInstitution": "শিক্ষা প্রতিষ্ঠানের নাম",
+    "instituteName": "প্রতিষ্ঠানের নাম",
+    "concentrationMajorGroup": "মেজর / গ্রুপ (আবশ্যক)",
+    "enterConcentrationMajorGroupName": "বিষয়/মেজর/গ্রুপের নাম লিখুন",
+    "board": "বোর্ড",
+    "yearOfPassing": "পাশ করার বছর",
+    "yes": "হ্যাঁ",
+    "no": "না",
+    "next": "পরবর্তী",
+    "latest education stage is needed" : "সর্বশেষ শিক্ষা স্তর প্রয়োজন",
+    "select exam title": "পরীক্ষার শিরোনাম নির্বাচন করুন",
+    "select institution": "শিক্ষা প্রতিষ্ঠানের  নাম লিখুন",
+    "select major group": "মেজর / গ্রুপের নাম লিখুন",
+    "select board": "বোর্ড  খালি রাখা যাবে না",
+    "select education year" : "পাশ করার বছর  নির্বাচন করুন",
+    "boardPlaceholder":"নির্বাচন"
+  }
+  

@@ -1,0 +1,369 @@
+<div class="bg-white" *transloco="let t">
+  <div class="sm:mx-6 mx-3 bg-white pb-3 rounded-b-xl mt-5">
+    <form [formGroup]="form" class="">
+      <div class="flex flex-col gap-4">
+        <div
+          class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5"
+        >
+          <div class="w-full flex-1">
+            <app-input
+              [label]="t('personal.first_name')"
+              [isRequired]="true"
+              [isNumericOnly]="false"
+              [placeholder]="t('personal.enter_first_name')"
+              [control]="firstNameControl()"
+            >
+            </app-input>
+            <div class="text-red-500 text-xs">
+              @if (form.get('firstName')?.touched &&
+              form.get('firstName')?.hasError('required')) { {{t('personal.first_name_required')}} }
+            </div>
+          </div>
+          <div class="w-full flex-1">
+            <app-input
+              [label]="t('personal.last_name')"
+              [isNumericOnly]="false"
+              [placeholder]="t('personal.enter_last_name')"
+              [control]="lastNameControl()"
+            >
+            </app-input>
+          </div>
+        </div>
+        <div
+          class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5"
+        >
+          <div class="w-full flex-1">
+            <app-input
+              [label]="t('personal.fathers_name')"
+              [isNumericOnly]="false"
+              [placeholder]="t('personal.enter_fathers_name')"
+              [control]="fatherNameControl()"
+            >
+            </app-input>
+          </div>
+          <div class="w-full flex-1">
+            <app-input
+              [label]="t('personal.mothers_name')"
+              [isNumericOnly]="false"
+              [placeholder]="'Enter your Mother’s name'"
+              [control]="motherNameControl()"
+            >
+            </app-input>
+          </div>
+        </div>
+        <div
+          class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5"
+        >
+          <div class="w-full flex-1 relative">
+            <app-date-single-date-picker
+              [label]="t('personal.birth')"
+              [placeholder]="t('personal.select_dob')"
+              [isRequired]="false"
+              [control]="dateOfBirthControl()"
+              (selectedStartDateChange)="onStartDateChanged($event)"
+            ></app-date-single-date-picker>
+            <span class="text-red-400 absolute top-0 left-[88px]">*</span>
+            <div class="text-red-500 text-xs mt-1">
+              @if (form.get('dateOfBirth')?.touched &&
+              form.get('dateOfBirth')?.hasError('required')) { {{t('personal.dob_required')}} }
+            </div>
+          </div>
+
+          <div class="w-full flex-1 relative">
+            <app-selectbox
+              [options]="gender()"
+              [label]="t('personal.gender')"
+              [control]="genderControl()"
+              [isRequired]="true"
+              [placeholder]="t('personal.select_gender')"
+            >
+            </app-selectbox>
+            <!-- <span class="text-red-400 absolute top-0 left-[54px]">*</span> -->
+            <div class="text-red-500 text-xs mt-1">
+              @if (form.get('gender')?.touched &&
+              form.get('gender')?.hasError('required')) { {{t('personal.gender_required')}} }
+            </div>
+          </div>
+        </div>
+        <div
+          class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5"
+        >
+          <div class="w-full flex-1">
+            <app-selectbox
+              [options]="religion()"
+              [label]="t('personal.religion')"
+              [control]="religionControl()"
+              [isRequired]="false"
+              [placeholder]="t('personal.select_religion')"
+            >
+            </app-selectbox>
+          </div>
+          <div class="w-full flex-1 relative">
+            <app-selectbox
+              [options]="maritalStatus()"
+              [label]="t('personal.marital_status')"
+              [control]="maritalStatusControl()"
+              [isRequired]="true"
+              [placeholder]="t('personal.select_marital_status')"
+            >
+            </app-selectbox>
+
+            <div class="text-red-500 text-xs mt-1">
+              @if (form.get('maritalStatus')?.touched &&
+              form.get('maritalStatus')?.hasError('required')) { {{t('personal.select_marital_status')}} }
+            </div>
+          </div>
+        </div>
+        <div
+          class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5"
+        >
+          <div class="w-full flex-1">
+            <div class="mb-2 -mt-1 flex items-center justify-between">
+              <label
+                for="nationality"
+                class="text-sm text-[#344054] font-medium mr-1.5"
+                >{{t('personal.nationality')}}
+                <span class="text-red-400">*</span>
+              </label>
+              <div class="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  class="scale-75 rounded focus:ring-0 focus:outline-0 focus:outline-none active:outline-none"
+                  id="bd"
+                  formControlName="isBangladeshi"
+                  (change)="onBangladeshiCheckboxChange()"
+                />
+                <label for="bd" class="text-sm text-[#344054] font-medium"
+                  >{{t('personal.bangladeshi')}}</label
+                >
+              </div>
+            </div>
+            <input
+              type="text"
+              class="w-full rounded-lg py-1.5 px-3 border border-[#D0D5DD] sm:text-sm text-xs"
+              id="nationality"
+              placeholder="{{t('personal.other_country')}}"
+              formControlName="nationality"
+              [attr.disabled]="form.get('isBangladeshi')?.value ? true : null"
+            />
+            @if (suggestions.length > 0) {
+            <ul
+              class="w-full z-10 bg-white border border-gray-300 rounded-md shadow-lg mt-1 max-h-60 overflow-auto"
+            >
+              @for (suggestion of suggestions; track suggestion) {
+              <li
+                (click)="selectSuggestion(suggestion)"
+                class="cursor-pointer hover:bg-gray-100 px-4 py-2"
+              >
+                {{ suggestion }}
+              </li>
+              }
+            </ul>
+            }
+
+            <div class="text-red-500 text-xs mt-1">
+              @if (form.get('nationality')?.touched &&
+              form.get('nationality')?.hasError('required')) { {{t('personal.nationality_required')}} }
+            </div>
+          </div>
+          <div class="w-full flex-1">
+            <app-input
+              [label]="t('personal.national_id')"
+              [placeholder]="t('personal.enter_national_id')"
+              [control]="nationalIdControl()"
+            >
+            </app-input>
+          </div>
+        </div>
+        <div
+          class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5"
+        >
+          <div class="w-full flex-1">
+            <app-input
+              [label]="t('personal.passport_number')"
+              [isRequired]="false"
+              [isNumericOnly]="false"
+              [placeholder]="t('personal.enter_passport_number')"
+              [control]="passportNumberControl()"
+            >
+            </app-input>
+          </div>
+          <div class="w-full flex-1">
+            <app-date-single-date-picker
+              [label]="t('personal.passport_issue_date')"
+              [placeholder]="t('personal.enter_passport_issue_date')"
+              [isRequired]="false"
+              [control]="passportIssueDateControl()"
+              (selectedStartDateChange)="onPassportIssueDateChanged($event)"
+            ></app-date-single-date-picker>
+          </div>
+        </div>
+        <div
+          class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5"
+        >
+          <div class="w-full flex-1">
+            <div class="mb-2 -mt-1 flex items-center justify-between">
+              <label for="phone" class="sm:text-sm text-xs text-[#344054]"
+                >{{t('personal.primary_mobile')}}
+                <span
+                  class="sm:text-sm text-[10px] text-[#667085] sm:text-[#344054]"
+                  >{{t('personal.phone_note')}}</span
+                >
+                <span class="text-red-400 ml-1">*</span>
+              </label>
+            </div>
+
+            <div
+              class="flex items-center border border-[#ddd] rounded-lg focus-within:border-2 focus-within:border-[#D95BB0]"
+            >
+              <select
+                class="min-w-[100px] px-2 py-2 text-xs sm:text-sm rounded-l-lg border-none bg-white focus:outline-none focus:ring-0 appearance-none leading-[1.5rem]"
+                formControlName="countryCode"
+              >
+                @for (country of countryList; track country.value) {
+                <option [value]="country.value">
+                  +{{ country.value }} ({{
+                    country.label.includes("(BD)") ? "BD" : country.label
+                  }})
+                </option>
+                }
+              </select>
+
+              <input
+                type="text"
+                class="w-full px-2 py-2 text-xs sm:text-sm rounded-r-lg border-none focus:outline-none focus:ring-0 leading-[1.5rem]"
+                id="phone"
+                placeholder="Enter your Phone number"
+                formControlName="primaryPhone"
+              />
+            </div>
+            <div class="text-red-500 text-xs mt-1">
+              @if (form.get('primaryPhone')?.touched &&
+              form.get('primaryPhone')?.invalid) { @if
+              (form.get('primaryPhone')?.errors?.['required']) {
+              <div>{{t('personal.primary_phone_required')}}</div>
+              } @if (form.get('primaryPhone')?.errors?.['pattern']) { @if
+              (form.get('countryCode')?.value === '880') {
+              <div>{{t('personal.bd_phone_invalid')}}</div>
+              } @else {
+              <div>{{t('personal.phone_digits_only')}}.</div>
+              } } @if (form.get('primaryPhone')?.errors?.['minlength']) {
+              <div>{{t('personal.phone_min_length')}}</div>
+              } @if (form.get('primaryPhone')?.errors?.['maxlength']) {
+              <div>{{t('personal.phone_max_length')}}.</div>
+              } }
+            </div>
+          </div>
+          <div class="w-full flex-1">
+            <app-input
+              [label]="t('personal.secondary_mobile')"
+              [placeholder]="t('personal.enter_phone')"
+              [control]="secondaryPhoneControl()"
+            >
+            </app-input>
+          </div>
+        </div>
+        <div
+          class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5"
+        >
+          @if(!isBlue) {
+          <div class="w-full flex-1">
+            <app-input
+              [label]="t('personal.emergency_contact')"
+              [placeholder]="t('personal.enter_phone')"
+              [control]="emergencyContactControl()"
+            >
+            </app-input>
+          </div>
+          }
+
+          <div class="w-full flex-1">
+            <app-input
+              [type]="'email'"
+              [label]="t('personal.primary_email')"
+              [isNumericOnly]="false"
+              
+              [placeholder]="'Enter your Primary Email...    '"
+              [control]="primaryEmailControl()"
+            >
+            </app-input>
+          </div>
+        </div>
+        <div
+          class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5"
+        >
+          @if(!isBlue) {
+          <div class="w-full flex-1">
+            <app-input
+              [type]="'email'"
+              [label]="t('personal.alternate_email')"
+              [isNumericOnly]="false"
+              [placeholder]="t('personal.enter_alternate_email')"
+              [control]="alternateEmailControl()"
+            >
+            </app-input>
+          </div>
+
+          <div class="w-full flex-1">
+            <app-selectbox
+              [options]="bloodGroup()"
+              [label]="t('personal.blood_group')"
+              [control]="bloodGroupControl()"
+              [isRequired]="false"
+              [placeholder]="t('personal.enter_blood_group')"
+            >
+            </app-selectbox>
+          </div>
+          } @else
+          {
+            <div class="w-full flex-1">
+            <app-input
+              [type]="'text'"
+              [label]="t('personal.birth_place')"
+              [isNumericOnly]="false"
+              [placeholder]="t('personal.enter_birth_place')"
+              [control]="birthplaceControl()"
+            >
+            </app-input>
+          </div>
+          }
+
+        </div>
+        <div
+          class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5"
+        >
+          <div class="w-full flex-1">
+            <app-input
+              [label]="t('personal.height')"
+              [placeholder]="t('personal.enter_height')"
+              [control]="heightControl()"
+            >
+            </app-input>
+          </div>
+          <div class="w-full flex-1">
+            <app-input
+              [label]="t('personal.weight')"
+              [placeholder]="t('personal.enter_weight')"
+              [control]="weightControl()"
+            >
+            </app-input>
+          </div>
+        </div>
+        <div class="mb-3 flex items-center gap-3">
+          <button
+            (click)="savePersonalInfo()"
+            class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold"
+          >
+            {{t('personal.save')}}
+          </button>
+          <button
+            (click)="closeForm()"
+            class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold"
+          >
+            {{t('personal.close')}}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+{
+    "paragraph": "In this part you can view the list of emailed CV along with Subject, Email To, Emailed on and CV Type. You can search emailed CV selecting date, subject and CV type.",
+    "headline":"Emailed CV",
+    "subject": "Subject",
+    "emailTo": "Email To",
+    "emailedOn": "Emailed on",
+    "delete":"Delete",
+    "toDate": "To Date",
+    "fromDate":"From Date",
+    "selectDate": "Select Date",
+    "typeSubject": "Type Subject",
+    "select": "Select",
+    "cvType": "CV Type",
+    "cvEmailed": "CV Emailed",
+    "search": "Search",
+    "personalizedCV":"Personalized CV",
+    "myBdjobsFormat":"MyBdjobs Format"
+
+      
+}

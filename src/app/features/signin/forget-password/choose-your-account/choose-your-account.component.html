@@ -1,0 +1,88 @@
+
+<div class="md:w-[488px] sm:p-2 p-1" *transloco="let t read:'signin'">
+    <div class="px-4 sm:px-8  flex flex-col gap-10 justify-center">
+        <div class="flex flex-col items-center justify-center gap-1.5">
+            <img [src]="'images/choose.svg'" alt="chooseaccount.svg" class="">
+            <p class="text-black text-xl sm:text-2xl font-semibold text-center mb-0.5">{{t('chooseAccount.chooseYourAccount')}}</p>
+            
+        </div>
+        <div>
+            <form (submit)="onSubmit($event)">
+                <!-- <input
+                    type=""
+                /> -->
+                <div class="flex flex-col gap-3 py-4">
+                  <div class=" max-h-[140px] overflow-y-auto">
+                   
+                    @for(user of userList(); track user.userName) {
+                      @let value = user.userName || user.socialMediaName;
+                      <label class="px-1 pr-3 flex items-center gap-2 cursor-pointer">
+                        <div class="min-w-5 min-h-5 max-w-5 max-h-5 self-start relative">
+                          <input
+                            type="radio"
+                            name="account"
+                            [value]="value"
+                            [formControl]="account"
+                            class="opacity-0 absolute w-full h-full cursor-pointer"
+                             
+                          />
+                          @if (account.value === value ) {
+                            <img src="images/radio_button_checked.svg" class="absolute top-1 left-0 w-5 h-5" />
+                          } @else {
+                            <img src="images/radio_button_unchecked.svg" class="absolute top-1 left-0 w-5 h-5" />
+                          }
+                        </div>
+                        <p class="self-center flex flex-col gap-1.5">
+                          <span class="text-base font-medium text-[#333]">
+                            {{t('chooseAccount.nameIs')}} <span>{{ user.fullName }}</span>
+                            @if(user.userName){
+                              & {{t('chooseAccount.userIdIs')}}
+                              <span class="text-[#B32D7D] font-semibold">{{ user.userName }}</span>
+                            
+                            }@else if(user.socialMediaName === 'G' && user.userName ===''){
+                              <span class="text-base font-medium text-[#333]">
+                                & Sign in with google
+                              </span>
+                            }
+                            @else if(user.socialMediaName === 'L' && user.userName ===''){
+                              <span class="text-base font-medium text-[#333]">
+                                & Sign in with linkedin
+                              </span>
+                            }
+                          </span>
+                          @if(user.lastLogIn) {
+                            <span class="text-[#595959] font-normal text-xs">{{t('chooseAccount.lastLogin')}}: {{ user.lastLogIn | date}}</span>
+                          }
+                        </p>
+                      </label>
+                    }
+                  </div>
+                    
+                     
+                      
+                      
+                      
+                  </div>
+                  
+                <div  class="flex gap-4 mt-5">
+                  <button 
+                    [disabled]="account.invalid"
+                    [ngClass]="account.value === '' ? 'opacity-20 cursor-not-allowed' : 'opacity-100'" 
+                    type="submit"
+                    class="bg-[#B32D7D] text-white text-sm font-semibold w-full h-12 rounded-full">
+                    {{t('continue')}} 
+                </button>
+                    
+                </div>
+            </form>
+            <div class="flex flex-col gap-2 text-center mt-10 sm:mb-0 mb-28">
+                <a role="button" (click)="sharedService.updateType('username')"  class="text-[#B32D7D] text-sm sm:text-base font-medium" >{{t('signinToDifferentAccount')}}</a>
+                <div class="flex items-center justify-center gap-2">
+                    <p class="text-sm sm:text-base text-[#383E49] whitespace-nowrap">{{t('donotHaveAnAccount')}}</p>
+                    <a  (click)="sharedService.goToSignUpFlow()" role="button"  class="cursor-pointer text-[#B32D7D] text-sm sm:text-base font-medium">{{t('SignUp')}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

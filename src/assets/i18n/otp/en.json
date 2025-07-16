@@ -1,0 +1,20 @@
+{
+    "headlineMobile":"Registration with Mobile Number",
+    "headlineEmail": "Registration with Email Address",
+    "phoneText":"A code has been sent to you on ",
+    "emailText":"A code has been sent to you on ",
+    "phoneNumber":"<b><%=strCountryCode&strEmailOrPhone%></b>. ",
+    "codeText":". Please enter it below.",
+    "emailID":"<b><%=strEmailOrPhone%></b>." ,
+
+    "resend": "Resend OTP Code",
+    "resendCode": "Resend OTP Code",
+    "nextButton": "Next",
+
+    "requiredOtp": "Please give the OTP code.",
+    "pattern": "Please enter a valid 6-digit OTP code.",
+    "verified": "OTP Verified Successfully!",
+    "validCodeType": "Please give valid OTP code."
+
+
+}

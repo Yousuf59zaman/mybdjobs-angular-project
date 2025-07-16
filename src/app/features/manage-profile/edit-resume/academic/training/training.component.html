@@ -1,0 +1,421 @@
+<div class="flex flex-col gap-4" (document:click)="calendarVisible = false" *transloco="let t">
+  @if(!isTrainingExpanded){
+  <div
+    class="flex flex-col bg-[#F9FAFB] justify-center self-stretch pt-6 pb-6 px-4 sm:px-6 border border-solid border-gray-200 rounded-xl cursor-pointer transition-all duration-300 overflow-hidden h-[68px]"
+    (click)="toggleTrainingSummary()" aria-labelledby="academic-summary-title">
+    <div class="flex flex-row justify-between items-center gap-4 pointer-events-auto ml-0 sm:ml-5">
+      <h2 id="academic-summary-title" class="text-lg font-medium leading-7 text-gray-800 whitespace-nowrap -ml-5">
+        {{t('editResumeTraining.headline')}}
+      </h2>
+      <button (click)="toggleTrainingSummary(); $event.stopPropagation()"
+        class="flex items-center gap-2 text-[16px] font-semibold text-gray-600 hover:text-gray-800 focus:outline-none p-1 rounded-md transition-colors"
+        [attr.aria-expanded]="isTrainingExpanded" aria-controls="academic-content">
+        <span class="whitespace-nowrap hidden sm:inline">{{ isTrainingExpanded ? 'Collapse' : 'Expand' }}</span>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5 transition-transform duration-300" [class.rotate-180]="isTrainingExpanded">
+          <path d="M5 7.5L10 12.5L15 7.5" stroke="#475467" stroke-width="1.66667" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+  }
+
+  <!-- Training Content -->
+  <div id="academic-content"
+    class="transition-all duration-300 rounded-xl border border-solid border-gray-200 bg-white shadow-sm"
+    [class.hidden]="!isTrainingExpanded">
+    <div class="p-6">
+      <div class="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
+        <h2 class="text-lg md:text-xl font-semibold text-gray-900 leading-snug">
+          {{t('editResumeTraining.headline')}}
+        </h2>
+
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <button
+            class="flex items-center gap-2 text-sm md:text-base font-semibold text-[#B32D7D] focus:outline-none p-1 rounded-md transition-colors"
+            aria-label="Add Academic Summary" (click)="openAddTrainingForm()">
+            <img src="images/plus.svg">
+            <span class="leading-tight hidden sm:inline">{{t('editResumeTraining.add')}}</span>
+            <span class="leading-tight sm:hidden">Add</span>
+          </button>
+
+          <div class="h-5 w-px bg-gray-300 rounded-full hidden sm:block" role="separator"></div>
+
+          <button (click)="toggleTrainingSummary(); $event.stopPropagation()"
+            class="flex items-center gap-2 text-sm md:text-base font-semibold text-[#B32D7D] focus:outline-none p-1 rounded-md transition-colors hidden sm:flex"
+            [attr.aria-expanded]="isTrainingExpanded">
+            <span class="leading-tight">{{ isTrainingExpanded ? 'Collapse' : 'Expand' }}</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5 transition-transform duration-300" [class.rotate-180]="isTrainingExpanded">
+              <path d="M5 7.5L10 12.5L15 7.5" stroke="#475467" stroke-width="1.66667" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <hr class="my-4 border-gray-200">
+      <div class="mt-6">
+        @if (!isInfoAvailable && !isAddTrainingFormOpen()) {
+        <div>
+          <app-no-details (openFormBtn)="openAddTrainingForm()"
+            [btnText]="'Add Training'"
+            [description]="'No training information available. Add your training details.'"></app-no-details>
+        </div>
+      }
+      @else {
+        <!-- Training Summary Cards -->
+        @for(summary of trainingSummaries; track summary.t_ID) {
+        <div class="mb-8">
+          @if(editingSummary && editingSummary.t_ID === summary.t_ID) {
+            <!-- Edit Form (shown in place of the card being edited) -->
+            <div class="mb-8">
+              <h3 class="text-lg font-semibold text-slate-700">
+                {{t('editResumeTraining.trainingNo')}} {{getTrainingNumber(editingSummary.t_ID)}}
+              </h3>
+              <form class="mt-5 space-y-4" [formGroup]="trainingform">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div class="form-group">
+                    <label class="flex items-center gap-0.5 text-sm font-medium text-slate-700">
+                      {{t('editResumeTraining.title')}}<span class="text-red-600">*</span>
+                    </label>
+                    <app-input [type]="'text'" [control]="titleControl" [placeholder]="'Enter your training title'"
+                      [isRequired]="true" [isNumericOnly]="false"
+                      [customClasses]="'w-full mt-[8px] p-2.5 text-sm text-gray-500 rounded-lg border border-gray-300 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] h-10'"></app-input>
+                    <div class="text-red-500 text-sm mt-1" *ngIf="titleControl.invalid && titleControl.touched && formSubmitted">
+                      {{ titleErrorMessage }}
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="flex items-center gap-0.5 text-sm font-medium text-slate-700">
+                      {{t('editResumeTraining.country')}} <span class="text-red-600">*</span>
+                    </label>
+                    <app-input [type]="'text'" [control]="countryControl" [placeholder]="'Enter your Country'"
+                      [isRequired]="true" [isNumericOnly]="false"
+                      [customClasses]="'w-full mt-[8px] p-2.5 text-sm text-gray-500 rounded-lg border border-gray-300 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] h-10'"></app-input>
+                    <div class="text-red-500 text-sm mt-1" *ngIf="countryControl.invalid && countryControl.touched && formSubmitted">
+                      {{ countryErrorMessage }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+                  <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+                    <div class="flex flex-col w-full">
+                      <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                        <span class="text-sm leading-[20px] text-slate-700"> {{t('editResumeTraining.topic')}}</span>
+                      </label>
+                      <app-input [type]="'text'" [control]="topicsControl" [placeholder]="'Enter your Topics Covered'"
+                        [isRequired]="true" [isNumericOnly]="false"
+                        [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+                    </div>
+                  </div>
+
+                  <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+                    <div class="flex flex-col w-full">
+                      <app-selectbox [options]="year()" [label]="'Training Year'" [control]="yearControl"
+                        [isRequired]="true" [placeholder]="'Select your Training Year'">
+                      </app-selectbox>
+                      <div class="text-red-500 text-sm mt-1" *ngIf="yearControl.invalid && yearControl.touched && formSubmitted">
+                        {{ yearErrorMessage }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-8 items-start mt-4 w-full">
+                  <div class="w-full md:flex-1">
+                    <div class="flex flex-col w-full">
+                      <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                        <span class="text-sm leading-[20px] text-slate-700"> {{t('editResumeTraining.institute')}}</span>
+                        <span class="text-sm text-red-600 leading-[20px]" aria-hidden="true">*</span>
+                      </label>
+                      <app-input [type]="'text'" [control]="instituteControl" [placeholder]="'Enter your Institute'"
+                        [isRequired]="true" [isNumericOnly]="false"
+                        [customClasses]="'flex gap-2 items-center py-2.5 mt-2 w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+                      <div class="text-red-500 text-sm mt-1" *ngIf="instituteControl.invalid && instituteControl.touched && formSubmitted">
+                        {{ instituteErrorMessage }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="w-full md:flex-1 relative date-picker-container" (click)="$event.stopPropagation()">
+                    <div class="flex flex-col w-full">
+                      <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                        <span class="text-sm leading-[20px] text-slate-700"> {{t('editResumeTraining.duration')}}</span>
+                      </label>
+
+                      <div class="relative w-full mt-2">
+                        <input type="text" control="durationControl" required placeholder="Select your duration month"
+                          class="w-full text-sm text-gray-500 rounded-lg border border-gray-300 shadow-sm bg-white pl-9 pr-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors"
+                          (click)="toggleCalendar()" [value]="dateRangeString" readonly>
+                        <button type="button" class="absolute left-2.5 top-1/2 -translate-y-1/2 h-5 w-5"
+                          (click)="toggleCalendar()">
+                          <img src="images/calendar.svg" alt="Calendar icon" class="h-5 w-5" />
+                        </button>
+                      </div>
+
+                      @if (calendarVisible) {
+                      <app-date-range-picker [(selectedStartDate)]="selectedStartDate" [(selectedEndDate)]="selectedEndDate"
+                        (selectedStartDateChange)="onStartDateChange($event)"
+                        (selectedEndDateChange)="onEndDateChange($event)">
+                      </app-date-range-picker>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-8 items-start mt-4 w-full">
+                  <div class="w-full md:flex-1">
+                    <div class="flex flex-col w-full">
+                      <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                        <span class="text-sm leading-[20px] text-slate-700"> {{t('editResumeTraining.location')}}</span>
+                      </label>
+                      <app-input [type]="'text'" [control]="locationControl" [placeholder]="'Enter your Location'"
+                        [isRequired]="false" [isNumericOnly]="false"
+                        [customClasses]="'flex gap-2 items-center py-2.5 mt-2 w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3 flex items-center gap-3">
+                  <button type="button" class="button-save" (click)="saveTrainingSummary()" [class.invalid]="trainingform.invalid">{{t('editResumeTraining.save')}}</button>
+                  <button type="button" (click)="closeTrainingForm()" class="button-close">{{t('editResumeTraining.close')}}</button>
+                </div>
+              </form>
+            </div>
+          } @else {
+            <!-- Regular Card View -->
+            <div class="flex flex-wrap justify-between items-center gap-4">
+              <h3 class="text-lg font-semibold text-slate-700">
+                {{t('editResumeTraining.trainingNo')}} {{$index + 1}}
+              </h3>
+              <div class="flex gap-4 items-center">
+                <button class="flex items-center gap-1.5 text-[#B32D7D]" aria-label="Edit Training"
+                  (click)="editSummary(summary)">
+                  <img src="images/edit-05.svg" class="h-[15px] w-[15px]">
+                  <span class="text-sm hidden sm:inline">{{t('editResumeTraining.edit')}}</span>
+                </button>
+
+                <button class="flex items-center gap-1.5 text-slate-600" aria-label="Delete Training"
+                  (click)="openDeleteModal(); selectedTrainingId = summary.t_ID">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                    class="w-4 h-4">
+                    <path d="M2 4H3.33333H14" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path
+                      d="M5.33325 4V2.66667C5.33325 2.48986 5.40349 2.32029 5.52851 2.19526C5.65354 2.07024 5.82311 2 5.99992 2H9.99992C10.1767 2 10.3463 2.07024 10.4713 2.19526C10.5963 2.32029 10.6666 2.48986 10.6666 2.66667V4"
+                      stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                      d="M12.6666 4V13.3333C12.6666 13.5101 12.5963 13.6797 12.4713 13.8047C12.3463 13.9298 12.1767 14 11.9999 14H3.99992C3.82311 14 3.65354 13.9298 3.52851 13.8047C3.40349 13.6797 3.33325 13.5101 3.33325 13.3333V4"
+                      stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M6.66675 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M9.33325 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                  <span class="text-sm hidden sm:inline">{{t('editResumeTraining.delete')}}</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+              <div>
+                <p class="text-sm text-gray-500">{{t('editResumeTraining.title')}}</p>
+                <p class="mt-1 text-sm font-medium text-gray-900">{{summary.trainingTitle}}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">{{t('editResumeTraining.country')}}</p>
+                <p class="mt-1 text-sm font-medium text-gray-900">{{summary.country}}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">{{t('editResumeTraining.topic')}}</p>
+                <p class="mt-1 text-sm font-medium text-gray-900">{{summary.topicsCovered}}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">{{t('editResumeTraining.year')}}</p>
+                <p class="mt-1 text-sm font-medium text-gray-900">{{summary.trainingYear}}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">{{t('editResumeTraining.institute')}}</p>
+                <p class="mt-1 text-sm font-medium text-gray-900">{{summary.institute}}</p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500">{{t('editResumeTraining.duration')}}</p>
+                <p class="mt-1 text-sm font-medium text-gray-900">{{summary.duration}}</p>
+              </div>
+              <div class="sm:col-span-2">
+                <p class="text-sm text-gray-500">{{t('editResumeTraining.location')}}</p>
+                <p class="mt-1 text-sm font-medium text-gray-900">{{summary.location}}</p>
+              </div>
+            </div>
+          }
+        </div>
+        @if(!editingSummary || editingSummary.t_ID !== summary.t_ID) {
+        <hr class="my-4 border-gray-200">
+        }
+        }
+
+        @if(canAddMoreTrainings() && !isAddTrainingFormOpen()) {
+         <button
+           class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 mt-8 mb-12 hover:bg-pink-50 transition-colors"
+           aria-label="Add Academic Summary" (click)="openAddTrainingForm()">
+           <img src="images/plus.svg" alt="Add" />
+           <span class="leading-tight">{{t('editResumeTraining.add')}}</span>
+         </button>
+         }
+
+        @if(isAddTrainingFormOpen()) {
+        <!-- Add New Training Form -->
+        <div class="mt-10">
+          <h3 class="text-lg font-semibold text-slate-700">
+            {{t('editResumeTraining.trainingNo')}} {{getNextTrainingNumber()}}
+          </h3>
+
+          <form class="mt-5 space-y-4" [formGroup]="trainingform">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label class="flex items-center gap-0.5 text-sm font-medium text-slate-700">
+                  {{t('editResumeTraining.title')}}<span class="text-red-600">*</span>
+                </label>
+                <app-input [type]="'text'" [control]="titleControl" [placeholder]="'Enter your training title'"
+                  [isRequired]="true" [isNumericOnly]="false"
+                  [customClasses]="'w-full mt-[8px] p-2.5 text-sm text-gray-500 rounded-lg border border-gray-300 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] h-10'"></app-input>
+                <div class="text-red-500 text-sm mt-1" *ngIf="titleControl.invalid && titleControl.touched && formSubmitted">
+                  {{ titleErrorMessage }}
+                </div>
+              </div>
+
+              <div>
+                <label class="flex items-center gap-0.5 text-sm font-medium text-slate-700">
+                  {{t('editResumeTraining.country')}} <span class="text-red-600">*</span>
+                </label>
+                <app-input [type]="'text'" [control]="countryControl" [placeholder]="'Enter your Country'"
+                  [isRequired]="true" [isNumericOnly]="false"
+                  [customClasses]="'w-full mt-[8px] p-2.5 text-sm text-gray-500 rounded-lg border border-gray-300 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] h-10'"></app-input>
+                <div class="text-red-500 text-sm mt-1" *ngIf="countryControl.invalid && countryControl.touched && formSubmitted">
+                  {{ countryErrorMessage }}
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+              <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+                <div class="flex flex-col w-full">
+                  <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                    <span class="text-sm leading-[20px] text-slate-700"> {{t('editResumeTraining.topic')}}</span>
+                  </label>
+                  <app-input [type]="'text'" [control]="topicsControl" [placeholder]="'Enter your Topics Covered'"
+                    [isRequired]="true" [isNumericOnly]="false"
+                    [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+                </div>
+              </div>
+
+              <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+                <div class="flex flex-col w-full">
+                  <app-selectbox [options]="year()" [label]="'Training Year'" [control]="yearControl"
+                    [isRequired]="true" [placeholder]="'Select your Training Year'">
+                  </app-selectbox>
+                  <div class="text-red-500 text-sm mt-1" *ngIf="yearControl.invalid && yearControl.touched && formSubmitted">
+                    {{ yearErrorMessage }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-8 items-start mt-4 w-full">
+              <div class="w-full md:flex-1">
+                <div class="flex flex-col w-full">
+                  <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                    <span class="text-sm leading-[20px] text-slate-700"> {{t('editResumeTraining.institute')}}</span>
+                    <span class="text-sm text-red-600 leading-[20px]" aria-hidden="true">*</span>
+                  </label>
+                  <app-input [type]="'text'" [control]="instituteControl" [placeholder]="'Enter your Institute'"
+                    [isRequired]="true" [isNumericOnly]="false"
+                    [customClasses]="'flex gap-2 items-center py-2.5 mt-2 w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+                  <div class="text-red-500 text-sm mt-1" *ngIf="instituteControl.invalid && instituteControl.touched && formSubmitted">
+                    {{ instituteErrorMessage }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full md:flex-1 relative date-picker-container" (click)="$event.stopPropagation()">
+                <div class="flex flex-col w-full">
+                  <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                    <span class="text-sm leading-[20px] text-slate-700"> {{t('editResumeTraining.duration')}}</span>
+                  </label>
+
+                  <div class="relative w-full mt-2">
+                    <input type="text" control="durationControl" required placeholder="Select your duration month"
+                      class="w-full text-sm text-gray-500 rounded-lg border border-gray-300 shadow-sm bg-white pl-9 pr-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors"
+                      (click)="toggleCalendar()" [value]="dateRangeString" readonly>
+                    <button type="button" class="absolute left-2.5 top-1/2 -translate-y-1/2 h-5 w-5"
+                      (click)="toggleCalendar()">
+                      <img src="images/calendar.svg" alt="Calendar icon" class="h-5 w-5" />
+                    </button>
+                  </div>
+
+                  @if (calendarVisible) {
+                  <app-date-range-picker [(selectedStartDate)]="selectedStartDate" [(selectedEndDate)]="selectedEndDate"
+                    (selectedStartDateChange)="onStartDateChange($event)"
+                    (selectedEndDateChange)="onEndDateChange($event)">
+                  </app-date-range-picker>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-8 items-start mt-4 w-full">
+              <div class="w-full md:flex-1">
+                <div class="flex flex-col w-full">
+                  <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                    <span class="text-sm leading-[20px] text-slate-700"> {{t('editResumeTraining.location')}}</span>
+                  </label>
+                  <app-input [type]="'text'" [control]="locationControl" [placeholder]="'Enter your Location'"
+                    [isRequired]="false" [isNumericOnly]="false"
+                    [customClasses]="'flex gap-2 items-center py-2.5 mt-2 w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3 flex items-center gap-3">
+              <button type="button" class="button-save" (click)="saveTrainingSummary()">{{t('editResumeTraining.save')}}</button>
+              <button type="button" (click)="closeTrainingForm()" class="button-close">{{t('editResumeTraining.close')}}</button>
+            </div>
+          </form>
+
+          @if(canAddMoreTrainings()) {
+          <button
+            class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 mt-8 mb-12 hover:bg-pink-50 transition-colors"
+            aria-label="Add Academic Summary" (click)="openAddTrainingForm()">
+            <img src="images/plus.svg" alt="Add" />
+            <span class="leading-tight">{{t('editResumeTraining.add')}}</span>
+          </button>
+          }
+        </div>
+      }
+        }  </div>
+  
+  </div>
+</div>
+
+@if(isDeleteModalOpen()){
+  <div class="fixed inset-0 bg-[#101828]/50 flex items-center justify-center z-[9999]">
+    <div class="bg-white w-[476px] h-[216px] p-10 rounded-lg shadow-md flex flex-col justify-between">
+      <p class="text-primary-900 text-center font-semibold text-[24px] leading-[32px]">
+        Are you sure you want to delete this training?
+      </p>
+      <div class="flex justify-center gap-6 mt-6">
+        <button (click)="closeDeleteModal()"
+          class="px-4 py-2 text-sm rounded-lg border border-[#E4E7EC] bg-white shadow-sm text-primary-900 hover:bg-gray-100">
+          Cancel
+        </button>
+         <button (click)="confirmDelete()" class="px-4 py-2 text-sm rounded-lg bg-[#C63C92] shadow-sm text-white hover:bg-pink-700">
+              Delete
+          </button>
+      </div>
+    </div>
+  </div>
+}

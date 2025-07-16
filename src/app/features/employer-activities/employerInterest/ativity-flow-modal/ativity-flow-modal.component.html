@@ -1,0 +1,59 @@
+<div class="modal-content">        
+    <div class="modal-body">
+
+        <div *transloco="let t">
+            <div class="text-[18px] font-semibold">
+                {{cmpName}}
+            </div>
+            <p class="text-[15px] font-semibold mb-[15px] text-[#595959]">{{t('employerInterest.Total Job')}}: {{convertToBanglaDigits(totalJob.toString(),currentLanguage)}} ({{t('employerInterest.Last 1 year')}})</p>
+
+            <button class="w-full flex justify-center p-2 rounded border border-[#E393C3] bg-[#F0D5E5] text-[#333] text-center text-base font-semibold mt-[15px]">
+                Hiring Activity
+            </button>
+
+            @for(value of jobActivityData; track value){
+                <div>
+                    <h4 class="text-[15px] font-semibold mb-[15px] text-[#333]">{{value.jobTitle}}</h4>
+                    <p class="text-[15px] text-[#595959] pb-[10px]">{{t('employerInterest.Applied on')}} : {{formatDate(value.appliedDate,currentLanguage)}}</p>
+    
+                    @for(stepValue of value.step; track stepValue; let i= $index){
+                        <div>
+                            <div class="w-full flex gap-3">
+                                <div class="flex-col text-white">
+                                    <div class="w-[25px] h-[25px] bg-[#B32D7D] rounded-full flex justify-center items-center pt-[2px]">
+                                        @if(stepValue.stepType == 'Shortlist'){
+                                            <i class="icon-shortlist"></i>
+                                        }
+                                        @else {
+                                            <i class="icon-{{stepValue.stepType}}"></i>
+                                        }
+                                        
+                                    </div>
+                                </div>
+                                <span class="flex-col text-[#333]">
+                                    <b>{{stepValue.stepName}}</b> ({{formatDate(stepValue.stepDate,currentLanguage)}})
+                                </span>   
+                            </div>
+                            
+                            @if(i < value.step.length-1){
+                                <div class="ml-[10px] text-[#BF5C9D]">
+                                    <b>|</b>
+                                </div>
+                            }
+                            
+                        </div>
+    
+                    }
+                  
+
+                    <hr class="my-[20px] border-0 border-t border-t-[#eee]">
+    
+                </div>
+            }
+           
+        </div>
+                   
+
+    </div>
+
+</div>

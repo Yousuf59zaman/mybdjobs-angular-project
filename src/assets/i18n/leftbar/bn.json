@@ -1,0 +1,43 @@
+{
+    "home": "হোম",
+    "manageProfile": "ম্যানেজ প্রোফাইল",
+    "viewProfile": "প্রোফাইল দেখুন",
+    "dashboard": "ড্যাশবোর্ড",
+    "editProfile": "প্রোফাইল সম্পাদনা",
+    "videoCv": "ভিডিও সিভি",
+    "customCv": "কাস্টম সিভি",
+    "emailedCv": "ইমেইলে পাঠানো সিভি",
+  
+    "invitation": "ইনভাইটেশন",
+    "liveInterview": "লাইভ ইন্টারভিউ",
+    "videoInterview": "ভিডিও ইন্টারভিউ",
+    "generalInterview": "সাধারণ ইন্টারভিউ",
+    "onlineTest": "অনলাইন টেস্ট",
+    "voiceTest": "ভয়েস ভিত্তিক টেস্ট",
+  
+    "myActivities": "আমার কার্যক্রম",
+    "appliedJobs": "আবেদনকৃত চাকরি",
+    "emailedResume": "ইমেইল করা রিজিউমে",
+    "shortlistedJob": "শর্টলিস্টেড চাকরি",
+    "followingEmployer": "ফলো করা নিয়োগকর্তা",
+    "transactionOverview": "লেনদেন সংক্ষিপ্ত বিবরণ",
+  
+    "pointsRewards": "পয়েন্টস & রিওয়ার্ডস",
+    "myPoints": "আমার পয়েন্টস",
+    "howToEarnPoints": "পয়েন্টস কীভাবে অর্জন করব?",
+  
+    "employerActivities": "নিয়োগকর্তার কার্যক্রম",
+    "viewedCv": "নিয়োগকর্তা সিভি দেখেছেন",
+    "employerMessage": "নিয়োগকর্তার বার্তা",
+    "employerInterested": "নিয়োগকর্তা আগ্রহী",
+  
+    "personalization": "নিজস্বকরণ",
+    "favouriteSearch": "প্রিয় অনুসন্ধান",
+    "smsJobAlert": "এসএমএস জব অ্যালার্ট",
+    "myTrainings": "আমার প্রশিক্ষণ",
+  
+    "accountSettings": "অ্যাকাউন্ট সেটিংস",
+    "helpVideos": "সাহায্য ভিডিও",
+    "signOut": "সাইন আউট"
+  }
+  

@@ -1,0 +1,130 @@
+<div class="bg-white rounded-none md:rounded-2xl border border-gray-200 shadow-sm w-full">
+  <div class="p-4 sm:p-6">
+    <div class="flex flex-col justify-center gap-1.5 mb-5">
+      <p class="text-primary-900 text-base sm:text-2xl font-semibold">
+        <span>Hello🖐, </span>
+        <span>Sajeeb Molla</span>
+      </p>
+      <p class="text-[#00000099] text-xs sm:text-sm">
+        Last Update Date 25th January, 2024
+      </p>
+    </div>
+    <hr>
+    <div class="mt-5">
+      <div class="w-full sm:flex sm:flex-row flex flex-col gap-4">
+        <div class="flex-1 flex flex-col">
+          <div
+            class="p-5 sm:flex sm:flex-row  sm:items-center flex flex-col gap-4 divide-y divide-[#E4E7EC] sm:divide-y-0 sm:divide-x sm:divide-[#E4E7EC] border border-[#E4E7EC] rounded-md">
+            <div class="flex-1 flex flex-col gap-4 ">
+              <span class="flex items-center gap-4">
+                <span
+                  class="inline-flex items-center justify-center bg-[#F9FAFB] rounded-full p-1.5 border border-#E4E7EC]">
+                  <img [src]="'images/crown.svg'" alt="" class="w-5 h-5" />
+                </span>
+                <p class="text-primary-900 font-medium text-base">Current Plan</p>
+              </span>
+
+              <div class="flex justify-between items-center">
+                @if(isPro()){
+                <button class="flex items-center justify-center gap-3 px-3 py-1.5 rounded-md text-sm w-[100px] max-w-[100px]
+                                       bg-[#EBFFF2] border border-[#C7FEDC] shadow-xs-custom ">
+                  Premium
+                  <img [src]="'images/green-badge.svg'" alt="badge.svg" class="w-4 h-[18px]">
+                </button>
+                <p class="text-[#C63C92] text-xs font-semibold flex items-center gap-1">
+                  <img [src]="'images/calendar_pink.svg'" alt="">
+                  <span class="font-medium">06 May, 2025</span>
+                </p>
+                <!-- <button
+                  class="flex items-center justify-center gap-3 px-3 py-1.5 rounded-md text-sm max-w-fit font-medium text-white
+                                                                         bg-[#0DB14B] border border-[#C7FEDC] shadow-xs-custom ">
+                  Upgrade
+                </button> -->
+                }@else {
+                <button class="flex items-center justify-between px-3 py-1.5 rounded-md text-sm w-[100px] max-w-[100px]
+                                                         bg-[#F2F4F7]   shadow-xs-custom ">
+                  Free
+                  <img [src]="'images/free.svg'" alt="badge.svg" class="">
+                </button>
+                }
+
+
+              </div>
+              <progress-bar [label]="''" [achievedProgress]="2500" [minValue]="0" [maxValue]="4000"
+                [progressBarColor]="'#DC6803'"></progress-bar>
+              <a href="#" class="text-primary-900 text-sm underline underline-offset-4 cursor-pointer mb-1.5">
+                Want to Upgrade Package?
+              </a>
+
+              <button class=" px-6 py-2 flex items-center justify-center gap-1.5
+                       bg-[#0DB14B] rounded-lg text-white font-medium text-sm">
+                Renew/Repurchase
+                <img [src]="'images/arrow-up-right.svg'" alt="arrow-up-right.svg">
+
+              </button>
+
+            </div>
+
+            <div class="pt-4 sm:pl-4 flex-1 flex flex-col gap-4 ">
+              <span class="flex items-center gap-4 mb-1">
+                <img [src]="'images/point.svg'" alt="" class="w-5 h-5" />
+
+                <p class="text-primary-900 font-medium text-base">My Point</p>
+              </span>
+              <progress-bar [label]="'Total Points'" [achievedProgress]="1229" [minValue]="0"
+                [maxValue]="2000"></progress-bar>
+              <a href="#" class="text-primary-900 text-sm underline underline-offset-4 cursor-pointer mb-1.5">
+                How do I earn points?
+              </a>
+              <a [href]="'https://mybdjobs.bdjobs.com/mybdjobs/point-dashboard.asp'" class=" px-6 py-2 flex items-center justify-center gap-1.5
+                      border border-[#D0D5DD] rounded-lg text-primary-900  font-medium text-sm">
+                My Points
+                <img [src]="'images/arrow-up-right-p.svg'" alt="arrow-up-right.svg">
+
+              </a>
+
+            </div>
+
+            <div class="pt-4 sm:pl-4 flex-1 flex flex-col gap-4 max-w-[220px] ">
+              <span class="flex items-center gap-4 mb-1">
+                <img [src]="'images/sms-job-alert.svg'" alt="" class="w-5 h-5" />
+                <p class="text-primary-900 font-medium text-base">SMS job alert</p>
+              </span>
+
+              <progress-bar [label]="'Total SMS'" [achievedProgress]="2500" [minValue]="0" [maxValue]="4000"
+                [progressBarColor]="'#DC6803'"></progress-bar>
+              <p class="truncate  text-primary-900 text-sm cursor-pointer mb-1 ">Check your SMS balance and top up to
+                continue sending messages.</p>
+              <a [href]="'https://mybdjobs.bdjobs.com/mybdjobs/sms/sms-setting.asp'" class=" px-6 py-2 flex items-center justify-center gap-1.5
+                      border border-[#D0D5DD] rounded-lg text-primary-900  font-medium text-sm">
+                Buy Now SMS
+                <img [src]="'images/arrow-up-right-p.svg'" alt="arrow-up-right.svg">
+
+              </a>
+
+            </div>
+
+          </div>
+          <div class="mt-4">
+            <app-invitation-board></app-invitation-board>
+          </div>
+          <div class="mt-5 w-full md:min-w-[500px] lg:min-w-[824px]">
+            <app-dashboard-stat></app-dashboard-stat>
+          </div>
+          <div>
+
+          </div>
+        </div>
+        <div class="max-w-[304px]">
+          <app-dashboard-right-panel></app-dashboard-right-panel>
+        </div>
+
+      </div>
+      <div>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>

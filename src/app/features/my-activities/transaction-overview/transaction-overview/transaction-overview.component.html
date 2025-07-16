@@ -1,0 +1,136 @@
+<div *transloco="let t">
+    <div class="w-full bg-white rounded-xl border border-gray-200 shadow-sm">
+        <!-- Header Section -->
+        <div class="border-b border-gray-200 px-4 sm:px-6 py-4 sm:py-5">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-900">
+                {{ t('transactionOverview.title') }}
+            </h2>
+            <p class="mt-1 text-xs sm:text-sm text-gray-500">
+                {{ t('transactionOverview.description') }}
+            </p>
+        </div>
+
+        <!-- Filters and Total Section -->
+        <div class="flex flex-col p-4 sm:p-6">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <!-- Total Found -->
+                <div class="flex items-center gap-2">
+                    <span class="text-base lg:text-lg font-medium text-gray-700">{{ t('transactionOverview.total')
+                        }}</span>
+                    <span class="text-xl lg:text-2xl font-semibold text-[#B32D7D]">{{ formatNumber(totalFound) }}</span>
+                </div>
+
+                <!-- Filters -->
+                <div class="flex flex-col sm:flex-row lg:items-center gap-3 w-full lg:w-auto"
+                    (click)="$event.stopPropagation()">
+                    <!-- Date Picker -->
+                    <div class="w-full sm:w-[254px]">
+                        <div class="relative">
+                            <input type="text" control="durationControl" required
+                                placeholder="Select your duration month"
+                                class="w-full text-sm text-gray-500 rounded-lg border border-gray-300 shadow-sm bg-white pl-9 pr-4 h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors"
+                                (click)="toggleCalendar()" [value]="dateRangeString" readonly />
+                            <button type="button" class="absolute left-2.5 top-1/2 -translate-y-1/2 h-5 w-5"
+                                (click)="toggleCalendar()">
+                                <img src="images/calendar.svg" alt="Calendar icon" class="h-5 w-5" />
+                            </button>
+                        </div>
+                        @if (calendarVisible) {
+                        <app-date-range-picker [(selectedStartDate)]="selectedStartDate"
+                            [(selectedEndDate)]="selectedEndDate" (selectedStartDateChange)="onStartDateChange($event)"
+                            (selectedEndDateChange)="onEndDateChange($event)"
+                            (onConfirmSelection)="calendarVisible = false"
+                            (onCancelSelection)="calendarVisible = false">
+                        </app-date-range-picker>
+                        }
+                    </div>
+
+                    <!-- Feature Select -->
+                    <div class="w-full sm:w-[254px]">
+                        <app-selectbox [options]="SelecteFeature" [label]="''" [control]="selectedFeatureControl()"
+                            [isRequired]="false" [placeholder]="t('transactionOverview.select')">
+                        </app-selectbox>
+                    </div>
+
+                    <!-- Search Button -->
+                    <button (click)="onSearch()"
+                        class="w-full sm:w-auto h-10 rounded-lg bg-[#C63C92] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#B32D7D] transition-colors">
+                        {{ t('transactionOverview.search') }}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Data Table Section -->
+            <div class="mt-6 overflow-x-auto rounded-lg border border-gray-200">
+                <!-- Loading State -->
+                @if (isLoading) {
+                <div class="flex items-center justify-center py-12">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#C63C92]"></div>
+                    <span class="ml-3 text-gray-600">Loading transactions...</span>
+                </div>
+                } @else {
+                <!-- Table Header -->
+                <div class="hidden sm:grid grid-cols-12 bg-gray-50 min-w-[640px]">
+                    <div class="col-span-5 p-4 text-sm font-medium text-gray-500 border-b border-gray-200">Service Name
+                    </div>
+                    <div class="col-span-2 p-4 text-sm font-medium text-gray-500 border-b border-gray-200">Pay Date
+                    </div>
+                    <div class="col-span-2 p-4 text-sm font-medium text-gray-500 border-b border-gray-200">Pay Method
+                    </div>
+                    <div class="col-span-3 p-4 text-sm font-medium text-gray-500 border-b border-gray-200">Amount (BDT)
+                    </div>
+                </div>
+
+                <!-- Table Rows -->
+                @for (transaction of transactions; track transaction) {
+                <div
+                    class="grid sm:grid-cols-12 grid-cols-1 border-b border-gray-200 hover:bg-gray-50 min-w-[640px] sm:min-w-full sm:items-center sm:gap-0 gap-2 p-4 sm:p-0">
+
+                    <!-- Service Name -->
+                    <div class="sm:col-span-5 p-4">
+                        <div class="sm:hidden font-medium text-gray-500 mb-1">Service Name</div>
+                        <div class="font-medium text-gray-900">{{ transaction.serviceName || 'N/A' }}</div>
+                    </div>
+
+                    <!-- Pay Date -->
+                    <div class="sm:col-span-2 p-4">
+                        <div class="sm:hidden text-xs text-gray-500 mb-1">Pay Date</div>
+                        <div class="text-gray-700 text-sm">
+                            {{ transaction.date ? formatDate(toDate(transaction.date)) : 'N/A' }}
+                        </div>
+                    </div>
+
+                    <!-- Pay Method -->
+                    <div class="sm:col-span-2 p-4">
+                        <div class="sm:hidden text-xs text-gray-500 mb-1">Pay Method</div>
+                        <div class="text-gray-700">{{ transaction.paymentMethod || 'N/A' }}</div>
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="sm:col-span-3 p-4">
+                        <div class="sm:hidden text-xs text-gray-500 mb-1">Amount (BDT)</div>
+                        <div class="font-medium text-gray-900 text-sm">৳ {{ formatNumber(transaction.amount || '0') }}</div>
+                    </div>
+                </div>
+                }
+                }
+                @if (totalFound > 0 && totalPages > 1) {
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-4  mr-7 ml-7">
+                        <div class="text-[#344054] text-sm font-medium font-['Inter'] leading-5">
+                        Page {{formatNumber(currentPage)}} of {{formatNumber(totalPages)}}
+                        </div>
+                        
+                        <div class="flex justify-end sm:justify-start">
+                        <app-pagination-table 
+                            [totalItems]="totalFound" 
+                            [itemsPerPage]="noOfRecordsPerPage"
+                            [currentPage]="currentPage" 
+                            (pageChanged)="onPageChange($event)">
+                        </app-pagination-table>
+                        </div>
+                    </div>
+                    }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+{
+  "titlePreferredAreas": "Preferred Areas",
+
+  "editBtn":"Edit",
+  "expandBtn":"Expand",
+  "collapseBtn":"Collapse",
+
+  "preferredJobCategory":"Preferred Job Categories",
+  "prefJobCatDescription":"Preferred job categories represents your desired sector(s) to work (at least 1 category any of section)",
+  "functionalSkill":"Functional",
+  "specialSkill":"Special Skills",
+  "maxCat":"(max 3)",
+  "prefJobCatValidation":"You have to select at least one Preferred Category.",
+
+  "preferredJobLocation":"Preferred Job Location",
+  "prefJobLocDescription": "Preferred Job Location defines the <span class=\"text-primary-900 text-xs font-medium\">geographical</span> place where you prefer to work. Add your priority wise preferred job locations. i.e. 1st: Dhaka, 2nd: Sylhet, 3rd: Khulna.",
+  "insideLocLabel":"Inside Bangladesh",
+  "insideLocExtraLabel":"Add Districts (max 15)",
+  "insideLocPlaceholder":"Enter your preferred Districts",
+  "outsideLocLabel":"Outside Bangladesh",
+  "outsideLocExtraLabel":"Add Countries (max 10)",
+  "outsideLocPlaceholder":"Enter your preferred Countries",
+  "prefJobLocValidation":"Please select preferred Job Location.",
+
+  "prefOrgLabel":"Add your preferred organization type (max 12)",
+  "prefOrgPlaceholder":"Enter your preferred Organizations",
+
+  "save":"Save",
+  "close":"Close"
+}

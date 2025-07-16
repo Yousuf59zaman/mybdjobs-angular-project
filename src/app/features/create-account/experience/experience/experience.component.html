@@ -1,0 +1,172 @@
+<div class="mt-[80px] px-4 md:px-6 font-inherit" *transloco="let t">
+    <!-- <div>
+        <h2 class="font-inherit text-[20px] md:text-[24px] text-[#004db3] text-center py-8 md:py-6 md:text-left">
+            {{ t('experience.expTitle') }}
+        </h2>
+    </div> -->
+
+    <div class="w-full">
+        <form [formGroup]="expForm">
+            <div class="mb-6">
+                <div>
+                    <p class="text-[14px] md:text-[15px] text-[#595959] mb-2">
+                        {{ t('experience.select Category') }}</p>
+                    <app-select [options]="selectWorkingSkills" [control]="categorySelectControl()"></app-select>
+                </div>
+            
+                <div class="bg-[#E8EAF6] border border-[#CFD1DB] rounded-lg mt-4 p-4">
+                    <div formArrayName="skillFormArray">
+
+                        @for (item of getSkillFormArray.controls; track $index) {
+                        <div [formGroupName]="$index" class="mb-4">
+
+                            @if($index != 0) {
+                            <div class="flex justify-end">
+                                <button (click)="deleteSkill($index)"
+                                    class="flex items-center p-1 rounded bg-red-600 text-white text-xs md:text-sm">
+                                    <i class="icon-trush-can"></i>
+                                    <span class="ml-1">{{ t('experience.delete') }}</span>
+                                </button>
+                            </div>
+                            }
+                            <app-select [options]="selectSpecificSkills" [falseOption]="true"
+                                [falseOptionText]="t('experience.select skill')" [isRequired]="true"
+                                [control]="getSkillSelectControl($index)"
+                                (change)="howDidYouLearnddChange($index)"></app-select>
+
+                            @if(getSkillSelectControl($index).invalid && getSkillSelectControl($index).touched) {
+                            <p class="text-[#E91B0C] text-sm mb-2">
+                                {{ t('experience.selectWorkType') }}
+                            </p>
+                            }
+                            @if(getSkillSelectControl($index).value) {
+                            <div class="mt-4">
+                                <p class="text-sm mb-2">
+                                    {{ t('experience.How did you learn1') }} '{{ skillNames[$index] }}' {{ t('experience.How did you learn2') }}?
+                                </p>
+
+                                <div class="grid grid-cols-2 md:flex text-[#595959]">
+                                    <app-checkbox [label]="t('experience.selfSkill')" [control]="selfSkillControl($index)"
+                                        [widthClass]="'w-4 h-4'" class="text-xs"></app-checkbox>
+                                    <app-checkbox [label]="t('experience.jobSkill')" [control]="jobSkillControl($index)"
+                                        [widthClass]="'w-4 h-4'" class="text-xs"></app-checkbox>
+                                    <app-checkbox [label]="t('experience.eduSkill')" [control]="eduSkillControl($index)"
+                                        [widthClass]="'w-4 h-4'" class="text-xs"></app-checkbox>
+                                    <app-checkbox [label]="t('experience.trainingSkill')" [control]="trainingSkillControl($index)"
+                                        [widthClass]="'w-4 h-4'" class="text-xs"></app-checkbox>
+                                    <app-checkbox [label]="t('experience.ntvqfSkill')" [control]="ntvqfSkillControl($index)"
+                                        [widthClass]="'w-4 h-4'" class="text-xs"></app-checkbox>
+
+                                    @if(ntvqfSkillControl($index).value) {
+                                    <app-select [control]="ntvqfControl($index)" [options]="selectNTVQFLevels"
+                                        [falseOption]="true" [falseOptionText]="'নির্বাচন'"></app-select>
+                                    }
+                                </div>
+
+                                <p class="text-[#E91B0C] text-sm md:text-base mb-2">
+                                    {{ learningModeErrmsg }}
+                                </p>
+                            </div>
+                            }
+                        </div>
+                        }
+
+                    </div>
+
+                    @if(getSkillFormArray.length > 0 && getSkillSelectControl(getSkillFormArray.length - 1).value) {
+                    <button (click)="addWorkSkill()" class="md:w-auto px-4 py-2 bg-[#424242] text-white rounded">
+                        <i class="icon-add-plus"></i>
+                        {{ t('experience.Add job skills') }}
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <div class="text-[#595959]">
+                @if (isBlueCollar) {
+                <div>
+                    <p class="text-sm">আপনার অভিজ্ঞতা কত বছর?</p>
+                    <app-input [type]="'text'" [isNumericOnly]="true" [maxLength]="3"
+                        [placeholder]="'আপনার অভিজ্ঞতা কত বছর'" [control]="expYearsControl()"></app-input>
+                </div>
+                }
+                @else {
+                <div>
+                    <p class="text-sm">{{ t('experience.any experience') }}</p>
+                    <app-radio [radioItems]="haveExperienceRadioItem" [control]="hasExperienceControl()"></app-radio>
+
+                    @if(hasExperienceControl().value) {
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="w-full">
+                            <label class="text-sm">{{ t('experience.Latest Company Name') }}</label>
+                            <app-input [type]="'text'" [control]="cmpNameControl()" [isNumericOnly]="false"
+                                [maxLength]="100" [isDecimalAllowed]="true"></app-input>
+
+                            @if(cmpNameControl().touched) {
+                            @if(!validateCmpName()[0]) {
+                            <p class="text-red-600 text-[15px]">
+                                {{ validateCmpName()[1] }}
+                            </p>
+                            }
+                            }
+                        </div>
+                        <div class="w-full">
+                            <label class="text-sm">{{ t('experience.Latest Designation') }}</label>
+                            <app-input [type]="'text'" [control]="designationControl()" [maxLength]="100"
+                                [isNumericOnly]="false"></app-input>
+
+                            @if(designationControl().touched) {
+                            @if(!validateDesignation()[0]) {
+                            <p class="text-red-600 text-[15px]">
+                                {{ validateDesignation()[1] }}
+                            </p>
+                            }
+                            }
+                        </div>
+                    </div>
+
+
+                    <div>
+                        <label class="text-sm">{{ t('experience.Employment Period') }}</label>
+                        <div class="flex flex-col md:flex-row mt-4 gap-4 justify-between">
+                            <div class="w-full">
+                                <app-datepicker [widthClass]="'w-[290px] md:w-[320px]'" [pickerType]="'calendar'"
+                                    [placeholder]="'MM/dd/yyyy'" [isRequired]="true" [minDate]="expMinDate"
+                                    [control]="empStartControl()"></app-datepicker>
+                                <p class="text-red-600 text-[15px]">
+                                    {{ fromDateErrmsg }}
+                                </p>
+                            </div>
+
+                            <div class="w-full">
+                                <div [ngClass]="{'hidden': chkContinueControl().value}">
+                                    <app-datepicker [widthClass]="'w-[290px] md:w-[320px]'" [pickerType]="'calendar'"
+                                        [placeholder]="'MM/dd/yyyy'" [isRequired]="true" [minDate]="expMinDate"
+                                        [control]="empToControl()"></app-datepicker>
+
+                                    <p class="text-red-600 text-[15px]">
+                                        {{ toDateErrmsg }}
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap">
+                        <app-checkbox [label]="t('experience.Currently Working')" [widthClass]="'w-4 h-4'"
+                            [textStyle]="'text-[15px] text-[#595959]'" [control]="chkContinueControl()"></app-checkbox>
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+
+            <div class="flex justify-center mt-5 pb-8">
+                <button type="button" class="bg-green-700 text-white py-2 px-6 rounded" (click)="onSubmit()">
+                    {{ t('experience.Next') }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

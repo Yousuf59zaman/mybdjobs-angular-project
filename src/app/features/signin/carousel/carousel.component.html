@@ -1,0 +1,16 @@
+<div class="w-full h-full bg-cover bg-center transition-all duration-700 flex items-center justify-center" [style.background-image]="slides[currentSlide()].bg">
+    <div class=" w-[485px] h-full flex flex-col items-center justify-center">
+      <img [src]="slides[currentSlide()].overlayImg" alt="Overlay" class=" max-w-xl w-full h-[350px]">
+      <h1 class="text-2xl font-semibold mb-3 text-[#2B2F38]">{{ slides[currentSlide()].title }}</h1>
+      <p class="text-sm font-normal text-[#48505E] w-72 text-center mb-5">{{ slides[currentSlide()].subtitle }}</p>
+      <div class="z-30 flex gap-2">
+            @for (slide of slides; track $index; let i = $index) {
+            <button
+                class="w-3 h-3 rounded-full transition-all duration-300"
+                [ngClass]="currentSlide() === i? 'bg-[#B32D7D]' : 'bg-[#D9D9D9]'"
+                (click)="currentSlide.set(i)">
+            </button>
+            }
+      </div>
+    </div>
+</div>

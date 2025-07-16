@@ -1,0 +1,433 @@
+<div>
+    @if (isLoading) {
+        <div class="flex items-center justify-center py-12">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#C63C92]"></div>
+            <span class="ml-3 text-gray-600">Loading short CV...</span>
+        </div>
+    } @else if (errorMessage) {
+        <div class="text-center text-red-500 py-8">{{errorMessage}}</div>
+    } @else {
+        <div class="w-full flex flex-col sm:flex sm:flex-row text-black border-gray-400 font-sans overflow-hidden">
+            <!-- Left Column -->
+            <div class="w-full sm:w-fit print-bg  space-y-4 bg-[#F5F5F5] py-4 px-4 sm:px-6 lg:py-[20px] lg:px-[30px]">
+
+                <div class="max-w-md mx-auto">
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-[250px]">
+                            <tr class="text-left">
+                                <td colspan="2">
+                                    @if (cvData.personalInfoShortResponse.folderName && cvData.personalInfoShortResponse.photoName) {
+                                        <img class="h-24 w-24 sm:h-32 sm:w-32 object-cover ml-0"
+                                            [src]="'https://storage.googleapis.com/bdjobs/mybdjobs/photos/' + cvData.personalInfoShortResponse.folderName + '/' + cvData.personalInfoShortResponse.photoName + '.jpg'"
+                                            alt="Profile Image" onerror="this.src='assets/images/default-profile.png'" />
+                                    }
+                                </td>
+                            </tr>
+                            <tr class="text-left">
+                                <td colspan="2">
+                                    <h3 class="text-lg sm:text-xl mt-2 text-left">
+                                        {{cvData.personalInfoShortResponse.fullName}}
+                                    </h3>
+                                </td>
+                            </tr>
+                            <!-- Phone Numbers -->
+                            <tr class="align-top">
+                                <td class="w-8 pt-4">
+                                    <img src="./images/telephone-bc.png" class="w-5 h-5 mt-1" alt="Phone">
+                                </td>
+                                <td class="pt-4 text-sm">
+                                    @if (phones.length > 0) {
+                                        <div class="flex flex-wrap gap-1">
+                                            @for(phone of phones; track phone; let last = $last) {
+                                                <a [href]="'tel:' + phone.number" class="text-black font-bold">
+                                                    {{phone.number}}@if(!last){,}
+                                                </a>
+                                            }
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+
+                            <!-- Emails -->
+                            <tr class="align-top">
+                                <td class="w-8 pt-4">
+                                    <img src="./images/Envelop-bc.png" class="w-5 h-5 mt-1" alt="Email">
+                                </td>
+                                <td class="pt-4 text-sm">
+                                    @if (emails.length > 0) {
+                                        <div class="flex flex-wrap gap-1">
+                                            @for(email of emails; track email; let last = $last) {
+                                                <a [href]="'mailto:' + email.email" class="text-black font-bold">
+                                                    {{email.email}}@if(!last){,}
+                                                </a>
+                                            }
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+
+                            <!-- Address -->
+                            <tr class="align-top">
+                                <td class="w-8 pt-4">
+                                    <img src="https://mybdjobs.bdjobs.com/mybdjobs/images/Home-bc.png" class="w-5 h-5 mt-1" alt="Address">
+                                </td>
+                                <td class="pt-4 text-sm text-black font-bold">
+                                    {{ currentAddress }}
+                                </td>
+                            </tr>
+                            <!-- LinkedIn Row -->
+                            <tr class="align-top">
+                                <td class="w-8 pt-4">
+                                    <img [src]="'images/Linkedin-b.png'" class="w-5 h-5 mt-1" alt="LinkedIn">
+                                </td>
+                                <td class="pt-4 text-sm break-all">
+                                    @if (cvData.personalInfoShortResponse.profileURL) {
+                                        <a [href]="cvData.personalInfoShortResponse.profileURL" class="text-black font-bold">
+                                            {{cvData.personalInfoShortResponse.profileURL}}
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                            <!-- Other Social Media Row -->
+                            <tr class="align-top">
+                                <td class="w-8 pt-4">
+                                    <img [src]="'images/Others-b.png'" class="w-5 h-5 mt-1" alt="Other Social Media">
+                                </td>
+                                <td class="pt-4 text-sm break-all">
+                                    @if (cvData.personalInfoShortResponse.profileURL) {
+                                        <a [href]="cvData.personalInfoShortResponse.profileURL" class="text-black font-bold">
+                                            {{cvData.personalInfoShortResponse.profileURL}}
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="max-w-md mx-auto w-full min-w-[250px]">
+                        <tr>
+                            <td colspan="2">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <img src="https://mybdjobs.bdjobs.com/mybdjobs/images/p-info-bc.png" class="w-5 h-5" alt="Personal Icon">
+                                    <h4 class="text-base sm:text-lg font-semibold text-[#2F64A3]">Personal Information</h4>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="space-y-2 text-sm">
+                                    @if (cvData.personalInfoShortResponse.fatherName) {
+                                        <div class="mb-2">
+                                            <div class="font-medium mb-[3px] text-[#494949]">
+                                                <span>Father's Name</span>
+                                            </div>
+                                            <div class="text-[13px] sm:text-[14px] font-bold">
+                                                <span>{{cvData.personalInfoShortResponse.fatherName}}</span>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (cvData.personalInfoShortResponse.motherName) {
+                                        <div class="mb-2">
+                                            <div class="font-medium mb-[3px] text-[#494949]">
+                                                <span>Mother's Name</span>
+                                            </div>
+                                            <div class="text-[13px] sm:text-[14px] font-bold">
+                                                <span>{{cvData.personalInfoShortResponse.motherName}}</span>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (cvData.personalInfoShortResponse.gender) {
+                                        <div class="mb-2">
+                                            <div class="font-medium mb-[3px] text-[#494949]">
+                                                <span>Gender</span>
+                                            </div>
+                                            <div class="text-[13px] sm:text-[14px] font-bold mb-1">
+                                                @if (cvData.personalInfoShortResponse.gender=='F') {
+                                                    <span>Female</span>
+                                                } @else {
+                                                    <span>Male</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (cvData.personalInfoShortResponse.dateOfBirth) {
+                                        <div class="mb-2">
+                                            <div class="font-medium mb-[3px] text-[#494949]">
+                                                <span>Date of Birth</span>
+                                            </div>
+                                            <div class="text-[13px] sm:text-[14px] font-bold">
+                                                <span>{{ getFormattedBirthDate() }}</span>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (cvData.personalInfoShortResponse.birthPlace) {
+                                        <div class="mb-2">
+                                            <div class="font-medium mb-[3px] text-[#494949]">
+                                                <span>Birth place</span>
+                                            </div>
+                                            <div class="text-[13px] sm:text-[14px] font-bold">
+                                                <span>{{cvData.personalInfoShortResponse.birthPlace}}</span>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (cvData.personalInfoShortResponse.height) {
+                                        <div class="mb-2">
+                                            <div class="font-medium mb-[3px] text-[#494949]">
+                                                <span>Height (Meter)</span>
+                                            </div>
+                                            <div class="text-[13px] sm:text-[14px] font-bold">
+                                                <span>{{cvData.personalInfoShortResponse.height}}</span>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (cvData.personalInfoShortResponse.weight) {
+                                        <div class="mb-2">
+                                            <div class="font-medium mb-[3px] text-[#494949]">
+                                                <span> Weight (Kg)</span>
+                                            </div>
+                                            <div class="text-[13px] sm:text-[14px] font-bold">
+                                                <span>{{cvData.personalInfoShortResponse.weight}}</span>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (cvData.personalInfoShortResponse.passportNumber) {
+                                        <div class="mb-2">
+                                            <div class="font-medium mb-[3px]text-[#494949]">
+                                                <span>Passport No</span>
+                                            </div>
+                                            <div class="text-[13px] sm:text-[14px] font-bold">
+                                                <span>{{cvData.personalInfoShortResponse.passportNumber}}</span>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (cvData.personalInfoShortResponse.passportIssueDate) {
+                                        <div class="mb-2">
+                                            <div class="font-medium mb-[3px] text-[#494949]">
+                                                <span>Passport Issue Date:</span>
+                                            </div>
+                                            <div class="text-[13px] sm:text-[14px] font-bold">
+                                                <span>{{formatDate(cvData.personalInfoShortResponse.passportIssueDate)}}</span>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (cvData.personalInfoShortResponse.nationality) {
+                                        <div class="mb-2">
+                                            <div class="font-medium mb-[3px] text-[#494949]">
+                                                <span>Nationality:</span>
+                                            </div>
+                                            <div class="text-[13px] sm:text-[14px] font-bold">
+                                                <span>{{cvData.personalInfoShortResponse.nationality}}</span>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (cvData.personalInfoShortResponse.nationalID) {
+                                        <div class="mb-2">
+                                            <div class="font-medium mb-[3px] text-[#494949]">
+                                                <span>National Id No:</span>
+                                            </div>
+                                            <div class="text-[13px] sm:text-[14px] font-bold">
+                                                <span>{{cvData.personalInfoShortResponse.nationalID}}</span>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (permanentAddress) {
+                                        <div class="mb-2">
+                                            <div class="font-medium mb-[3px] text-[#494949]">
+                                                <span>Permanent Address:</span>
+                                            </div>
+                                            <div class="text-[13px] sm:text-[14px] font-bold">
+                                                <span>{{ permanentAddress }}</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="w-full sm:w-2/3  space-y-6 pt-4 pb-4 px-4 sm:px-6 lg:pt-[25px] lg:pb-[25px] lg:px-[30px] bg-white">
+                <!-- Skills -->
+                <div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm min-w-[250px]">
+                            <tr>
+                                <td colspan="2">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <img src="https://mybdjobs.bdjobs.com/mybdjobs/images/skill-bc.png" alt="Skills Icon" class="w-5 h-5" />
+                                        <h4 class="text-base sm:text-lg font-semibold">Skills</h4>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <ul class="list-disc list-inside columns-1" style="column-gap:1rem;">
+                                        @for(skill of skills; track skill) {
+                                            <li>{{skill.nameofSkill}}</li>
+                                        }
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table width="100%" class="min-w-[250px]">
+                        <tr>
+                            <th class="exp-info-wrap-ed border-b border-gray-300"><span class="sr-only">horizontal line</span></th>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Training Summary -->
+                <div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-[250px]">
+                            <tr>
+                                <td>
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <img src="https://mybdjobs.bdjobs.com/mybdjobs/images/tra-sum-bc.png" class="w-5 h-5" alt="Training Icon">
+                                        <h4 class="text-base sm:text-lg font-semibold">Training Summary</h4>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="space-y-4 text-sm">
+                                        @for(training of trainings; track training; let i = $index) {
+                                            @if(i < 2) { 
+                                                <div>
+                                                    <p class="font-semibold">{{training.trainingName}}</p>
+                                                    <p class="mt-2 mb-1">Institute: {{training.trainingInstitute}}</p>
+                                                    <p class="mb-1">Duration: {{training.trainingDuration}}</p>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table width="100%" class="min-w-[250px]">
+                        <tr>
+                            <th class="exp-info-wrap-ed border-b border-gray-300"><span class="sr-only">horizontal line</span></th>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- Education -->
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <img src="https://mybdjobs.bdjobs.com/mybdjobs/images/Edu-qua-bc.png" class="w-5 h-5" alt="Education Icon">
+                        <h4 class="text-base sm:text-lg font-semibold">Educational Qualification</h4>
+                    </div>
+                    <div class="space-y-4 text-sm">
+                        @for(education of educations; track education; let i = $index) {
+                            @if(i < 2) { 
+                                <div>
+                                    @if(education.degree) {
+                                        <p class="font-semibold">{{ education.degree }}</p>
+                                    }
+
+                                    @if(education.instituteName) {
+                                        <p class="mt-2 mb-[3px]">Institute: {{ education.instituteName }}</p>
+                                    }
+
+                                    @if(education.passingYear) {
+                                        <p class="mb-[3px]">Year: {{ education.passingYear }}</p>
+                                    }
+
+                                    @if(education.majorSubject) {
+                                        <p class="mb-[3px]">Concentration/Major: {{ education.majorSubject }}</p>
+                                    }
+
+                                    @if(education.resultStatus || education.percentageMarks) {
+                                        <p class="mb-[3px]">
+                                            @if(education.resultStatus) {
+                                                Result: {{ education.resultStatus }}
+                                                @if(education.percentageMarks) {, }
+                                            }
+                                            @if(education.percentageMarks) {
+                                                Marks: {{ education.percentageMarks }}%
+                                            }
+                                        </p>
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table width="100%" class="min-w-[250px]">
+                        <tr>
+                            <th class="exp-info-wrap-ed border-b border-gray-300"><span class="sr-only">horizontal line</span></th>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- References -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm min-w-[250px]">
+                        <tr>
+                            <td>
+                                <div class="flex items-center gap-2 mb-2">
+                                    <img src="https://mybdjobs.bdjobs.com/mybdjobs/images/Referr-bc.png" alt="Reference icon" class="w-5 h-5" />
+                                    <h4 class="text-base sm:text-lg font-semibold">Reference</h4>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="align-top">
+                            <td>
+                                @for(reference of references; track reference) {
+                                    @if(reference.referenceName) {
+                                        <p class="font-bold mb-0">{{reference.referenceName}}</p>
+                                    }
+                                    @if(reference.referenceRelation) {
+                                        <p class="mb-0">
+                                            Relation: <span class="text-gray-800">{{reference.referenceRelation}}</span>
+                                        </p>
+                                    }
+                                    @if(reference.referenceMobile) {
+                                        <p class="mb-0">
+                                            Mobile No: <span class="text-gray-800">{{reference.referenceMobile}}</span>
+                                        </p>
+                                    }
+                                    @if(!$last) {<br>}
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

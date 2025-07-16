@@ -1,0 +1,133 @@
+<div class="flex flex-row gap-10 max-md:flex-col max-md:gap-6 max-md:px-4 mt-4">
+  <!-- Adjust Photo Section -->
+  <section class="flex flex-col self-start w-1/2 max-md:w-full">
+    <header class="gap-1.5 self-start">
+      <h2 class="text-base font-semibold text-gray-900 leading-[24px]">
+        Adjust photo
+      </h2>
+      <p class="text-sm text-gray-500 leading-[20px]">
+        Drag the box to adjust the position.
+      </p>
+    </header>
+
+    <div class="flex flex-col gap-3 justify-center p-0 mt-5 w-full rounded-lg max-md:max-w-full">
+      <div class="flex relative gap-3 justify-center items-start w-full max-md:max-w-full">
+        <img
+            #imageSource
+            [src]="imageDataUrl || 'images/user-02.svg'"
+            alt="Background photo"
+            class="object-contain z-0 flex-1 shrink w-full aspect-[483/366.2] basis-0 min-w-60 max-md:max-w-full"
+          />
+        <div
+          #cropBox
+          class="absolute border-2 border-white border-dashed shadow-lg cursor-move z-10"
+          [style.width.px]="cropSize"
+          [style.height.px]="cropSize"
+          [style.left.px]="cropPosition.x"
+          [style.top.px]="cropPosition.y"
+          (mousedown)="startDrag($event)"
+        ></div>
+      </div>
+
+      <div class="flex items-center gap-2.5 mt-3 w-full max-md:flex-row max-md:gap-4">
+        <!-- Zoom Out Button -->
+        <button
+          aria-label="Zoom out"
+          (click)="zoomOut()"
+          class="focus:outline-none focus:ring-2 focus:ring-pink-600 max-md:mt-4"
+        >
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/0f55491b4976245826214d6e97c0d1717a7072ab?placeholderIfAbsent=true&apiKey=09d9ab13eca443cf811bd6f6a6044cc6"
+            alt="Zoom out"
+            class="object-contain w-6 aspect-square"
+          />
+        </button>
+
+        <!-- Range Slider -->
+        <input
+          type="range"
+          min="0"
+          max="100"
+          [(ngModel)]="zoomValue"
+          [style.background]="getSliderTrackColor(zoomValue)"
+          class="flex-1 h-2 rounded-lg appearance-none cursor-pointer bg-gray-200 accent-pink-600 min-w-60 max-md:mt-4"
+          aria-label="Zoom level slider"
+          (input)="onZoomChange()"
+        />
+
+        <!-- Zoom In Button -->
+        <button
+          aria-label="Zoom in"
+          (click)="zoomIn()"
+          class="focus:outline-none focus:ring-2 focus:ring-pink-600 max-md:mt-4"
+        >
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/f2bb955cc44236a1d25d370a87345381148ed306?placeholderIfAbsent=true&apiKey=09d9ab13eca443cf811bd6f6a6044cc6"
+            alt="Zoom in"
+            class="object-contain w-6 aspect-square"
+          />
+        </button>
+      </div>
+
+      <p class="flex-1 shrink gap-3 mt-3 w-full text-sm leading-none basis-0 max-md:max-w-full">
+        <span class="text-[rgba(71,84,103,1)]">
+          If you're not happy with the photo-
+        </span>
+        <button
+          class="font-semibold text-[#C63C92] focus:outline-none focus:underline max-md:mt-2"
+          (click)="onChangePhoto()"
+        >
+          Change Photo
+        </button>
+      </p>
+    </div>
+  </section>
+
+  <!-- Horizontal/Vertical Divider - changes based on screen size -->
+  <div class="md:w-px md:h-96 w-full h-px bg-[#E4E7EC]"></div>
+
+  <!-- Preview Section -->
+  <section class="flex-1 shrink gap-5 px-0 py-0 rounded-lg basis-0 min-w-60 max-md:max-w-full">
+    <!-- Hidden on mobile -->
+    <header class="md:flex items-center pt-0 pb-0 w-full max-md:max-w-full hidden">
+      <div class="gap-1.5 self-stretch my-auto">
+        <h2 class="text-base font-semibold text-gray-900 leading-[24px]">
+          Preview
+        </h2>
+        <p class="text-sm text-gray-500 leading-[20px]">
+          This is how your photo will look.
+        </p>
+      </div>
+    </header>
+
+    <div class="md:flex flex-col flex-1 justify-center items-center px-0 py-12 mt-5 w-full max-md:max-w-full hidden">
+      <div class="rounded-full overflow-hidden w-[200px] h-[200px] border-2 border-gray-200">
+        <canvas #previewCanvas class="w-full h-full"></canvas>
+      </div>
+    </div>
+
+    <!-- Always visible buttons -->
+    <div class="flex gap-10 justify-start items-center mt-5 w-full text-sm font-semibold leading-none max-md:max-w-full mb-4">
+      <button
+        class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 bg-white rounded-lg border-2 border-solid shadow-sm border-gray-300 text-slate-700 w-[120px] h-[40px] focus:outline-none focus:ring-2 focus:ring-slate-400"
+      >
+        <span class="text-sm leading-[20px] text-slate-700">
+          Cancel
+        </span>
+      </button>
+
+      <button
+        class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-white bg-[#C63C92] rounded-lg border-2 border-solid shadow-sm border-white/10 focus:outline-none w-[109px] h-[40px] focus:ring-2 focus:ring-pink-400"
+        (click)="saveCroppedImage()"
+      >
+        <span class="text-sm text-white leading-[20px]">
+          Save Photo
+        </span>
+      </button>
+    </div>
+  </section>
+</div>
+<!-- implement validattion message here alignment will be center -->
+<div *ngIf="uploadError" class="w-full flex justify-center">
+  <span class="text-red-600 text-center text-sm font-semibold">{{ uploadError }}</span>
+</div>

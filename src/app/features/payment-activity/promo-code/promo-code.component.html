@@ -1,0 +1,225 @@
+
+<div class="w-full h-[63vh] md:h-[370px]">
+  <div class="flex gap-2.5 items-center justify-start mb-4 px-0 md:px-5">
+    <span class="icon-promo-code text-xl text-[#B32D7D]"></span>
+    <span class="text-xl text-primary-900 font-semibold">Promo Code List</span>
+  </div>
+  <div class="w-full text-center px-0 md:px-5">
+    <div class="w-full bg-[#FCF7FA] rounded-t-md grid grid-cols-2">
+      <div
+        class="text-sm py-2.5 flex justify-center items-center relative font-medium cursor-pointer col-span-1 w-full hover:text-[#B32D7D]"
+        (click)="isSelectedAvailableList.set(true)"
+        [ngClass]="isSelectedAvailableList() ? 'text-[#B32D7D]' : 'text-primary-700'">
+        <span class="absolute bottom-0 rounded-xl w-full border border-[#B32D7D]" [ngClass]="{'hidden': !isSelectedAvailableList()}"></span>
+        Available({{ availableCount()>9 ? availableCount() : '0'+availableCount() }})
+      </div>
+      <div
+        class="text-sm py-2.5 flex justify-center items-center relative font-medium cursor-pointer col-span-1 w-full hover:text-[#B32D7D]"
+        (click)="isSelectedAvailableList.set(false)"
+        [ngClass]="!isSelectedAvailableList() ? 'text-[#B32D7D]' : 'text-primary-700'">
+        <span class="absolute bottom-0 rounded-xl w-full border border-[#B32D7D]" [ngClass]="{'hidden': isSelectedAvailableList()}"></span>
+        Expired({{ expiredCount()>9 ? expiredCount() : '0'+expiredCount() }})
+      </div>
+    </div>
+  </div>
+  <div class="w-full px-0 md:px-2.5 my-3">
+    <div class="w-full max-h-[300px] md:max-h-[280px] overflow-y-auto p-0 pe-0.5 md:pe-0 md:p-2.5">
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-4"
+        [ngClass]="{'hidden': !availablePromoCodeList().length || !expiredPromoCodeList().length}">
+
+        <!-- Available promo card -->
+        <div
+          class="col-span-1 border border-[#49669C] rounded-md grid grid-cols-3 gap-5 bg-[url(/images/promo-bg.svg)]"
+          [ngClass]="{'hidden': !isSelectedAvailableList()}">
+          <div class="w-full p-3.5 col-span-2">
+            <div class="flex items-center gap-2 mb-1">
+              <h3 class="text-base md:text-[17px] font-bold">{{ promoTitle() }}</h3>
+              <button
+                class="border-none w-fit"
+                (click)="onClickCopyTitle('1')">
+                <span class="icon-clipboard-copy text-[#212121] text-sm"></span>
+              </button>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="icon-calendar text-[10px]"></span>
+              <span class="text-[9px] md:text-[11px] text-nowrap">Valid till: 30 Oct 2024 • 3:00 PM</span>
+            </div>
+            <div class="text-[#212121] text-[9.5px] md:text-[10px] w-full my-1">
+              You have received a promo code for multiple purchases. Use code at checkout to save 25%.
+            </div>
+            <div class="w-full">
+              <button
+                class="w-full flex items-center justify-center py-1.5 text-[11px] rounded-md text-white bg-[#B32D7D]"
+                (click)="onConfirm('RUHAMA25')">
+                Apply
+              </button>
+            </div>
+          </div>
+          <div class="w-full col-span-1">
+            <div class=" bg-[#49669C] rounded-r text-white flex justify-center h-full items-center relative">
+              <img src="images/promo-design.svg" alt="" class="absolute -left-1.5 top-0 h-full">
+              <div class="text-[11px] p-1.5 flex flex-col items-center w-full">
+                <span class="">Get</span>
+                <div class="flex items-start font-semibold">
+                  <span class="text-3xl font-extrabold">25</span>
+                  <span class="text-sm my-0.5">TK</span>
+                </div>
+                <span class="">OFF</span>
+                <button disabled class="w-full rounded-full bg-white text-[#49669C] text-[9px] my-1 cursor-text">only -2 left</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-span-1 border border-[#49669C] rounded-md grid grid-cols-3 gap-5 bg-[url(/images/promo-bg.svg)]"
+          [ngClass]="{'hidden': !isSelectedAvailableList()}">
+          <div class="w-full p-3.5 col-span-2">
+            <div class="flex items-center gap-2 mb-1">
+              <h3 class="text-base md:text-[17px] font-bold">HIMEL47</h3>
+              <button
+                class="border-none w-fit"
+                (click)="onClickCopyTitle('1')">
+                <span class="icon-clipboard-copy text-[#212121] text-sm"></span>
+              </button>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="icon-calendar text-[10px]"></span>
+              <span class="text-[9px] md:text-[11px] text-nowrap">Valid till: 30 Oct 2024 • 3:00 PM</span>
+            </div>
+            <div class="text-[#212121] text-[9.5px] md:text-[10px] w-full my-1">
+              You have received a promo code for multiple purchases. Use code at checkout to save 25%.
+            </div>
+            <div class="w-full">
+              <button
+                class="w-full flex items-center justify-center py-1.5 text-[11px] rounded-md text-white bg-[#B32D7D]"
+                (click)="onConfirm('HIMEL47')">
+                Apply
+              </button>
+            </div>
+          </div>
+          <div class="w-full col-span-1">
+            <div class=" bg-[#49669C] rounded-r text-white flex justify-center h-full items-center relative">
+              <img src="images/promo-design.svg" alt="" class="absolute -left-1.5 top-0 h-full">
+              <div class="text-[11px] p-1.5 flex flex-col items-center w-full">
+                <span class="">Get</span>
+                <div class="flex items-start font-semibold">
+                  <span class="text-3xl font-extrabold">25</span>
+                  <span class="text-sm my-0.5">TK</span>
+                </div>
+                <span class="">OFF</span>
+                <button disabled class="w-full rounded-full bg-white text-[#49669C] text-[9px] my-1 cursor-text">only -2 left</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expired promo card -->
+        <div
+          class="col-span-1 border border-[#DDD] rounded-md grid grid-cols-3 gap-5 bg-[url(/images/promo-bg.svg)]"
+          [ngClass]="{'hidden': isSelectedAvailableList()}">
+          <div class="w-full p-3.5 col-span-2 text-[#757575]">
+            <div class="flex items-center gap-2 mb-1">
+              <h3 class="text-base md:text-[17px] font-bold">{{ promoTitle() }}</h3>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="icon-calendar text-[10px]"></span>
+              <span class="text-[9px] md:text-[11px] text-nowrap">Valid till: 30 Oct 2024 • 3:00 PM</span>
+            </div>
+            <div class="text-[9.5px] md:text-[10px] w-full my-1">
+              You have received a promo code for multiple purchases. Use code at checkout to save 25%.
+            </div>
+            <hr>
+            <div class="w-full">
+              <div
+                class="flex items-center gap-1 pt-2 pb-1"
+                [ngClass]="{'hidden': !isPromoUsed()}">
+                <span class="icon-check-sign rounded-full bg-[#008020] text-white font-light text-[9px] p-1 flex justify-center items-center"></span>
+                <span class="text-[#008020] text-xs font-medium">Already used</span>
+              </div>
+              <div
+                class="flex items-center gap-1 text-[#E42D27] pt-2 pb-1"
+                [ngClass]="{'hidden': isPromoUsed()}">
+                <span class="icon-warning text-[13px]"></span>
+                <span class="text-xs font-medium">Unused</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full col-span-1">
+            <div class=" bg-[#757575] rounded-r text-white flex justify-center h-full items-center relative">
+              <img src="images/promo-design-gray.svg" alt="" class="absolute -left-1.5 top-0 h-full">
+              <div class="text-[11px] p-1.5 flex flex-col items-center w-full">
+                <span class="">Get</span>
+                <div class="flex items-start font-semibold">
+                  <span class="text-3xl font-extrabold">25</span>
+                  <span class="text-sm my-0.5">TK</span>
+                </div>
+                <span class="">OFF</span>
+                <button disabled class="w-full rounded-full bg-white text-[#757575] text-[9px] my-1 cursor-text">only -2 left</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-span-1 border border-[#DDD] rounded-md grid grid-cols-3 gap-5 bg-[url(/images/promo-bg.svg)]"
+          [ngClass]="{'hidden': isSelectedAvailableList()}">
+          <div class="w-full p-3.5 col-span-2 text-[#757575]">
+            <div class="flex items-center gap-2 mb-1">
+              <h3 class="text-base md:text-[17px] font-bold">{{ promoTitle() }}</h3>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="icon-calendar text-[10px]"></span>
+              <span class="text-[9px] md:text-[11px] text-nowrap">Valid till: 30 Oct 2024 • 3:00 PM</span>
+            </div>
+            <div class="text-[9.5px] md:text-[10px] w-full my-1">
+              You have received a promo code for multiple purchases. Use code at checkout to save 25%.
+            </div>
+            <hr>
+            <div class="w-full">
+              <div
+                class="flex items-center gap-1 pt-2 pb-1"
+                [ngClass]="{'hidden': !isPromoUsed()}">
+                <span class="icon-check-sign rounded-full bg-[#008020] text-white font-light text-[9px] p-1 flex justify-center items-center"></span>
+                <span class="text-[#008020] text-xs font-medium">Already used</span>
+              </div>
+              <div
+                class="flex items-center gap-1 text-[#E42D27] pt-2 pb-1"
+                [ngClass]="{'hidden': isPromoUsed()}">
+                <span class="icon-warning text-[13px]"></span>
+                <span class="text-xs font-medium">Unused</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full col-span-1">
+            <div class=" bg-[#757575] rounded-r text-white flex justify-center h-full items-center relative">
+              <img src="images/promo-design-gray.svg" alt="" class="absolute -left-1.5 top-0 h-full">
+              <div class="text-[11px] p-1.5 flex flex-col items-center w-full">
+                <span class="">Get</span>
+                <div class="flex items-start font-semibold">
+                  <span class="text-3xl font-extrabold">25</span>
+                  <span class="text-sm my-0.5">TK</span>
+                </div>
+                <span class="">OFF</span>
+                <button disabled class="w-full rounded-full bg-white text-[#757575] text-[9px] my-1 cursor-text">only -2 left</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="flex items-center justify-center h-full py-10"
+        [ngClass]="{'hidden': availablePromoCodeList().length || !isSelectedAvailableList()}">
+        <div class="flex flex-col items-center gap-4">
+          <div class="w-20 h-20 rounded-full bg-[#FCF7FA] flex justify-center items-center">
+            <div class="w-14 h-14 rounded-full bg-[#FFE3F4] flex justify-center items-center">
+              <span class="icon-promo-code text-[#B32D7D] text-3xl font-bold"></span>
+            </div>
+          </div>
+          <div class="text-primary-700 font-medium text-sm">
+            <span>No available coupons</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

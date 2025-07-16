@@ -1,0 +1,532 @@
+<div class="w-full" *transloco="let t">
+  <div class="mb-16 min-h-[568px] bg-white" role="main">
+    <div class="px-4 pb-4 md:px-8 md:pb-4">
+      <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+        <div>
+          <div>
+            <div>
+              <div class="mb-0 pt-4" id="cb_returnEN">
+                <a class="flex items-center text-black text-base no-underline gap-2.5" href="javascript:void(0);">
+                  <img src="https://mybdjobs.bdjobs.com/mybdjobs/images/back-arrow.svg" alt="Back to previous page" title="Back" />
+                  <!-- <span class="icon-angle-left-long text-sm font-semibold"></span> -->
+                  <span class="">{{ t('createAccountForm.back') }}</span>
+                </a>
+              </div>
+              <div class="flex justify-between items-center">
+                <div class="mb-5 pr-10" id="b_returnEN">
+                  <h2 class="mb-2.5 pt-6 pb-1.5 text-2xl font-normal text-[#004db3]">{{ t('createAccountForm.createAccTitle') }}</h2>
+                  <div class="flex items-center text-[#004DB3]">
+                    <span class="icon-video-help-o mr-2 text-[17px]"></span>
+                    <a class="text-[#004DB3] underline text-xs" href="https://www.youtube.com/watch?v=ddOtsmypiAA&amp;list=PLR1m9fmwtfMUvS-zY7SzWF0WDZp9J1BYB&amp;index=1" rel="noopener" target="_blank">{{ t('createAccountForm.createAccTutorial') }}</a>
+                  </div>
+                </div>
+                <div
+                  class=" flex flex-col items-end gap-2.5"
+                  [ngClass]="{'hidden': (isBlueCollar || isDisability)}">
+                  <div class="text-[13px] text-gray-800 text-right mb-1.5">{{ t('createAccountForm.importData') }}</div>
+                  <div class="flex gap-3 items-center">
+                    <a
+                      href="javascript:void(0);"
+                      class=""
+                      (click)="onClickImport('fb')">
+                      <span
+                        class="icon-facebook text-white bg-[#3b5998] h-9 w-9 flex items-center justify-center rounded-[50%] !fb-box-shadow shadow-lg cursor-pointer"
+                        [ngClass]="{'hidden': activeLanguage() === 'en'}"
+                      ></span>
+                    </a>
+                    <a
+                      href="javascript:void(0);"
+                      class=""
+                      (click)="onClickImport('google')">
+                      <span class="icon-google-plus text-red-500 h-9 w-9 flex items-center justify-center rounded-[50%] bg-white border-2 border-[#1a73e8] cursor-pointer"></span>
+                    </a>
+                  </div>
+                </div>
+                <div [ngClass]="{'hidden': (!isBlueCollar && !isDisability) || activeLanguage() === 'en'}">
+                  <button
+                    class="text-white text-sm bg-[#3b5998] flex gap-1.5 items-center justify-center px-2.5 py-2 !fb-box-shadow shadow-lg rounded-md"
+                    (click)="onClickImport('fb')">
+                    <span class="icon-facebook"></span>
+                    <p class="text-[13px]">ফেইসবুক থেকে তথ্য আনুন</p>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="border-none bg-white p-0 -mx-2">
+              <div class="flex items-start gap-4">
+                <div class="w-full px-2">
+                  <label for="name" class="font-semibold text-sm text-[#333]">{{ t('createAccountForm.accName') }}</label>
+                  @if (name().errors && (name().dirty || name().touched)) {
+                    <div class="text-red-600 text-sm my-1 italic font-semibold">{{ t(getNameErrorMessage()) }}</div>
+                  }
+                  <input
+                    type="text"
+                    id="Name"
+                    required
+                    [placeholder]="t('createAccountForm.namePlaceholder')"
+                    appNumericOnly
+                    [isNumericOnly]="false"
+                    [formControl]="name()"
+                    [ngClass]="
+                      (name().errors && (name().dirty || name().touched)) ? inputFieldStyles.error : inputFieldStyles.normal
+                    "
+                  />
+                  <!-- <app-input
+                    [type]="'text'"
+                    [id]="'Name'"
+                    [isRequired]="true"
+                    [placeholder]="'Your Name'"
+                    [control]="name()"
+                    [isNumericOnly]="false"
+                  ></app-input> -->
+                </div>
+
+                <div class="w-full px-2">
+                  <label class="text-sm font-semibold text-gray-800">{{ t('createAccountForm.accGender') }}</label>
+                  <!-- @if (!isBlueCollar) {
+                  } -->
+                  @if (gender().errors && (gender().dirty || gender().touched)) {
+                    <div class="text-red-600 text-sm my-1 italic font-semibold">{{ t('createAccountForm.genderErrorRequired') }}</div>
+                  }
+                  <div class="text-red-600 italic" id="cboGender_message"></div>
+                  <div class="flex space-x-2 w-full">
+                    <label
+                      class="flex cursor-pointer items-center justify-start gap-2 rounded-md border px-3 py-2 w-full"
+                      [ngClass]="{
+                        'bg-[#295fa6] text-white border-[#295fa6]': gender().value === 'M',
+                        'bg-white text-blue-900 border-gray-300': gender().value !== 'M'
+                      }"
+                    >
+                      <input
+                        type="radio"
+                        name="cboGender"
+                        value="M"
+                        id="male"
+                        required
+                        aria-describedby="cboGender_message"
+                        class="hidden"
+                        [formControl]="gender()"
+                      />
+                      <i class="icon-gender-male text-sm" [ngClass]="{'text-white': gender().value === 'M', 'text-blue-900': gender().value !== 'M'}"></i>
+                      <span class="text-sm">{{ t('createAccountForm.male') }}</span>
+                    </label>
+                    <label
+                      class="flex cursor-pointer items-center justify-start gap-2 rounded-md border px-3 py-2 w-full"
+                      [ngClass]="{
+                        'bg-[#295fa6] text-white border-[#295fa6]': gender().value === 'F',
+                        'bg-white text-blue-900 border-gray-300': gender().value !== 'F'
+                      }"
+                    >
+                      <input
+                        type="radio"
+                        name="cboGender"
+                        value="F"
+                        id="female"
+                        aria-describedby="cboGender_message"
+                        class="hidden"
+                        [formControl]="gender()"
+                      />
+                      <i class="icon-gender-female text-sm" [ngClass]="{'text-white': gender().value === 'F', 'text-blue-900': gender().value !== 'F'}"></i>
+                      <span class="text-sm">{{ t('createAccountForm.female') }}</span>
+                    </label>
+                    <label
+                      class="flex cursor-pointer items-center justify-start gap-2 rounded-md border px-3 py-2 w-full"
+                      [ngClass]="{
+                        'bg-[#295fa6] text-white border-[#295fa6]': gender().value === 'O',
+                        'bg-white text-blue-900 border-gray-300': gender().value !== 'O'
+                      }"
+                    >
+                      <input
+                        type="radio"
+                        name="cboGender"
+                        value="O"
+                        id="other"
+                        aria-describedby="cboGender_message"
+                        class="hidden"
+                        [formControl]="gender()"
+                      />
+                      <i class="icon-gender-others text-sm" [ngClass]="{'text-white': gender().value === 'O', 'text-blue-900': gender().value !== 'O'}"></i>
+                      <span class="text-sm">{{ t('createAccountForm.others') }}</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-right ">
+                <div class="social-button" id="social-button">
+                </div>
+              </div>
+            </div>
+            <div class="border-none bg-white p-0">
+              <div class="-mx-2">
+                <div class="mt-2 w-full px-2">
+                  <div class="mb-1 text-sm font-semibold text-[#333]">{{ t('createAccountForm.accSkill') }}</div>
+                  @if (skill().errors && (skill().dirty || skill().touched)) {
+                    <div class="text-red-600 text-sm my-1 italic font-semibold">{{ t('createAccountForm.skillErrorRequired') }}</div>
+                  }
+                  <app-select
+                    [isRequired]="true"
+                    [options]="selectWorkingSkills()"
+                    [control]="skill()"
+                    [falseOptionText]="t('createAccountForm.skillPlaceholder')"
+                  ></app-select>
+                </div>
+
+                <div class="mt-3 w-full px-2 flex items-start gap-4">
+                  @if (!isBlueCollar && !isDisability) {
+                    <div class="w-full flex-1" id="emailDiv">
+                      <label for="email" class="font-semibold text-sm text-[#333]">{{ t('createAccountForm.accEmail') }}</label>
+                      @if (email().errors && (email().dirty || email().touched)) {
+                        <div class="text-red-600 text-sm my-1 italic font-semibold">{{ t(getEmailErrorMessage()) }}</div>
+                      }
+                      @if (emailRadioError()) {
+                        <div class="text-red-600 text-sm my-1 italic font-semibold">{{ t(emailRadioError()) }}</div>
+                      }
+                      <input
+                        type="email"
+                        id="Email"
+                        required
+                        [placeholder]="t('createAccountForm.emailPlaceholder')"
+                        appNumericOnly
+                        [isNumericOnly]="false"
+                        [formControl]="email()"
+                        [ngClass]="
+                          (email().errors && (email().dirty || email().touched)) ? inputFieldStyles.error : inputFieldStyles.normal
+                        "
+                      />
+                      <!-- <app-input
+                        [type]="'email'"
+                        [isRequired]="true"
+                        [isNumericOnly]="false"
+                        [placeholder]="'Email Address'"
+                        [control]="email()"
+                        [validationText]="getEmailErrorMessage(email())"
+                      ></app-input> -->
+                    </div>
+                  }
+                  <div class="w-full flex-1 flex flex-col md:flex-row gap-2 items-start">
+                    <div class="w-full flex-1 flex gap-2 items-center">
+                      <div class="flex flex-col">
+                        <p class="text-sm text-gray-800 font-semibold">{{ t('createAccountForm.accPhone') }}</p>
+                        @if(mobile().errors && (mobile().dirty || mobile().touched)) {
+                          <div class="text-red-600 text-sm my-1 italic font-semibold">{{ t(getMobileErrorMessage()) }}</div>
+                        }
+                        @if (mobileRadioError()) {
+                          <div class="text-red-600 text-sm my-1 italic font-semibold">{{ t(mobileRadioError()) }}</div>
+                        }
+                        <div class="flex gap-3 items-center">
+                          <div  class="" style="width: 165px;">
+                            <select
+                              id="countryCode"
+                              class="block w-full h-[38px] border border-gray-300 rounded-md px-3 text-sm text-gray-900 focus:border-blue-500 focus:outline-none"
+                              [formControl]="countryCode()"
+                              name="countryCode"
+                            >
+                              <option
+                                *ngFor="let option of countryCodeOptions"
+                                [value]="option.value">
+                                {{ currentLanguage === 'en' ? option.label : option.bnLabel }}
+                              </option>
+                            </select>
+                          </div>
+                          <div style="width: 170px;">
+                            <input
+                              type="text"
+                              id="Phone"
+                              required
+                              [placeholder]="t('createAccountForm.phonePlaceholder')"
+                              [maxlength]="11"
+                              appNumericOnly
+                              [isDecimalAllowed]="false"
+                              [formControl]="mobile()"
+                              [ngClass]="
+                                (mobile().errors && (mobile().dirty || mobile().touched)) ? inputFieldStyles.error : inputFieldStyles.normal
+                              "
+                            />
+                            <!-- <app-input
+                              [type]="'text'"
+                              [isRequired]="true"
+                              [placeholder]="'Your Phone Number'"
+                              [control]="mobile()"
+                              [validationText]="getMobileErrorMessage(mobile())"
+                              [maxLength]="11"
+                            ></app-input> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    @if (isDisability) {
+                      <div class="w-full flex-1 ">
+                        <div >
+                          <label class="font-semibold text-sm text-[#333]">{{ t('createAccountForm.disabilityId') || 'জাতীয় প্রতিবন্ধী আইডি (আবশ্যক)' }}</label>
+                          <div class="text-red-600 text-sm my-1 italic font-semibold" *ngIf="disabilityId().errors && (disabilityId().dirty || disabilityId().touched)">
+                            {{ t('createAccountForm.disabilityIdRequired') || 'জাতীয় প্রতিবন্ধী আইডি আবশ্যক' }}
+                          </div>
+                          <input
+                            type="text"
+                            id="disability"
+                            required
+                            [placeholder]="t('createAccountForm.disabilityIdPlaceholder') || 'আপনার আইডি'"
+                            appNumericOnly
+                            [isDecimalAllowed]="false"
+                            [isForOTP]="true"
+                            [formControl]="disabilityId()"
+                            [ngClass]="
+                              (disabilityId().errors && (disabilityId().dirty || disabilityId().touched)) ? inputFieldStyles.error : inputFieldStyles.normal
+                            "
+                          />
+                          <!-- <app-input
+                            [type]="'text'"
+                            [isRequired]="true"
+                            [placeholder]="t('createAccountForm.disabilityIdPlaceholder') || 'আপনার আইডি'"
+                            [control]="disabilityId()"
+                          ></app-input> -->
+                          <div class="text-xs text-gray-700 mt-1">
+                            **আপনি যদি প্রতিবন্ধী হয়ে থাকেন এবং আপনার জাতীয় প্রতিবন্ধী আইডি না থাকে, দয়া করে i2i সাপোর্ট নম্বর +88 01730369802 তে কল/এসএমএস/ওয়াটসঅ্যাপ করুন**
+                          </div>
+                        </div>
+                      </div>
+                      
+                    }
+                    <span id="txtMobile_message" class="hidden text-red-600 italic font-semibold"></span>
+                    <span id="txtUserName_message" class="hidden text-red-600 italic font-semibold"></span>
+                    <span id="common_message_mob_message" class="hidden text-red-600 italic font-semibold"></span>
+                  </div>
+                </div>
+
+                @if (!isBlueCollar && !isDisability) {
+                  <div class="mt-3 w-full px-2">
+                    <div class="w-full">
+                      <div class="mb-1 text-sm font-semibold text-gray-800">{{ t('createAccountForm.accUserId') }}</div>
+                      @if (userIdType().errors && (userIdType().dirty || userIdType().touched)) {
+                        <div class="text-red-600 text-sm my-1 italic font-semibold">{{ t('createAccountForm.userIdErrorRequired') }}</div>
+                      }
+                      @if (duplicateCheckMessage()) {
+                        <div class="text-red-600 text-sm my-1 italic font-semibold">{{ duplicateCheckMessage() }}</div>
+                      }
+                      <div class="flex flex-row space-y-2">
+                        <app-radio
+                          [isRequired]="true"
+                          [radioItems]="userIdTypeRadioItems"
+                          [control]="userIdType()"
+                          [isHorizontalOption]="false"
+                        ></app-radio>
+                      </div>
+                    </div>
+                  </div>
+                }
+
+                @if (!isBlueCollar && !isDisability) {
+                  <div class="mt-4 w-full px-2 flex flex-col gap-4">
+                    <div class="flex  justify-between gap-4">
+                      <div class="w-full">
+                        <div class="w-full flex justify-between items-center mb-2">
+                          <span class="text-sm font-semibold text-gray-800">{{ t('createAccountForm.accPassword') }}</span>
+                          <div class="flex space-x-1 mt-1">
+                            <div class="w-8 h-1 rounded" [ngClass]="getBarColor(1)"></div>
+                            <div class="w-8 h-1 rounded" [ngClass]="getBarColor(2)"></div>
+                            <div class="w-8 h-1 rounded" [ngClass]="getBarColor(3)"></div>
+                          </div>
+                        </div>
+                        <div class="w-full mb-4">
+                          <input
+                            type="password"
+                            id="Password"
+                            required
+                            placeholder="Password"
+                            appNumericOnly
+                            [isNumericOnly]="false"
+                            [formControl]="password()"
+                            [ngClass]="
+                              (password().errors && (password().dirty || password().touched)) ? inputFieldStyles.error : inputFieldStyles.normal
+                            "
+                          />
+                          <!-- <app-input
+                            [type]="'password'"
+                            [isNumericOnly]="false"
+                            [isRequired]="true"
+                            [placeholder]="'Password'"
+                            [control]="password()"
+                            [validationText]="getPasswordErrorMessage()"
+                          ></app-input> -->
+                          @if (password().errors && (password().dirty || password().touched)) {
+                            <div class="text-red-600 text-sm my-1 italic font-semibold" id="PasswordStrength_message" >{{ t(getPasswordErrorMessage()) }}</div>
+                          }
+                        </div>
+                        <div class="text-[13px] italic text-[#595959] mb-2">{{ t('createAccountForm.passDesc') }}</div>
+                        @if (password().value && password().touched) {
+                          <div class="text-sm mt-1" [ngClass]="{
+                            'text-[#db3300] font-semibold': getStrengthLevel() === 1 || getStrengthLevel() === 2,
+                            'text-[#81c784] font-semibold': getStrengthLevel() === 3
+                          }">
+                            <span *ngIf="getStrengthLevel() === 1">{{ t('createAccountForm.strenghtWeak') }}</span>
+                            <span *ngIf="getStrengthLevel() === 2">{{ t('createAccountForm.strenghtMid') }}</span>
+                            <span *ngIf="getStrengthLevel() === 3">{{ t('createAccountForm.strenghtHigh') }}</span>
+                          </div>
+                        }
+                      </div>
+
+                      <div class="w-full">
+                        <div class="w-full flex justify-between items-center mb-2">
+                          <span class="text-sm font-semibold text-gray-800">Retype Password</span>
+                        </div>
+                        <div class="w-full">
+                          <input
+                            type="password"
+                            id="confirmPassword"
+                            required
+                            placeholder="Retype Password"
+                            appNumericOnly
+                            [isNumericOnly]="false"
+                            [formControl]="retypePassword()"
+                            [ngClass]="
+                              (retypePassword().errors && (retypePassword().dirty || retypePassword().touched)) ? inputFieldStyles.error : inputFieldStyles.normal
+                            "
+                          />
+                          <!-- <app-input
+                            [type]="'password'"
+                            [label]="'Retype Password'"
+                            [isRequired]="true"
+                            [isNumericOnly]="false"
+                            [placeholder]="'Retype Password'"
+                            [isNumericOnly]="false"
+                            [control]="retypePassword()"
+                            [validationText]="getRetypePasswordErrorMessage()"
+                          ></app-input> -->
+                          @if (retypePassword().errors && (retypePassword().dirty || retypePassword().touched)) {
+                            <div class="text-red-600 text-sm my-1 italic font-semibold">{{ t(getRetypePasswordErrorMessage()) }}</div>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
+
+                @if (!isBlueCollar && !isDisability) {
+                  <div class="mt-2.5 w-full px-2">
+                    <div class="w-full">
+                      <div class="mb-2">
+                        <label class="block text-sm font-normal">
+                          <div class="mb-1 text-sm font-semibold text-gray-800">Are you human?</div>
+                          <div class="inline-block">
+                            <span class="inline-block w-9 h-9 leading-9 font-bold text-base text-center text-gray-900 border border-gray-300 rounded-md">{{ captchaNum1 }}</span>
+                            <span class="inline-block mx-1">+</span>
+                            <span class="inline-block w-9 h-9 leading-9 font-bold text-base text-center text-gray-900 border border-gray-300 rounded-md">{{ captchaNum2 }}</span>
+                            <span class="inline-block mx-1">=</span>
+                            <input
+                              class="inline-block w-12 h-9 leading-9 text-center font-bold text-base text-blue-800 border border-blue-800 rounded-md focus:outline-none"
+                              id="answer"
+                              name="answer"
+                              type="text"
+                              maxlength="2"
+                              size="2"
+                              [formControl]="captcha()"
+                              (input)="validateCaptcha()"
+                            >
+                            <span *ngIf="captchaError" class="ml-2 text-red-600 text-lg font-bold">&#10006;</span>
+                            <span *ngIf="!captchaError && isCaptchaCorrect()" class="ml-2 text-green-700 text-lg font-bold">&#10003;</span>
+                            <i class="icon-change1 ml-2 text-lg text-green-600 cursor-pointer" (click)="generateCaptcha()"></i>
+                          </div>
+                          <div class="relative">
+                            <div class="text-red-600 my-1 italic font-semibold" *ngIf="captchaError">{{ captchaError }}</div>
+                          </div>
+                        </label>
+                        <div class="submit__overlay"></div>
+                        <input type="hidden" name="given_captcha" value="14">
+                      </div>
+                    </div>
+                  </div>
+                }
+
+                <div class="mt-10 w-full px-2">
+                  <div class="w-full">
+                    <div class="user-contents">
+                      <div
+                        id="termAndCondition"
+                        class="block"
+                        [ngClass]="{ 'hidden': isBlueCollar || isDisability }">
+                        <div class="w-full mb-2">
+                          <app-checkbox
+                            [label]="'I agree to the Bdjobs.com Terms of use. '"
+                            [widthClass]="'w-3 h-3'"
+                            [isRequired]="true"
+                            [control]="termsAccepted()"
+                            class="text-[14px]"
+                          >
+                            <a href="https://www.bdjobs.com/tos.asp?lanset=eng" target="_blank" class="text-blue-600 underline" rel="noopener">{{ t('createAccountForm.toc') }}</a>
+                          </app-checkbox>
+                        </div>
+                        <div class="w-full mb-4">
+                          <app-checkbox
+                            [label]="'Subscribe to Bdjobs Newsletter.'"
+                            [isRequired]="false"
+                            [widthClass]="'w-3 h-3'"
+                            [control]="newsletter()"
+                            class="text-[14px]"
+                          ></app-checkbox>
+                        </div>
+                      </div>
+                      <div class="w-full mt-6">
+                        <button
+                          type="submit"
+                          id="Continue"
+                          class="btn bg-[#008020] text-white py-2 px-4 rounded sign-up text-[14px] hover:bg-[#00661a] disabled:cursor-not-allowed"
+                          style="width: 250px; height: 43px; border-bottom: 2px solid #008020; margin-bottom: 20px; margin-top: 10px;"
+                          [disabled]="!isBlueCollar && !isDisability && !termsAccepted().value"
+                        >{{ t('createAccountForm.createButton') }}</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- @if (!isBlueCollar && !isDisability) {
+                } -->
+
+                <!-- @if (isBlueCollar || isDisability) {
+                  <div class="mt-10 w-full px-2">
+                    <div class="w-full">
+                      <div class="user-contents">
+                        <div class="w-full mt-6">
+                          <button
+                            type="submit"
+                            id="Continue"
+                            class="btn bg-[#008020] text-white py-2 px-4 rounded sign-up text-[14px] hover:bg-[#00661a] disabled:cursor-not-allowed"
+                            style="width: 250px; height: 43px; border-bottom: 2px solid #008020; margin-bottom: 20px; margin-top: 10px;"
+                            [disabled]="formGroup.invalid"
+                            >{{ t('createAccountForm.createButton') }}</button>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                } -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Duplicate User Popup -->
+  @if (showDuplicatePopup()) {
+    <div class="fixed rounded inset-0 flex items-center justify-center z-50 bg-black bg-opacity-30">
+      <div class="bg-white rounded-md shadow-lg max-w-md w-full border-t-4 border-red-400 relative">
+        <div class="flex items-center mt-8 px-8">
+          <span class="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 mr-4">
+            <i class="icon-info text-3xl text-red-500"></i>
+          </span>
+          <div>
+            <div class="text-2xl font-bold text-gray-800 mb-1">Exists</div>
+          </div>
+        </div>
+        <div class="text-gray-700 text-justify w-full px-8 mt-5 mb-8">{{ duplicatePopupMessage() }}</div>
+        <div class="w-full bg-[#FEECEA] px-8 py-2.5 rounded-b-md">
+          <div class="flex justify-end items-center">
+            <button (click)="closeDuplicatePopup()" class="bg-red-600 text-white px-2.5 py-2 my-1.5 min-w-[5.75rem] rounded font-semibold flex justify-center items-center">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

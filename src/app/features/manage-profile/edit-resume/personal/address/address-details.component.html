@@ -1,0 +1,280 @@
+<accordion-main-body
+  [accordionName]="'Address Details'"
+  buttonType="edit"
+  buttonTitle="Edit"
+  [isAccordionOpen]="isOpen()"
+  [isFormOpen]="isAddressDetailsFormOpen()"
+  (formToggleEmitter)="isAddressDetailsFormOpen.set(!isAddressDetailsFormOpen())"
+  (accordionToggleEmitter)="onExpandClick()"
+>
+
+  @if(!isInfoAvailable){
+      <app-no-details
+        (openFormBtn)="openAddressForm()"
+      [btnText]="'Add Address'"
+      [description]="
+        'Currently no data exists! Please click on the following button to add your details address.'
+      "
+      ></app-no-details>
+  } @else {
+    <div
+      class="my-5"
+      [hidden]="isAddressDetailsFormOpen()"
+      *transloco="let t"
+    >
+      @if(isLoading()) {
+        <div class="flex items-center justify-center py-[50px]">
+          <img [src]="'/images/loading.gif'" alt="Loading..." />
+        </div>
+      }
+      @else {
+        <div class="bg-white rounded-b-xl">
+          <div class="sm:px-6 px-0 pb-5">
+            <hr class="w-full" />
+            @if(isInfoAvailable){
+            <div class="sm:mx-0 mx-3 mt-5 flex flex-col gap-5">
+              <div class="flex flex-col gap-1">
+                <p class="text-[#667085] text-xs font-medium">{{ t('Present Address') }}</p>
+                <p class="text-[#101828] text-sm font-medium">{{displayPresAddress}}</p>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <p class="text-[#667085] text-xs font-medium">{{ t('Permanent Address') }}</p>
+                <p class="text-[#101828] text-sm font-medium">{{displayPermAddress}}</p>
+              </div>
+            </div>
+            }
+
+            @if(!isInfoAvailable){
+            <app-no-details (openFormBtn)="openAddressForm()" [btnText]="t('Add Address')"
+              [description]="t('noData')"></app-no-details>
+            }
+
+          </div>
+        </div>
+      }
+    </div>
+    <div
+      class="my-5"
+      [hidden]="!isAddressDetailsFormOpen()"
+      *transloco="let t"
+    >
+      <div class="bg-white rounded-b-xl">
+        <div class="sm:px-6 px-0 pb-5">
+          <hr class="w-full" />
+          <form [formGroup]="addressForm" class="mt-4 sm:px-0 px-3 flex flex-col gap-5">
+            <div class="flex flex-col gap-5">
+              <p class="text-[#101828] text-lg font-semibold">{{ t('Present Address') }} <span
+                  class="text-[#D92D20]">*</span></p>
+
+              <div class="flex flex-col gap-4">
+
+                <div class="sm:flex sm:flex-row sm:items-center flex flex-col gap-4">
+
+                  <div
+                    class="flex items-center sm:justify-start justify-center gap-2 px-4 py-2.5 w-full sm:max-w-fit rounded-lg border cursor-pointer"
+                    [ngClass]="selectedOption === 'inside' ? 'border-[#C63C92] text-[#C63C92]' : 'border-[#E4E7EC] text-[#475467]'"
+                    (click)="selectOption('inside')">
+                    <input type="radio" id="insideBd" name="location" [checked]="selectedOption === 'inside'"
+                      (change)="selectOption('inside')"
+                      class="form-radio text-[#C63C92] border border-[#D0D5DD] scale-90 focus:ring-0">
+                    <label for="insideBd" class="text-sm font-medium cursor-pointer">
+                      {{ t('Inside Bangladesh') }}
+                    </label>
+                  </div>
+
+
+                  <div
+                    class="flex items-center sm:justify-start justify-center gap-2 px-4 py-2.5 w-full sm:max-w-fit rounded-lg border cursor-pointer "
+                    [ngClass]="selectedOption === 'outside' ? 'border-[#C63C92] text-[#C63C92]' : 'border-[#E4E7EC] text-[#475467]'">
+                    <input type="radio" id="outsideBd" name="location" [checked]="selectedOption === 'outside'"
+                      (change)="selectOption('outside')"
+                      class="form-radio text-[#C63C92] border border-[#D0D5DD] scale-90 focus:ring-0">
+                    <label for="outsideBd" class="text-sm font-medium cursor-pointer">
+                      {{ t('Outside Bangladesh') }}
+                    </label>
+                  </div>
+                  <span class="text-[#D92D20] font-normal text-sm">{{this.validationMsgforPresent}}</span>
+                </div>
+
+
+                @if(selectedOption === 'inside'){
+                <div class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5">
+                  <div class="w-full flex-1">
+                    <app-selectbox [options]="districtResponse()" [label]="t('District')"
+                      [control]="districtControl" [placeholder]="t('Select your District')">
+                    </app-selectbox>
+                    <span class="text-[#D92D20] font-normal text-sm">{{this.validationDistrictMsg}}</span>
+                  </div>
+                  <div class="w-full flex-1">
+                    <app-selectbox [label]="t('Thana')" [options]="thanaResponse()" [control]="thanaControl"
+                      [placeholder]="t('Select your Thana')"></app-selectbox>
+                    <span class="text-[#D92D20] font-normal text-sm">{{this.validationThanaMsg}}</span>
+                  </div>
+                </div>
+
+                <div class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5">
+                  <div class="w-full flex-1">
+                    <app-selectbox [label]="t('PO')" [options]="poResponse()" [control]="poControl"
+                      [placeholder]="t('Select your PO')"></app-selectbox>
+                  </div>
+                  <div class="w-full flex-1">
+                    <app-input [label]="t('houseRoadVillage')"
+                      [placeholder]="'Enter your House No/Road/Village'" [control]="presentVillageControl"
+                      [isNumericOnly]="false"></app-input>
+                    <span class="text-[#D92D20] font-normal text-sm">{{this.validationMsgForVillage}}</span>
+                  </div>
+                </div>
+                }
+                @if(selectedOption ==='outside'){
+                <div class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5">
+                  <div class="w-full flex-1">
+                    <app-selectbox [options]="countryResponse()" [label]="t('Country')"
+                      [placeholder]="t('Select your Country')" [control]="countryControl">
+                    </app-selectbox>
+                    <span class="text-[#D92D20] font-normal text-sm">{{this.validationCountryMsg}}</span>
+                  </div>
+
+                  <div class="w-full flex-1">
+                    <app-input [label]="t('houseRoadVillage')"
+                      [placeholder]="'Enter your House No/Road/Village'" [control]="presentVillageControl"
+                      [isNumericOnly]="false"></app-input>
+                    <span class="text-[#D92D20] font-normal text-sm">{{this.validationMsgForVillageOut}}</span>
+                  </div>
+                </div>
+                }
+
+
+
+              </div>
+
+
+            </div>
+
+            <!-- permanent address -->
+
+
+            <div class="flex flex-col gap-5">
+              <div [ngClass]="this.sameAddressControl.value ? 'justify-end': 'justify-between'" class="flex  items-center">
+                <p [ngClass]="this.sameAddressControl.value? 'hidden':'block'" class="text-[#101828] text-lg font-semibold">{{
+                  t('Permanent Address') }} <span class="text-[#D92D20]">*</span></p>
+                <div class="hidden sm:flex sm:items-center gap-2">
+                  <input type="checkbox"
+                    class="scale-90 rounded focus:ring-0 focus:outline-0 focus:outline-none active:outline-none" id="bd"
+                    [formControl]="sameAddressControl" />
+                  <label for="bd" class="text-sm text-[#344054] font-medium">{{ t('Same as Present Address')
+                    }}</label>
+                </div>
+              </div>
+
+              @if(!this.sameAddressControl.value){
+              <div class="flex flex-col gap-4">
+
+                <div class="sm:flex sm:flex-row sm:items-center flex flex-col gap-4">
+
+                  <div
+                    class="flex items-center sm:justify-start justify-center gap-2 px-4 py-2.5 w-full sm:max-w-fit rounded-lg border cursor-pointer"
+                    [ngClass]="selectedOptionPm === 'insidePm' ? 'border-[#C63C92] text-[#C63C92]' : 'border-[#E4E7EC] text-[#475467]'"
+                    (click)="selectOptionPm('insidePm')">
+                    <input type="radio" id="insideBdPm" name="locationPm" [checked]="selectedOptionPm === 'insidePm'"
+                      (change)="selectOptionPm('insidePm')"
+                      class="form-radio text-[#C63C92] border border-[#D0D5DD] scale-90 focus:ring-0">
+                    <label for="insideBdPm" class="text-sm font-medium cursor-pointer">
+                      {{ t('Inside Bangladesh') }}
+                    </label>
+                  </div>
+
+
+                  <div
+                    class="flex items-center sm:justify-start justify-center gap-2 px-4 py-2.5 w-full sm:max-w-fit rounded-lg border cursor-pointer "
+                    [ngClass]="selectedOptionPm === 'outsidePm' ? 'border-[#C63C92] text-[#C63C92]' : 'border-[#E4E7EC] text-[#475467]'">
+                    <input type="radio" id="outsideBdPm" name="locationPm" [checked]="selectedOptionPm === 'outsidePm'"
+                      (change)="selectOptionPm('outsidePm')"
+                      class="form-radio text-[#C63C92] border border-[#D0D5DD] scale-90 focus:ring-0">
+                    <label for="outsideBdPm" class="text-sm font-medium cursor-pointer">
+                      {{ t('Outside Bangladesh') }}
+                    </label>
+                  </div>
+
+                  <span class="text-[#D92D20] font-normal text-sm">{{this.validationMsgPermanent}}</span>
+                </div>
+
+                <div class="sm:hidden flex items-center gap-2">
+                  <input type="checkbox"
+                    class="scale-75 rounded focus:ring-0 focus:outline-0 focus:outline-none active:outline-none" id="bd" />
+                  <label for="bd" class="text-sm text-[#344054] font-medium">{{ t('Same as Present Address')
+                    }}</label>
+                </div>
+
+                @if(selectedOptionPm === 'insidePm'){
+                <div class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5">
+                  <div class="w-full flex-1">
+                    <app-selectbox [options]="districtPermResponse()" [label]="t('District')"
+                      [control]="districtPermControl" [placeholder]="t('Select your District')">
+                    </app-selectbox>
+                    <span class="text-[#D92D20] font-normal text-sm">{{this.validationMsgPermDis}}</span>
+                  </div>
+
+                  <div class="w-full flex-1">
+                    <app-selectbox [label]="t('Thana')" [options]="thanaPermResponse()"
+                      [control]="thanaPermControl" [placeholder]="t('Select your Thana')"></app-selectbox>
+                    <span class="text-[#D92D20] font-normal text-sm">{{this.validationMsgPermThana}}</span>
+                  </div>
+                </div>
+
+                <div class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5">
+                  <div class="w-full flex-1">
+                    <app-selectbox [label]="t('PO')" [options]="poPermResponse()" [control]="poPermControl"
+                      [placeholder]="t('Select your PO')"></app-selectbox>
+                  </div>
+                  <div class="w-full flex-1">
+                    <app-input [label]="t('houseRoadVillage')"
+                      [placeholder]="'Enter your House No/Road/Village'" [isNumericOnly]="false"
+                      [control]="permVillageControl"></app-input>
+                    <span class="text-[#D92D20] font-normal text-sm">{{this.validationMsgPermVillage}}</span>
+                  </div>
+                </div>
+                }
+                @if(selectedOptionPm ==='outsidePm'){
+                <div class="sm:flex sm:flex-row sm:items-center sm:gap-8 flex flex-col gap-5">
+                  <div class="w-full flex-1">
+                    <app-selectbox [options]="countryResponse()" [label]="t('Country')"
+                      [control]="countryPermControl" [placeholder]="'Select your Country'">
+                    </app-selectbox>
+                    <span class="text-[#D92D20] font-normal text-sm">{{this.validationMsgPermCountry}}</span>
+                  </div>
+
+                  <div class="w-full flex-1">
+                    <app-input [label]="t('houseRoadVillage')"
+                      [placeholder]="'Enter your House No/Road/Village'" [control]="permVillageControl"
+                      [isNumericOnly]="false"></app-input>
+                    <span class="text-[#D92D20] font-normal text-sm">{{this.validationMsgPermVillOut}}</span>
+                  </div>
+                </div>
+                }
+
+
+
+              </div>
+              }
+
+            </div>
+
+
+
+
+            <div class="mb-3 flex items-center gap-3">
+              <button class="button-save" (click)="saveAddress()">{{ t('Save') }}</button>
+              <button (click)="closeAddressForm()" class="button-close">{{ t('Close') }}</button>
+            </div>
+          </form>
+
+
+
+        </div>
+      </div>
+    </div>
+  }
+
+</accordion-main-body>
+

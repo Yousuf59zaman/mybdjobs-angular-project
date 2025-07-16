@@ -1,0 +1,287 @@
+<div *transloco="let t">
+<accordion-main-body
+  [accordionName]="t('editResumeAccomplishment.Awards')"
+  buttonType="add"
+  buttonTitle="{{ t('editResumeAccomplishment.AddAward') }}"
+  [maxCount]="5"
+  [isAccordionOpen]="isOpen()"
+  [isFormOpen]="isAwardNewFormOpen()"
+  (formToggleEmitter)="isAwardNewFormOpen.set(!isAwardNewFormOpen())"
+  (accordionToggleEmitter)="toggle()"
+>
+
+    <div class="my-5">
+      @if (isLoading()) {
+        <div class="flex items-center justify-center py-[50px]">
+          <img [src]="'images/loading.gif'" alt="Loading...">
+        </div>
+      }@else if (!isInfoAvailable && !isAwardNewFormOpen()) {
+      <div>
+        <app-no-details (openFormBtn)="isAwardNewFormOpen.set(true)" [btnText]="t('editResumeAccomplishment.AddAward')"
+          [description]="t('editResumeAccomplishment.noAward')"></app-no-details>
+      </div>
+      }
+      @else {
+      <!-- Read-only card like original design -->
+      @for (award of awardSummaries.slice(0, 5); track award; let i = $index) {
+      <div class="mb-6">
+        @if (editingSummary?.accomPlishmentId === award.accomPlishmentId) {
+        <!-- Edit Form -->
+        <form class="mt-5 space-y-4" [formGroup]="awardForm">
+          <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+            <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+              <div class="flex flex-col w-full">
+                <label class="flex items-center gap-0.5 text-sm font-medium text-slate-700">
+                  {{t('editResumeAccomplishment.Title')}}<span class="text-red-600">*</span>
+                </label>
+                <app-input [type]="'text'" [control]="titleControl" [placeholder]="'Enter your Title'"
+                  [isRequired]="true" [isNumericOnly]="false"
+                  [customClasses]="'w-full mt-[8px] p-2.5 text-sm text-gray-500 rounded-lg border border-gray-300 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] h-10'">
+                </app-input>
+                @if (titleControl.invalid && (titleControl.dirty || titleControl.touched)) {
+                  <div class="text-red-500 text-sm mt-1">Please enter title</div>
+                }
+              </div>
+            </div>
+          </div>
+           <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+                <div class="w-full">
+                  <app-date-single-date-picker
+                    [label]="t('editResumeAccomplishment.issueDate')"
+                    [placeholder]="'MM/DD/YY'"
+                    [control]="issueDateControl"
+                    [isRequired]="true"
+                    (selectedStartDateChange)="onStartDateChanged($event)">
+                  </app-date-single-date-picker>
+                  @if (issueDateControl.invalid && (issueDateControl.dirty || issueDateControl.touched)) {
+                    <div class="text-red-500 text-sm mt-1">Please enter issue date</div>
+                  }
+                </div>
+              </div>
+
+
+          <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+            <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+              <div class="flex flex-col w-full">
+                <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                  <span class="text-sm leading-[20px] text-slate-700">URL</span>
+                </label>
+                <app-input [type]="'text'" [control]="urlControl" [placeholder]="'Enter your URL'" [isRequired]="true"
+                  [isNumericOnly]="false"
+                  >
+                </app-input>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-8 items-start mt-4 w-full">
+            <div class="w-full md:flex-1">
+              <div class="flex flex-col w-full">
+                <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                  <span class="text-sm leading-[20px] text-slate-700">{{t('editResumeAccomplishment.Description')}}<span
+                      class="text-red-600">*</span></span>
+                </label>
+                <div class="w-full mt-[8px]">
+                  <app-text-editor [control]="descriptionControl" [label]="''" [type]="'Edit-Resume'" [height]="'112px'"
+                    [placeholder]="'Enter your writing texts...'">
+                  </app-text-editor>
+                  @if ((descriptionControl.invalid && (descriptionControl.dirty || descriptionControl.touched || formSubmitted)) || 
+                       (formSubmitted && (!descriptionControl.value || stripHtmlTags(descriptionControl.value).trim() === ''))) {
+                    <div class="text-red-500 text-sm mt-1">Please enter description</div>
+                  }
+                  <div class="text-xs text-gray-500 mt-1">
+                    You wrote <strong>{{descriptionCharCount()}}/{{MAX_DESCRIPTION_LENGTH}}</strong> character(s)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3 flex items-center gap-3">
+            <button (click)="saveAwardSummary()"
+              class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">{{t('editResumeAccomplishment.Save')}}</button>
+            <button (click)="closeForm()"
+              class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold">{{t('editResumeAccomplishment.Close')}}</button>
+          </div>
+        </form>
+        } @else {
+        <!-- Regular Card View -->
+        <div class="flex flex-wrap justify-between items-center gap-4">
+              <h3 class="text-lg font-semibold text-slate-700">
+                {{i + 1}}.{{award.title}}
+              </h3>
+              <div class="flex gap-4 items-center">
+                <button class="flex items-center gap-1.5 text-[#B32D7D]" aria-label="Edit Portfolio"
+                  (click)="editSummary(award)">
+                  <img src="images/edit-05.svg" class="h-[15px] w-[15px]">
+                  <span class="text-sm hidden sm:inline">{{t('editResumeAccomplishment.Edit')}}</span>
+                </button>
+
+                <!-- Delete Button -->
+                <button class="flex items-center gap-1.5 text-slate-600" aria-label="Delete Portfolio"
+                  (click)="openDeleteModal(award.accomPlishmentId)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                    class="w-4 h-4">
+                    <path d="M2 4H3.33333H14" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path
+                      d="M5.33325 4V2.66667C5.33325 2.48986 5.40349 2.32029 5.52851 2.19526C5.65354 2.07024 5.82311 2 5.99992 2H9.99992C10.1767 2 10.3463 2.07024 10.4713 2.19526C10.5963 2.32029 10.6666 2.48986 10.6666 2.66667V4"
+                      stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                      d="M12.6666 4V13.3333C12.6666 13.5101 12.5963 13.6797 12.4713 13.8047C12.3463 13.9298 12.1767 14 11.9999 14H3.99992C3.82311 14 3.65354 13.9298 3.52851 13.8047C3.40349 13.6797 3.33325 13.5101 3.33325 13.3333V4"
+                      stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M6.66675 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M9.33325 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg>
+                  <span class="text-sm hidden sm:inline">{{t('editResumeAccomplishment.delete')}} </span>
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+              <div class="sm:col-span-2">
+                <p class="text-sm text-gray-500">{{t('editResumeAccomplishment.issueDate')}}:</p>
+                <p class="mt-1 text-sm font-medium text-gray-900">{{award.issuedOn | date:'MM/dd/yyyy'}}</p>
+              </div>
+              <div class="sm:col-span-2">
+                <p class="text-sm text-gray-500">URL</p>
+                <p class="mt-1 text-sm font-medium text-gray-900">{{award.url}}</p>
+              </div>
+              <div class="sm:col-span-2">
+                <p class="text-sm text-gray-500">{{t('editResumeAccomplishment.Description')}}</p>
+                <p class="mt-1 text-sm font-medium text-gray-900">{{award.description}}</p>
+              </div>
+            </div>
+        }
+      </div>
+      }
+      }
+    </div>
+
+    <div [ngClass]="isAwardNewFormOpen() ? 'mb-0' : 'mb-5'" *ngIf="awardSummaries.length < 5 && !isLoading() && !isAwardNewFormOpen()">
+      <button
+        class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 hover:bg-pink-50 transition-colors"
+        aria-label="Add Academic Summary" (click)="resetForm(); isAwardNewFormOpen.set(true)">
+        <img src="images/plus.svg" alt="Add" />
+        <span class="leading-tight">{{t('editResumeAccomplishment.AddAward')}}</span>
+      </button>
+    </div>
+   
+
+    <div class="my-5" [hidden]="!isAwardNewFormOpen()">
+      <h3 class="text-lg font-semibold text-slate-700">
+        Award Name
+      </h3>
+
+      <form class="mt-5 space-y-4">
+        <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+            <div class="flex flex-col  w-full max-md:max-w-full">
+              <label class="flex items-center gap-0.5 text-sm font-medium text-slate-700">
+                {{t('editResumeAccomplishment.Title')}}<span class="text-red-600">*</span>
+              </label>
+
+              <app-input [type]="'text'" [control]="titleControl" [placeholder]="'Enter your Title'" [isRequired]="true"
+                [isNumericOnly]="false"
+                >
+              </app-input>
+               @if (titleControl.invalid && (titleControl.dirty || titleControl.touched)) {
+                  <div class="text-red-500 text-sm mt-1">Please enter title</div>
+                }
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+          <div class="w-full">
+            <app-date-single-date-picker
+              [label]="t('editResumeAccomplishment.issueDate')"
+              [placeholder]="'MM/DD/YY'"
+              [control]="issueDateControl"
+              [isRequired]="true"
+              (selectedStartDateChange)="onStartDateChanged($event)">
+            </app-date-single-date-picker>
+            @if (issueDateControl.invalid && (issueDateControl.dirty || issueDateControl.touched)) {
+                    <div class="text-red-500 text-sm mt-1">Please enter issue date</div>
+                  }
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+            <div class="flex flex-col  w-full max-md:max-w-full">
+              <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
+                <span class="text-sm leading-[20px] text-slate-700">URL</span>
+                <span class="sr-only">(required)</span>
+              </label>
+
+
+              <app-input [type]="'text'" [control]="urlControl" [placeholder]="'Enter your URL'" [isRequired]="true"
+                [isNumericOnly]="false"
+                [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'">
+              </app-input>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-8 items-start mt-[8px] w-full max-md:max-w-full">
+          <div class="flex flex-col w-full max-md:max-w-full">
+            <div class="flex flex-col w-full max-md:max-w-full">
+              <label class="flex gap-0.5 mb-[8px] items-start self-start text-sm font-medium leading-none">
+                <span class="text-sm leading-[20px] text-slate-700">{{t('editResumeAccomplishment.Description')}}<span
+                    class="text-red-600">*</span></span>
+                <span class="sr-only">(required)</span>
+              </label>
+            </div>
+            <div class="w-full">
+              <app-text-editor #textEditor [control]="descriptionControl" [label]="''" [type]="'Edit-Resume'"
+                [height]="'112px'" [placeholder]="'Enter your writing texts...'">
+              </app-text-editor>
+               @if ((descriptionControl.invalid && (descriptionControl.dirty || descriptionControl.touched || formSubmitted)) || 
+                       (formSubmitted && (!descriptionControl.value || stripHtmlTags(descriptionControl.value).trim() === ''))) {
+                    <div class="text-red-500 text-sm mt-1">Please enter description</div>
+                  }
+              <div class="text-xs text-gray-500 mt-1">
+                You wrote <strong>{{descriptionCharCount()}}/{{MAX_DESCRIPTION_LENGTH}}</strong> character(s)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3 flex items-center gap-3">
+          <button (click)="saveAwardSummary()"
+            class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">{{t('editResumeAccomplishment.Save')}}</button>
+          <button (click)="isAwardNewFormOpen.set(false)"
+            class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold ">{{t('editResumeAccomplishment.Close')}}</button>
+        </div>
+
+      </form>
+    </div>
+  </accordion-main-body>
+
+
+  @if(isDeleteModalOpen()){
+  <div class="fixed inset-0 bg-[#101828]/50 flex items-center justify-center z-[9999]">
+    <div class="bg-white w-[476px] h-[216px] p-10 rounded-lg shadow-md flex flex-col justify-between">
+      <p class="text-primary-900 text-center font-semibold text-[24px] leading-[32px]">
+        {{t('editResumeAccomplishment.deleteMsg')}}
+      </p>
+      <div class="flex justify-center gap-6 mt-6">
+        <button (click)="closeDeleteModal()"
+          class="px-4 py-2 text-sm rounded-lg border border-[#E4E7EC] bg-white shadow-sm text-primary-900 hover:bg-gray-100">
+          {{t('editResumeAccomplishment.Cancel')}}
+        </button>
+        <button (click)="confirmDelete()"
+          class="px-4 py-2 text-sm rounded-lg bg-[#C63C92] shadow-sm text-white hover:bg-pink-700">
+          {{t('editResumeAccomplishment.deletepop')}}
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+
+</div>
+
+
+

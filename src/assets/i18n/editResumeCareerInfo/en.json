@@ -1,0 +1,17 @@
+{
+  "headline": "Career & Application Information",
+  "objective": "Objective",
+  "presentSalary": "Present Salary (Taka/Month)",
+  "expectedSalary": "Expected Salary (Taka/Month)",
+  "level": "Looking for (Job Level)",
+  "nature": "Available for (Job Nature)",
+  "save": "Save",
+  "close": "Close",
+  "example": "Example",
+  "edit": "Edit",
+  "expand": "Expand",
+  "collapse": "Collapse",
+  "objectiveSummary": "An objective is a short summary of your career. It should be written in a way that grabs the employer's attention and makes them interested in you.",
+  "AddCareer": "Add Career Information",
+  "noData": "No career information available. Add your career details to complete your profile."
+}

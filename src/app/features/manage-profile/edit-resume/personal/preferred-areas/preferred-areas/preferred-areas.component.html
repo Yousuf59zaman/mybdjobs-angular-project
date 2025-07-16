@@ -1,0 +1,262 @@
+<accordion-main-body
+  [accordionName]="'Preferred Areas'"
+  buttonType="edit"
+  buttonTitle="Edit"
+  [isAccordionOpen]="isOpen()"
+  [isFormOpen]="isPreferredFormOpen()"
+  (formToggleEmitter)="onFormToggle($event)"
+  (accordionToggleEmitter)="onExpandClick()"
+  *transloco="let t"
+>
+  <div
+    class="my-5"
+    [hidden]="isPreferredFormOpen()"
+  >
+    <div>
+      <div class="mx-6 mb-5 grid grid-cols-1 sm:grid-cols-1 gap-5">
+        <div class="flex flex-col gap-4">
+          <p class="text-base font-semibold text-primary-900 ">{{ t('editResumePreferredAreas.preferredJobCategory') }}</p>
+          <div class="sm:flex sm:flex-row  sm:items-center flex flex-col gap-4 sm:gap-[34px]">
+            <div class="w-full flex-1 text-sm text-[#101828] flex flex-col gap-1">
+              <p class="text-primary-500 text-xs font-medium">{{ t('editResumePreferredAreas.functionalSkill') }}</p>
+              <div class="flex flex-wrap items-center gap-3">
+                @for(cat of functionalCategoriesChips(); track cat.id){
+                <p
+                  class="text-sm text-[#344054] font-medium rounded-full p-1 px-3 bg-[#F9FAFB] border border-[#E4E7EC] max-w-fit">
+                  {{ cat.name }}
+                </p>
+                }
+              </div>
+            </div>
+            <div class="w-full flex-1 text-sm text-[#101828] flex flex-col gap-1">
+              <p class="text-[#667085] text-xs font-medium">{{ t('editResumePreferredAreas.specialSkill') }}</p>
+              <div class="flex flex-wrap items-center gap-3">
+                @for(cat of specialSkilledCategoriesChips(); track cat.id){
+                <p
+                  class="text-sm text-[#344054] font-medium rounded-full p-1 px-3 bg-[#F9FAFB] border border-[#E4E7EC] max-w-fit">
+                  {{ cat.name }}
+                </p>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <p class="text-base font-semibold text-primary-900 ">{{ t('editResumePreferredAreas.preferredJobLocation') }}</p>
+          <div class="sm:flex sm:flex-row  sm:items-center flex flex-col gap-4 sm:gap-[34px]">
+            <div class="w-full flex-1 text-sm text-[#101828] flex flex-col gap-1">
+              <p class="text-primary-500 text-xs font-medium">{{ t('editResumePreferredAreas.insideLocLabel') }}</p>
+              <div class="flex flex-wrap items-center gap-3">
+                @for(loc of insideLocationsChips(); track loc.id){
+                <p
+                  class="text-sm text-[#344054] font-medium rounded-full p-1 px-3 bg-[#F9FAFB] border border-[#E4E7EC] max-w-fit">
+                  {{ loc.name }}
+                </p>
+                }
+              </div>
+            </div>
+            <div class="w-full flex-1 text-sm text-[#101828] flex flex-col gap-1">
+              <p class="text-[#667085] text-xs font-medium">{{ t('editResumePreferredAreas.outsideLocLabel') }}</p>
+              <div class="flex flex-wrap items-center gap-3">
+                @for(loc of outsideLocationsChips(); track loc.id){
+                <p
+                  class="text-sm text-[#344054] font-medium rounded-full p-1 px-3 bg-[#F9FAFB] border border-[#E4E7EC] max-w-fit">
+                  {{ loc.name }}
+                </p>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mx-6 text-sm text-[#101828] flex flex-col gap-1">
+        <p class="text-[#667085] text-xs font-medium">
+          {{ t('editResumePreferredAreas.prefOrgLabel') }}
+        </p>
+        <div class=" mb-5 flex flex-wrap items-center gap-3">
+          @for(org of organizationsChips(); track org.id){
+          <p
+            class="text-sm text-[#344054] font-medium rounded-full p-1 px-3 bg-[#F9FAFB] border border-[#E4E7EC] max-w-fit">
+            {{ org.name }}
+          </p>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="my-5"
+    [hidden]="!isPreferredFormOpen()"
+  >
+    <div class="sm:mx-6 mx-3">
+      <div>
+        <p class="text-primary-900 mb-1.5 text-lg font-semibold relative"> {{
+          t('editResumePreferredAreas.preferredJobCategory') }}
+          <span class="absolute text-[#D92D20] font-semibold text-lg ml-[1px]">*</span>
+        </p>
+        <p class="text-primary-900 text-xs font-medium mb-4">
+          {{ t('editResumePreferredAreas.prefJobCatDescription') }}
+        </p>
+      </div>
+
+      <div class="sm:flex sm:flex-row items-cente4  gap-5">
+        <div class="w-full flex-1 flex flex-col">
+          <p class="text-primary-900 text-xs font-medium mb-1.5">{{ t('editResumePreferredAreas.functionalSkill') }} {{
+            t('editResumePreferredAreas.maxCat') }}</p>
+          <div class="border-primary rounded-md p-3">
+            <div class="max-h-[164px] overflow-y-auto">
+              @for(functional of functionalCategories; track functional.categoryId){
+              <div class="cursor-pointer flex items-center gap-2">
+                <app-checkbox [label]="functional.caT_NAME" [isDisabled]="false" [widthClass]="'w-4 h-4'"
+                  [control]="functionalCategoryControls[functional.categoryId]"></app-checkbox>
+              </div>
+              }
+            </div>
+          </div>
+          <!-- Tag display for selected functional categories (optional, can be made interactive) -->
+          <div class="my-3 flex flex-wrap items-center gap-1.5">
+            @for(functional of selectedCategories('functional')(); track functional.categoryId){
+            <p class="text-700 px-2.5 py-1 text-sm font-medium rounded-full max-w-fit bg-[#F9FAFB] border border-[#E4E7EC]">
+              {{ functional.caT_NAME }}
+              <span class="ml-1 text-primary-500 cursor-pointer"
+                (click)="removeCategoryChip('functional', functional.categoryId)">&#10006;</span>
+            </p>
+            }
+          </div>
+        </div>
+        <div class="w-full flex-1 flex flex-col mb-3">
+          <p class="text-primary-900 text-xs font-medium mb-1.5">{{ t('editResumePreferredAreas.specialSkill') }} {{
+            t('editResumePreferredAreas.maxCat') }}</p>
+          <div class="border-primary rounded-md p-3">
+            <div class="max-h-[164px] overflow-y-auto">
+              @for(special of specialSkilledCategories; track special.categoryId){
+              <div class="cursor-pointer flex items-center gap-2">
+                <app-checkbox [label]="special.caT_NAME" [isDisabled]="false" [widthClass]="'w-4 h-4'"
+                  [control]="specialSkilledCategoryControls[special.categoryId]"></app-checkbox>
+              </div>
+              }
+            </div>
+          </div>
+          <!-- Tag display for selected special skilled categories (optional, can be made interactive) -->
+          <div class="my-3 flex flex-wrap items-center gap-1.5">
+            @for(special of selectedCategories('special')(); track special.categoryId){
+            <p class="text-700 px-2.5 py-1 text-sm font-medium rounded-full max-w-fit bg-[#F9FAFB] border border-[#E4E7EC]">
+              {{ special.caT_NAME }}
+              <span class="ml-1 text-primary-500 cursor-pointer"
+                (click)="removeCategoryChip('special', special.categoryId)">&#10006;</span>
+            </p>
+            }
+          </div>
+        </div>
+      </div>
+
+      @if(showCategoryValidationError){
+      <div class="text-xs font-semibold text-red-500 mt-1">{{ t('editResumePreferredAreas.prefJobCatValidation') }}</div>
+      }
+
+      <div class="flex flex-col  gap-2 mb-5">
+        <p class="text-primary-900 font-semibold text-lg">
+          {{ t('editResumePreferredAreas.preferredJobLocation') }}
+          <span class="text-[#D92D20] font-semibold text-lg">*</span>
+        </p>
+        <p class="text-primary-700 font-normal text-xs" [innerHTML]="t('editResumePreferredAreas.prefJobLocDescription')">
+        </p>
+      </div>
+
+      <div class="flex flex-col mb-6">
+        <div class="">
+          <app-multi-select [isFullWidth]="true" [placeholder]="t('editResumePreferredAreas.insideLocPlaceholder')"
+            [searchLabel]="t('editResumePreferredAreas.insideLocLabel')" [maxSelection]="15" [checkBoxVisible]="false"
+            [overLayVisibleOnlyOnSuggestions]="true" [multiplSelection]="false" [resetOnSelection]="true"
+            [extraLabel]="t('editResumePreferredAreas.insideLocExtraLabel')" [suggestions]="insideLocationSelectItems"
+            [control]="insideLocationControl" (searchQuery)="fetchInsideLocationSuggestions($event.query)"
+            (onSelect)="onInsideLocationSelect($event)">
+          </app-multi-select>
+        </div>
+        <div class="mt-2 flex flex-wrap items-center gap-1.5">
+          <!-- Chips for selected inside locations -->
+          @for(location of selectedInsideLocations(); track location.locationID){
+          <p class="text-700 px-2.5 py-1 text-sm font-medium rounded-full max-w-fit bg-[#F9FAFB] border border-[#E4E7EC]">
+            {{ location.locationName }}
+            <span class="ml-1 text-primary-500 cursor-pointer"
+              (click)="removeInsideLocationChip(location.locationID)">&#10006;</span>
+          </p>
+          }
+        </div>
+        @if(insideLocationNoDataMessage()){
+        <div class="text-xs text-red-500 mt-1">{{ insideLocationNoDataMessage() }}</div>
+        }
+      </div>
+
+
+      <div class="flex flex-col mb-6">
+        <div class="">
+          <app-multi-select [isFullWidth]="true" [placeholder]="t('editResumePreferredAreas.outsideLocPlaceholder')"
+            [searchLabel]="t('editResumePreferredAreas.outsideLocLabel')" [maxSelection]="10" [checkBoxVisible]="false"
+            [overLayVisibleOnlyOnSuggestions]="true" [multiplSelection]="false" [resetOnSelection]="true"
+            [extraLabel]="t('editResumePreferredAreas.outsideLocExtraLabel')" [suggestions]="outsideLocationSelectItems"
+            [control]="outsideLocationControl" (searchQuery)="fetchOutsideLocationSuggestions($event.query)"
+            (onSelect)="onOutsideLocationSelect($event)">
+          </app-multi-select>
+        </div>
+        <div class="mt-2 flex flex-wrap items-center gap-1.5">
+          <!-- Chips for selected outside locations -->
+          @for(location of selectedOutsideLocations(); track location.locationID){
+          <p class="text-700 px-2.5 py-1 text-sm font-medium rounded-full max-w-fit bg-[#F9FAFB] border border-[#E4E7EC]">
+            {{ location.locationName }}
+            <span class="ml-1 text-primary-500 cursor-pointer"
+              (click)="removeOutsideLocationChip(location.locationID)">&#10006;</span>
+          </p>
+          }
+        </div>
+        @if(outsideLocationNoDataMessage()){
+        <div class="text-xs text-red-500 mt-1">{{ outsideLocationNoDataMessage() }}</div>
+        }
+      </div>
+
+      @if(showInsideLocationValidationError){
+      <div class="text-xs font-semibold text-red-500 mt-1">{{ t('editResumePreferredAreas.prefJobLocValidation') }}</div>
+      }
+
+      <div class="flex flex-col mb-6">
+        <div class="">
+          <app-multi-select [isFullWidth]="true" [placeholder]="t('editResumePreferredAreas.prefOrgPlaceholder')"
+            [searchLabel]="t('editResumePreferredAreas.prefOrgLabel')" [maxSelection]="12" [checkBoxVisible]="false"
+            [overLayVisibleOnlyOnSuggestions]="true" [multiplSelection]="false" [resetOnSelection]="true"
+            [suggestions]="organizationSelectItems" [control]="organizationControl"
+            (searchQuery)="fetchOrganizationSuggestions($event.query)" (onSelect)="onOrganizationSelect($event)">
+          </app-multi-select>
+        </div>
+        <div class="mt-2 flex flex-wrap items-center gap-1.5">
+          <!-- Chips for selected organizations -->
+          @for(org of selectedOrganizations(); track org.orgTypeID){
+          <p class="text-700 px-2.5 py-1 text-sm font-medium rounded-full max-w-fit bg-[#F9FAFB] border border-[#E4E7EC]">
+            {{ org.orgTypeName }}
+            <span class="ml-1 text-primary-500 cursor-pointer"
+              (click)="removeOrganizationChip(org.orgTypeID)">&#10006;</span>
+          </p>
+          }
+        </div>
+        @if(organizationNoDataMessage()){
+        <div class="text-xs text-red-500 mt-1">{{ organizationNoDataMessage() }}</div>
+        }
+      </div>
+
+      <div class="mb-3 flex items-center gap-3">
+        <button class="button-save" (click)="onSubmit()">{{ t('editResumePreferredAreas.save') }}</button>
+        <button (click)="closePreferredForm()" class="button-close">{{ t('editResumePreferredAreas.close') }}</button>
+      </div>
+    </div>
+  </div>
+</accordion-main-body>
+
+<!-- DEBUG: Preview form and signals -->
+<!-- <pre style="background:#f3f3f3; color:#222; padding:1em; font-size:12px; overflow:auto;">
+Selected Functional: {{ selectedFunctionalCategoryIds()  }}
+Selected Special: {{ selectedSpecialSkilledCategoryIds()  }}
+Selected Inside Locations: {{ selectedInsideLocationIds()  }}
+Selected Outside Locations: {{ selectedOutsideLocationIds()  }}
+Selected Organizations: {{ selectedOrganizationIds()  }}
+</pre> -->
+

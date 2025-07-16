@@ -1,0 +1,55 @@
+<div *transloco="let t read:'signin'">
+  <form (submit)="onSubmit($event)">
+    <p class="text-[#48505E] text-sm font-medium">{{ t('signin.usernamEmailORMobile') }}</p>
+    <app-input [type]="'text'" [isDecimalAllowed]="true" [isNumericOnly]="false" [isRequired]="true"
+      [maxValue]="maxValue" [maxLength]="maxLength" [validationText]="getValidationText()" [control]="signInControl">
+    </app-input>
+    <!-- @if(isSubmitted()){ -->
+    @if(wrongUserName()){
+    <p class="flex gap-1 items-center mt-1 text-[#AC2719] text-[11px] font-medium"><img src="images/info-red.svg"
+        alt="info-red">
+      {{t('error.couldnotFindYourBdjobsAccount')}}</p>
+    }@else if(isEmpty() && !getValidationText()){
+    <p class="flex gap-1 items-center mt-1 text-[#AC2719] text-[11px] font-medium"><img src="images/info-red.svg"
+        alt="info-red">
+      {{t('error.plsEnterUsernameEmailOrMobile')}}</p>
+    }
+    <!-- } -->
+
+
+
+
+    <a class="text-[#B32D7D] text-sm font-medium" role="button" (click)="goTo()">{{ t('signin.ForgotUserIdOrPassword')
+      }}</a>
+    <button class="bg-[#B32D7D] text-white w-full h-12 rounded-full mt-8">
+      {{t('button.continue')}}
+    </button>
+  </form>
+  <div class="flex items-center justify-center my-6">
+    <div class="border-t w-full border-[#B9BDC7]"></div>
+    <span class="px-4 text-sm text-[#667085] whitespace-nowrap">{{t('signin.signInWithMail')}}</span>
+    <div class="border-t w-full border-[#B9BDC7]"></div>
+  </div>
+  <div class="flex flex-col gap-4 sm:mb-0 mb-28">
+    <!-- <button
+      class="w-full border border-[#858D9D] rounded-full flex items-center justify-center gap-3 py-2 text-sm font-semibold text-[#48505E]">
+      <img src="images/google.svg" alt="Google" class="w-5 h-5" />
+      {{t('signin.signinWithGoogle')}}
+    </button> -->
+    <div id="google-signin-button" class="w-full" class="self-center">
+      <!-- <button
+        class="w-full border border-[#858D9D] rounded-full flex items-center justify-center gap-3 py-2 text-sm font-semibold text-[#48505E]"
+        (click)="signInWithGoogle()">
+        <img src="images/google.svg" alt="Google" class="w-5 h-5" />
+        {{t('signin.signinWithGoogle')}}
+      </button> -->
+      <asl-google-signin-button type='standard' size='large' shape="pill" [width]="400" logo_alignment="center"
+        theme="outline"></asl-google-signin-button>
+    </div>
+    <button
+      class="self-center max-w-[400px] w-full border border-[#858D9D] rounded-full flex items-center justify-center gap-3 py-2 text-sm font-semibold text-[#48505E]">
+      <img src="images/linkedin.svg" alt="LinkedIn" class="w-5 h-5" />
+      {{t('signin.signinWithLinkedIn')}}
+    </button>
+  </div>
+</div>

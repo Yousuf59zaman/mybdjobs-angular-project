@@ -1,0 +1,20 @@
+{
+    "jobMenu": "JOBS",
+    "mybdjobsMenu": "MY BDJOBS",
+    "elearningMenu": "E-LEARNING",
+    "tenderMenu": "Tender/EOI",
+    "postJobMenu": "POST A JOB",
+
+    "quickLinks"  : "Quick Links",
+    "newJobs"  : "New Jobs",
+    "deadlineTomorrow"  : "Deadline Tomorrow",
+    "partTime"  : "Part Time",
+    "contructual"  : "Contructual",
+    "government"  : "Government",
+    "locationWise"  : "Location Wise",
+
+    "employerList"  : "Employer List",
+    "FAQ"  : "FAQ"
+
+
+}

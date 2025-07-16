@@ -1,0 +1,103 @@
+<!-- Show the resume section only if showResume is true -->
+
+
+<div *ngIf="showResume" class="w-full bg-black/30 overflow-hidden backdrop-blur-sm ">
+  <div class="w-full h-full bg-white overflow-hidden flex flex-col items-start justify-start">
+    <div class="pl-5 pr-5 pt-5 flex flex-col gap-5 w-full h-[80px] overflow-hidden no-print">
+      <!-- Header buttons -->
+      <div class="w-full flex items-start justify-between">
+        <!-- Back Button -->
+        <div class="flex items-center gap-3">
+          <button (click)="handleBack()"
+            class="flex items-center gap-1.5 text-[#475467] text-sm font-semibold hover:text-gray-700">
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+            <span>Back</span>
+          </button>
+        </div>
+        <!-- Open In New Tab Button -->
+        <button (click)="openInNewTab($event)"
+          class="hidden md:flex items-center gap-1.5 text-[#B32D7D] text-sm font-semibold hover:text-pink-700">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M17.5 7.50001L17.5 2.50001M17.5 2.50001H12.5M17.5 2.50001L10 10M8.33333 2.5H6.5C5.09987 2.5 4.3998 2.5 3.86502 2.77248C3.39462 3.01217 3.01217 3.39462 2.77248 3.86502C2.5 4.3998 2.5 5.09987 2.5 6.5V13.5C2.5 14.9001 2.5 15.6002 2.77248 16.135C3.01217 16.6054 3.39462 16.9878 3.86502 17.2275C4.3998 17.5 5.09987 17.5 6.5 17.5H13.5C14.9001 17.5 15.6002 17.5 16.135 17.2275C16.6054 16.9878 16.9878 16.6054 17.2275 16.135C17.5 15.6002 17.5 14.9001 17.5 13.5V11.6667"
+              stroke="#B32D7D" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span>Open in New Tab</span>
+        </button>
+      </div>
+    </div>
+    <!-- Tab controls -->
+    <div class=" sticky top-[60px] z-10 w-full bg-[#fff]">
+      <div class="rounded-md mx-5 relative z-10">
+        <div class="flex justify-between items-start w-full relative z-10">
+          <div class="flex flex-center w-[350px]">
+            @for (tab of mainTabs; track tab.value) {
+            <button (click)="setTab(tab)"
+              class="flex flex-start justify-center w-full px-3 py-3 text-lg gap-2 font-medium rounded-t-lg relative"
+              [ngClass]="{
+            'text-[#C63C92] border-t border-l border-r border-[#E4E7EC] border-b-0 bg-white z-10 -mb-[1px]': isMainTabActive(tab.value),
+            'text-primary-700 botder bg-transparent z-0 mb-0': !isMainTabActive(tab.value),
+          }">
+              <span [class]="tab.iconClass || ''"
+                [ngClass]="isMainTabActive(tab.value) ? 'text-[#C63C92]' : 'text-[#344054]'"></span>
+
+              {{ tab.name }}
+            </button>
+            }
+          </div>
+          <!-- Download CV buttons -->
+          <div class="flex items-center gap-4 pb-3">
+            <span class="text-sm font-medium text-gray-600">Download CV:</span>
+            <div class="flex items-center gap-1.5">
+              <button (click)="downloadAsPDF()" class="p-1 bg-white rounded-full">
+                <img src="images\pdf-01-solid-standard 1.svg" alt="PDF" class="w-5 h-5" />
+              </button>
+              <button (click)="downloadAsDOC()" class="p-1 bg-white rounded-full">
+                <img src="images\doc-01-solid-standard 1.svg" alt="Word" class="w-5 h-5" />
+              </button>
+              <button class="p-1 bg-white rounded-full">
+                <span (click)="triggerPrint()"
+                  class="flex max-h-[60px]  w-5 h-5 items-center justify-center gap-[5px] text-[#595959] icon-printer text-[20px] cursor-pointer"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Resume content -->
+      <!-- <div class="w-full flex-1 px-5 pb-5 bg-white overflow-hidden relative flex flex-col items-start justify-start">
+      <div class="relative w-full h-[600px] overflow-y-scroll pr-2">
+        <div id="resume-content" class="absolute top-0 border border-gray-300 z-0 rounded-b-md rounded-tr-md p-4 bg-white w-full">
+            <div *ngIf="isMainTabActive('details-cv')" id="details-cv-container">
+              <app-details-cv></app-details-cv>
+            </div>
+            <div *ngIf="isMainTabActive('short-cv')" id="short-cv-container">
+                <app-short-cv></app-short-cv>
+            </div>
+        </div>
+      </div>
+    </div> -->
+
+
+      <div class="w-full flex-1 px-5 pb-5 bg-white overflow-hidden relative flex flex-col items-start justify-start">
+        <div class="relative w-full h-[960px] overflow-y-scroll pr-2 print:h-auto print:overflow-visible">
+          <div id="resume-content"
+            class="absolute top-0 border border-gray-300 z-0 rounded-b-md rounded-tr-md p-4 bg-white w-full print:p-0 print:border-0 print:rounded-none print:relative">
+            <div *ngIf="isMainTabActive('details-cv')" id="details-cv-container"
+              class="print:w-[210mm] print:min-h-[297mm] print:mx-auto print:shadow-none">
+              <app-details-cv></app-details-cv>
+            </div>
+            <div *ngIf="isMainTabActive('short-cv')" id="short-cv-container"
+              class="print:w-[210mm] print:min-h-[297mm] print:mx-auto print:shadow-none">
+              <app-short-cv></app-short-cv>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+ 

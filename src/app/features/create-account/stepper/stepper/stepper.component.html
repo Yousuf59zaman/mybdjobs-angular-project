@@ -1,0 +1,49 @@
+<div class="flex items-center justify-center w-full px-4 md:px-6 lg:px-8 mx-auto mb-8 md:mb-12" *transloco="let t">
+  @for (step of [1, 2, 3, 4, 5, 6]; track step; let i = $index) {
+    @if (isStepVisible(step)) {
+      <div class="flex flex-col items-center relative">
+        <div class="flex items-center">
+          <!-- Step Circle -->
+          <div class="w-[24px] h-[24px] md:w-[30px] md:h-[30px] border-[3px] md:border-[4px] rounded-full flex items-center justify-center" 
+            [ngClass]="{
+              'border-green-700 bg-green-700': currentStep >= step,
+              'border-gray-400 bg-gray-400': currentStep < step
+            }">
+            <div class="w-[10px] h-[10px] md:w-[14px] md:h-[14px] bg-white rounded-full"></div>
+          </div>
+
+          <!-- Connector Line -->
+          @if (i < 5) {
+            @if (isStepVisible(step + 1)) {
+              <div class="w-[40px] md:w-[60px] lg:w-[80px] h-1 md:h-1.5" 
+                [ngClass]="{
+                  'bg-green-700': currentStep > step,
+                  'bg-gray-400': currentStep <= step
+                }">
+              </div>
+            } @else if (step === 2 && type !== 'd') {
+              <!-- Special connector for age to experience when physical-obstacle is hidden -->
+              <div class="w-[40px] md:w-[60px] lg:w-[80px] h-1 md:h-1.5" 
+                [ngClass]="{
+                  'bg-green-700': currentStep > step,
+                  'bg-gray-400': currentStep <= step
+                }">
+              </div>
+            }
+          }
+        </div>
+
+        <!-- Step Label -->
+        <span class="absolute top-[32px] md:top-[40px] -left-4 md:-left-7 mt-2 font-medium text-center w-[60px] md:w-[80px]" 
+          [ngClass]="{
+            'text-green-700': currentStep >= step,
+            'text-gray-500': currentStep < step,
+            'text-[10px] md:text-xs': step !== 5 && step !== 6,
+            'text-[8px] md:text-[10px] lg:text-xs': step === 5 || step === 6
+          }">
+          {{ getStepLabel(step) }}
+        </span>
+      </div>
+    }
+  }
+</div>

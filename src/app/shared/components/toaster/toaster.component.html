@@ -1,0 +1,49 @@
+
+
+@if(tMessage() && tIsVisible()){
+    <div
+  class="box-shadow fixed bottom-4 right-4 bg-white text-black px-4 py-4 border border-[#E4E7EC] rounded-lg shadow text-sm font-semibold overflow-hidden
+   max-w-[90%] sm:w-[454px] transition-opacity duration-300 opacity-100"
+     [ngClass]="{ 'opacity-100': tIsVisible(), 'opacity-0': !tIsVisible() }"
+
+>
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-1.5">
+      <div
+        [ngClass]="borderColor() === 'bg-[#079455]' ? 'bg-[#ECFDF3]' : 'bg-[#FEF3F2]'"
+        class="p-1.5 rounded-full flex items-center justify-center"
+      >
+      @if(imageUrl()){
+        <img [src]="imageUrl()" class="w-4 h-4 rounded-full" alt="Notification Image" />
+      }
+      @if(iconClass()){
+        <span class="{{ iconClass() }} text-base"></span>
+      }
+        
+        
+      </div>
+      <span>{{ tMessage() }}</span>
+    </div>
+    <img
+      [src]="'images/x-close.svg'"
+      class="cursor-pointer"
+      (click)="closeToast()"
+      alt="Close"
+    />
+  </div>
+
+
+  <div
+    [ngClass]="borderColor() === 'bg-[#079455]' ? 'bg-[#ECFDF3]' : 'bg-[#FEF3F2]'"
+    class="absolute bottom-0 h-1 w-full rounded overflow-hidden"
+  ></div>
+
+ 
+  <div
+    class="absolute bottom-0 left-0 h-1 {{ borderColor() }} animate-toast-progress"
+  ></div>
+</div>
+}
+
+
+

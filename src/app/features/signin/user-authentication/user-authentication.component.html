@@ -1,0 +1,22 @@
+<div class="md:w-[488px] p-2" *transloco="let t read:'signin'">
+    <div>
+        <p class="flex items-center justify-center gap-2 text-[#333] text-2xl font-semibold">{{t('signin.signInTo')}} <span><img
+                    [src]="'images/mybdjobs1.svg'"></span> </p>
+        <p class="text-[#595959] text-base font-normal text-center">{{t('signin.accessAllOfBdjobsServices')}}</p>
+    </div>
+    <div class="p-4">
+        <div class="w-full bg-[#E4E2E3] border rounded-full p-1 flex justify-between mb-10">
+            @for (tab of tabs; track tab.name) {
+            <button class="flex-1 py-2 text-center rounded-full transition text-sm"
+                [ngClass]="activeTab().name === tab.name ? 'bg-[#FFFFFF] border border-[#D0D3D9] text-[#48505E] font-semibold':' text-[#667085] font-medium  '"
+                (click)="setTab(tab)">
+                {{ t(tab.name) }}
+
+            </button>
+            }
+        </div>
+        <div>
+            <ng-container *ngComponentOutlet="activeTab().component"></ng-container>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,200 @@
+<div class="md:w-[488px] p-2" *transloco="let t read: 'signin'">
+    <div class="flex flex-col items-center justify-between">
+        <img [src]="'images/lock.svg'" [alt]="'lock.svg'">
+        <p class="text-[#000000] text-2xl font-semibold text-center">{{t('resetPass.createNewPassword')}}</p>
+
+    </div>
+    <div class="bg-[#F3F3F3] rounded-2xl px-4 py-3 mt-6 mb-10">
+        <div class="flex items-center gap-3">
+            <img class="w-12 h-12 rounded-full" [src]="getPhoto(userObj()?.photoUrl ?? '')" alt="">
+            <div class="flex items-center justify-between w-full">
+                <div>
+                    <p class="text-base font-medium text-[#383E49]">{{userObj()?.fullName}}</p>
+                    <p class="text-sm text-[#5D6679]">{{userObj()?.emailAddress}}</p>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+    <div class="" >
+        <form [formGroup]="createPasswordForm" (submit)="onSubmit($event)">
+            <div class="flex flex-col gap-4 mb-10">
+                <div class="flex flex-col gap-1.5">
+                    <div class="pr-1 pl-0.5 flex justify-between items-center">
+                        <p class="text-[#48505E] text-sm font-medium">{{t('resetPass.enterNewPassword')}}</p>
+                        <div class="relative group w-fit">
+                            <span class="icon-info text-[#48505E] cursor-pointer"></span>
+                          
+                            <div
+                              class="w-40 absolute bottom-full mb-3 left-1/2 -translate-x-1/2 px-2 py-1 font-medium text-[12px]
+                               text-white bg-[#595959] rounded opacity-0 group-hover:opacity-100 
+                               transition-opacity duration-300 pointer-events-none z-10"
+                              role="tooltip"
+                            >
+                            Password must be 8 characters, including at least an uppercase, a lower case, a special character & a number. 
+                          
+                              
+                              <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8
+                               border-l-transparent border-r-transparent border-t-[#595959]"></div>
+                            </div>
+                          </div>
+                    </div>
+                    
+                     <div class="relative">
+                        <input
+                            [type]="type()"
+                            [ngClass]="{
+                                'border-gray-300 focus:border-[#00000066]': passwordControl().valid || passwordControl().pristine,
+                                'border-[#E42D27]  focus:border-[#E42D27]': passwordControl().invalid && (passwordControl().touched || passwordControl().dirty)
+                              }"
+                              maxlength="15"
+                            class="block w-full rounded-lg border border-[#D0D5DD]  py-2.5 px-4q h-[38px]
+                            text-primary-700 placeholder:text-gray-400  focus:border-2 focus:border-[#D95BB0] sm:leading-6
+                             text-sm text-gray-900 focus:ring-0 focus:outline-none"
+                            [formControl]="passwordControl()"  
+                             
+                            />
+                        <span (click)="type.set(type() === 'password' ? 'text' : 'password')"
+                        [ngClass]="type() ==='password'? 'icon-eye-slash':'icon-eye'"
+                            class="cursor-pointer text-[#5D6679] text-base absolute right-4 top-2.5">
+                        </span>
+                     </div>
+                            
+                           
+                              
+
+                            
+                            @if (passwordValidation(passwordControl().value)) {
+                                @if (passwordControl().value) {
+                                  <div class="flex items-center gap-1.5 mt-2">
+                                    @for (color of getPasswordStrengthBars(passwordControl().value); track $index) {
+                                      <div [ngClass]="color" class="w-[89px] h-1 rounded"></div>
+                                    }
+                                  </div>
+                                }
+                                @let validation = passwordValidation(passwordControl().value);
+
+                                  @if(currentLang() === 'en') {
+                                    <p
+                                    class="text-xs font-medium"
+                                    [ngClass]="{
+                                        'text-[#E42D27]': validation === 'weak',
+                                        'text-[#FF9F40]': validation === 'average',
+                                        'text-[#32A071]': validation === 'strong',
+                                    }"
+                                    >
+                                    {{ validation | titlecase}}
+                                    </p>
+                                  }@else {
+                                    <p
+                                    class="text-xs font-medium"
+                                    [ngClass]="{
+                                        'text-[#E42D27]': validation === 'দুর্বল',
+                                        'text-[#FF9F40]': validation === 'মধ্যম',
+                                        'text-[#32A071]': validation === 'শক্তিশালী',
+                                    }"
+                                    >
+                                    {{ validation | titlecase}}
+                                    </p>
+                                  }
+                                    
+                            }
+                              
+                            
+                            
+
+                    
+                    
+                    
+                    
+                </div>
+    
+                <div class="flex flex-col gap-0.5">
+                    <div class="pr-1 pl-0.5 flex justify-between items-center">
+                        <p class="text-[#48505E] text-sm font-medium">{{t('resetPass.reEnterPassword')}}</p>
+                        
+                    </div>
+                    
+                    <div class="relative">
+                        <app-input
+                        [type]="typeNewPass()"
+                        [isDecimalAllowed]="true"
+                        [isNumericOnly]="false"
+                        [isRequired]="true"
+                        [maxValue]="9999999999999999999"
+                        [maxLength]="15"
+                        [control]="NewPasswordControl()"
+                        >
+                        </app-input>
+                        <span (click)="typeNewPass.set(typeNewPass() === 'password' ? 'text' : 'password')"
+                        [ngClass]="typeNewPass() ==='password'? 'icon-eye-slash':'icon-eye'"
+                            class="cursor-pointer text-[#5D6679] text-base absolute right-4 top-[18px]">
+                        </span>
+                    </div>
+                    @if (submitted()) {
+                        @if(isPasswordEmpty()) {
+                          <p class="flex gap-1 items-center -mt-1 text-[#AC2719] text-[11px] font-medium px-1">
+                            <img src="images/info-red.svg" alt="info-red" class="self-start mt-1">
+                            <span class="mt-0.5">{{t('resetPass.emptyPassword')}}</span>
+                          </p>
+                        }
+                        @else if(hasInvalidChars()) {
+                          <p class="flex gap-1 items-center -mt-1 text-[#AC2719] text-[11px] font-medium px-1">
+                            <img src="images/info-red.svg" alt="info-red" class="self-start mt-1">
+                            <!-- <span class="mt-0.5">{{t('resetPass.noSpace')}}</span> -->
+                             <span class="mt-0.5">{{t('resetPass.noSpecialCharacter')}}</span>
+                          </p>
+                        }
+                         @else if(passwordControl().value.length < 8 || NewPasswordControl().value.length < 8){
+                            <p class="flex gap-1 items-center -mt-1 text-[#AC2719] text-[11px] font-medium px-1">
+                                <img src="images/info-red.svg" alt="info-red" class="self-start mt-1">
+                                <span class="mt-0.5">{{t('resetPass.minLength')}}</span>
+                              </p>
+                        } 
+                        @else if(passwordControl().value.length > 15 || NewPasswordControl().value.length > 15) {
+                          <p class="flex gap-1 items-center -mt-1 text-[#AC2719] text-[11px] font-medium px-1">
+                            <img src="images/info-red.svg" alt="info-red" class="self-start mt-1">
+                            <span class="mt-0.5">{{t('resetPass.maxLength')}}</span>
+                          </p>
+                        }
+                        
+                          @else if((passwordControl().touched && NewPasswordControl().touched) && !isPasswordMatch() && !isOldPasswordMatch()) {
+                            <p class="flex gap-1 items-center -mt-1 text-[#AC2719] text-[11px] font-medium px-1">
+                              <img src="images/info-red.svg" alt="info-red" class="self-start mt-1">
+                              <span class="mt-0.5">{{t('resetPass.passwordMismatch')}}</span>
+                            </p>
+                          }
+                        @else if (isOldPasswordMatch()) {
+                            <p class="flex gap-1 items-center -mt-1 text-[#AC2719] text-[11px] font-medium px-1">
+                                <img src="images/info-red.svg" alt="info-red" class="self-start mt-1">
+                                <span class="mt-0.5">{{ apiError() }}</span>
+                              </p>
+                          }
+                      }
+                      
+                      
+                    
+
+                </div>
+            </div>
+            
+            
+            <div class="flex gap-4 mt-5">
+                <button  type="submit" class="bg-[#B32D7D] text-white w-full h-12 font-semibold rounded-full text-sm">{{t('continue')}}</button>
+                <button (click)="sharedService.updateType('username')"
+                    type="button"
+                    class="bg-[#FFF] border border-[#D0D5DD] text-[#344054] w-full h-12 rounded-full font-semibold text-sm">
+                    {{t('notNow')}}
+                </button>
+            </div> 
+        </form>
+        <div class="flex flex-col gap-2 text-center my-10">
+            <a class="cursor-pointer text-[#B32D7D] text-sm sm:text-base font-medium" (click)="sharedService.updateType('username')">{{t('signinToDifferentAccount')}}</a>
+            <div class="flex items-center justify-center gap-2">
+                <p class="text-sm sm:text-base text-[#383E49] whitespace-nowrap">{{t('donotHaveAnAccount')}}</p>
+                <a (click)="sharedService.goToSignUpFlow()"  class="text-[#B32D7D] text-sm sm:text-base font-medium cursor-pointer">{{t('SignUp')}}</a>
+            </div>
+        </div>
+    </div>
+</div>
+

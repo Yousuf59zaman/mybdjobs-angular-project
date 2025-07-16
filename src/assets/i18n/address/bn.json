@@ -1,0 +1,18 @@
+{
+  "YourPresentAddress": "আপনার বর্তমান ঠিকানা",
+  "district": "জেলা",
+  "selectDistrict": "জেলা নির্বাচন করুন",
+  "districtRequired": "জেলা প্রয়োজন",
+  "thana": "থানা/উপজেলা",
+  "selectThana": "থানা/উপজেলা নির্বাচন করুন",
+  "thanaRequired": "থানা প্রয়োজন",
+  "postOffice": "পোস্ট অফিস",
+  "selectPostOffice": "পোস্ট অফিস নির্বাচন করুন",
+  "houseRoadVillage": "বাড়ি নম্বর/রাস্তা/গ্রাম",
+  "houseRequired": "বাড়ি নম্বর/রাস্তা/গ্রাম টাইপ করুন",
+  "alternateMobile": "বিকল্প মোবাইল নম্বর",
+  "alternateMobileRequired": "বিকল্প মোবাইল নম্বর প্রয়োজন",
+  "next": "পরবর্তী",
+  "invalidPhoneFormat": "সঠিক মোবাইল নম্বর দিন",
+  "alternateMobileTooltip": "বিকল্প মোবাইল নম্বর টাইপ করুন"
+}

@@ -1,0 +1,16 @@
+@if(shouldPlay()){
+  <div [ngStyle]="getContainerStyles()">
+    @if (!isValidSource()) {
+      <vg-player (onPlayerReady)="onPlayerReady($event)" [class]="getPlayerSizeClass()">
+        <video [vgMedia]="$any(media)" #media id="singleVideo" controls preload="auto">
+          <source [src]="videoSource()" [type]="videoType">
+        </video>
+      </vg-player>
+    } @else {
+        <div class="text-center my-4 border-4">
+          <span class="text-black text-lg my-20 px-2 rounded-md">The video CV has been removed or made private by the candidate.</span>
+        </div>
+    }
+    
+  </div>
+}

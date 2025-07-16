@@ -1,0 +1,36 @@
+<div class="md:w-[488px] sm:p-2 p-1" *transloco="let t read: 'signin'">
+    <div class="px-4 sm:px-8  flex flex-col gap-10 justify-center">
+        <div class="flex flex-col items-center justify-center gap-1.5">
+            <img [src]="'images/access_account.svg'" alt="access-account.svg" class="">
+            <p class="text-black text-xl sm:text-2xl font-semibold text-center mb-0.5">{{t('accessAccount.accessYourAccount')}}</p>
+            <p class="text-[#595959] text-sm sm:text-base font-normal  text-center  ">
+                {{t('accessAccount.accessAccountText')}}
+            </p>
+        </div>
+        @if(currentPanel() === 'google'){
+            <button
+                class="w-full h-[50px] border border-[#858D9D] rounded-full flex items-center justify-center gap-3 py-2 text-sm font-semibold text-[#5D6679]">
+                <img src="images/google.svg" alt="Google" class="w-5 h-5" />
+                <!-- Sign in With Google -->
+                {{t('signin.signinWithGoogle')}}
+            </button>
+        }
+        @if(currentPanel() === 'linkedin'){
+            <button
+                class="w-full h-[50px] border border-[#858D9D] rounded-full flex items-center justify-center gap-3 py-2 text-sm font-semibold text-[#5D6679]">
+                <img src="images/linkedin.svg" alt="Google" class="w-5 h-5" />
+                <!-- Sign in With Linkedin -->
+                {{t('signin.signinWithLinkedin')}}
+            </button>
+        }
+         
+
+        <div class="text-center sm:mb-0 mb-40">
+            <a class="text-[#B32D7D] text-base font-medium" role="button" (click)="shareService.updateType('username')" >{{t('signinToDifferentAccount')}}</a>
+            <div class="flex items-center justify-center gap-2">
+                <p class="text-sm text-[#667085] whitespace-nowrap">{{t('donotHaveAnAccount')}}</p>
+                <a role="button" (click)="shareService.goToSignUpFlow()" class="text-[#B32D7D] text-base font-medium">{{t('SignUp')}}</a>
+            </div>
+        </div>
+    </div>
+</div>
