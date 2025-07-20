@@ -1,15 +1,26 @@
-export interface Conversation {
-    jobName: string;
-    companyName: string;
-    lastMessageDate: string;
-    avatarUrl: string;
-  }
-  
- export interface Message {
-    fromApplicant: boolean;
-    text: string;
-    time: string;
-    date?: string;
-    seen?: boolean;
-    image?: string;
-  }
+export interface Message {
+  jobId: number;
+  companyId: number;
+  companyName: string;
+  companyLogo: string;
+  jobTitle: string;
+  lastChattedOn: string;
+  isRead: boolean;
+  unreadMessage: number;
+  formData: any;
+  conversationId: string;
+  lastMessage: string;
+}
+
+export interface EventData {
+  key: string;
+  value: Message[];
+}
+
+export interface ApiResponse {
+  event: {
+    eventType: number;
+    eventData: EventData[];
+    eventId: number;
+  };
+}

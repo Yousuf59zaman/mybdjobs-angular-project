@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angu
 import { Message } from '../../../../shared/models/models';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { EmployerMessageService } from '../services/employer-message.service';
 
 
 @Component({
@@ -55,141 +56,8 @@ export class ViewEmployerMessageComponent {
   hideProgressRing: boolean = false;
   showUpgradeToast: boolean = false;
   toastShown: boolean = false;
-  sentMessageCounts: {[key: string]: number} = {};
-  messages: Message[] = [
-   {
-    id: '1',
-    avatar: 'images/jatri-logo.svg',
-    name: 'Jatri',
-    message: 'Sent you a message in "UI UX Designer" role.',
-    timeIcon: 'images/time-icon.svg',
-    timeText: '3 hour',
-    unreadCount: 2,
-    isRead: false,
-    mayMessage: true,
-    receivedMessages: [
-      {
-        text: 'Hello, we are interested in your profile for the UI UX Designer position.',
-        time: '10:30 am',
-        date: 'Today'
-      }
-    ]
-  },
-    {
-      id: '2',
-       avatar: 'images/jatri-logo.svg',
-      name: 'ACME',
-      message: 'Sent you a message in "Software Engineer" role.',
-       timeIcon: 'images/time-icon.svg',
-      timeText: '2 day',
-      unreadCount: 0,
-      isRead: true,
-      mayMessage: false,
-       receivedMessages: [
-      {
-        text: 'Hello, we are interested in your profile for the UI UX Designer position.',
-        time: '10:30 am',
-        date: 'Today'
-      }
-    ]
-    },
-    {
-      id: '3',
-       avatar: 'images/jatri-logo.svg',
-      name: 'Lightbox',
-      message: 'Sent you a message in "Software Engineer" role.',
-      timeIcon: 'images/time-icon.svg',
-      timeText: '1 hour',
-      hasBorder: true,
-      unreadCount: 1,
-      isRead: false,
-      mayMessage: true,
-       receivedMessages: [
-      {
-        text: 'Hello, we are interested in your profile for the UI UX Designer position.',
-        time: '10:30 am',
-        date: 'Today'
-      }
-    ]
-    },
-    {
-      id: '4',
-       avatar: 'images/jatri-logo.svg',
-      name: 'Lightbox',
-      message: 'Sent you a message in "Software Engineer" role.',
-       timeIcon: 'images/time-icon.svg',
-      timeText: '1 hour',
-      hasBorder: true,
-      unreadCount: 0,
-      isRead: true,
-      mayMessage: true,
-       receivedMessages: [
-      {
-        text: 'Hello, we are interested in your profile for the UI UX Designer position.',
-        time: '10:30 am',
-        date: 'Today'
-      }
-    ]
-    },
-    {
-      id: '5',
-       avatar: 'images/jatri-logo.svg',
-      name: 'Luminous',
-      message: 'Sent you a message in "Front End Developer" role.',
-      timeIcon: 'images/time-icon.svg',
-      timeText: '5 week',
-      hasBorder: true,
-      unreadCount: 3,
-      isRead: false,
-      mayMessage: false,
-       receivedMessages: [
-      {
-        text: 'Hello, we are interested in your profile for the UI UX Designer position.',
-        time: '10:30 am',
-        date: 'Today'
-      }
-    ]
-    },
-     {
-      id: '6',
-       avatar: 'images/jatri-logo.svg',
-      name: 'Luminous',
-      message: 'Sent you a message in "Front End Developer" role.',
-       timeIcon: 'images/time-icon.svg',
-      timeText: '5 week',
-      hasBorder: true,
-      unreadCount: 3,
-      isRead: false,
-      mayMessage: false,
-       receivedMessages: [
-      {
-        text: 'Hello, we are interested in your profile for the UI UX Designer position.',
-        time: '10:30 am',
-        date: 'Today'
-      }
-    ]
-    },
-     {
-      id: '7',
-        avatar: 'images/jatri-logo.svg',
-      name: 'Luminous',
-      message: 'Sent you a message in "Front End Developer" role.',
-      timeIcon: 'images/time-icon.svg',
-      timeText: '5 week',
-      hasBorder: true,
-      unreadCount: 3,
-      isRead: false,
-      mayMessage: false,
-       receivedMessages: [
-      {
-        text: 'Hello, we are interested in your profile for the UI UX Designer position.',
-        time: '10:30 am',
-        date: 'Today'
-      }
-    ]
-    }
-  ];
-
+  sentMessageCounts: { [key: string]: number } = {};
+  messages: Message[] = [];
 
 allmessages: Message[] = [];
 hasMessagesFromEmployer: boolean = false;
@@ -197,28 +65,44 @@ hasReceiverMessage: boolean = true;
 toastPermanentlyDismissed: boolean = false;
 
 
-constructor(private route: ActivatedRoute, private cdRef: ChangeDetectorRef) {}
-
-
-ngOnInit() {
-  this.route.queryParams.subscribe(params => {
-    this.isProUser = params['bdjobsuser'] === 'pro';
-    this._currentAvaileableMessage = this.isProUser ?  5 : 0;
-
-    this.hasReceiverMessage = params['receivermessage'] !== '0';
-
-    this.messages.forEach(msg => {
-      this.sentMessageCounts[msg.id] = 0;
+constructor(
+    private route: ActivatedRoute,
+    private cdRef: ChangeDetectorRef,
+    private messageService: EmployerMessageService
+  ) { }
+ ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.isProUser = params['bdjobsuser'] === 'pro';
+      this._currentAvaileableMessage = this.isProUser ? 5 : 0;
+      this.hasReceiverMessage = params['receivermessage'] !== '0';
+      if (this.hasReceiverMessage) {
+        this.showMessagesSection = true;
+      } else if (this.isProUser) {
+        this.showMessagesSection = true;
+      }
     });
-    if (this.hasReceiverMessage) {
-      this.messages = this.messages.filter(m => m.receivedMessages && m.receivedMessages.length > 0);
-      this.showMessagesSection = true;
-    } else if (this.isProUser) {
-      this.showMessagesSection = true;
-    }
-  });
-}
+    //this.loadMessages();  
+  }
 
+
+
+  // loadMessages() {
+  //   const userGuid = localStorage.getItem('userGuid');
+  //   if (userGuid) {
+  //     this.messageService.getMessageList(userGuid).subscribe(
+  //       (messages) => {
+  //         this.messages = messages;
+  //         this.allmessages = messages;
+  //         this.messages.forEach(msg => {
+  //           this.sentMessageCounts[msg.conversationId] = 0;
+  //         });
+  //       },
+  //       (error) => {
+  //         console.error('Error fetching messages:', error);
+  //       }
+  //     );
+  //   }
+  // }
 
 openChat(message: Message) {
   this.messages.forEach(m => m.isSelected = false);
