@@ -24,3 +24,28 @@ export interface ApiResponse {
     eventId: number;
   };
 }
+
+export interface ChatMessage {
+  textId: number;
+  text: string;
+  textSenderType: string;
+  cnvId: number;
+  textReadDate: string;
+  textReadTime: string;
+  textSendDate: string;
+  textSendTime: string;
+  employeeEmail: string;
+  personalEmail: string | null;
+  textSendBy: string | null;
+}
+
+export interface ChatEventData {
+  key: string;
+  value: any;
+}
+
+export interface GetMessagesResponse {
+  eventType: number;
+  eventData: ChatEventData[];
+  eventId: number;
+}

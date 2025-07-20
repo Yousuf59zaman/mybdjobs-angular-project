@@ -19,6 +19,7 @@ export interface SelectItem {
 
 export interface Message {
   id: string;
+  jobId?: number;
   avatar: string;
   name: string;
   message: string;
@@ -29,7 +30,7 @@ export interface Message {
   mayMessage: boolean;
   hasBorder?: boolean;
   isSelected?: boolean;
- receivedMessages?: Array<{
+  receivedMessages?: Array<{
     text: string;
     time: string;
     date?: string;

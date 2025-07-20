@@ -217,6 +217,7 @@ export class ViewEmployerMessageComponent {
       next: (data) => {
         this.messages = data.map(m => ({
           id: m.conversationId || '',
+          jobId: m.jobId,
           avatar: m.companyLogo,
           name: m.companyName,
           message: m.lastMessage,
@@ -270,6 +271,28 @@ export class ViewEmployerMessageComponent {
     this.showChatView = true;
     if (this.isProUser) {
       this.markAsRead(message);
+    }
+     if (this.userGuid && message.id && message.jobId) {
+      this.employerMessageService.getMessages({
+        DeviceType: 'web',
+        UserGuid: this.userGuid,
+        JobId: message.jobId.toString(),
+        SenderType: 'A',
+        ConversationId: Number(message.id)
+      }).subscribe({
+        next: res => {
+          const chatData = res.eventData.find(ed => ed.key.trim() === 'Chat Message');
+          if (chatData && Array.isArray(chatData.value)) {
+            message.receivedMessages = chatData.value.map((m: any) => ({
+              text: m.text,
+              time: m.textSendTime,
+              date: m.textSendDate
+            }));
+          }
+          this.cdRef.detectChanges();
+        },
+        error: err => console.error('Error loading messages', err)
+      });
     }
   }
 
