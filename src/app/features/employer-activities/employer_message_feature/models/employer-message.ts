@@ -1,4 +1,4 @@
-export interface Message {
+export interface Messages {
   jobId: number;
   companyId: number;
   companyName: string;
@@ -14,7 +14,7 @@ export interface Message {
 
 export interface EventData {
   key: string;
-  value: Message[];
+  value: Messages[];
 }
 
 export interface ApiResponse {
