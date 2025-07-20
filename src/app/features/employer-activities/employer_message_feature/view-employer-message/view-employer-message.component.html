@@ -226,7 +226,7 @@
           {{ message.name }}
         </h3>
         <div class="flex items-center gap-1 text-[10px] md:text-xs text-slate-500">
-          <span>{{ message.timeText }}</span>
+          <span>{{ getRelativeTime(message.timeText) }}</span>
           <img
             [src]="message.timeIcon"
             class="w-2 h-2 md:w-3 md:h-3"

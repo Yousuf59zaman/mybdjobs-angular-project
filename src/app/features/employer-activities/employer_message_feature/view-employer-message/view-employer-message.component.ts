@@ -207,8 +207,8 @@ export class ViewEmployerMessageComponent {
     private cookieService: CookieService
   ) { }
   getMessageList(): void {
-    this.userGuid="ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung=";
-      if (!this.userGuid) {
+    this.userGuid = "ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung=";
+    if (!this.userGuid) {
       console.warn('User GUID not found');
       return;
     }
@@ -245,7 +245,7 @@ export class ViewEmployerMessageComponent {
     this.route.queryParams.subscribe(params => {
       this.isProUser = params['bdjobsuser'] === 'pro';
       this._currentAvaileableMessage = this.isProUser ? 5 : 0;
-      this.userGuid="ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung=";
+      this.userGuid = "ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung=";
       this.hasReceiverMessage = params['receivermessage'] !== '0';
 
       this.messages.forEach(msg => {
@@ -378,6 +378,29 @@ export class ViewEmployerMessageComponent {
 
   formatMessageNumber(num: number): string {
     return num.toString().padStart(2, '0');
+  }
+  public getRelativeTime(dateStr: string): string {
+    const now = new Date();
+    const date = new Date(dateStr);
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+
+    if (diffMins < 60) {
+      return `${diffMins} min`;
+    }
+
+    const diffHours = Math.floor(diffMins / 60);
+    if (diffHours < 24) {
+      return `${diffHours} hour`;
+    }
+
+    const diffDays = Math.floor(diffHours / 24);
+    if (diffDays < 7) {
+      return `${diffDays} day`;
+    }
+
+    const diffWeeks = Math.floor(diffDays / 7);
+    return `${diffWeeks} week`;
   }
 
   onMessageChange(event: Event): void {
