@@ -4,7 +4,8 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angu
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { EmployerMessageService } from '../services/employer-message.service';
-import { Message, Messages } from '../models/employer-message';
+import { EmployerMessage } from '../models/employer-message';
+// import { Message } from '../../../../shared/models/models';
 
 
 @Component({
@@ -58,9 +59,8 @@ export class ViewEmployerMessageComponent {
   showUpgradeToast: boolean = false;
   toastShown: boolean = false;
   sentMessageCounts: { [key: string]: number } = {};
-  messages: Message[] = [];
 
-  allmessages: Messages[] = [];
+  messages: EmployerMessage[] = [];
   hasMessagesFromEmployer: boolean = false;
   hasReceiverMessage: boolean = true;
   toastPermanentlyDismissed: boolean = false;
@@ -93,7 +93,6 @@ export class ViewEmployerMessageComponent {
       this.messageService.getMessageList(userGuid).subscribe(
         (messages) => {
           this.messages = messages;
-          this.allmessages = messages;
           this.messages.forEach(msg => {
             this.sentMessageCounts[msg.conversationId] = 0;
           });

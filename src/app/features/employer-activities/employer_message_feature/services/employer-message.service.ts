@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { ApiResponse, Message } from '../models/employer-message';
+import { ApiResponse, EmployerMessage } from '../models/employer-message';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class EmployerMessageService {
 
   constructor(private http: HttpClient) { }
 
-  getMessageList(userGuid: string): Observable<Message[]> {
+  getMessageList(userGuid: string): Observable<EmployerMessage[]> {
     const params = new HttpParams().set('UserGuid', userGuid);
     return this.http.get<ApiResponse>(this.apiUrl, { params }).pipe(
       map(response => {
