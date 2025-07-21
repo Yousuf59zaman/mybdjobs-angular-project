@@ -18,23 +18,30 @@ export interface SelectItem {
 }
 
 export interface Message {
-  id: string;
+  conversationId: string;
   jobId?: number;
-  avatar: string;
-  name: string;
-  message: string;
+  companyLogo: string;
+  companyName: string;
+  lastMessage: string;
   timeIcon: string;
-  timeText: string;
-  unreadCount: number;
+  lastChattedOn: string;
+  unreadMessage: number;
   isRead: boolean;
   mayMessage: boolean;
   hasBorder?: boolean;
   isSelected?: boolean;
   receivedMessages?: Array<{
+    textId: number;
     text: string;
-    time: string;
-    date?: string;
-    senderType?: string;
+    textSenderType: string;
+    cnvId: number;
+    textReadDate: string;
+    textReadTime: string;
+    textSendDate: string;
+    textSendTime: string;
+    employeeEmail: string;
+    personalEmail: null | string;
+    textSendBy: null | string;
   }>;
 }
 

@@ -205,28 +205,28 @@
         </div>
 
         <!-- Message List -->
-       <div class="relative mt-1 w-full h-[calc(70vh-50px)] overflow-y-auto">
+        <div class="relative mt-1 w-full h-[calc(70vh-50px)] overflow-y-auto">
   <div *ngFor="let message of filteredMessages"
        class="flex relative z-0 gap-2 items-start w-full p-1 md:p-2 cursor-pointer transition-colors duration-200"
-       [class.bg-pink-50]="message.id === selectedMessage?.id"
-       [class.hover:bg-pink-100]="message.id !== selectedMessage?.id"
+       [class.bg-pink-50]="message.conversationId === selectedMessage?.conversationId"
+       [class.hover:bg-pink-100]="message.conversationId !== selectedMessage?.conversationId"
        (click)="openChat(message)">
 
-    <div *ngIf="message.id === selectedMessage?.id"
+    <div *ngIf="message.conversationId === selectedMessage?.conversationId"
          class="absolute left-0 top-0 bottom-0 w-1 bg-pink-600 rounded-r"></div>
 
     <img
-      [src]="message.avatar"
+      [src]="message.companyLogo"
       class="object-contain shrink-0 w-7 h-7 md:w-9 md:h-9 rounded-full"
-      [alt]="message.name + ' avatar'"
+      [alt]="message.companyName + ' avatar'"
     />
     <div class="flex flex-col flex-1 min-w-0 overflow-hidden">
       <div class="flex justify-between items-center w-full">
         <h3 class="text-xs md:text-sm font-medium text-slate-600 truncate">
-          {{ message.name }}
+          {{ message.companyName }}
         </h3>
         <div class="flex items-center gap-1 text-[10px] md:text-xs text-slate-500">
-          <span>{{ getRelativeTime(message.timeText) }}</span>
+          <span>{{ getRelativeTime(message.lastChattedOn) }}</span>
           <img
             [src]="message.timeIcon"
             class="w-2 h-2 md:w-3 md:h-3"
@@ -237,11 +237,12 @@
 
       <div class="flex justify-between items-center w-full">
         <p class="text-[10px] md:text-xs text-slate-700 truncate min-w-0"
-           [class.font-semibold]="!message.isRead"
-           [innerHTML]="message.message"></p>
-        <div *ngIf="message.unreadCount"
+           [class.font-semibold]="!message.isRead">
+           {{ message.lastMessage }}
+        </p>
+        <div *ngIf="message.unreadMessage"
              class="flex-shrink-0 flex items-center justify-center w-4 h-4 md:w-5 md:h-5 text-[8px] md:text-[10px] font-semibold text-pink-50 bg-pink-600 rounded-full">
-          {{ message.unreadCount.toString().padStart(2, '0') }}
+          {{ message.unreadMessage.toString().padStart(2, '0') }}
         </div>
       </div>
     </div>
@@ -335,12 +336,12 @@
           </button>
           <div class="flex-shrink-0">
             <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
-              {{ selectedMessage?.name?.charAt(0) || 'HR' }}
+              {{ selectedMessage?.companyName?.charAt(0) || 'HR' }}
             </div>
           </div>
           <div class="flex flex-col flex-1 gap-0 items-start">
-            <h1 class="text-xs font-semibold leading-4 text-gray-900">{{ selectedMessage?.name || 'HR' }}</h1>
-            <p class="text-[10px] leading-3 text-gray-600 truncate w-full">{{ selectedMessage?.message || 'Message' }}</p>
+            <h1 class="text-xs font-semibold leading-4 text-gray-900">{{ selectedMessage?.companyName || 'HR' }}</h1>
+            <p class="text-[10px] leading-3 text-gray-600 truncate w-full">{{ selectedMessage?.lastMessage || 'Message' }}</p>
           </div>
         </header>
 
@@ -402,7 +403,7 @@
           </div>
 
           <!-- Sent Messages -->
-          <div *ngFor="let msg of sentMessages[selectedMessage?.id]" class="flex gap-1 justify-end items-start self-stretch">
+          <div *ngFor="let msg of sentMessages[selectedMessage?.conversationId]" class="flex gap-1 justify-end items-start self-stretch">
             <div class="flex flex-col gap-0 items-end max-w-[70%]">
               <div class="px-2 py-1 bg-indigo-50 rounded-lg border border-indigo-100 shadow-xs">
                 <div class="text-[10px] leading-3 text-gray-800">{{ msg.text }}</div>
@@ -423,7 +424,7 @@
           </div>
 
           <!-- System Message if reply limit reached -->
-          <div *ngIf="!canReply(selectedMessage?.id)" class="w-full px-1 py-0 translate-y-[80px]">
+          <div *ngIf="!canReply(selectedMessage?.conversationId)" class="w-full px-1 py-0 translate-y-[80px]">
             <section
               class="flex relative flex-col gap-0.5 items-start self-stretch p-1 bg-red-50 rounded-md border border-red-200 border-solid shadow-sm"
               role="alert"
@@ -491,7 +492,7 @@
         </div>
 
         <!-- Message Input -->
-        <div *ngIf="(isProUser || hasReceiverMessage) && selectedMessage?.receivedMessages?.length > 0 && canReply(selectedMessage?.id)"
+        <div *ngIf="(isProUser || hasReceiverMessage) && selectedMessage?.receivedMessages?.length > 0 && canReply(selectedMessage?.conversationId)"
              class="flex gap-1 items-center self-stretch px-1.5 py-1 bg-[#F9FAFB]">
           <div class="flex flex-1 gap-0.5 items-center py-0.5 pr-1 pl-1.5 bg-white rounded-full border border-gray-200 border-solid shadow-sm">
             <input
@@ -509,7 +510,7 @@
                 [style.mask]="'radial-gradient(transparent 55%, black 56%)'"
               ></div>
               <div class="relative z-10 text-[8px] font-semibold text-gray-900">
-                {{ formatNumber(max - sentMessageCounts[selectedMessage?.id]) }}
+                {{ formatNumber(max - sentMessageCounts[selectedMessage?.conversationId]) }}
               </div>
             </div>
           </div>
@@ -520,7 +521,7 @@
             <svg width="12" height="12" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M8.75182 10.0003H4.16849M4.09794 10.2432L2.15217 16.0555C1.99931 16.5121 1.92288 16.7404 1.97773 16.881C2.02536 17.0031 2.12767 17.0957 2.2539 17.1309C2.39927 17.1715 2.61882 17.0727 3.05793 16.8751L16.9842 10.6083C17.4128 10.4154 17.6271 10.319 17.6933 10.185C17.7508 10.0686 17.7508 9.93203 17.6933 9.81564C17.6271 9.68168 17.4128 9.58524 16.9842 9.39237L3.05308 3.12342C2.61529 2.92641 2.3964 2.82791 2.25118 2.86832C2.12506 2.90341 2.02277 2.99573 1.97497 3.1176C1.91993 3.25793 1.99555 3.48574 2.14678 3.94137L4.09848 9.82159C4.12446 9.89984 4.13744 9.93897 4.14257 9.97899C4.14712 10.0145 4.14707 10.0504 4.14243 10.0859C4.1372 10.1259 4.12412 10.165 4.09794 10.2432Z"
                     stroke="#FCF3FA" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
+    </svg>
           </button>
         </div>
       </div>

@@ -59,139 +59,7 @@ export class ViewEmployerMessageComponent {
   toastShown: boolean = false;
   userGuid: string | null = null;
   sentMessageCounts: { [key: string]: number } = {};
-  messages: Message[] = [
-    {
-      id: '1',
-      avatar: 'images/jatri-logo.svg',
-      name: 'Jatri',
-      message: 'Sent you a message in "UI UX Designer" role.',
-      timeIcon: 'images/time-icon.svg',
-      timeText: '3 hour',
-      unreadCount: 2,
-      isRead: false,
-      mayMessage: true,
-      receivedMessages: [
-        {
-          text: 'Hello, we are interested in your profile for the UI UX Designer position.',
-          time: '10:30 am',
-          date: 'Today'
-        }
-      ]
-    },
-    {
-      id: '2',
-      avatar: 'images/jatri-logo.svg',
-      name: 'ACME',
-      message: 'Sent you a message in "Software Engineer" role.',
-      timeIcon: 'images/time-icon.svg',
-      timeText: '2 day',
-      unreadCount: 0,
-      isRead: true,
-      mayMessage: false,
-      receivedMessages: [
-        {
-          text: 'Hello, we are interested in your profile for the UI UX Designer position.',
-          time: '10:30 am',
-          date: 'Today'
-        }
-      ]
-    },
-    {
-      id: '3',
-      avatar: 'images/jatri-logo.svg',
-      name: 'Lightbox',
-      message: 'Sent you a message in "Software Engineer" role.',
-      timeIcon: 'images/time-icon.svg',
-      timeText: '1 hour',
-      hasBorder: true,
-      unreadCount: 1,
-      isRead: false,
-      mayMessage: true,
-      receivedMessages: [
-        {
-          text: 'Hello, we are interested in your profile for the UI UX Designer position.',
-          time: '10:30 am',
-          date: 'Today'
-        }
-      ]
-    },
-    {
-      id: '4',
-      avatar: 'images/jatri-logo.svg',
-      name: 'Lightbox',
-      message: 'Sent you a message in "Software Engineer" role.',
-      timeIcon: 'images/time-icon.svg',
-      timeText: '1 hour',
-      hasBorder: true,
-      unreadCount: 0,
-      isRead: true,
-      mayMessage: true,
-      receivedMessages: [
-        {
-          text: 'Hello, we are interested in your profile for the UI UX Designer position.',
-          time: '10:30 am',
-          date: 'Today'
-        }
-      ]
-    },
-    {
-      id: '5',
-      avatar: 'images/jatri-logo.svg',
-      name: 'Luminous',
-      message: 'Sent you a message in "Front End Developer" role.',
-      timeIcon: 'images/time-icon.svg',
-      timeText: '5 week',
-      hasBorder: true,
-      unreadCount: 3,
-      isRead: false,
-      mayMessage: false,
-      receivedMessages: [
-        {
-          text: 'Hello, we are interested in your profile for the UI UX Designer position.',
-          time: '10:30 am',
-          date: 'Today'
-        }
-      ]
-    },
-    {
-      id: '6',
-      avatar: 'images/jatri-logo.svg',
-      name: 'Luminous',
-      message: 'Sent you a message in "Front End Developer" role.',
-      timeIcon: 'images/time-icon.svg',
-      timeText: '5 week',
-      hasBorder: true,
-      unreadCount: 3,
-      isRead: false,
-      mayMessage: false,
-      receivedMessages: [
-        {
-          text: 'Hello, we are interested in your profile for the UI UX Designer position.',
-          time: '10:30 am',
-          date: 'Today'
-        }
-      ]
-    },
-    {
-      id: '7',
-      avatar: 'images/jatri-logo.svg',
-      name: 'Luminous',
-      message: 'Sent you a message in "Front End Developer" role.',
-      timeIcon: 'images/time-icon.svg',
-      timeText: '5 week',
-      hasBorder: true,
-      unreadCount: 3,
-      isRead: false,
-      mayMessage: false,
-      receivedMessages: [
-        {
-          text: 'Hello, we are interested in your profile for the UI UX Designer position.',
-          time: '10:30 am',
-          date: 'Today'
-        }
-      ]
-    }
-  ];
+  messages: Message[] = [];
 
 
   allmessages: Message[] = [];
@@ -207,7 +75,7 @@ export class ViewEmployerMessageComponent {
     private cookieService: CookieService
   ) { }
   getMessageList(): void {
-    this.userGuid = "ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung=";
+    this.userGuid = "YlL9PTBlYTGyY7ZuPQ00ZxOcMRhcBFGyYlJlZiOhYiLzYlL1BFPtBFUwBiJjIGU=";
     if (!this.userGuid) {
       console.warn('User GUID not found');
       return;
@@ -216,22 +84,22 @@ export class ViewEmployerMessageComponent {
     this.employerMessageService.getMessageList(this.userGuid).subscribe({
       next: (data) => {
         this.messages = data.map(m => ({
-          id: m.conversationId || '',
+          conversationId: m.conversationId || '',
           jobId: m.jobId,
-          avatar: m.companyLogo,
-          name: m.companyName,
-          message: m.lastMessage,
+          companyLogo: m.companyLogo || 'images/company-placeholder.svg', // Default avatar
+          companyName: m.companyName,
+          lastMessage: m.lastMessage,
           timeIcon: 'images/time-icon.svg',
-          timeText: m.lastChattedOn,
-          unreadCount: m.unreadMessage,
+          lastChattedOn: m.lastChattedOn,
+          unreadMessage: m.unreadMessage,
           isRead: m.isRead,
           mayMessage: true,
           receivedMessages: []
         }));
 
         this.messages.forEach(msg => {
-          if (!this.sentMessageCounts[msg.id]) {
-            this.sentMessageCounts[msg.id] = 0;
+          if (!this.sentMessageCounts[msg.conversationId]) {
+            this.sentMessageCounts[msg.conversationId] = 0;
           }
         });
 
@@ -250,7 +118,7 @@ export class ViewEmployerMessageComponent {
       this.hasReceiverMessage = params['receivermessage'] !== '0';
 
       this.messages.forEach(msg => {
-        this.sentMessageCounts[msg.id] = 0;
+        this.sentMessageCounts[msg.conversationId] = 0;
       });
       if (this.hasReceiverMessage) {
         this.messages = this.messages.filter(m => m.receivedMessages && m.receivedMessages.length > 0);
@@ -272,23 +140,34 @@ export class ViewEmployerMessageComponent {
     if (this.isProUser) {
       this.markAsRead(message);
     }
-     if (this.userGuid && message.id && message.jobId) {
+    if (this.userGuid && message.conversationId && message.jobId) {
       this.employerMessageService.getMessages({
         DeviceType: 'web',
         UserGuid: this.userGuid,
         JobId: message.jobId.toString(),
         SenderType: 'A',
-        ConversationId: Number(message.id)
+        ConversationId: Number(message.conversationId)
       }).subscribe({
         next: res => {
+          console.log('Chat response:', res);
           const chatData = res.eventData.find(ed => ed.key.trim() === 'Chat Message');
           if (chatData && Array.isArray(chatData.value)) {
             message.receivedMessages = chatData.value.map((m: any) => ({
-              text: m.text,
-              time: m.textSendTime,
-              date: m.textSendDate,
-              senderType: m.textSenderType
+              textId: m.textId || 0,
+              text: m.text || '',
+              textSenderType: m.textSenderType || '',
+              cnvId: m.cnvId || 0,
+              textReadDate: m.textReadDate || '',
+              textReadTime: m.textReadTime || '',
+              textSendDate: m.textSendDate || '',
+              textSendTime: m.textSendTime || '',
+              employeeEmail: m.employeeEmail || '',
+              personalEmail: m.personalEmail,
+              textSendBy: m.textSendBy
             }));
+
+            // Force UI update
+            this.hasReceiverMessage = message.receivedMessages.length > 0;
           }
           this.cdRef.detectChanges();
         },
@@ -314,7 +193,7 @@ export class ViewEmployerMessageComponent {
 
     switch (this.activeTab) {
       case 'unread':
-        filtered = filtered.filter(m => m.unreadCount > 0);
+        filtered = filtered.filter(m => m.unreadMessage > 0);
         break;
       case 'mayMessage':
         filtered = filtered.filter(m => m.mayMessage);
@@ -324,8 +203,8 @@ export class ViewEmployerMessageComponent {
     if (this.searchTerm.trim()) {
       const term = this.searchTerm.toLowerCase().trim();
       filtered = filtered.filter(m =>
-        m.name.toLowerCase().includes(term) ||
-        m.message.toLowerCase().includes(term)
+        m.companyName.toLowerCase().includes(term) ||
+        m.lastMessage.toLowerCase().includes(term)
       );
     }
 
@@ -342,9 +221,9 @@ export class ViewEmployerMessageComponent {
     this.activeTab = tab;
   }
 
-  markAsRead(message: any) {
+  markAsRead(message: Message) {
     message.isRead = true;
-    message.unreadCount = 0;
+    message.unreadMessage = 0;
   }
 
   onButtonClick(): void {
@@ -378,7 +257,7 @@ export class ViewEmployerMessageComponent {
   }
 
   get conicGradient(): string {
-    const remaining = this.max - this.sentMessageCounts[this.selectedMessage?.id];
+    const remaining = this.max - this.sentMessageCounts[this.selectedMessage?.conversationId];
     const progress = (remaining / this.max) * 100;
     const color = remaining <= 1 ? '#EF4444' : '#17B26A';
     return `conic-gradient(${color} ${progress}%, transparent 0%)`;
@@ -444,7 +323,7 @@ export class ViewEmployerMessageComponent {
 
   onSendMessage(): void {
     if (this.currentMessage.trim() && this.selectedMessage) {
-      const messageId = this.selectedMessage.id;
+      const messageId = this.selectedMessage.conversationId;
       if (this.sentMessageCounts[messageId] >= 3) {
         alert('You have reached your maximum reply limit for this conversation.');
         return;
