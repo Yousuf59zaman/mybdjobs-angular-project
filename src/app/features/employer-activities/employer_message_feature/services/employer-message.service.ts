@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { ApiResponse, EmployerMessage, GetMessagesResponse } from '../models/employer-message';
+import { ApiResponse, EmployerMessage, GetMessagesResponse, SendMessageRequest, SendMessageResponse } from '../models/employer-message';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +44,21 @@ export class EmployerMessageService {
       catchError(error => {
         console.error('Error fetching messages:', error);
         return throwError(() => new Error('Something went wrong; please try again later.'));
+      })
+    );
+  }
+
+
+  sendMessage(request: SendMessageRequest): Observable<SendMessageResponse[]> {
+    console.log('Sending message request:', request);
+
+    return this.http.post<SendMessageResponse[]>(
+      'https://mybdjobsorchestrator-odcx6humqq-as.a.run.app/api/EmployerActivities/ApplicantMessageSend',
+      request
+    ).pipe(
+      catchError(error => {
+        console.error('Error sending message:', error);
+        return throwError(() => new Error('Failed to send message. Please try again.'));
       })
     );
   }

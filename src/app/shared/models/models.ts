@@ -20,6 +20,7 @@ export interface SelectItem {
 export interface Message {
   conversationId: string;
   jobId?: number;
+  companyId?: number; // Add this field to store employer profile ID
   jobTitle?: string;
   companyLogo: string;
   companyName: string;

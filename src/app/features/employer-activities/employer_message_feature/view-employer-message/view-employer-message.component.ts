@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, AfterViewChecked, Input, Output, ViewChild } from '@angular/core';
 import { Message } from '../../../../shared/models/models';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { EmployerMessageService } from '../services/employer-message.service';
 import { CookieService } from '../../../../core/services/cookie/cookie.service';
-import { ChatMessageEventData, EmployerInfoEventData } from '../models/employer-message';
+import { ChatMessageEventData, EmployerInfoEventData, SendMessageRequest } from '../models/employer-message';
 
 
 @Component({
@@ -14,7 +14,7 @@ import { ChatMessageEventData, EmployerInfoEventData } from '../models/employer-
   templateUrl: './view-employer-message.component.html',
   styleUrl: './view-employer-message.component.scss'
 })
-export class ViewEmployerMessageComponent {
+export class ViewEmployerMessageComponent implements AfterViewChecked {
   @Input() headerTitle: string = 'View Employer Message';
   @Input() headerSubtitle: string = 'Read the latest communication from your employer';
   @Input() headerButtonText: string = 'Get bdjobs pro';
@@ -69,6 +69,10 @@ export class ViewEmployerMessageComponent {
   toastPermanentlyDismissed: boolean = false;
 
 
+  @ViewChild('messageContainer')
+  private messageContainer!: ElementRef;
+  private scrollToBottom: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
@@ -87,6 +91,7 @@ export class ViewEmployerMessageComponent {
         this.messages = data.map(m => ({
           conversationId: m.conversationId || '',
           jobId: m.jobId,
+          companyId: m.companyId, // Make sure to include the company ID
           jobTitle: m.jobTitle,
           companyLogo: m.companyLogo || 'images/company-placeholder.svg', // Default avatar
           companyName: m.companyName,
@@ -135,81 +140,84 @@ export class ViewEmployerMessageComponent {
 
 
   openChat(message: Message) {
-  this.messages.forEach(m => m.isSelected = false);
-  message.isSelected = true;
-  this.selectedMessage = message;
-  console.log('Selected message:', this.selectedMessage);
-  this.showChatView = true;
-  
-  if (this.isProUser) {
-    this.markAsRead(message);
+    this.messages.forEach(m => m.isSelected = false);
+    message.isSelected = true;
+    this.selectedMessage = message;
+    console.log('Selected message:', this.selectedMessage);
+    this.showChatView = true;
+
+    if (this.isProUser) {
+      this.markAsRead(message);
+    }
+
+    if (this.userGuid && message.conversationId && message.jobId) {
+      console.log('Fetching messages for conversation:', message.conversationId);
+
+      this.employerMessageService.getMessages({
+        DeviceType: 'web',
+        UserGuid: this.userGuid,
+        JobId: message.jobId.toString(),
+        SenderType: 'A',
+        ConversationId: Number(message.conversationId)
+      }).subscribe({
+        next: (res) => {
+          console.log('Chat response received:', res);
+
+          if (!res || !Array.isArray(res) || res.length === 0) {
+            console.warn('Empty or invalid response:', res);
+            return;
+          }
+
+          // Extract the first response item
+          const responseData = res[0];
+          console.log('Processing response data:', responseData);
+
+          // Look for employer info
+          const employerInfoData = responseData.eventData.find(
+            ed => ed.key === "EmployerInterestListCommon info "
+          );
+
+          if (employerInfoData && employerInfoData.key === "EmployerInterestListCommon info ") {
+            // Type assertion to help TypeScript understand the discriminated union
+            const typedEmployerInfo = employerInfoData as EmployerInfoEventData;
+            console.log('Found employer info:', typedEmployerInfo.value);
+
+            // Update job title from employer info
+            message.jobTitle = typedEmployerInfo.value.jobTitle;
+            console.log('Updated job title:', message.jobTitle);
+          }
+
+          // Look for chat messages
+          const chatData = responseData.eventData.find(
+            ed => ed.key === "Chat Message "
+          );
+
+          if (chatData && chatData.key === "Chat Message ") {
+            // Type assertion for chat messages
+            const typedChatData = chatData as ChatMessageEventData;
+            console.log('Found chat messages:', typedChatData.value.length);
+
+            // No need to map - the types should match already
+            message.receivedMessages = typedChatData.value;
+
+            this.selectedMessage.receivedMessages = message.receivedMessages;
+            console.log('Received messages set:', this.selectedMessage.receivedMessages);
+
+            // Set flag to scroll to bottom
+            this.scrollToBottom = true;
+
+            // Force UI update
+            this.hasReceiverMessage = message.receivedMessages.length > 0;
+          } else {
+            console.warn('No chat messages found in response');
+          }
+
+          this.cdRef.detectChanges();
+        },
+        error: err => console.error('Error loading messages:', err)
+      });
+    }
   }
-  
-  if (this.userGuid && message.conversationId && message.jobId) {
-    console.log('Fetching messages for conversation:', message.conversationId);
-    
-    this.employerMessageService.getMessages({
-      DeviceType: 'web',
-      UserGuid: this.userGuid,
-      JobId: message.jobId.toString(),
-      SenderType: 'A',
-      ConversationId: Number(message.conversationId)
-    }).subscribe({
-      next: (res) => {
-        console.log('Chat response received:', res);
-        
-        if (!res || !Array.isArray(res) || res.length === 0) {
-          console.warn('Empty or invalid response:', res);
-          return;
-        }
-        
-        // Extract the first response item
-        const responseData = res[0];
-        console.log('Processing response data:', responseData);
-        
-        // Look for employer info
-        const employerInfoData = responseData.eventData.find(
-          ed => ed.key === "EmployerInterestListCommon info "
-        );
-        
-        if (employerInfoData && employerInfoData.key === "EmployerInterestListCommon info ") {
-          // Type assertion to help TypeScript understand the discriminated union
-          const typedEmployerInfo = employerInfoData as EmployerInfoEventData;
-          console.log('Found employer info:', typedEmployerInfo.value);
-          
-          // Update job title from employer info
-          message.jobTitle = typedEmployerInfo.value.jobTitle;
-          console.log('Updated job title:', message.jobTitle);
-        }
-        
-        // Look for chat messages
-        const chatData = responseData.eventData.find(
-          ed => ed.key === "Chat Message "
-        );
-        
-        if (chatData && chatData.key === "Chat Message ") {
-          // Type assertion for chat messages
-          const typedChatData = chatData as ChatMessageEventData;
-          console.log('Found chat messages:', typedChatData.value.length);
-          
-          // No need to map - the types should match already
-          message.receivedMessages = typedChatData.value;
-          
-          this.selectedMessage.receivedMessages = message.receivedMessages;
-          console.log('Received messages set:', this.selectedMessage.receivedMessages);
-          
-          // Force UI update
-          this.hasReceiverMessage = message.receivedMessages.length > 0;
-        } else {
-          console.warn('No chat messages found in response');
-        }
-        
-        this.cdRef.detectChanges();
-      },
-      error: err => console.error('Error loading messages:', err)
-    });
-  }
-}
 
   get mayMessageCount(): number {
     return this.messages.filter(message => message.mayMessage).length;
@@ -323,6 +331,10 @@ export class ViewEmployerMessageComponent {
     const diffMs = now.getTime() - date.getTime();
     const diffMins = Math.floor(diffMs / (1000 * 60));
 
+    if (diffMins < 1) {
+      return `just now`;
+    }
+
     if (diffMins < 60) {
       return `${diffMins} min`;
     }
@@ -357,44 +369,108 @@ export class ViewEmployerMessageComponent {
 
 
   onSendMessage(): void {
-    console.log('Sending message:', this.selectedMessage);
-    if (this.currentMessage.trim() && this.selectedMessage) {
-      const messageId = this.selectedMessage.conversationId;
-      if (this.sentMessageCounts[messageId] >= 3) {
-        alert('You have reached your maximum reply limit for this conversation.');
-        return;
-      }
-      if (!this.sentMessages[messageId]) {
-        this.sentMessages[messageId] = [];
-      }
+    console.log('Attempting to send message:', this.currentMessage);
 
-      this.sentMessages[messageId].push({
-        text: this.currentMessage,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        isRead: this.selectedMessage?.isRead ?? false
-      });
-      this.selectedMessage.receivedMessages?.push({
-        textId: 0,
-        text: this.currentMessage,
-        textSenderType: 'A',
-        cnvId: Number(messageId),
-        textReadDate: '',
-        textReadTime: '',
-        textSendDate: '',
-        textSendTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        employeeEmail: '',
-        personalEmail: null,
-        textSendBy: null
-      });
-
-      this.sentMessageCounts[messageId]++;
-      this.sendMessage.emit();
-      this.currentMessage = '';
-
-      if (this.isProUser) {
-        this._currentAvaileableMessage--;
-      }
+    if (!this.currentMessage.trim() || !this.selectedMessage) {
+      console.log('Empty message or no selected message - aborting');
+      return;
     }
+
+    const messageId = this.selectedMessage.conversationId;
+
+    // Check message limit
+    if (this.sentMessageCounts[messageId] >= 3) {
+      console.log('Message limit reached for this conversation');
+      alert('You have reached your maximum reply limit for this conversation.');
+      return;
+    }
+
+    // Log selected message details for debugging
+    console.log('Selected message details:', {
+      conversationId: messageId,
+      companyId: this.selectedMessage.companyId,
+      jobId: this.selectedMessage.jobId,
+      companyName: this.selectedMessage.companyName
+    });
+
+    // Create request object
+    const sendMessageRequest: SendMessageRequest = {
+      userGuid: this.userGuid || '',
+      deviceType: 'web',
+      conversationId: Number(messageId),
+      employerProfileId: Number(this.selectedMessage.companyId) || 0,
+      jobId: Number(this.selectedMessage.jobId) || 0,
+      senderType: 'A', // A for Applicant
+      message: this.currentMessage,
+      companyName: this.selectedMessage.companyName || ''
+    };
+
+    // Call API service to send message
+    this.employerMessageService.sendMessage(sendMessageRequest).subscribe({
+      next: (response) => {
+        console.log('✅ Message sent successfully:', response);
+
+        // Initialize message array if needed
+        if (!this.sentMessages[messageId]) {
+          this.sentMessages[messageId] = [];
+        }
+
+        const now = new Date();
+        const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const formattedDate = now.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' });
+
+        // Add to local sent messages for UI tracking
+        this.sentMessages[messageId].push({
+          text: this.currentMessage,
+          time: formattedTime,
+          isRead: false
+        });
+
+        // Add to chat display in the UI
+        this.selectedMessage.receivedMessages = this.selectedMessage.receivedMessages || [];
+        this.selectedMessage.receivedMessages.push({
+          textId: 0, // Temporary ID until refresh
+          text: this.currentMessage,
+          textSenderType: 'A',
+          cnvId: Number(messageId),
+          textReadDate: '',
+          textReadTime: '',
+          textSendDate: formattedDate,
+          textSendTime: formattedTime,
+          employeeEmail: '',
+          personalEmail: null,
+          textSendBy: null
+        });
+
+        // Update message metadata
+        this.selectedMessage.lastMessage = this.currentMessage;
+        this.selectedMessage.lastChattedOn = new Date().toISOString();
+
+        // Update message count
+        this.sentMessageCounts[messageId]++;
+
+        // Clear input field
+        this.currentMessage = '';
+
+        // Handle pro user message count
+        if (this.isProUser) {
+          this._currentAvaileableMessage--;
+          if (this._currentAvaileableMessage === 5 && !this.toastPermanentlyDismissed) {
+            this.showUpgradeToast = true;
+          }
+        }
+
+        // After message is sent and added to UI
+        this.scrollToBottom = true;
+
+        // Force UI update
+        this.cdRef.detectChanges();
+      },
+      error: (err) => {
+        console.error('❌ Error sending message:', err);
+        alert('Failed to send your message. Please try again.');
+      }
+    });
   }
 
 
@@ -421,7 +497,22 @@ export class ViewEmployerMessageComponent {
     this.getProClick.emit();
   }
 
+  // Add this method to scroll to bottom of chat
+  private scrollToBottomOfChat(): void {
+    try {
+      if (this.messageContainer) {
+        this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+      }
+    } catch (err) {
+      console.error('Error scrolling to bottom:', err);
+    }
+  }
 
-
-
+  // Implement AfterViewChecked to scroll after view is initialized/updated
+  ngAfterViewChecked(): void {
+    if (this.scrollToBottom) {
+      this.scrollToBottomOfChat();
+      this.scrollToBottom = false;
+    }
+  }
 }

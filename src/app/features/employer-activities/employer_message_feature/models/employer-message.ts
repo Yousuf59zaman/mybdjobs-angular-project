@@ -67,3 +67,24 @@ export interface GetMessagesResponse {
   eventData: ChatEventData[];
   eventId: number;
 }
+
+
+export interface SendMessageRequest {
+  userGuid: string;
+  deviceType: string;
+  conversationId: number;
+  employerProfileId: number;
+  jobId: number;
+  senderType: string;
+  message: string;
+  companyName: string;
+}
+
+export interface SendMessageResponse {
+  eventType: number;
+  eventData: {
+    key: string;
+    value: number;
+  }[];
+  eventId: number;
+}
