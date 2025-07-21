@@ -34,6 +34,7 @@ export interface Message {
     text: string;
     time: string;
     date?: string;
+    senderType?: string;
   }>;
 }
 

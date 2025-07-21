@@ -286,7 +286,8 @@ export class ViewEmployerMessageComponent {
             message.receivedMessages = chatData.value.map((m: any) => ({
               text: m.text,
               time: m.textSendTime,
-              date: m.textSendDate
+              date: m.textSendDate,
+              senderType: m.textSenderType
             }));
           }
           this.cdRef.detectChanges();
