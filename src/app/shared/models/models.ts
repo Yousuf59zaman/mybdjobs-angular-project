@@ -20,6 +20,7 @@ export interface SelectItem {
 export interface Message {
   conversationId: string;
   jobId?: number;
+  jobTitle?: string;
   companyLogo: string;
   companyName: string;
   lastMessage: string;

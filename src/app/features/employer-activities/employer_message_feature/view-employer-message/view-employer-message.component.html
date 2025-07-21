@@ -341,7 +341,7 @@
           </div>
           <div class="flex flex-col flex-1 gap-0 items-start">
             <h1 class="text-xs font-semibold leading-4 text-gray-900">{{ selectedMessage?.companyName || 'HR' }}</h1>
-            <p class="text-[10px] leading-3 text-gray-600 truncate w-full">{{ selectedMessage?.lastMessage || 'Message' }}</p>
+ <p class="text-[10px] leading-3 text-gray-600 truncate w-full">{{ selectedMessage?.jobTitle }}</p>
           </div>
         </header>
 
@@ -387,38 +387,41 @@
 </div>
 
 
-        <main *ngIf="(isProUser || hasReceiverMessage) && selectedMessage?.receivedMessages?.length > 0 && !(isProUser && !hasReceiverMessage)"
+        <main 
               class="flex flex-col flex-1 gap-2 items-center self-stretch px-2 py-1 bg-gray-50 overflow-y-auto">
-          <!-- Received Messages -->
-          <div *ngFor="let msg of selectedMessage?.receivedMessages" class="flex gap-1 items-start self-stretch">
-            <div class="flex-shrink-0">
-              <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-[10px]">HR</div>
-            </div>
-            <div class="flex flex-col gap-0 max-w-[70%]">
-              <div class="px-2 py-1 bg-white rounded-lg border border-gray-200 shadow-xs">
-                <div class="text-[10px] leading-3 text-gray-800">{{ msg.text }}</div>
+          <!-- Chat Messages -->
+           {{selectedMessage.receivedMessages?.text}}
+          <div *ngFor="let msg of selectedMessage?.receivedMessages">
+            <!-- Employer messages on the left -->
+            <div *ngIf="msg.textSenderType === 'R'" class="flex gap-1 items-start self-stretch">
+              <div class="flex-shrink-0">
+                <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-[10px]">HR</div>
               </div>
-              <div class="text-[8px] text-gray-500 ml-1">{{ msg.time }}</div>
+              <div class="flex flex-col gap-0 max-w-[70%]">
+                <div class="px-2 py-1 bg-white rounded-lg border border-gray-200 shadow-xs">
+                  <div class="text-[10px] leading-3 text-gray-800">{{ msg.text }}</div>
+                </div>
+                <div class="text-[8px] text-gray-500 ml-1">{{ msg.textSendTime }}</div></div>
             </div>
-          </div>
 
-          <!-- Sent Messages -->
-          <div *ngFor="let msg of sentMessages[selectedMessage?.conversationId]" class="flex gap-1 justify-end items-start self-stretch">
-            <div class="flex flex-col gap-0 items-end max-w-[70%]">
-              <div class="px-2 py-1 bg-indigo-50 rounded-lg border border-indigo-100 shadow-xs">
-                <div class="text-[10px] leading-3 text-gray-800">{{ msg.text }}</div>
-              </div>
-              <div class="flex items-center gap-0.5 text-[8px] text-gray-500">
-                <span>{{ msg.time }}</span>
-                <img
-                  src="images/double-tik-message.svg"
-                  class="w-2 h-2"
-                  [ngStyle]="{
-                    filter: selectedMessage?.isRead
-                      ? 'invert(33%) sepia(74%) saturate(5361%) hue-rotate(316deg) brightness(97%) contrast(92%)'
-                      : 'none'
-                  }"
-                >
+            <!-- Applicant messages on the right -->
+            <div *ngIf="msg.textSenderType === 'A'" class="flex gap-1 justify-end items-start self-stretch">
+              <div class="flex flex-col gap-0 items-end max-w-[70%]">
+                <div class="px-2 py-1 bg-indigo-50 rounded-lg border border-indigo-100 shadow-xs">
+                  <div class="text-[10px] leading-3 text-gray-800">{{ msg.text }}</div>
+                </div>
+                <div class="flex items-center gap-0.5 text-[8px] text-gray-500">
+                  <span>{{ msg.textSendTime }}</span>
+                  <img
+                    src="images/double-tik-message.svg"
+                    class="w-2 h-2"
+                    [ngStyle]="{
+                      filter: selectedMessage?.isRead
+                        ? 'invert(33%) sepia(74%) saturate(5361%) hue-rotate(316deg) brightness(97%) contrast(92%)'
+                        : 'none'
+                    }"
+                  >
+                </div>
               </div>
             </div>
           </div>

@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { EmployerMessageService } from '../services/employer-message.service';
 import { CookieService } from '../../../../core/services/cookie/cookie.service';
+import { ChatMessageEventData, EmployerInfoEventData } from '../models/employer-message';
 
 
 @Component({
@@ -86,6 +87,7 @@ export class ViewEmployerMessageComponent {
         this.messages = data.map(m => ({
           conversationId: m.conversationId || '',
           jobId: m.jobId,
+          jobTitle: m.jobTitle,
           companyLogo: m.companyLogo || 'images/company-placeholder.svg', // Default avatar
           companyName: m.companyName,
           lastMessage: m.lastMessage,
@@ -133,48 +135,81 @@ export class ViewEmployerMessageComponent {
 
 
   openChat(message: Message) {
-    this.messages.forEach(m => m.isSelected = false);
-    message.isSelected = true;
-    this.selectedMessage = message;
-    this.showChatView = true;
-    if (this.isProUser) {
-      this.markAsRead(message);
-    }
-    if (this.userGuid && message.conversationId && message.jobId) {
-      this.employerMessageService.getMessages({
-        DeviceType: 'web',
-        UserGuid: this.userGuid,
-        JobId: message.jobId.toString(),
-        SenderType: 'A',
-        ConversationId: Number(message.conversationId)
-      }).subscribe({
-        next: res => {
-          console.log('Chat response:', res);
-          const chatData = res.eventData.find(ed => ed.key.trim() === 'Chat Message');
-          if (chatData && Array.isArray(chatData.value)) {
-            message.receivedMessages = chatData.value.map((m: any) => ({
-              textId: m.textId || 0,
-              text: m.text || '',
-              textSenderType: m.textSenderType || '',
-              cnvId: m.cnvId || 0,
-              textReadDate: m.textReadDate || '',
-              textReadTime: m.textReadTime || '',
-              textSendDate: m.textSendDate || '',
-              textSendTime: m.textSendTime || '',
-              employeeEmail: m.employeeEmail || '',
-              personalEmail: m.personalEmail,
-              textSendBy: m.textSendBy
-            }));
-
-            // Force UI update
-            this.hasReceiverMessage = message.receivedMessages.length > 0;
-          }
-          this.cdRef.detectChanges();
-        },
-        error: err => console.error('Error loading messages', err)
-      });
-    }
+  this.messages.forEach(m => m.isSelected = false);
+  message.isSelected = true;
+  this.selectedMessage = message;
+  console.log('Selected message:', this.selectedMessage);
+  this.showChatView = true;
+  
+  if (this.isProUser) {
+    this.markAsRead(message);
   }
+  
+  if (this.userGuid && message.conversationId && message.jobId) {
+    console.log('Fetching messages for conversation:', message.conversationId);
+    
+    this.employerMessageService.getMessages({
+      DeviceType: 'web',
+      UserGuid: this.userGuid,
+      JobId: message.jobId.toString(),
+      SenderType: 'A',
+      ConversationId: Number(message.conversationId)
+    }).subscribe({
+      next: (res) => {
+        console.log('Chat response received:', res);
+        
+        if (!res || !Array.isArray(res) || res.length === 0) {
+          console.warn('Empty or invalid response:', res);
+          return;
+        }
+        
+        // Extract the first response item
+        const responseData = res[0];
+        console.log('Processing response data:', responseData);
+        
+        // Look for employer info
+        const employerInfoData = responseData.eventData.find(
+          ed => ed.key === "EmployerInterestListCommon info "
+        );
+        
+        if (employerInfoData && employerInfoData.key === "EmployerInterestListCommon info ") {
+          // Type assertion to help TypeScript understand the discriminated union
+          const typedEmployerInfo = employerInfoData as EmployerInfoEventData;
+          console.log('Found employer info:', typedEmployerInfo.value);
+          
+          // Update job title from employer info
+          message.jobTitle = typedEmployerInfo.value.jobTitle;
+          console.log('Updated job title:', message.jobTitle);
+        }
+        
+        // Look for chat messages
+        const chatData = responseData.eventData.find(
+          ed => ed.key === "Chat Message "
+        );
+        
+        if (chatData && chatData.key === "Chat Message ") {
+          // Type assertion for chat messages
+          const typedChatData = chatData as ChatMessageEventData;
+          console.log('Found chat messages:', typedChatData.value.length);
+          
+          // No need to map - the types should match already
+          message.receivedMessages = typedChatData.value;
+          
+          this.selectedMessage.receivedMessages = message.receivedMessages;
+          console.log('Received messages set:', this.selectedMessage.receivedMessages);
+          
+          // Force UI update
+          this.hasReceiverMessage = message.receivedMessages.length > 0;
+        } else {
+          console.warn('No chat messages found in response');
+        }
+        
+        this.cdRef.detectChanges();
+      },
+      error: err => console.error('Error loading messages:', err)
+    });
+  }
+}
 
   get mayMessageCount(): number {
     return this.messages.filter(message => message.mayMessage).length;
@@ -322,6 +357,7 @@ export class ViewEmployerMessageComponent {
 
 
   onSendMessage(): void {
+    console.log('Sending message:', this.selectedMessage);
     if (this.currentMessage.trim() && this.selectedMessage) {
       const messageId = this.selectedMessage.conversationId;
       if (this.sentMessageCounts[messageId] >= 3) {
@@ -337,7 +373,19 @@ export class ViewEmployerMessageComponent {
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         isRead: this.selectedMessage?.isRead ?? false
       });
-
+      this.selectedMessage.receivedMessages?.push({
+        textId: 0,
+        text: this.currentMessage,
+        textSenderType: 'A',
+        cnvId: Number(messageId),
+        textReadDate: '',
+        textReadTime: '',
+        textSendDate: '',
+        textSendTime: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        employeeEmail: '',
+        personalEmail: null,
+        textSendBy: null
+      });
 
       this.sentMessageCounts[messageId]++;
       this.sendMessage.emit();

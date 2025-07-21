@@ -32,7 +32,7 @@ export class EmployerMessageService {
     JobId: string;
     SenderType: string;
     ConversationId: number;
-  }): Observable<GetMessagesResponse> {
+  }): Observable<GetMessagesResponse[]> {
     let httpParams = new HttpParams()
       .set('DeviceType', params.DeviceType)
       .set('UserGuid', params.UserGuid)
@@ -40,7 +40,7 @@ export class EmployerMessageService {
       .set('SenderType', params.SenderType)
       .set('ConversationId', params.ConversationId.toString());
 
-    return this.http.get<GetMessagesResponse>(this.messagesUrl, { params: httpParams }).pipe(
+    return this.http.get<GetMessagesResponse[]>(this.messagesUrl, { params: httpParams }).pipe(
       catchError(error => {
         console.error('Error fetching messages:', error);
         return throwError(() => new Error('Something went wrong; please try again later.'));
