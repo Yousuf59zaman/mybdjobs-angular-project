@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { EmployerMessageService } from '../services/employer-message.service';
 import { CookieService } from '../../../../core/services/cookie/cookie.service';
-import { ChatMessageEventData, EmployerInfoEventData, SendMessageRequest } from '../models/employer-message';
+import { ChatMessage, ChatMessageEventData, EmployerInfoEventData, SendMessageRequest } from '../models/employer-message';
 
 
 @Component({
@@ -101,7 +101,8 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
           unreadMessage: m.unreadMessage,
           isRead: m.isRead,
           mayMessage: true,
-          receivedMessages: []
+          receivedMessages: [],
+          isBlockChat: false
         }));
 
         this.messages.forEach(msg => {
@@ -184,6 +185,8 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
 
             // Update job title from employer info
             message.jobTitle = typedEmployerInfo.value.jobTitle;
+            // store chat blocking flag
+            message.isBlockChat = typedEmployerInfo.value.isBlockChat;
             console.log('Updated job title:', message.jobTitle);
           }
 
@@ -202,7 +205,9 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
 
             this.selectedMessage.receivedMessages = message.receivedMessages;
             console.log('Received messages set:', this.selectedMessage.receivedMessages);
-
+            // Update consecutive applicant message count for this conversation
+            this.sentMessageCounts[message.conversationId] =
+              this.countConsecutiveApplicantMessages(this.selectedMessage.receivedMessages);
             // Set flag to scroll to bottom
             this.scrollToBottom = true;
 
@@ -358,7 +363,20 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
     this.currentMessage = target.value;
     this.messageChange.emit(target.value);
   }
-
+  private countConsecutiveApplicantMessages(messages: ChatMessage[]): number {
+    let count = 0;
+    for (let i = messages.length - 1; i >= 0; i--) {
+      if (messages[i].textSenderType === 'A') {
+        count++;
+        if (count === 3) {
+          break;
+        }
+      } else {
+        break;
+      }
+    }
+    return count;
+  }
   sentMessages: {
     [key: string]: Array<{
       text: string;
@@ -398,7 +416,7 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
       userGuid: this.userGuid || '',
       deviceType: 'web',
       conversationId: Number(messageId),
-      employerProfileId: Number(this.selectedMessage.companyId) || 0,
+      employerProfileId: 0,
       jobId: Number(this.selectedMessage.jobId) || 0,
       senderType: 'A', // A for Applicant
       message: this.currentMessage,
@@ -446,9 +464,11 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
         this.selectedMessage.lastMessage = this.currentMessage;
         this.selectedMessage.lastChattedOn = new Date().toISOString();
 
-        // Update message count
-        this.sentMessageCounts[messageId]++;
 
+        // Update message count based on consecutive applicant messages
+        this.sentMessageCounts[messageId] = this.countConsecutiveApplicantMessages(
+          this.selectedMessage.receivedMessages
+        );
         // Clear input field
         this.currentMessage = '';
 
@@ -475,7 +495,16 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
 
 
   canReply(messageId: string): boolean {
-    return this.sentMessageCounts[messageId] < 3;
+    console.log("asdsad ", this.sentMessageCounts[messageId]);
+    if (!messageId) {
+      return true;
+    }
+
+    const messages = this.selectedMessage?.receivedMessages || [];
+    const consecutive = this.countConsecutiveApplicantMessages(messages);
+    this.sentMessageCounts[messageId] = consecutive;
+    console.log('Consecutive messages for', messageId, ':', consecutive);
+    return consecutive < 3;
   }
 
   goBack(): void {

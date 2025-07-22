@@ -45,6 +45,7 @@ export interface Message {
     personalEmail: null | string;
     textSendBy: null | string;
   }>;
+  isBlockChat?: boolean;
 }
 
 
