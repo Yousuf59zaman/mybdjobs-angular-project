@@ -27,7 +27,7 @@
               {{ badgeMessage }}
             </p>
             <img
-              [src]="badgeIconSrc"
+              [src]="'images/help-circle.svg'"
               class="object-contain w-5 max-md:w-4 aspect-square"
               alt="Info icon"
             />
@@ -226,12 +226,12 @@
           {{ message.companyName }}
         </h3>
         <div class="flex items-center gap-1 text-[10px] md:text-xs text-slate-500">
-          <span>{{ getRelativeTime(message.lastChattedOn) }}</span>
           <img
-            [src]="message.timeIcon"
+            [src]="'images/clock.svg'"
             class="w-2 h-2 md:w-3 md:h-3"
             alt="Time icon"
           />
+          <span>{{ getRelativeTime(message.lastChattedOn) }}</span>
         </div>
       </div>
 
@@ -336,9 +336,15 @@
           </button>
           <div class="flex-shrink-0">
             
-            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
+            <!-- Use ng-container to conditionally render image or initials -->
+          <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
+            <ng-container *ngIf="selectedMessage?.companyLogo; else defaultAvatar">
+              <img [src]="selectedMessage.companyLogo" alt="{{ selectedMessage?.companyName }}" class="object-cover w-full h-full rounded-full" />
+            </ng-container>
+            <ng-template #defaultAvatar>
               {{ selectedMessage?.companyName?.charAt(0) || 'HR' }}
-            </div>
+            </ng-template>
+          </div>
           </div>
           <div class="flex flex-col flex-1 gap-0 items-start">
             <h1 class="text-xs font-semibold leading-4 text-gray-900">{{ selectedMessage?.companyName || 'HR' }}</h1>
@@ -396,8 +402,13 @@
         <!-- Employer messages on the left -->
         <div *ngIf="msg.textSenderType === 'R'" class="flex gap-1 items-start w-full">
           <div class="flex-shrink-0">
+          <ng-container *ngIf="selectedMessage?.companyLogo; else placeholderLogo">
+            <img [src]="selectedMessage.companyLogo" alt="{{ selectedMessage?.companyName }}" class="w-6 h-6 rounded-full object-cover" />
+          </ng-container>
+          <ng-template #placeholderLogo>
             <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-[10px]">HR</div>
-          </div>
+          </ng-template>
+        </div>
           <div class="flex flex-col gap-0 max-w-[70%]">
             <div class="px-2 py-1 bg-white rounded-lg border border-gray-200 shadow-xs">
               <div class="text-[10px] leading-3 text-gray-800">{{ msg.text }}</div>
@@ -478,10 +489,10 @@
     <div class="flex items-center gap-0.5 md:gap-2 text-[9px] md:text-sm font-medium text-slate-700 min-w-0 overflow-hidden">
       <span>Get</span>
       <img
-        src="images/Bdjobs Pro 1.svg"
+        src="images/bdjobs-pro.svg"
         alt="Premium logo"
         class="w-[50px] md:w-[80px] object-contain shrink-0"
-      />
+      /> 
       <span>
         to message employers.
       </span>
@@ -556,7 +567,7 @@
                               As a
                             </span>
                             <img
-                              src="images/Bdjobs Pro 1.svg"
+                              src="images/bdjobs-pro.svg"
                               class="object-contain w-[80px] h-auto"
                               alt="Premium badge"
                             />
@@ -577,7 +588,7 @@
                         <div class="flex flex-wrap items-center justify-center gap-1 text-gray-600 mb-20 max-w-md text-center">
                           <span class="text-[12px]">Want to reach out to employers directly? Get</span>
                           <img
-                            src="images/Bdjobs Pro 1.svg"
+                            src="images/bdjobs-pro.svg"
                             alt="Premium logo"
                             class="h-5 object-contain"
                           />
@@ -599,7 +610,7 @@
                 <div class="flex items-center gap-2 text-sm font-medium text-slate-700 min-w-0 overflow-hidden">
                   <span class="text-[11px]">Get</span>
                   <img
-                    src="images/Bdjobs Pro 1.svg"
+                    src="images/bdjobs-pro.svg"
                     alt="Premium logo"
                     class="w-[80px] object-contain shrink-0"
                   />
