@@ -48,18 +48,16 @@ export interface EmployerInfo {
   isBlockChat: boolean;
 }
 
-// Using discriminated union to properly type the different data structures
 export interface ChatMessageEventData {
-  key: "Chat Message ";
+  key: 'Chat Message ';
   value: ChatMessage[];
 }
 
 export interface EmployerInfoEventData {
-  key: "EmployerInterestListCommon info ";
+  key: 'EmployerInterestListCommon info ';
   value: EmployerInfo;
 }
 
-// Union type that can represent either kind of event data
 export type ChatEventData = ChatMessageEventData | EmployerInfoEventData;
 
 export interface GetMessagesResponse {
@@ -67,7 +65,6 @@ export interface GetMessagesResponse {
   eventData: ChatEventData[];
   eventId: number;
 }
-
 
 export interface SendMessageRequest {
   userGuid: string;

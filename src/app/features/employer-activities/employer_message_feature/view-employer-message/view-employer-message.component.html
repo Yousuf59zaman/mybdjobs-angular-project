@@ -1,12 +1,21 @@
-<div class="gap-2 self-stretch border border-solid shadow bg-[#FFF] border-[var(--Colors-Border-border-secondary,#E4E7EC)] rounded-[12px]">
-  <!-- Message Header -->
-  <header class="flex flex-wrap gap-3 items-center py-3 w-full border-b border-solid border-b-[color:var(--Colors-Border-border-secondary,#E4E7EC)] px-4 max-md:px-3 max-md:max-w-full">
-    <div class="flex flex-1 shrink gap-4 items-start self-stretch my-auto basis-0 min-w-60 max-md:max-w-full">
+<div
+  class="gap-2 self-stretch border border-solid shadow bg-[#FFF] border-[var(--Colors-Border-border-secondary,#E4E7EC)] rounded-[12px]"
+>
+  <header
+    class="flex flex-wrap gap-3 items-center py-3 w-full border-b border-solid border-b-[color:var(--Colors-Border-border-secondary,#E4E7EC)] px-4 max-md:px-3 max-md:max-w-full"
+  >
+    <div
+      class="flex flex-1 shrink gap-4 items-start self-stretch my-auto basis-0 min-w-60 max-md:max-w-full"
+    >
       <div class="gap-1 min-w-60">
-        <h1 class="text-xl max-md:text-lg font-semibold text-gray-900 leading-[28px] max-md:leading-[24px]">
+        <h1
+          class="text-xl max-md:text-lg font-semibold text-gray-900 leading-[28px] max-md:leading-[24px]"
+        >
           {{ headerTitle }}
         </h1>
-        <p class="text-sm max-md:text-xs font-medium text-gray-500 leading-[20px] max-md:leading-[18px]">
+        <p
+          class="text-sm max-md:text-xs font-medium text-gray-500 leading-[20px] max-md:leading-[18px]"
+        >
           {{ headerSubtitle }}
         </p>
       </div>
@@ -21,9 +30,15 @@
           alt="Pro User Badge"
         />
 
-        <div class="flex gap-2 items-center rounded-md border border-solid bg-[#F9FAFB] border-[color:var(--Colors-Border-border-secondary,#E4E7EC)] px-3 py-2 max-md:px-2 max-md:py-1.5">
-          <div class="flex gap-2 items-center text-xs max-md:text-[10px] font-medium text-slate-700">
-            <p class="text-xs max-md:text-[10px] leading-[18px] max-md:leading-[16px] text-slate-700">
+        <div
+          class="flex gap-2 items-center rounded-md border border-solid bg-[#F9FAFB] border-[color:var(--Colors-Border-border-secondary,#E4E7EC)] px-3 py-2 max-md:px-2 max-md:py-1.5"
+        >
+          <div
+            class="flex gap-2 items-center text-xs max-md:text-[10px] font-medium text-slate-700"
+          >
+            <p
+              class="text-xs max-md:text-[10px] leading-[18px] max-md:leading-[16px] text-slate-700"
+            >
               {{ badgeMessage }}
             </p>
             <img
@@ -33,14 +48,20 @@
             />
           </div>
 
-          <div class="relative w-[26px] h-[26px] max-md:w-[20px] max-md:h-[20px] flex items-center justify-center">
-            <div class="absolute w-full h-full rounded-full border-[3px] border-gray-200"></div>
+          <div
+            class="relative w-[26px] h-[26px] max-md:w-[20px] max-md:h-[20px] flex items-center justify-center"
+          >
+            <div
+              class="absolute w-full h-full rounded-full border-[3px] border-gray-200"
+            ></div>
             <div
               class="absolute w-full h-full rounded-full"
               [style.background]="conicGradientMessage"
               [style.mask]="'radial-gradient(transparent 55%, black 56%)'"
             ></div>
-            <div class="relative z-10 text-xs max-md:text-[10px] font-semibold text-gray-900">
+            <div
+              class="relative z-10 text-xs max-md:text-[10px] font-semibold text-gray-900"
+            >
               {{ formatMessageNumber(currentAvaileableMessage) }}
             </div>
           </div>
@@ -55,7 +76,10 @@
           (click)="onGetProClick()"
           type="button"
         >
-          <span class="text-sm max-md:text-xs text-white leading-[20px] max-md:leading-[16px]">{{ headerButtonText }}</span>
+          <span
+            class="text-sm max-md:text-xs text-white leading-[20px] max-md:leading-[16px]"
+            >{{ headerButtonText }}</span
+          >
         </button>
       </div>
 
@@ -65,17 +89,31 @@
           (click)="onGetProClick()"
           type="button"
         >
-          <span class="text-sm max-md:text-xs text-white leading-[20px] max-md:leading-[16px]">{{ upgradeNowButtonText }}</span>
+          <span
+            class="text-sm max-md:text-xs text-white leading-[20px] max-md:leading-[16px]"
+            >{{ upgradeNowButtonText }}</span
+          >
         </button>
       </div>
     </div>
   </header>
 
-  <main *ngIf="!showMessagesSection && !isProUser" class="flex overflow-hidden flex-col flex-1 gap-6 justify-center p-6 w-full max-md:max-w-full">
-    <div class="flex overflow-hidden flex-1 rounded-2xl border border-solid border-[color:var(--Colors-Border-border-secondary,#E4E7EC)] size-full max-md:max-w-full">
-      <div class="flex flex-col flex-1 shrink justify-center w-full basis-0 min-w-60 max-md:max-w-full">
-        <section class="flex flex-col flex-1 justify-center items-center py-16 w-full px-6 max-md:px-5 max-md:max-w-full">
-          <div class="flex flex-col gap-8 items-center pt-10 pb-0 max-w-full w-[636px]">
+  <main
+    *ngIf="!showMessagesSection && !isProUser"
+    class="flex overflow-hidden flex-col flex-1 gap-6 justify-center p-6 w-full max-md:max-w-full"
+  >
+    <div
+      class="flex overflow-hidden flex-1 rounded-2xl border border-solid border-[color:var(--Colors-Border-border-secondary,#E4E7EC)] size-full max-md:max-w-full"
+    >
+      <div
+        class="flex flex-col flex-1 shrink justify-center w-full basis-0 min-w-60 max-md:max-w-full"
+      >
+        <section
+          class="flex flex-col flex-1 justify-center items-center py-16 w-full px-6 max-md:px-5 max-md:max-w-full"
+        >
+          <div
+            class="flex flex-col gap-8 items-center pt-10 pb-0 max-w-full w-[636px]"
+          >
             <div class="flex flex-col gap-6 w-full">
               <img
                 [src]="emptyStateIllustrationSrc"
@@ -83,21 +121,25 @@
                 alt="No messages illustration"
               />
               <div class="flex flex-col mt-6 w-full max-md:max-w-full">
-  <h2
-    class="self-center text-2xl max-[320px]:text-lg font-semibold text-center text-gray-900 leading-[32px] max-md:max-w-full"
-  >
-    {{ emptyStateTitle }}
-  </h2>
-  <div
-    class="gap-1 mt-2 w-full text-base max-[320px]:text-sm font-medium text-slate-700 max-md:max-w-full"
-  >
-    <p
-      class="text-base max-[320px]:text-sm leading-[24px] text-center text-slate-700 max-md:max-w-full"
-    >
-      {{ emptyStateDescription }}
-    </p>
-                  <div class="flex flex-wrap gap-1.5 justify-center items-center mt-1 w-full max-md:max-w-full">
-                    <span class="text-base max-[320px]:text-sm  leading-[24px] text-slate-700">
+                <h2
+                  class="self-center text-2xl max-[320px]:text-lg font-semibold text-center text-gray-900 leading-[32px] max-md:max-w-full"
+                >
+                  {{ emptyStateTitle }}
+                </h2>
+                <div
+                  class="gap-1 mt-2 w-full text-base max-[320px]:text-sm font-medium text-slate-700 max-md:max-w-full"
+                >
+                  <p
+                    class="text-base max-[320px]:text-sm leading-[24px] text-center text-slate-700 max-md:max-w-full"
+                  >
+                    {{ emptyStateDescription }}
+                  </p>
+                  <div
+                    class="flex flex-wrap gap-1.5 justify-center items-center mt-1 w-full max-md:max-w-full"
+                  >
+                    <span
+                      class="text-base max-[320px]:text-sm leading-[24px] text-slate-700"
+                    >
                       {{ emptyStateAdditionalText }}
                     </span>
                     <img
@@ -105,7 +147,9 @@
                       class="object-contain shrink-0 self-stretch my-auto aspect-[5.71] w-[114px]"
                       alt="Pro badge"
                     />
-                    <span class="text-base max-[320px]:text-sm  leading-[24px] text-slate-700">
+                    <span
+                      class="text-base max-[320px]:text-sm leading-[24px] text-slate-700"
+                    >
                       {{ emptyStateSubscriptionText }}
                     </span>
                   </div>
@@ -117,7 +161,9 @@
               (click)="toggleMessages()"
               type="button"
             >
-              <span class="text-base text-white leading-[24px]">{{ emptyStateButtonText }}</span>
+              <span class="text-base text-white leading-[24px]">{{
+                emptyStateButtonText
+              }}</span>
               <img
                 [src]="emptyStateButtonIconSrc"
                 class="object-contain shrink-0 self-stretch my-auto w-5 aspect-square"
@@ -126,43 +172,64 @@
             </button>
           </div>
         </section>
-        <div *ngIf="!isProUser" class="w-full px-6 pb-6 max-md:px-4 max-md:pb-4">
-        <div class="box-border flex relative gap-2 items-center self-stretch p-3 w-full bg-gray-50 rounded-xl border-t border-l border-solid border-l-gray-200 border-t-gray-200 max-[320px]:flex-col max-[320px]:gap-2 max-[320px]:p-2">
-          <header class="flex relative gap-1 items-center pr-1 rounded-full flex-[1_0_0] max-[320px]:flex-col max-[320px]:gap-1.5 max-[320px]:text-center">
-            <h2 class="relative text-base max-[320px]:text-sm font-medium leading-6 max-[320px]:leading-5 text-slate-700">
-              Get
-            </h2>
-            <img
-              [src]="logoUrl"
-              [alt]="logoAltText"
-              class="relative h-5 max-[320px]:h-4 aspect-[135.60/24.06] w-[113px] max-[320px]:w-[90px] max-[320px]:self-center"
-            />
-            <p class="relative text-base max-[320px]:text-sm font-medium leading-6 max-[320px]:leading-5 flex-[1_0_0] text-slate-700">
-              {{ promoText }}
-            </p>
-          </header>
-          <button
-            type="button"
-            class="flex relative gap-1 justify-center items-center px-3 py-2 bg-green-600 rounded-lg border-2 border-solid shadow-sm cursor-pointer border-white border-opacity-10 max-[320px]:px-3 max-[320px]:py-2 max-[320px]:w-full"
+        <div
+          *ngIf="!isProUser"
+          class="w-full px-6 pb-6 max-md:px-4 max-md:pb-4"
+        >
+          <div
+            class="box-border flex relative gap-2 items-center self-stretch p-3 w-full bg-gray-50 rounded-xl border-t border-l border-solid border-l-gray-200 border-t-gray-200 max-[320px]:flex-col max-[320px]:gap-2 max-[320px]:p-2"
           >
-            <span class="relative px-0.5 py-0 text-sm max-[320px]:text-xs font-semibold leading-5 max-[320px]:leading-4 text-white">
-              {{ buttonText }}
-            </span>
-          </button>
-        </div>
+            <header
+              class="flex relative gap-1 items-center pr-1 rounded-full flex-[1_0_0] max-[320px]:flex-col max-[320px]:gap-1.5 max-[320px]:text-center"
+            >
+              <h2
+                class="relative text-base max-[320px]:text-sm font-medium leading-6 max-[320px]:leading-5 text-slate-700"
+              >
+                Get
+              </h2>
+              <img
+                [src]="logoUrl"
+                [alt]="logoAltText"
+                class="relative h-5 max-[320px]:h-4 aspect-[135.60/24.06] w-[113px] max-[320px]:w-[90px] max-[320px]:self-center"
+              />
+              <p
+                class="relative text-base max-[320px]:text-sm font-medium leading-6 max-[320px]:leading-5 flex-[1_0_0] text-slate-700"
+              >
+                {{ promoText }}
+              </p>
+            </header>
+            <button
+              type="button"
+              class="flex relative gap-1 justify-center items-center px-3 py-2 bg-green-600 rounded-lg border-2 border-solid shadow-sm cursor-pointer border-white border-opacity-10 max-[320px]:px-3 max-[320px]:py-2 max-[320px]:w-full"
+            >
+              <span
+                class="relative px-0.5 py-0 text-sm max-[320px]:text-xs font-semibold leading-5 max-[320px]:leading-4 text-white"
+              >
+                {{ buttonText }}
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </main>
 
-  <div *ngIf="showMessagesSection || isProUser" class="flex overflow-hidden flex-col gap-4 justify-center self-stretch p-2">
-    <div class="flex overflow-hidden flex-1 rounded-xl border border-solid border-[color:var(--Colors-Border-border-secondary,#E4E7EC)] size-full">
-      <!-- Chat Sidebar -->
-      <div class="gap-1 self-start pt-0 pb-0 min-w-0 pl-0 pr-0 w-[420px] max-md:w-full relative" [class.max-md:hidden]="showChatView">
+  <div
+    *ngIf="showMessagesSection || isProUser"
+    class="flex overflow-hidden flex-col gap-4 justify-center self-stretch p-2"
+  >
+    <div
+      class="flex overflow-hidden flex-1 rounded-xl border border-solid border-[color:var(--Colors-Border-border-secondary,#E4E7EC)] size-full"
+    >
+      <div
+        class="gap-1 self-start pt-0 pb-0 min-w-0 pl-0 pr-0 w-[420px] max-md:w-full relative"
+        [class.max-md:hidden]="showChatView"
+      >
         <div class="w-full text-xs leading-none">
           <div class="flex flex-col gap-2 justify-center w-full p-1">
-            <!-- Search Bar -->
-            <div class="flex gap-1 mt-0 items-center w-full font-medium text-gray-500 rounded-full border border-solid shadow-sm bg-[#FFF] border-[color:var(--Colors-Border-border-secondary,#E4E7EC)] px-2">
+            <div
+              class="flex gap-1 mt-0 items-center w-full font-medium text-gray-500 rounded-full border border-solid shadow-sm bg-[#FFF] border-[color:var(--Colors-Border-border-secondary,#E4E7EC)] px-2"
+            >
               <img
                 src="images/search-icon.svg"
                 class="object-contain shrink-0 self-stretch my-auto w-3 aspect-square"
@@ -177,183 +244,246 @@
               />
             </div>
 
-            <!-- Filter Buttons -->
-            <div class="flex gap-1 items-start mt-1 w-full font-semibold text-slate-700 overflow-x-auto pb-1">
+            <div
+              class="flex gap-1 items-start mt-1 w-full font-semibold text-slate-700 overflow-x-auto pb-1"
+            >
               <button
                 (click)="setActiveTab('all')"
                 [class.bg-[#C63C92]]="activeTab === 'all'"
                 [class.text-white]="activeTab === 'all'"
-                class="flex gap-1 justify-center items-center px-2 py-1 whitespace-nowrap rounded-lg border border-solid shadow-sm bg-[#C63C92] border-[color:var(--Component-colors-Components-Buttons-Secondary-button-secondary-border,#D0D5DD)]">
+                class="flex gap-1 justify-center items-center px-2 py-1 whitespace-nowrap rounded-lg border border-solid shadow-sm bg-[#C63C92] border-[color:var(--Component-colors-Components-Buttons-Secondary-button-secondary-border,#D0D5DD)]"
+              >
                 <span class="text-[10px] leading-[12px]">All</span>
               </button>
               <button
                 (click)="setActiveTab('unread')"
                 [class.bg-[#C63C92]]="activeTab === 'unread'"
                 [class.text-white]="activeTab === 'unread'"
-                class="flex gap-1 justify-center items-center px-2 py-1 whitespace-nowrap rounded-lg border border-solid shadow-sm bg-[#C63C92] border-[color:var(--Component-colors-Components-Buttons-Secondary-button-secondary-border,#D0D5DD)]">
+                class="flex gap-1 justify-center items-center px-2 py-1 whitespace-nowrap rounded-lg border border-solid shadow-sm bg-[#C63C92] border-[color:var(--Component-colors-Components-Buttons-Secondary-button-secondary-border,#D0D5DD)]"
+              >
                 <span class="text-[10px] leading-[12px]">Unread</span>
               </button>
               <button
                 (click)="setActiveTab('mayMessage')"
                 [class.bg-[#C63C92]]="activeTab === 'mayMessage'"
                 [class.text-white]="activeTab === 'mayMessage'"
-                class="flex gap-1 justify-center items-center px-2 py-1 whitespace-nowrap rounded-lg border border-solid shadow-sm bg-[#C63C92] border-[color:var(--Component-colors-Components-Buttons-Secondary-button-secondary-border,#D0D5DD)]">
-                <span class="text-[8px] leading-[10px]">You May Message ({{ mayMessageCount }})</span>
+                class="flex gap-1 justify-center items-center px-2 py-1 whitespace-nowrap rounded-lg border border-solid shadow-sm bg-[#C63C92] border-[color:var(--Component-colors-Components-Buttons-Secondary-button-secondary-border,#D0D5DD)]"
+              >
+                <span class="text-[8px] leading-[10px]"
+                  >You May Message ({{ mayMessageCount }})</span
+                >
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Message List -->
         <div class="relative mt-1 w-full h-[calc(70vh-50px)] overflow-y-auto">
-  <div *ngFor="let message of filteredMessages"
-       class="flex relative z-0 gap-2 items-start w-full p-1 md:p-2 cursor-pointer transition-colors duration-200"
-       [class.bg-pink-50]="message.conversationId === selectedMessage?.conversationId"
-       [class.hover:bg-pink-100]="message.conversationId !== selectedMessage?.conversationId"
-       (click)="openChat(message)">
-
-    <div *ngIf="message.conversationId === selectedMessage?.conversationId"
-         class="absolute left-0 top-0 bottom-0 w-1 bg-pink-600 rounded-r"></div>
-
-    <img
-      [src]="message.companyLogo"
-      class="object-contain shrink-0 w-7 h-7 md:w-9 md:h-9 rounded-full"
-      [alt]="message.companyName + ' avatar'"
-    />
-    <div class="flex flex-col flex-1 min-w-0 overflow-hidden">
-      <div class="flex justify-between items-center w-full">
-        <h3 class="text-xs md:text-sm font-medium text-slate-600 truncate">
-          {{ message.companyName }}
-        </h3>
-        <div class="flex items-center gap-1 text-[10px] md:text-xs text-slate-500">
-          <img
-            [src]="'images/clock.svg'"
-            class="w-2 h-2 md:w-3 md:h-3"
-            alt="Time icon"
-          />
-          <span>{{ getRelativeTime(message.lastChattedOn) }}</span>
-        </div>
-      </div>
-
-      <div class="flex justify-between items-center w-full">
-        <p class="text-[10px] md:text-xs text-slate-700 truncate min-w-0"
-           [class.font-semibold]="!message.isRead">
-           {{ message.lastMessage }}
-        </p>
-        <div *ngIf="message.unreadMessage"
-             class="flex-shrink-0 flex items-center justify-center w-4 h-4 md:w-5 md:h-5 text-[8px] md:text-[10px] font-semibold text-pink-50 bg-pink-600 rounded-full">
-          {{ message.unreadMessage.toString().padStart(2, '0') }}
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <div *ngIf="isEmptyInbox" class="flex flex-col items-center justify-center h-full p-4">
-      <div class="text-center">
-        <h3 class="text-sm md:text-base font-medium text-gray-900 mb-1">There are no interactions</h3>
-      </div>
-    </div>
-
-    <div *ngIf="showUpgradeToast && !toastPermanentlyDismissed" class="sticky bottom-0 z-50 p-2">
-      <div
-        class="overflow-hidden p-0 bg-white rounded-lg border border-solid shadow-lg border-[color:var(--Colors-Border-border-secondary,#E4E7EC)]"
-        role="alert"
-        aria-live="polite"
-      >
-        <div class="flex relative gap-2 items-start p-2 w-full">
-          <img
-            src="images/upgrade-mesagesvg.svg"
-            class="object-contain z-0 shrink-0 w-8 md:w-10 aspect-[1/1] fill-green-100 stroke-[1px] stroke-emerald-300"
-            alt="Upgrade notification icon"
-          />
-
-          <section class="z-0 flex-1 shrink gap-2 basis-4 min-w-0">
-            <header class="gap-1 w-full">
-              <h2 class="flex-1 shrink self-stretch w-full text-xs md:text-sm font-semibold leading-none text-slate-700">
-                Upgrade Your Plan
-              </h2>
-              <p class="text-[10px] md:text-xs leading-[14px] md:leading-[16px] text-slate-600">
-                Upgrade your plan to send more messages and talk directly to more employers.
-              </p>
-            </header>
-
-            <section
-              class="flex gap-2 items-center mt-1 w-full text-xs md:text-sm font-semibold leading-none"
-              role="group"
-              aria-label="Notification actions"
-            >
-              <button
-                type="button"
-                (click)="dismissToast()"
-                class="text-[10px] md:text-xs"
-              >
-                Dismiss
-              </button>
-              <button
-                type="button"
-                class="text-[10px] md:text-xs text-pink-700 leading-[16px]"
-                (click)="upgradeNow()"
-              >
-                Upgrade Plan
-              </button>
-            </section>
-          </section>
-
-          <button
-            type="button"
-            class="flex overflow-hidden absolute top-0 right-0 z-0 gap-1 justify-center items-center p-1 w-6 md:w-8 rounded-lg"
-            aria-label="Close notification"
-            (click)="dismissToast()"
+          <div
+            *ngFor="let message of filteredMessages"
+            class="flex relative z-0 gap-2 items-start w-full p-1 md:p-2 cursor-pointer transition-colors duration-200"
+            [class.bg-pink-50]="
+              message.conversationId === selectedMessage?.conversationId
+            "
+            [class.hover:bg-pink-100]="
+              message.conversationId !== selectedMessage?.conversationId
+            "
+            (click)="openChat(message)"
           >
+            <div
+              *ngIf="message.conversationId === selectedMessage?.conversationId"
+              class="absolute left-0 top-0 bottom-0 w-1 bg-pink-600 rounded-r"
+            ></div>
+
             <img
-              src="images/x-close.svg"
-              class="object-contain self-stretch my-auto w-3 md:w-4 aspect-square"
-              alt="Close"
+              [src]="message.companyLogo"
+              class="object-contain shrink-0 w-7 h-7 md:w-9 md:h-9 rounded-full"
+              [alt]="message.companyName + ' avatar'"
             />
-          </button>
+            <div class="flex flex-col flex-1 min-w-0 overflow-hidden">
+              <div class="flex justify-between items-center w-full">
+                <h3
+                  class="text-xs md:text-sm font-medium text-slate-600 truncate"
+                >
+                  {{ message.companyName }}
+                </h3>
+                <div
+                  class="flex items-center gap-1 text-[10px] md:text-xs text-slate-500"
+                >
+                  <img
+                    [src]="'images/clock.svg'"
+                    class="w-2 h-2 md:w-3 md:h-3"
+                    alt="Time icon"
+                  />
+                  <span>{{ getRelativeTime(message.lastChattedOn) }}</span>
+                </div>
+              </div>
+
+              <div class="flex justify-between items-center w-full">
+                <p
+                  class="text-[10px] md:text-xs text-slate-700 truncate min-w-0"
+                  [class.font-semibold]="!message.isRead"
+                >
+                  {{ message.lastMessage }}
+                </p>
+                <div
+                  *ngIf="message.unreadMessage"
+                  class="flex-shrink-0 flex items-center justify-center w-4 h-4 md:w-5 md:h-5 text-[8px] md:text-[10px] font-semibold text-pink-50 bg-pink-600 rounded-full"
+                >
+                  {{ message.unreadMessage.toString().padStart(2, "0") }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            *ngIf="isEmptyInbox"
+            class="flex flex-col items-center justify-center h-full p-4"
+          >
+            <div class="text-center">
+              <h3 class="text-sm md:text-base font-medium text-gray-900 mb-1">
+                There are no interactions
+              </h3>
+            </div>
+          </div>
+
+          <div
+            *ngIf="showUpgradeToast && !toastPermanentlyDismissed"
+            class="sticky bottom-0 z-50 p-2"
+          >
+            <div
+              class="overflow-hidden p-0 bg-white rounded-lg border border-solid shadow-lg border-[color:var(--Colors-Border-border-secondary,#E4E7EC)]"
+              role="alert"
+              aria-live="polite"
+            >
+              <div class="flex relative gap-2 items-start p-2 w-full">
+                <img
+                  src="images/upgrade-mesagesvg.svg"
+                  class="object-contain z-0 shrink-0 w-8 md:w-10 aspect-[1/1] fill-green-100 stroke-[1px] stroke-emerald-300"
+                  alt="Upgrade notification icon"
+                />
+
+                <section class="z-0 flex-1 shrink gap-2 basis-4 min-w-0">
+                  <header class="gap-1 w-full">
+                    <h2
+                      class="flex-1 shrink self-stretch w-full text-xs md:text-sm font-semibold leading-none text-slate-700"
+                    >
+                      Upgrade Your Plan
+                    </h2>
+                    <p
+                      class="text-[10px] md:text-xs leading-[14px] md:leading-[16px] text-slate-600"
+                    >
+                      Upgrade your plan to send more messages and talk directly
+                      to more employers.
+                    </p>
+                  </header>
+
+                  <section
+                    class="flex gap-2 items-center mt-1 w-full text-xs md:text-sm font-semibold leading-none"
+                    role="group"
+                    aria-label="Notification actions"
+                  >
+                    <button
+                      type="button"
+                      (click)="dismissToast()"
+                      class="text-[10px] md:text-xs"
+                    >
+                      Dismiss
+                    </button>
+                    <button
+                      type="button"
+                      class="text-[10px] md:text-xs text-pink-700 leading-[16px]"
+                      (click)="upgradeNow()"
+                    >
+                      Upgrade Plan
+                    </button>
+                  </section>
+                </section>
+
+                <button
+                  type="button"
+                  class="flex overflow-hidden absolute top-0 right-0 z-0 gap-1 justify-center items-center p-1 w-6 md:w-8 rounded-lg"
+                  aria-label="Close notification"
+                  (click)="dismissToast()"
+                >
+                  <img
+                    src="images/x-close.svg"
+                    class="object-contain self-stretch my-auto w-3 md:w-4 aspect-square"
+                    alt="Close"
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="sticky bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent pointer-events-none"
+          ></div>
         </div>
-      </div>
-    </div>
-
-    <div class="sticky bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
-  </div>
-        <div class="absolute right-0 top-0 bottom-0 w-px bg-gray-200 max-md:hidden"></div>
+        <div
+          class="absolute right-0 top-0 bottom-0 w-px bg-gray-200 max-md:hidden"
+        ></div>
       </div>
 
-      <!-- Chat View -->
-      <div *ngIf="showChatView" class="flex flex-col flex-1 shrink justify-between min-w-0 h-[calc(100vh-150px)] max-md:w-full">
-        <!-- Chat Header with Back Button -->
-        <header class="flex gap-2 items-center self-stretch px-2 py-1 border-b border-gray-200 bg-white rounded-t-xl">
-          <!-- Back Button for Mobile View -->
+      <div
+        *ngIf="showChatView"
+        class="flex flex-col flex-1 shrink justify-between min-w-0 h-[calc(100vh-150px)] max-md:w-full"
+      >
+        <header
+          class="flex gap-2 items-center self-stretch px-2 py-1 border-b border-gray-200 bg-white rounded-t-xl"
+        >
           <button
             class="md:hidden flex items-center justify-center w-8 h-8"
             (click)="goBack()"
             aria-label="Back to message list"
           >
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12.5 15L7.5 10L12.5 5" stroke="#374151" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12.5 15L7.5 10L12.5 5"
+                stroke="#374151"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
           <div class="flex-shrink-0">
-            
-            <!-- Use ng-container to conditionally render image or initials -->
-          <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
-            <ng-container *ngIf="selectedMessage?.companyLogo; else defaultAvatar">
-              <img [src]="selectedMessage.companyLogo" alt="{{ selectedMessage?.companyName }}" class="object-cover w-full h-full rounded-full" />
-            </ng-container>
-            <ng-template #defaultAvatar>
-              {{ selectedMessage?.companyName?.charAt(0) || 'HR' }}
-            </ng-template>
-          </div>
+            <div
+              class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold"
+            >
+              <ng-container
+                *ngIf="selectedMessage?.companyLogo; else defaultAvatar"
+              >
+                <img
+                  [src]="selectedMessage.companyLogo"
+                  alt="{{ selectedMessage?.companyName }}"
+                  class="object-cover w-full h-full rounded-full"
+                />
+              </ng-container>
+              <ng-template #defaultAvatar>
+                {{ selectedMessage?.companyName?.charAt(0) || "HR" }}
+              </ng-template>
+            </div>
           </div>
           <div class="flex flex-col flex-1 gap-0 items-start">
-            <h1 class="text-xs font-semibold leading-4 text-gray-900">{{ selectedMessage?.companyName || 'HR' }}</h1>
- <p class="text-[10px] leading-3 text-gray-600 truncate w-full">{{ selectedMessage?.jobTitle }}</p>
+            <h1 class="text-xs font-semibold leading-4 text-gray-900">
+              {{ selectedMessage?.companyName || "HR" }}
+            </h1>
+            <p class="text-[10px] leading-3 text-gray-600 truncate w-full">
+              {{ selectedMessage?.jobTitle }}
+            </p>
           </div>
         </header>
 
-        <!-- Empty state for pro users with no receiver messages -->
-        <div *ngIf="isProUser && !hasReceiverMessage" class="flex flex-col items-center justify-center h-full p-2 text-center">
+        <div
+          *ngIf="isProUser && !hasReceiverMessage"
+          class="flex flex-col items-center justify-center h-full p-2 text-center"
+        >
           <img
             [src]="emptyStateIllustrationSrcPro"
             class="object-contain self-center max-w-full aspect-[1.35] w-24 mb-2"
@@ -363,90 +493,130 @@
             Send a Direct Message to the Employer
           </h2>
           <p class="text-[9px] text-gray-600 mb-2 max-w-[280px] mx-auto">
-            Use this feature to follow up on your application, ask questions, or share important updates.
+            Use this feature to follow up on your application, ask questions, or
+            share important updates.
           </p>
         </div>
 
-        <!-- Empty state for non-pro users -->
         <div
-  *ngIf="!isProUser && !hasReceiverMessage"
-  class="flex flex-col items-center justify-center h-full p-2 text-center translate-y-[30%]"
->
- <img
+          *ngIf="!isProUser && !hasReceiverMessage"
+          class="flex flex-col items-center justify-center h-full p-2 text-center translate-y-[30%]"
+        >
+          <img
             src="images/eployermessagelanding.svg"
             class="object-contain self-center max-w-full aspect-[2.13] w-[180px] mb-2"
             alt="Direct messaging illustration"
           />
-  <h2 class="text-xs md:text-lg font-semibold text-gray-900 mb-1 md:mb-2">
-    Send a Direct Message to The Employer
-  </h2>
-  <div
-    class="flex flex-wrap text-[9px] md:text-sm items-center justify-center gap-0.5 md:gap-2 text-gray-600 mb-2 max-w-[280px] md:max-w-[480px]"
-  >
-    <span>Want to reach out to employers directly? Get</span>
-    <img
-      src="images/Bdjobs Pro 1.svg"
-      alt="Premium logo"
-      class="h-2.5 md:h-6 object-contain"
-    />
-    <span>subscription to connect.</span>
-  </div>
-</div>
-
-
-  <main *ngIf="(isProUser || hasReceiverMessage) && selectedMessage?.receivedMessages?.length > 0 && !(isProUser && !hasReceiverMessage)"
-    class="flex flex-col flex-1 gap-2 items-start self-stretch px-2 py-1 bg-gray-50 overflow-y-auto"
-    #messageContainer>
-      <!-- Chat Messages -->
-      <div *ngFor="let msg of selectedMessage?.receivedMessages" class="w-full">
-        <!-- Employer messages on the left -->
-        <div *ngIf="msg.textSenderType === 'R'" class="flex gap-1 items-start w-full">
-          <div class="flex-shrink-0">
-          <ng-container *ngIf="selectedMessage?.companyLogo; else placeholderLogo">
-            <img [src]="selectedMessage.companyLogo" alt="{{ selectedMessage?.companyName }}" class="w-6 h-6 rounded-full object-cover" />
-          </ng-container>
-          <ng-template #placeholderLogo>
-            <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-[10px]">HR</div>
-          </ng-template>
-        </div>
-          <div class="flex flex-col gap-0 max-w-[70%]">
-            <div class="px-2 py-1 bg-white rounded-lg border border-gray-200 shadow-xs">
-              <div class="text-[10px] leading-3 text-gray-800">{{ msg.text }}</div>
-            </div>
-            <div class="text-[8px] text-gray-500 ml-1">{{ msg.textSendTime }}</div>
+          <h2
+            class="text-xs md:text-lg font-semibold text-gray-900 mb-1 md:mb-2"
+          >
+            Send a Direct Message to The Employer
+          </h2>
+          <div
+            class="flex flex-wrap text-[9px] md:text-sm items-center justify-center gap-0.5 md:gap-2 text-gray-600 mb-2 max-w-[280px] md:max-w-[480px]"
+          >
+            <span>Want to reach out to employers directly? Get</span>
+            <img
+              src="images/Bdjobs Pro 1.svg"
+              alt="Premium logo"
+              class="h-2.5 md:h-6 object-contain"
+            />
+            <span>subscription to connect.</span>
           </div>
         </div>
 
-        <!-- Applicant messages on the right -->
-        <div *ngIf="msg.textSenderType === 'A'" class="flex gap-1 justify-end items-start w-full">
-          <div class="flex flex-col gap-0 items-end max-w-[70%]">
-            <div class="px-2 py-1 bg-indigo-50 rounded-lg border border-indigo-100 shadow-xs">
-              <div class="text-[10px] leading-3 text-gray-800">{{ msg.text }}</div>
+        <main
+          *ngIf="
+            (isProUser || hasReceiverMessage) &&
+            selectedMessage?.receivedMessages?.length > 0 &&
+            !(isProUser && !hasReceiverMessage)
+          "
+          class="flex flex-col flex-1 gap-2 items-start self-stretch px-2 py-1 bg-gray-50 overflow-y-auto"
+          #messageContainer
+        >
+          <div
+            *ngFor="let msg of selectedMessage?.receivedMessages"
+            class="w-full"
+          >
+            <div
+              *ngIf="msg.textSenderType === 'R'"
+              class="flex gap-1 items-start w-full"
+            >
+              <div class="flex-shrink-0">
+                <ng-container
+                  *ngIf="selectedMessage?.companyLogo; else placeholderLogo"
+                >
+                  <img
+                    [src]="selectedMessage.companyLogo"
+                    alt="{{ selectedMessage?.companyName }}"
+                    class="w-6 h-6 rounded-full object-cover"
+                  />
+                </ng-container>
+                <ng-template #placeholderLogo>
+                  <div
+                    class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-[10px]"
+                  >
+                    HR
+                  </div>
+                </ng-template>
+              </div>
+              <div class="flex flex-col gap-0 max-w-[70%]">
+                <div
+                  class="px-2 py-1 bg-white rounded-lg border border-gray-200 shadow-xs"
+                >
+                  <div class="text-[10px] leading-3 text-gray-800">
+                    {{ msg.text }}
+                  </div>
+                </div>
+                <div class="text-[8px] text-gray-500 ml-1">
+                  {{ msg.textSendTime }}
+                </div>
+              </div>
             </div>
-            <div class="flex items-center gap-0.5 text-[8px] text-gray-500">
-              <span>{{ msg.textSendTime }}</span>
-              <img
-                src="images/double-tik-message.svg"
-                class="w-2 h-2"
-                [ngStyle]="{
-                  filter: selectedMessage?.isRead
-                    ? 'invert(33%) sepia(74%) saturate(5361%) hue-rotate(316deg) brightness(97%) contrast(92%)'
-                    : 'none'
-                }"
-              >
+
+            <div
+              *ngIf="msg.textSenderType === 'A'"
+              class="flex gap-1 justify-end items-start w-full"
+            >
+              <div class="flex flex-col gap-0 items-end max-w-[70%]">
+                <div
+                  class="px-2 py-1 bg-indigo-50 rounded-lg border border-indigo-100 shadow-xs"
+                >
+                  <div class="text-[10px] leading-3 text-gray-800">
+                    {{ msg.text }}
+                  </div>
+                </div>
+                <div class="flex items-center gap-0.5 text-[8px] text-gray-500">
+                  <span>{{ msg.textSendTime }}</span>
+                  <img
+                    src="images/double-tik-message.svg"
+                    class="w-2 h-2"
+                    [ngStyle]="{
+                      filter: selectedMessage?.isRead
+                        ? 'invert(33%) sepia(74%) saturate(5361%) hue-rotate(316deg) brightness(97%) contrast(92%)'
+                        : 'none',
+                    }"
+                  />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-          <!-- System Message if reply limit reached -->
-          <div *ngIf="!canReply(selectedMessage?.conversationId) || selectedMessage?.isBlockChat" class="w-full px-1 py-0 translate-y-[80px]">
-           <section
+          <div
+            *ngIf="
+              !canReply(selectedMessage?.conversationId) ||
+              selectedMessage?.isBlockChat
+            "
+            class="w-full px-1 py-0 translate-y-[80px]"
+          >
+            <section
               class="flex relative flex-col gap-0.5 items-start self-stretch p-1 bg-red-50 rounded-md border border-red-200 border-solid shadow-sm"
               role="alert"
               [attr.aria-label]="ariaLabel"
             >
-              <div class="flex relative justify-between items-center self-stretch">
+              <div
+                class="flex relative justify-between items-center self-stretch"
+              >
                 <div class="flex relative gap-0.5 items-center w-full">
                   <div class="flex-shrink-0">
                     <svg
@@ -481,36 +651,49 @@
           </div>
         </main>
 
-        <!-- Pro subscription prompt for non-pro users -->
-        <div *ngIf="!isProUser && !hasReceiverMessage" class="flex flex-col items-center justify-center h-full">
-    <div class="transform  translate-y-[40px] md:translate-y-[70px] w-full">
-
-  <div class="flex items-center justify-between gap-1 md:gap-4 p-1 md:p-4 w-full bg-gray-50 border-t border-l border-solid border-t-[color:var(--Colors-Border-border-secondary,#E4E7EC)] border-l-[color:var(--Colors-Border-border-secondary,#E4E7EC)]">
-    <div class="flex items-center gap-0.5 md:gap-2 text-[9px] md:text-sm font-medium text-slate-700 min-w-0 overflow-hidden">
-      <span>Get</span>
-      <img
-        src="images/bdjobs-pro.svg"
-        alt="Premium logo"
-        class="w-[50px] md:w-[80px] object-contain shrink-0"
-      /> 
-      <span>
-        to message employers.
-      </span>
-    </div>
-    <button
-      class="flex-shrink-0 px-1.5 md:px-3 py-0.5 md:py-1.5 text-[9px] md:text-sm font-semibold text-white rounded-md border border-white shadow-sm bg-[#0DB14B] hover:bg-green-600 transition-colors duration-200"
-      (click)="onGetProClick()"
-    >
-      Get pro
-    </button>
-  </div>
-</div>
+        <div
+          *ngIf="!isProUser && !hasReceiverMessage"
+          class="flex flex-col items-center justify-center h-full"
+        >
+          <div
+            class="transform translate-y-[40px] md:translate-y-[70px] w-full"
+          >
+            <div
+              class="flex items-center justify-between gap-1 md:gap-4 p-1 md:p-4 w-full bg-gray-50 border-t border-l border-solid border-t-[color:var(--Colors-Border-border-secondary,#E4E7EC)] border-l-[color:var(--Colors-Border-border-secondary,#E4E7EC)]"
+            >
+              <div
+                class="flex items-center gap-0.5 md:gap-2 text-[9px] md:text-sm font-medium text-slate-700 min-w-0 overflow-hidden"
+              >
+                <span>Get</span>
+                <img
+                  src="images/bdjobs-pro.svg"
+                  alt="Premium logo"
+                  class="w-[50px] md:w-[80px] object-contain shrink-0"
+                />
+                <span> to message employers. </span>
+              </div>
+              <button
+                class="flex-shrink-0 px-1.5 md:px-3 py-0.5 md:py-1.5 text-[9px] md:text-sm font-semibold text-white rounded-md border border-white shadow-sm bg-[#0DB14B] hover:bg-green-600 transition-colors duration-200"
+                (click)="onGetProClick()"
+              >
+                Get pro
+              </button>
+            </div>
+          </div>
         </div>
 
-        <!-- Message Input -->
-        <div *ngIf="(isProUser || hasReceiverMessage) && selectedMessage?.receivedMessages?.length > 0 && canReply(selectedMessage?.conversationId) && !selectedMessage?.isBlockChat"
-             class="flex gap-1 items-center self-stretch px-1.5 py-1 bg-[#F9FAFB]">
-          <div class="flex flex-1 gap-0.5 items-center py-0.5 pr-1 pl-1.5 bg-white rounded-full border border-gray-200 border-solid shadow-sm">
+        <div
+          *ngIf="
+            (isProUser || hasReceiverMessage) &&
+            selectedMessage?.receivedMessages?.length > 0 &&
+            canReply(selectedMessage?.conversationId) &&
+            !selectedMessage?.isBlockChat
+          "
+          class="flex gap-1 items-center self-stretch px-1.5 py-1 bg-[#F9FAFB]"
+        >
+          <div
+            class="flex flex-1 gap-0.5 items-center py-0.5 pr-1 pl-1.5 bg-white rounded-full border border-gray-200 border-solid shadow-sm"
+          >
             <input
               type="text"
               [placeholder]="inputPlaceholder"
@@ -519,35 +702,58 @@
               (keyup.enter)="onSendMessage()"
             />
             <div class="relative w-5 h-5 flex items-center justify-center">
-              <div class="absolute w-full h-full rounded-full border-[1px] border-gray-200"></div>
+              <div
+                class="absolute w-full h-full rounded-full border-[1px] border-gray-200"
+              ></div>
               <div
                 class="absolute w-full h-full rounded-full"
                 [style.background]="conicGradient"
                 [style.mask]="'radial-gradient(transparent 55%, black 56%)'"
               ></div>
               <div class="relative z-10 text-[8px] font-semibold text-gray-900">
-                {{ formatNumber(max - sentMessageCounts[selectedMessage?.conversationId]) }}
+                {{
+                  formatNumber(
+                    max - sentMessageCounts[selectedMessage?.conversationId]
+                  )
+                }}
               </div>
             </div>
           </div>
           <button
             class="flex gap-0.5 items-center p-2 bg-pink-600 rounded-full border border-gray-200 border-solid shadow-sm cursor-pointer"
             (click)="onSendMessage()"
-            [disabled]="!currentMessage.trim()">
-            <svg width="12" height="12" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8.75182 10.0003H4.16849M4.09794 10.2432L2.15217 16.0555C1.99931 16.5121 1.92288 16.7404 1.97773 16.881C2.02536 17.0031 2.12767 17.0957 2.2539 17.1309C2.39927 17.1715 2.61882 17.0727 3.05793 16.8751L16.9842 10.6083C17.4128 10.4154 17.6271 10.319 17.6933 10.185C17.7508 10.0686 17.7508 9.93203 17.6933 9.81564C17.6271 9.68168 17.4128 9.58524 16.9842 9.39237L3.05308 3.12342C2.61529 2.92641 2.3964 2.82791 2.25118 2.86832C2.12506 2.90341 2.02277 2.99573 1.97497 3.1176C1.91993 3.25793 1.99555 3.48574 2.14678 3.94137L4.09848 9.82159C4.12446 9.89984 4.13744 9.93897 4.14257 9.97899C4.14712 10.0145 4.14707 10.0504 4.14243 10.0859C4.1372 10.1259 4.12412 10.165 4.09794 10.2432Z"
-                    stroke="#FCF3FA" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
-    </svg>
+            [disabled]="!currentMessage.trim()"
+          >
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M8.75182 10.0003H4.16849M4.09794 10.2432L2.15217 16.0555C1.99931 16.5121 1.92288 16.7404 1.97773 16.881C2.02536 17.0031 2.12767 17.0957 2.2539 17.1309C2.39927 17.1715 2.61882 17.0727 3.05793 16.8751L16.9842 10.6083C17.4128 10.4154 17.6271 10.319 17.6933 10.185C17.7508 10.0686 17.7508 9.93203 17.6933 9.81564C17.6271 9.68168 17.4128 9.58524 16.9842 9.39237L3.05308 3.12342C2.61529 2.92641 2.3964 2.82791 2.25118 2.86832C2.12506 2.90341 2.02277 2.99573 1.97497 3.1176C1.91993 3.25793 1.99555 3.48574 2.14678 3.94137L4.09848 9.82159C4.12446 9.89984 4.13744 9.93897 4.14257 9.97899C4.14712 10.0145 4.14707 10.0504 4.14243 10.0859C4.1372 10.1259 4.12412 10.165 4.09794 10.2432Z"
+                stroke="#FCF3FA"
+                stroke-width="1"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
           </button>
         </div>
       </div>
 
-      <!-- Promotion Panel (shown when no chat is selected) -->
-      <div *ngIf="!showChatView" class="flex flex-col flex-1 shrink justify-between min-w-60 max-md:hidden h-[calc(100vh-150px)]">
-        <main class="flex flex-col flex-1 shrink justify-between border-l border-gray-200 border-solid basis-0 border-l-[color:var(--Colors-Border-border-secondary,#E4E7EC)] min-w-60 h-[calc(100vh-150px)]">
+      <div
+        *ngIf="!showChatView"
+        class="flex flex-col flex-1 shrink justify-between min-w-60 max-md:hidden h-[calc(100vh-150px)]"
+      >
+        <main
+          class="flex flex-col flex-1 shrink justify-between border-l border-gray-200 border-solid basis-0 border-l-[color:var(--Colors-Border-border-secondary,#E4E7EC)] min-w-60 h-[calc(100vh-150px)]"
+        >
           <section class="flex flex-col items-center w-full px-6 max-md:px-5">
-            <!-- Image section perfectly centered using transform -->
-            <div class="flex flex-col items-center self-center max-w-full w-[493px] transform translate-y-[20%]">
+            <div
+              class="flex flex-col items-center self-center max-w-full w-[493px] transform translate-y-[20%]"
+            >
               <div class="flex flex-col gap-5 w-full">
                 <img
                   src="images/eployermessagelanding.svg"
@@ -557,79 +763,99 @@
                 <div class="gap-5 mt-5 w-full max-md:max-w-full">
                   <div class="flex flex-col w-full max-md:max-w-full">
                     <ng-container *ngIf="isProUser; else normalUserContent">
-                      <h1 class="text-xl font-semibold text-center text-gray-900 leading-[30px] max-md:max-w-full">
+                      <h1
+                        class="text-xl font-semibold text-center text-gray-900 leading-[30px] max-md:max-w-full"
+                      >
                         You can message the employer directly
                       </h1>
-                      <div class="flex flex-col gap-1 mt-2 w-full text-sm font-medium leading-5 text-slate-700 max-md:max-w-full">
-                        <p class="flex flex-wrap gap-1 justify-center items-center w-full max-md:max-w-full">
-                          <p class="flex items-center gap-1">
-                            <span class="text-[12px] leading-[20px] ml-8 text-slate-700">
-                              As a
-                            </span>
-                            <img
-                              src="images/bdjobs-pro.svg"
-                              class="object-contain w-[80px] h-auto"
-                              alt="Premium badge"
-                            />
-                            <span class="text-[12px] leading-[20px] text-slate-700">
-                              user, you're able to message employers directly to ask
-                            </span>
-                          </p>
-                          <p class="text-[12px] text-center leading-[20px] text-slate-700 max-md:max-w-full">
-                            questions and understand what they're looking for.
-                          </p>
-                        </div>
-                      </ng-container>
-
-                      <ng-template #normalUserContent>
-                        <h2 class="text-xl font-semibold text-center text-gray-900 mb-2">
-                          Send a Direct Message to The Employer
-                        </h2>
-                        <div class="flex flex-wrap items-center justify-center gap-1 text-gray-600 mb-20 max-w-md text-center">
-                          <span class="text-[12px]">Want to reach out to employers directly? Get</span>
+                      <div
+                        class="flex flex-col gap-1 mt-2 w-full text-sm font-medium leading-5 text-slate-700 max-md:max-w-full"
+                      >
+                        <p
+                          class="flex flex-wrap gap-1 justify-center items-center w-full max-md:max-w-full"
+                        ></p>
+                        <p class="flex items-center gap-1">
+                          <span
+                            class="text-[12px] leading-[20px] ml-8 text-slate-700"
+                          >
+                            As a
+                          </span>
                           <img
                             src="images/bdjobs-pro.svg"
-                            alt="Premium logo"
-                            class="h-5 object-contain"
+                            class="object-contain w-[80px] h-auto"
+                            alt="Premium badge"
                           />
-                          <span class="text-[12px]">subscription and start connecting right away.</span>
-                        </div>
-                      </ng-template>
-                    </div>
+                          <span
+                            class="text-[12px] leading-[20px] text-slate-700"
+                          >
+                            user, you're able to message employers directly to
+                            ask
+                          </span>
+                        </p>
+                        <p
+                          class="text-[12px] text-center leading-[20px] text-slate-700 max-md:max-w-full"
+                        >
+                          questions and understand what they're looking for.
+                        </p>
+                      </div>
+                    </ng-container>
+
+                    <ng-template #normalUserContent>
+                      <h2
+                        class="text-xl font-semibold text-center text-gray-900 mb-2"
+                      >
+                        Send a Direct Message to The Employer
+                      </h2>
+                      <div
+                        class="flex flex-wrap items-center justify-center gap-1 text-gray-600 mb-20 max-w-md text-center"
+                      >
+                        <span class="text-[12px]"
+                          >Want to reach out to employers directly? Get</span
+                        >
+                        <img
+                          src="images/bdjobs-pro.svg"
+                          alt="Premium logo"
+                          class="h-5 object-contain"
+                        />
+                        <span class="text-[12px]"
+                          >subscription and start connecting right away.</span
+                        >
+                      </div>
+                    </ng-template>
                   </div>
                 </div>
               </div>
-            </section>
-
-            <!-- Subscription section pinned to bottom -->
-            <div *ngIf="!isProUser" class="w-full px-6 pb-6 max-md:px-5">
-              <div
-                class="flex items-center justify-between gap-4 p-4 w-full bg-gray-50 rounded-xl border-t border-l border-solid border-l-[color:var(--Colors-Border-border-secondary,#E4E7EC)] border-t-[color:var(--Colors-Border-border-secondary,#E4E7EC)] flex-nowrap overflow-hidden"
-              >
-                <!-- Text and Image Block -->
-                <div class="flex items-center gap-2 text-sm font-medium text-slate-700 min-w-0 overflow-hidden">
-                  <span class="text-[11px]">Get</span>
-                  <img
-                    src="images/bdjobs-pro.svg"
-                    alt="Premium logo"
-                    class="w-[80px] object-contain shrink-0"
-                  />
-                  <span class="text-[11px]">
-                    Subscription use 'You May Message' feature.
-                  </span>
-                </div>
-
-                <!-- Button -->
-                <button
-                  class="flex-shrink-0 px-3 py-1.5 text-sm font-semibold text-white rounded-md border border-white shadow-sm bg-[#0DB14B] hover:bg-green-600 transition-colors duration-200"
-                  (click)="onGetProClick()"
-                >
-                  Get bdjobs pro
-                </button>
-              </div>
             </div>
-          </main>
-        </div>
+          </section>
+
+          <div *ngIf="!isProUser" class="w-full px-6 pb-6 max-md:px-5">
+            <div
+              class="flex items-center justify-between gap-4 p-4 w-full bg-gray-50 rounded-xl border-t border-l border-solid border-l-[color:var(--Colors-Border-border-secondary,#E4E7EC)] border-t-[color:var(--Colors-Border-border-secondary,#E4E7EC)] flex-nowrap overflow-hidden"
+            >
+              <div
+                class="flex items-center gap-2 text-sm font-medium text-slate-700 min-w-0 overflow-hidden"
+              >
+                <span class="text-[11px]">Get</span>
+                <img
+                  src="images/bdjobs-pro.svg"
+                  alt="Premium logo"
+                  class="w-[80px] object-contain shrink-0"
+                />
+                <span class="text-[11px]">
+                  Subscription use 'You May Message' feature.
+                </span>
+              </div>
+
+              <button
+                class="flex-shrink-0 px-3 py-1.5 text-sm font-semibold text-white rounded-md border border-white shadow-sm bg-[#0DB14B] hover:bg-green-600 transition-colors duration-200"
+                (click)="onGetProClick()"
+              >
+                Get bdjobs pro
+              </button>
+            </div>
+          </div>
+        </main>
       </div>
     </div>
   </div>
+</div>

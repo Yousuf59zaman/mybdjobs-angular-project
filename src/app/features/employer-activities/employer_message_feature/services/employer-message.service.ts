@@ -1,28 +1,39 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { ApiResponse, EmployerMessage, GetMessagesResponse, SendMessageRequest, SendMessageResponse } from '../models/employer-message';
+import {
+  ApiResponse,
+  EmployerMessage,
+  GetMessagesResponse,
+  SendMessageRequest,
+  SendMessageResponse,
+} from '../models/employer-message';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EmployerMessageService {
-  private apiUrl = 'https://mybdjobsorchestrator-odcx6humqq-as.a.run.app/api/EmployerActivities/GetMessageList';
-  private messagesUrl = 'https://mybdjobsorchestrator-odcx6humqq-as.a.run.app/api/EmployerActivities/GetMessages';
+  private apiUrl =
+    'https://mybdjobsorchestrator-odcx6humqq-as.a.run.app/api/EmployerActivities/GetMessageList';
+  private messagesUrl =
+    'https://mybdjobsorchestrator-odcx6humqq-as.a.run.app/api/EmployerActivities/GetMessages';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getMessageList(userGuid: string): Observable<EmployerMessage[]> {
     const params = new HttpParams().set('UserGuid', userGuid);
     return this.http.get<ApiResponse>(this.apiUrl, { params }).pipe(
-      map(response => {
-        const messageData = response.event.eventData.find(data => data.key === 'message');
+      map((response) => {
+        const messageData = response.event.eventData.find(
+          (data) => data.key === 'message',
+        );
         return messageData ? messageData.value : [];
       }),
-      catchError(error => {
-        console.error('Error fetching message list:', error);
-        return throwError(() => new Error('Something went wrong; please try again later.'));
-      })
+      catchError((error) => {
+        return throwError(
+          () => new Error('Something went wrong; please try again later.'),
+        );
+      }),
     );
   }
 
@@ -40,26 +51,28 @@ export class EmployerMessageService {
       .set('SenderType', params.SenderType)
       .set('ConversationId', params.ConversationId.toString());
 
-    return this.http.get<GetMessagesResponse[]>(this.messagesUrl, { params: httpParams }).pipe(
-      catchError(error => {
-        console.error('Error fetching messages:', error);
-        return throwError(() => new Error('Something went wrong; please try again later.'));
-      })
-    );
+    return this.http
+      .get<GetMessagesResponse[]>(this.messagesUrl, { params: httpParams })
+      .pipe(
+        catchError((error) => {
+          return throwError(
+            () => new Error('Something went wrong; please try again later.'),
+          );
+        }),
+      );
   }
 
-
   sendMessage(request: SendMessageRequest): Observable<SendMessageResponse[]> {
-    console.log('Sending message request:', request);
-
-    return this.http.post<SendMessageResponse[]>(
-      'https://mybdjobsorchestrator-odcx6humqq-as.a.run.app/api/EmployerActivities/ApplicantMessageSend',
-      request
-    ).pipe(
-      catchError(error => {
-        console.error('Error sending message:', error);
-        return throwError(() => new Error('Failed to send message. Please try again.'));
-      })
-    );
+    return this.http
+      .post<
+        SendMessageResponse[]
+      >('https://mybdjobsorchestrator-odcx6humqq-as.a.run.app/api/EmployerActivities/ApplicantMessageSend', request)
+      .pipe(
+        catchError((error) => {
+          return throwError(
+            () => new Error('Failed to send message. Please try again.'),
+          );
+        }),
+      );
   }
 }
