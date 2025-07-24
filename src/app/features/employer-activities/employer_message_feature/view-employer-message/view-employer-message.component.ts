@@ -78,6 +78,13 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
   toastShown: boolean = false;
   userGuid: string | null = null;
   sentMessageCounts: { [key: string]: number } = {};
+  /**
+   * Tracks if a conversation has ever reached the applicant messaging limit.
+   * When the employer responds after the limit is reached the applicant is
+   * allowed to reply again, but we still want to notify them that the limit was
+   * previously hit.
+   */
+  limitReached: { [key: string]: boolean } = {};
   messages: Message[] = [];
 
   allmessages: Message[] = [];
@@ -214,7 +221,8 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
                 this.countConsecutiveApplicantMessages(
                   this.selectedMessage.receivedMessages,
                 );
-
+               this.limitReached[message.conversationId] =
+                this.sentMessageCounts[message.conversationId] >= this.max;
               this.scrollToBottom = true;
 
               this.hasReceiverMessage = message.receivedMessages.length > 0;
@@ -460,7 +468,8 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
           this.countConsecutiveApplicantMessages(
             this.selectedMessage.receivedMessages,
           );
-
+        this.limitReached[messageId] =
+          this.sentMessageCounts[messageId] >= this.max;
         this.currentMessage = '';
 
         if (this.isProUser) {
@@ -492,6 +501,15 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
     const consecutive = this.countConsecutiveApplicantMessages(messages);
     this.sentMessageCounts[messageId] = consecutive;
     return consecutive < 3;
+  }
+  shouldShowLimitNotice(messageId: string): boolean {
+    if (!messageId) {
+      return false;
+    }
+    return (
+      this.limitReached[messageId] === true &&
+      this.sentMessageCounts[messageId] < this.max
+    );
   }
 
   goBack(): void {

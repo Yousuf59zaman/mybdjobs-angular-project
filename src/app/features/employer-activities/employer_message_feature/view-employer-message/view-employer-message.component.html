@@ -617,29 +617,32 @@
             </div>
           </div>
 
-          <div
-            *ngIf="
-              !canReply(selectedMessage?.conversationId) ||
-              selectedMessage?.isBlockChat
-            "
-            class="w-full px-1 py-0 translate-y-[80px]"
-          >
-            <!-- System notice: “messaging‑limit reached” -->
-        <section
-          class="w-full py-2 px-10 flex justify-center"
-          role="alert"
-          aria-label="System notice – messaging limit reached"
+        <div
+          *ngIf="
+            shouldShowLimitNotice(selectedMessage?.conversationId) ||
+            !canReply(selectedMessage?.conversationId) ||
+            selectedMessage?.isBlockChat
+          "
+          class="w-full px-1 py-0 translate-y-[80px]"
         >
-          <p class="text-[13px] leading-5 text-slate-500 text-center">
-            Thank you. You’ve reached your messaging limit.&nbsp;
-            Please wait – you’ll be able to reply once the employer responds.
-          </p>
-        </section>
-            <section
-              class="flex relative flex-col gap-0.5 items-start self-stretch p-1 bg-red-50 rounded-md border border-red-200 border-solid shadow-sm"
-              role="alert"
-              [attr.aria-label]="ariaLabel"
-            >
+           <!-- System notice: “messaging‑limit reached” -->
+          <section
+            *ngIf="shouldShowLimitNotice(selectedMessage?.conversationId)"
+            class="w-full py-2 px-10 flex justify-center"
+            role="alert"
+            aria-label="System notice – messaging limit reached"
+          >
+            <p class="text-[13px] leading-5 text-slate-500 text-center">
+              Thank you. You’ve reached your messaging limit.&nbsp;
+              Please wait – you’ll be able to reply once the employer responds.
+            </p>
+          </section>
+          <section
+            *ngIf="!canReply(selectedMessage?.conversationId) || selectedMessage?.isBlockChat"
+            class="flex relative flex-col gap-0.5 items-start self-stretch p-1 bg-red-50 rounded-md border border-red-200 border-solid shadow-sm"
+            role="alert"
+            [attr.aria-label]="ariaLabel"
+          >
               <div
                 class="flex relative justify-between items-center self-stretch"
               >
@@ -803,7 +806,7 @@
                         ></p>
                         <p class="flex items-center gap-1">
                           <span
-                            class="text-[14px] leading-[20px] ml-8 text-slate-700"
+                            class="text-[14px] leading-[20px] ml-3 text-slate-700"
                           >
                             As a
                           </span>
