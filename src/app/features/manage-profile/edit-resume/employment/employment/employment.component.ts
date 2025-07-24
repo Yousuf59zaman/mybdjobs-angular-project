@@ -1,7 +1,7 @@
 import { Component, input, SimpleChanges } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { EmploymentHistoryComponent } from "../employment-history/employment-history.component";
-import { EmploymentHistoryArmypersonComponent } from "../employment-history-armyperson/employment-history-armyperson.component";
+import { EmploymentHistoryArmypersonComponent } from "../ArmyEmployment/employment-history-armyperson/employment-history-armyperson.component";
 import { TabsElementModel } from '../../../../common/edit-resume-tabs.const';
 
 @Component({

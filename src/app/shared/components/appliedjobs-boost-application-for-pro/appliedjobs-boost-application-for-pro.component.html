@@ -1,0 +1,61 @@
+<div
+  class="flex overflow-hidden relative gap-6 pt-16 flex-col bg-white rounded-xl max-w-[480px] w-[580px] mx-auto"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="'modal-title-' + modalId"
+  [attr.aria-describedby]="'modal-description-' + modalId"
+>
+  <!-- Modal Header -->
+  <header class="relative w-full flex justify-center">
+    <!-- Circle Effects -->
+    <div
+      class="absolute -top-3 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-[80px] h-[80px] border border-black border-opacity-20 z-0"
+    ></div>
+    <div
+      class="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-[140px] h-[140px] border border-black border-opacity-15 z-0"
+    ></div>
+    <div
+      class="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-48 h-48 border border-black border-opacity-10 z-0"
+    ></div>
+    <div
+      class="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-60 h-60 border border-black border-opacity-5 z-0"
+    ></div>
+
+    <!-- Avatar Image -->
+    <img
+      [src]="avatarSrc"
+      alt="Profile avatar"
+      class="object-contain absolute -top-10 coclor left-2/4 z-10 w-14 h-14 rounded-3xl -translate-x-1/2 aspect-square translate-y-[0%]"
+    />
+  </header>
+
+  <!-- Modal Content -->
+  <section class="flex flex-col justify-center items-center self-center w-full mb-10">
+    <h1 class="text-lg font-semibold text-slate-700 whitespace-nowrap mb-1 mt-2 m-0">
+       {{ 'appliedJobs.boostModal.title' | transloco }}
+    </h1>
+      <div class="flex flex-col justify-center text-[14px] leading-5 text-gray-500">
+        <p>{{ 'appliedJobs.boostModal.description' | transloco:{limit: '20/05'} }}</p>
+      </div>
+  
+  </section>
+
+  <!-- Modal Actions -->
+  <footer
+    class="flex z-0 gap-4 items-center w-full -translate-y-[120%] text-sm font-semibold leading-none whitespace-nowrap"
+  >
+ 
+
+    <button
+      type="button"
+      class="flex overflow-hidden flex-1 shrink gap-1 justify-center items-center self-stretch px-3.5 py-2.5 my-auto text-white bg-pink-600 rounded-lg border-2 border-solid shadow-sm basis-0 border-white border-opacity-10"
+      (click)="handleConfirm()"
+    >
+      <div class="flex justify-center items-center self-stretch px-0.5 py-0 my-auto">
+        <span class="self-stretch my-auto text-sm leading-5 text-white">
+           {{ 'appliedJobs.buttons.close' | transloco }}
+        </span>
+      </div>
+    </button>
+  </footer>
+</div>

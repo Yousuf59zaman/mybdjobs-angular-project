@@ -1,0 +1,180 @@
+{
+    "appliedJobs": {
+        "title": "Applied Jobs",
+        "subtitle": "Track your applied jobs, view resume status, and filter applications by job title, company, date, or status—all in one place.",
+        "dateRangeLabel": "From Date To Date",
+        "datePlaceholder": "dd/mm/yyyy",
+        "companyNameLabel": "Company Name",
+        "companyPlaceholder": "Enter company name",
+        "applyButton": "Apply",
+        "regularJobsTab": "Regular Jobs",
+        "totalJobsLabel": "Total Job Found",
+        "contactedLabel": "Contacted",
+        "offeredLabel": "Offered",
+        "joinedLabel": "Joined",
+        "exclusiveInsight": "Exclusive Insight",
+        "positionLabel": "Position:",
+        "topApplicant": "You're in the Top {{percent}}%",
+        "yourPosition": "Your position: {{percent}}%",
+        "profileMatchNote": "Based on your profile match with this job",
+        "recruitmentProgress": "Recruitment Progress:",
+        "shortlistedLabel": "Shortlisted",
+        "profilesViewedLabel": "Profiles viewed",
+        "lowLabel": "Low",
+        "highLabel": "High",
+        "profileMatched": "Profile Matched",
+        "joinedStatus": "Joined",
+        "undoApplication": "Undo Application",
+        "previousButton": "Previous",
+        "nextButton": "Next",
+        "filters": {
+            "selectOption": "Select",
+            "categoryIndustry": "Category/Industry",
+            "employersActions": {
+                "title": "Employers' Actions",
+                "viewed": "Viewed",
+                "notViewed": "Not Viewed"
+            },
+            "pendingRequired": {
+                "title": "Pending (Required)",
+                "videoCv": "Video CV required",
+                "customizedCv": "Customized CV required"
+            },
+            "recruitmentStatus": {
+                "title": "Recruitment Status",
+                "interviewInvitation": "Interview Invitation",
+                "joined": "Joined",
+                "offered": "Offered",
+                "contracted": "Contracted"
+            },
+            "priority": {
+                "title": "Priority",
+                "high": "High",
+                "regular": "Regular"
+            },
+            "other": {
+                "title": "Other",
+                "other": "Other"
+            }
+        },
+        "salarySection": {
+            "expectedSalary": "Expected Salary",
+            "editSalaryAlt": "Edit salary",
+            "enterSalary": "Enter salary"
+        },
+        "statusSection": {
+            "pending": "Pending",
+            "helpIconAlt": "Help icon",
+            "videoResume": "Video Resume",
+            "videoResumeAlt": "Video resume icon",
+            "customizedCv": "Customized CV",
+            "customizedCvAlt": "CV icon"
+        },
+        "messageSection": {
+            "sendMessage": "Send Message",
+            "sendMessageAriaLabel": "Send message to employer",
+            "messageIconAlt": "Message icon"
+        },
+        "boostSection": {
+            "boostApplication": "Boost Application",
+            "boostIconAlt": "Boost icon",
+            "boosted": "Boosted",
+            "boostedIconAlt": "Boosted icon"
+        },
+        "profileStatus": {
+            "viewed": "Profile Viewed",
+            "notViewed": "Profile Not Viewed"
+        },
+        "status": {
+            "reason": "Reason",
+            "joined": "Joined",
+            "contacted": "Contacted",
+            "offered": "Offered",
+            "notJoined": "Not Joined",
+            "notContacted": "Not Contacted",
+            "reasonLabel": "Reason",
+            "joinedStatus": "Joined",
+            "pendingMessage": "Did the employer call or message you?",
+            "contactedMessage": "Has the employer offered you?",
+            "offeredMessage": "Have you joined?",
+            "joinedMessage": "You have joined this company",
+            "notJoinedMessage": "Not joined",
+            "notContactedMessage": "Not contacted yet",
+            "notContactedTempMessage": "Not contacted yet",
+            "notOfferedMessage": "Not offered",
+            "notOfferedTempMessage": "Not offered",
+            "rejectedMessage": "Application rejected",
+            "defaultMessage": "Application status"
+        },
+        "buttons": {
+            "yes": "Yes",
+            "no": "No",
+            "notYet": "Not yet"
+        },
+        "actions": {
+            "undoApplication": "Undo Application",
+            "undoIconAlt": "Undo icon"
+        },
+        "edit": {
+            "edit": "Edit"
+        },
+        "common": {
+            "cancel": "Cancel",
+            "save": "Save",
+            "editAlt": "Edit"
+        }
+    },
+    "undoModal": {
+        "title": "Undo Application!",
+        "description": "Are you sure you want to undo this application?"
+    },
+    "buttons": {
+        "cancel": "Cancel",
+        "done": "Done",
+        "processing": "Processing..."
+    },
+    "boostModal": {
+        "title": "Your monthly boosting limit is over!",
+        "description": "Your Boosting Limit: {{limit}} (Monthly)"
+    },
+    "selectExperience": "Select your experience",
+    "selectCompanyForJob": "Choose company for '{{jobTitle}}'",
+    "basedOnResume": "Based on your resume",
+    "boostSuccessModal": {
+        "title": "Success",
+        "description": "Information updated successfully",
+        "confirmText": "Done"
+    },
+    "boostingModal": {
+        "title": "You are not eligible to boosting",
+        "description": "Your profile needs to be at least 60% match with the posted job",
+        "cancelText": "Cancel",
+        "confirmText": "Done"
+    },
+    "boostApplicationNormalUserModal": {
+        "title": "Do you want to boost your application?",
+        "description": "Subscription will allow you to enjoy this exclusive feature.",
+        "cancelText": "No, Keep It",
+        "confirmText": "Yes, Continue"
+    },
+    "notJoinedModal": {
+        "title": "Please let us know your reason for not joining in the job",
+        "options": {
+            "1": "Not interested to work in the organization",
+            "2": "The office is far away from my residence",
+            "3": "I am already employed and do not want to switch job",
+            "4": "Others"
+        },
+        "submit": "Yes, Submit"
+    },
+    "experienceModal": {
+        "selectExperienceTitle": "Select Experience",
+        "companySelectLegend": "Please select the company name that hired you for {{jobTitle}}",
+        "basedOnResumeNote": "Below list has been prepared based on the information from your resume.",
+        "addExperienceNote": "If this experience is not added on your resume, please",
+        "addExperienceAction": "Click here",
+        "addExperienceSuffix": "to add experience",
+        "closeButton": "Close, Keep It",
+        "submitButton": "Yes, Submit"
+    }
+}

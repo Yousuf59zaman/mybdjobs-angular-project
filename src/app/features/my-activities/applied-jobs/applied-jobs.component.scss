@@ -1,0 +1,140 @@
+  :host {
+      display: block;
+    }
+  
+
+
+    .fixed {
+  position: fixed;
+}
+
+.bottom-4 {
+  bottom: 1rem;
+}
+
+.right-4 {
+  right: 1rem;
+}
+
+.z-50 {
+  z-index: 50;
+}
+
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+
+
+
+/* Chat message bubbles */
+.max-w-xs {
+  max-width: 18rem;
+}
+
+/* Animation for new messages */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.flex-1 > div:last-child {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Scrollbar styling */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+
+/* Add to your component's CSS */
+.dropdown-container {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  z-index: 50;
+  margin-top: 0.25rem;
+  width: 100%;
+  background-color: white;
+  border-radius: 0.375rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+/* Add transition for smooth dropdown appearance */
+.dropdown-menu {
+  transition: all 0.2s ease-out;
+  opacity: 0;
+  transform: translateY(-10px);
+  visibility: hidden;
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+
+
+
+
+/* Ensure the dropdown container doesn't create a new stacking context */
+.dropdown-container {
+  position: static;
+  overflow: visible;
+}
+
+/* Tooltip styling */
+.tooltip {
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.group:hover .tooltip {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+
+
+
+.status-bubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FCE7F6;
+  color: #C11574;
+  border-radius: 16px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+

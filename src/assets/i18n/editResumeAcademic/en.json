@@ -1,0 +1,44 @@
+{
+
+    "Academic": "Academic",
+    "Academic Summary"  :"Academic Summary",
+    "Edit": "Edit",
+    "Delete": "Delete",
+
+    "Level of Education": "Level of Education",
+    "Exam/Degree Title": "Exam/Degree Title",
+    "Board": "Board",
+    "Concentration": "Concentration/ Major/Group",
+    "Institute Name": "Institute Name",
+    "Country of Foreign University": "Country of Foreign University",
+    "Result": "Result",
+    "Marks": "Marks(%)",
+    "Year of Passing": "Year of Passing",
+    "Duration": "Duration (Years)",
+    "Achievement": "Achievement",
+    "Scale": "Scale",
+    "CGPA": "CGPA",
+
+    "Add Academic Summary": "Add Academic Summary",
+    "noData": "Currently no data exist! Please click on the following button to add your academic qualification.",
+    "Select your Level of Education": "Select your Level of Education",
+    "Show this degree":"Show this degree in summary view at employer's end",
+    "Select your Exam/Degree Title": "Select your Exam/Degree Title",
+    "Select your Board": "Select your Board",
+    "This is a foreign institute": "This is a foreign institute",
+    "Enter country name": "Enter country name",
+    "Enter your Result": "Enter your Result",
+    "Enter your Scale": "Enter your Scale",
+    "Enter your Year of Passing": "Enter your Year of Passing",
+    "Enter your Duration (Years)": "Enter your Duration (Years)",
+    "Enter your Concentration/ Major/Group"  :"Enter your Concentration/ Major/Group",
+
+    "Save" : "Save",
+    "Close": "Close",
+    "Are you sure, you want to delete this record": "Are you sure, you want to delete this record?",
+    "Cancel": "Cancel",
+    "Deleted": "Delete"
+   
+
+  
+}

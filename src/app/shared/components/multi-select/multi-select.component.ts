@@ -49,6 +49,8 @@ export class MultiSelectComponent implements OnInit, OnChanges, OnDestroy {
   readonly extraLabel = input<string | { key: string, params?: any }>('')
   readonly isSearchBox = input<boolean>(true);
   readonly isSourceChanged = input<boolean>(false);
+  readonly displayValue = input<string>('');
+  clickedInside = false;
 
   @Output() searchQuery: EventEmitter<MultiSelectQueryEvent> =
     new EventEmitter<MultiSelectQueryEvent>();
@@ -59,6 +61,8 @@ export class MultiSelectComponent implements OnInit, OnChanges, OnDestroy {
   isOverLayVisible = signal(false);
 
   isDestroyed$: Subject<boolean> = new Subject();
+  @Output() inputBlur = new EventEmitter<string>();
+
 
   @ViewChild('parentDivRef') parentDivRef: ElementRef | null = null;
 
@@ -130,7 +134,13 @@ export class MultiSelectComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  onSearchInputBlur() { }
+  onSearchInputBlur() { 
+      // Emit the raw text input so the parent can handle it
+    const typedValue = this.searchQueryInput();
+    this.inputBlur.emit(typedValue.trim());
+
+    
+  }
 
   isSuggestionsAvailable(suggestions: SelectItem[]): boolean {
     return !!suggestions?.length;
@@ -145,11 +155,12 @@ export class MultiSelectComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // use only when overLayVisibleOnlyOnFocus = true
-  @HostListener('document:click', ['$event'])
+  @HostListener('document:mousedown', ['$event'])
+
   handleClickOutside(event: MouseEvent) {
-    if (!this.getOverLayVisibleOnlyOnFocus()) {
-      return;
-    }
+    // if (!this.getOverLayVisibleOnlyOnFocus()) {
+    //   return;
+    // }
     const source = event.target;
 
     if (
@@ -198,6 +209,15 @@ export class MultiSelectComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+
+  onInput(event: Event): void {
+    const target = event.target as HTMLInputElement | null;
+    if (target) {
+      this.searchQueryInput.set(target.value);
+    }
+  }
+
+ 
   get placeholderText(): string {
     const value = this.placeholder();
     if (typeof value === 'string') {
@@ -236,4 +256,5 @@ export class MultiSelectComponent implements OnInit, OnChanges, OnDestroy {
     }
     return '';
   }
+
 }

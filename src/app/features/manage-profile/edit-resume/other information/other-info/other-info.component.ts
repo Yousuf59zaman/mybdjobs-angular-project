@@ -1,9 +1,9 @@
 import { Component, input, SimpleChanges } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { SkillComponent } from "../skill/skill.component";
+import { SkillComponent } from "../SkillComponent/skill/skill.component";
 import { LanguageProficiencyComponent } from "../language-proficiency/language-proficiency.component";
-import { ReferencesComponent } from '../../personal/references/references.component';
 import { TabsElementModel } from '../../../../common/edit-resume-tabs.const';
+import { ReferencesComponent } from '../ReferenceComponent/references/references.component';
 import { LinkAccountComponent } from "../link-account/link-account/link-account.component";
 
 

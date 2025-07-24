@@ -1,511 +1,380 @@
-<accordion-main-body
-  [accordionName]="'Academic Summary'"
-  buttonType="add"
-  buttonTitle="Add Academic Summary"
-  [isAccordionOpen]="isOpen()"
-  [isFormOpen]="isAcademicSummaryNewFormOpen()"
-  (formToggleEmitter)="isAcademicSummaryNewFormOpen.set(!isAcademicSummaryNewFormOpen())"
-  (accordionToggleEmitter)="toggle()"
->
-
-  <div class="my-5" *ngFor="let summary of academicSummaries()">
-    <ng-container *ngIf="editingSummaries().has(summary.id); else readMode">
-        <h3 class="text-lg font-semibold text-slate-700">
-          Academic {{ summary.id }}
-        </h3>
-        <form class="mt-5 space-y-4" [formGroup]="summaryForms().get(summary.id)!">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div>
-              <app-selectbox
-                [options]="educationLevels()"
-                [label]="'Level of Education'"
-                [control]="educationLevelControl()"
-                [isRequired]="true"
-                [placeholder]="'Select your Level of Education'"
-                class="mt-[8px] text-sm sm:text-base"
-              ></app-selectbox>
-              <div class="flex items-center mt-[8px] gap-2">
-                <input type="checkbox" id="show-degree" class="w-4 h-4 rounded border-gray-300 focus:ring-0">
-                <label for="show-degree" class="text-xs text-slate-700">
-                  Show this degree in summary view at employer's end
-                </label>
-              </div>
-            </div>
-
-            <div>
-              <app-selectbox
-                [options]="degreeTitles()"
-                [label]="'Exam/Degree Title'"
-                [control]="degreeTitleControl()"
-                [isRequired]="true"
-                [placeholder]="'Select your Exam/Degree Title'"
-                class="mt-[8px] text-sm sm:text-base"
-              ></app-selectbox>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
-            <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
-              <app-input
-                [control]="majorControl()"
-                [isNumericOnly]="false"
-                [label]="'Concentration/ Major/Group'"
-                [placeholder]="'Enter your Concentration/ Major/Group'"
-                [isRequired]="true"
-                [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
-            </div>
-
-            <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
-              <app-input
-                [control]="instituteControl()"
-                [isNumericOnly]="false"
-                [label]="'Institute Name'"
-                [placeholder]="'Enter your Institute Name'"
-                [isRequired]="true"
-                [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
-              <div class="flex gap-2 items-start self-start mt-[8px]">
-                <input type="checkbox" id="foreign-institute"
-                  class="custom-checkbox w-4 h-4 rounded border border-solid border-gray-300 min-h-4 mt-0.5 focus:ring-0 focus:ring-offset-0 focus:outline-none">
-                <label for="foreign-institute" class="text-xs leading-[18px] text-slate-700">
-                  This is a foreign institute
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex gap-8 items-start mt-4 w-full max-md:max-w-full">
-            <div class="flex flex-col w-full max-md:max-w-full">
-              <app-input
-                [control]="countryControl()"
-                [isNumericOnly]="false"
-                [label]="'Country of Foreign University'"
-                [placeholder]="'Enter country name'"
-                [isRequired]="true"
-                [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap gap-8 items-start w-full max-md:max-w-full">
-            <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
-              <app-selectbox
-                [options]="result()"
-                [label]="'Result'"
-                [control]="resultControl()"
-                [isRequired]="true"
-                [placeholder]="'Enter your Result'">
-              </app-selectbox>
-            </div>
-
-            <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
-              <app-input
-                [control]="marksControl()"
-                [label]="'Marks(%)'"
-                [placeholder]="'Enter your Marks(%)'"
-                [isRequired]="true"
-                [type]="'number'"
-                [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
-            <div class="flex-1 shrink basis-0 min-w-[calc(50%-16px)] max-md:min-w-full">
-              <app-selectbox
-                [control]="passingYearControl()"
-                [options]="year()"
-                [label]="'Year of Passing'"
-                [isRequired]="true"
-                [placeholder]="'Enter your Year of Passing'">
-              </app-selectbox>
-            </div>
-
-            <div class="flex-1 shrink basis-0 min-w-[calc(50%-16px)] max-md:min-w-full">
-              <app-input
-                [control]="durationControl()"
-                [label]="'Duration (Years)'"
-                [placeholder]="'Enter your Duration (Years)'"
-                [isRequired]="true"
-                [type]="'number'"
-                [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
-            </div>
-          </div>
-
-          <div class="flex gap-8 items-start mt-[8px] w-full max-md:max-w-full">
-            <div class="flex flex-col w-full max-md:max-w-ful">
-              <div class="flex flex-col w-full max-md:max-w-full">
-                <label class="flex gap-0.5 mb-[8px] items-start self-start text-sm font-medium leading-none">
-                  <span class="text-sm leading-[20px] text-slate-700">Achievement</span>
-                  <span class="sr-only">(required)</span>
-                </label>
-              </div>
-              <div class="w-full">
-                <app-text-editor
-                  [control]="achievementControl()"
-                  [label]="''"
-                  [type]="'Edit-Resume'"
-                  [height]="'112px'"
-                  [placeholder]="'Enter your writing texts...'">
-                </app-text-editor>
-              </div>
-            </div>
-          </div>
-
-          <div class="mb-3 flex items-center gap-3">
-            <button
-              type="button" 
-              (click)="saveAcademicSummary()"
-              class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">
-              Save
-            </button>
-            <button
-              type="button"
-              (click)="closeForm()"
-              class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold">
-              Close
-            </button>
-          </div>
 
 
-        </form>
-    </ng-container>
+<accordion-main-body [accordionName]="t('editResumeAcademic.Academic Summary')" buttonType="add" [buttonTitle]="t('editResumeAcademic.Add Academic Summary')" [isAddButtonDisabled]="isAddButtonDisabled()"
+  [isAccordionOpen]="isOpen()" (formToggleEmitter)="createEducationForButtonClick()"  *transloco="let t"
+  (accordionToggleEmitter)="toggle()">
 
-    <ng-template #readMode>
 
-      <div class="flex flex-wrap justify-between items-center gap-4">
-        <h3 class="text-lg font-semibold text-slate-700">
-          Academic {{ summary.id }}
-        </h3>
-        <div class="flex gap-4 items-center">
-          <button class="flex items-center gap-1.5 text-[#B32D7D]" [attr.aria-label]="'edit Academic ' + summary.id"
-            (click)="editSummary(summary)">
-            <img src="images/edit-05.svg" class="h-[15px] w-[15px]">
-            <span class="text-sm hidden sm:inline">Edit</span>
-          </button>
-          <button class="flex items-center gap-1.5 text-slate-600" [attr.aria-label]="'Delete Academic ' + summary.id"
-            (click)="deleteSummary(summary.id)" (click)="openDeleteModal()" >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"
-              class="w-4 h-4">
-              <path d="M2 4H3.33333H14" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round" />
-              <path
-                d="M5.33325 4V2.66667C5.33325 2.48986 5.40349 2.32029 5.52851 2.19526C5.65354 2.07024 5.82311 2 5.99992 2H9.99992C10.1767 2 10.3463 2.07024 10.4713 2.19526C10.5963 2.32029 10.6666 2.48986 10.6666 2.66667V4"
-                stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path
-                d="M12.6666 4V13.3333C12.6666 13.5101 12.5963 13.6797 12.4713 13.8047C12.3463 13.9298 12.1767 14 11.9999 14H3.99992C3.82311 14 3.65354 13.9298 3.52851 13.8047C3.40349 13.6797 3.33325 13.5101 3.33325 13.3333V4"
-                stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M6.66675 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round" />
-              <path d="M9.33325 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round" />
-            </svg>
-            <span (click)="openDeleteModal()" class="text-[#B32D7D] font-semibold text-sm cursor-pointer">Delete</span>
-          </button>
-        </div>
+  @if (isLoading()) {
+      <div class="flex items-center justify-center py-[50px]">
+          <img [src]="'images/loading.gif'" alt="Loading...">
       </div>
+  }
+  @else {
+    @if(isInfoAvailable){
+      <form [formGroup]="summaryForm">
+        <div formArrayName="educations">
+          @for (summary of gEf.controls; track $index) {
+            <div [formGroupName]="$index" class="my-5" *transloco="let t">
+              @if (getIsOpen($index)) {
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
-        <div>
-          <p class="text-sm text-gray-500">Level of Education</p>
-          <p class="mt-1 text-sm font-medium text-gray-900">
-            {{ getEducationLevelLabel(summary.educationLevel) }}
-          </p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">Exam/Degree Title</p>
-          <p class="mt-1 text-sm font-medium text-gray-900">
-            {{ getDegreeTitleLabel(summary.degreeTitle) }}
-          </p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">Concentration/ Major/Group</p>
-          <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.major }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">Institute Name</p>
-          <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.institute }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">Result</p>
-          <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.result }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">Marks(%)</p>
-          <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.marks }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">Year of Passing</p>
-          <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.passingYear }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">Duration (Years)</p>
-          <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.duration }}</p>
-        </div>
-        <div class="sm:col-span-2">
-          <p class="text-sm text-gray-500">Achievement</p>
-          <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.achievement }}</p>
-        </div>
-      </div>
-    </ng-template>
-  </div>
+                <h3 class="text-lg font-semibold text-slate-700" >
+                  {{ t('editResumeAcademic.Academic') }}{{ convertToBanglaDigits(($index + 1).toString(),'en') }}
+                </h3>
 
-  <ng-container *ngIf="isAcademicSummaryNewFormOpen()">
-    <div class="my-5">
-      <h3 class="text-lg font-semibold text-slate-700">
-        Academic {{ academicSummaries().length + 1 }}
-      </h3>
+                <!-- Form Start -->
+                <div class="mt-5 space-y-4">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                      <app-selectbox [options]="educationLevels()" [label]="t('editResumeAcademic.Level of Education')" [control]="getElevel($index)"
+                        [isRequired]="true" [placeholder]="t('editResumeAcademic.Select your Level of Education')" [onChange]="onEducationLevelChange.bind(this)" [formIndex]="$index"
+                        class="mt-[8px] text-sm sm:text-base"></app-selectbox>
+                        <span class="text-[#D92D20] font-normal text-sm">{{this.validationEduLevelMsg[$index]}}</span>
 
-      <form class="mt-5 space-y-4" [formGroup]="form">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
-            <app-selectbox
-              [options]="educationLevels()"
-              [label]="'Level of Education'"
-              [control]="educationLevelControl()"
-              [isRequired]="true"
-              [placeholder]="'Select your Level of Education'"
-              class="mt-[8px] text-sm sm:text-base"
-            ></app-selectbox>
-            <div class="flex items-center mt-[8px] gap-2">
-              <input type="checkbox" id="show-degree" class="w-4 h-4 rounded border-gray-300 focus:ring-0">
-              <label for="show-degree" class="text-xs text-slate-700">
-                Show this degree in summary view at employer's end
-              </label>
+                      @if(this.getElevel($index).value==3 || this.getElevel($index).value==4 ||
+                      this.getElevel($index).value==5){
+                      <div class="flex items-center mt-[8px] gap-2">
+                        <app-checkbox [label]="'Show this degree in summary view at employer\'s end'"
+                          [control]="getShowDeg($index)" [isRequired]="false" [widthClass]="'w-4 h-4'" />
+                      </div>
+                      }
+
+                    </div>
+
+                    <div>
+                      <app-selectbox [options]="degreeTitles()" [label]="t('editResumeAcademic.Select your Exam/Degree Title')" [control]="getDegree($index)" [onChange]="onDegreeChange.bind(this)" [formIndex]="$index"
+                        [isRequired]="true" [placeholder]="t('editResumeAcademic.Exam/Degree Title')"
+                        class="mt-[8px] text-sm sm:text-base"></app-selectbox>
+                        <span class="text-[#D92D20] font-normal text-sm">{{this.validationDegreeMsg[$index]}}</span>
+
+                      @if(getDegree($index).value=='Others'){
+                      <div class="items-center mt-[8px] gap-2">
+                        <app-input [control]="getOtherDeg($index)" [isNumericOnly]="false" [maxLength]="50"
+                          [placeholder]="t('editResumeAcademic.Exam/Degree Title')"
+                          [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'">
+                        </app-input>
+                      </div>
+                      }
+                      <input type="hidden" [formControl]="getEduTypeId($index)"/>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+                    @if(this.getElevel($index).value!=-3 && this.getElevel($index).value!=-2) {
+
+                    <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+
+                      <app-multi-select [isFullWidth]="true" [placeholder]="t('editResumeAcademic.Enter your Concentration/ Major/Group')"
+                        [searchLabel]="t('editResumeAcademic.Concentration')" [checkBoxVisible]="false"
+                        [overLayVisibleOnlyOnSuggestions]="true" [multiplSelection]="false" [resetOnSelection]="true" [suggestions]="majorSelectItems"
+                        [control]="getMajor($index)" (searchQuery)="getMajorGroups($event.query,$index)" (onSelect)="onMajorSelect($event,$index)"
+                        [displayValue]="searchMajorInputs[$index] || ''" (inputBlur)="onMajorInputBlur($event, $index)"
+                      >
+                      </app-multi-select>
+                      <span class="text-[#D92D20] font-normal text-sm">{{this.validationMajorMsg[$index]}}</span>
+                    </div>
+                    }
+
+                    @if(this.getElevel($index).value != 3 && this.getElevel($index).value != 4 && this.getElevel($index).value != 5) {
+                      <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+                        <app-selectbox [options]="board()" [label]="t('editResumeAcademic.Board')" [control]="getBoard($index)" [isRequired]="true"
+                          [placeholder]="t('editResumeAcademic.Select your Board')" class="mt-[8px] text-sm sm:text-base"></app-selectbox>
+                          <span class="text-[#D92D20] font-normal text-sm">{{this.validationBoardMsg[$index]}}</span>
+                      </div>
+                    }
+                  </div>
+
+                  <div class="flex gap-8 items-start mt-4 w-full max-md:max-w-full">
+                    <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+                      <app-multi-select [isFullWidth]="true" [placeholder]="'Enter your Institute Name'"
+                        [searchLabel]="t('editResumeAcademic.Institute Name')" [checkBoxVisible]="false"
+                        [overLayVisibleOnlyOnSuggestions]="true" [multiplSelection]="false" [resetOnSelection]="true" [suggestions]="instituteSelectItems"
+                        [control]="getInstitute($index)" (searchQuery)="getInstitutenames($event.query,$index)" (onSelect)="onInstituteSelect($event,$index)"
+                        [displayValue]="searchInputs[$index] || ''" (inputBlur)="onInstituteInputBlur($event, $index)"
+                      >
+                      </app-multi-select>
+                      <span class="text-[#D92D20] font-normal text-sm">{{this.validationInsMsg[$index]}}</span>
+
+                      <div class="flex gap-2 items-start self-start mt-[8px]">
+                        <app-checkbox [label]="t('editResumeAcademic.This is a foreign institute')" [control]="getIsFrgn($index)"
+                          [widthClass]="'w-4 h-4'" />
+                      </div>
+                    </div>
+                  </div>
+
+                  @if(getIsFrgn($index).value){
+                  <div class="flex gap-8 items-start mt-4 w-full max-md:max-w-full">
+                    <div class="flex flex-col w-full max-md:max-w-full">
+                      <app-input [control]="getCountry($index)" [isNumericOnly]="false"
+                        [label]="t('editResumeAcademic.Country of Foreign University')" [placeholder]="t('editResumeAcademic.Enter country name')" [isRequired]="true"
+                        [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+                        <span class="text-[#D92D20] font-normal text-sm">{{this.validationCountryMsg[$index]}}</span>
+                    </div>
+                  </div>
+                  }
+
+
+                  <div class="flex flex-wrap gap-8 items-start w-full max-md:max-w-full">
+                    <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+                      <app-selectbox [options]="result()" [label]="t('editResumeAcademic.Result')" [control]="getResult($index)" [isRequired]="true"
+                        [placeholder]="t('editResumeAcademic.Enter your Result')">
+                      </app-selectbox>
+                      <span class="text-[#D92D20] font-normal text-sm">{{this.validationCountryMsg[$index]}}</span>
+                    </div>
+
+                    @if(getResult($index).value==15 || getResult($index).value==14 || getResult($index).value==13 ||
+                    getResult($index).value==11){
+                    <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
+                      <app-input [control]="getMarks($index)" [label]="dynamicMarksLabel($index)" [placeholder]="'Enter your Marks(%)'"
+                        [isRequired]="true" [type]="'number'" [isDecimalAllowed]="true" [isNumericOnly]="true"
+                        [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'">
+                      </app-input>
+                    </div>
+                    }
+                  </div>
+
+                  @if(getResult($index).value==11){
+                  <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+
+                    <div class="flex-1 shrink basis-0 min-w-[calc(50%-16px)] max-md:min-w-full">
+                      <app-input [control]="getScale($index)" [label]="t('editResumeAcademic.Scale')" [placeholder]="t('editResumeAcademic.Enter your Scale')"
+                        [type]="'number'" [isNumericOnly]="true"
+                        [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+                        <span class="text-[#D92D20] font-normal text-sm">{{this.validationGradeMsg[$index]}}</span>
+                      </div>
+                  </div>
+                  }
+
+
+                  <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
+                    <div class="flex-1 shrink basis-0 min-w-[calc(50%-16px)] max-md:min-w-full">
+                      <app-selectbox [control]="getYear($index)" [options]="year()" [label]="dynamicYearLabel($index)"
+                        [isRequired]="true" [placeholder]="t('editResumeAcademic.Enter your Year of Passing')">
+                      </app-selectbox>
+                      <span class="text-[#D92D20] font-normal text-sm">{{this.validationGradeMsg[$index]}}</span>
+                    </div>
+
+                    @if(!isBlueCollar){
+                        <div class="flex-1 shrink basis-0 min-w-[calc(50%-16px)] max-md:min-w-full">
+                          <app-input [control]="getDuration($index)" [label]="t('editResumeAcademic.Duration')"
+                            [placeholder]="t('editResumeAcademic.Enter your Duration (Years)')" [type]="'number'"
+                            [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
+                          <span class="text-[#D92D20] font-normal text-sm">{{this.validationDurationMsg[$index]}}</span>
+                        </div>
+                    }
+
+                  </div>
+
+
+                  @if(!isBlueCollar){
+                    <div class="flex gap-8 items-start mt-[8px] w-full max-md:max-w-full">
+                      <div class="flex flex-col w-full max-md:max-w-ful">
+                        <div class="flex flex-col w-full max-md:max-w-full">
+                          <label class="flex gap-0.5 mb-[8px] items-start self-start text-sm font-medium leading-none">
+                            <span class="text-sm leading-[20px] text-slate-700">{{t('editResumeAcademic.Achievement')}}</span>
+                            <span class="sr-only">(required)</span>
+                          </label>
+                        </div>
+                        <div class="w-full">
+                          <app-text-editor [control]="getAchment($index)" [label]="''" [type]="'Edit-Resume'" [height]="'112px'"
+                            [placeholder]="'Enter your writing texts...'">
+                          </app-text-editor>
+                          <span class="text-[#D92D20] font-normal text-sm">{{this.validationAchievementMsg[$index]}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  }
+
+
+
+                  <div class="mb-3 flex items-center gap-3">
+                    <button type="button" (click)="saveAcademicSummary($index)"
+                      class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">
+                      {{t('editResumeAcademic.Save')}}
+                    </button>
+                    <button type="button" (click)="editEducation($index,false,0)"
+                      class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold">
+                      {{t('editResumeAcademic.Close')}}
+                    </button>
+                  </div>
+
+
+                </div>
+                <!-- Form ENDS -->
+              }
+              @else {
+
+                  <div class="flex flex-wrap justify-between items-center gap-4">
+                    <h3 class="text-lg font-semibold text-slate-700">
+                      {{ t('editResumeAcademic.Academic') }} {{ $index +1 }}
+                    </h3>
+
+                    <div class="flex gap-4 items-center">
+                      <button class="flex items-center gap-1.5 text-[#B32D7D]" [attr.aria-label]="'edit Academic ' + $index"
+                        (click)="editEducation($index, true, summary.value.educationLevel)">
+                        <img src="images/edit-05.svg" class="h-[15px] w-[15px]">
+                        <span class="text-sm hidden sm:inline">{{ t('editResumeAcademic.Edit') }}</span>
+                      </button>
+
+                      <button class="flex items-center gap-1.5 text-slate-600" [attr.aria-label]="'Delete Academic ' + $index"
+                        (click)="openDeleteModal($index,summary.value.ed_ID)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                          class="w-4 h-4">
+                          <path d="M2 4H3.33333H14" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                          <path
+                            d="M5.33325 4V2.66667C5.33325 2.48986 5.40349 2.32029 5.52851 2.19526C5.65354 2.07024 5.82311 2 5.99992 2H9.99992C10.1767 2 10.3463 2.07024 10.4713 2.19526C10.5963 2.32029 10.6666 2.48986 10.6666 2.66667V4"
+                            stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          <path
+                            d="M12.6666 4V13.3333C12.6666 13.5101 12.5963 13.6797 12.4713 13.8047C12.3463 13.9298 12.1767 14 11.9999 14H3.99992C3.82311 14 3.65354 13.9298 3.52851 13.8047C3.40349 13.6797 3.33325 13.5101 3.33325 13.3333V4"
+                            stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          <path d="M6.66675 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                          <path d="M9.33325 7.33334V11.3333" stroke="#334155" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        </svg>
+                        <span class="text-[#B32D7D] font-semibold text-sm cursor-pointer">{{ t('editResumeAcademic.Delete') }}</span>
+                      </button>
+
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+                    <div>
+                      <p class="text-sm text-gray-500">{{ t('editResumeAcademic.Level of Education') }}</p>
+                      <p class="mt-1 text-sm font-medium text-gray-900">
+                        {{ getLabelByValue(summary.value.educationLevel,'educationLevels') }}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p class="text-sm text-gray-500">{{ t('editResumeAcademic.Exam/Degree Title') }}</p>
+                      <p class="mt-1 text-sm font-medium text-gray-900">
+                         {{ summary.value.degreeTitle === 'Others' ? summary.value.otherDegree : summary.value.degreeTitle }}
+                      </p>
+                      <span class="hidden">
+                        {{summary.value.educationTypeId }}
+                      </span>
+                    </div>
+
+                    @if(summary.value.educationLevel != 3 && summary.value.educationLevel != 4 &&
+                    summary.value.educationLevel != 5) {
+                      <div>
+                        <p class="text-sm text-gray-500">{{ t('editResumeAcademic.Board') }}</p>
+                        <p class="mt-1 text-sm font-medium text-gray-900">{{ getLabelByValue(summary.value.board,'board') }}</p>
+                      </div>
+                    }
+                    @if(summary.value.educationLevel != -3 && summary.value.educationLevel != -2) {
+                    <div>
+                      <p class="text-sm text-gray-500">{{ t('editResumeAcademic.Concentration') }}</p>
+                      <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.value.major }}</p>
+                    </div>
+                    }
+
+                    <div>
+                      <p class="text-sm text-gray-500">{{ t('editResumeAcademic.Institute Name') }}</p>
+                      <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.value.institute }}</p>
+                    </div>
+
+                    @if(summary.value.countryOfForeignUniversity!="" && summary.value.isForeignInstitute){
+                    <div>
+                      <p class="text-sm text-gray-500">{{ t('editResumeAcademic.Country of Foreign University') }}</p>
+                      <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.value.country }}</p>
+                    </div>
+                    }
+
+                    <div>
+                      <p class="text-sm text-gray-500">{{ t('editResumeAcademic.Result') }}</p>
+                      <p class="mt-1 text-sm font-medium text-gray-900">{{ getLabelByValue(summary.value.result,'result') }}</p>
+                    </div>
+
+                    @if(summary.value.result==15 || summary.value.result==14 || summary.value.result==13 || summary.value.result==11){
+                      <div>
+                        <p class="text-sm text-gray-500">
+                          {{ summary.value.result != 11 ? t('editResumeAcademic.Marks') : t('editResumeAcademic.CGPA') }}
+                        </p>
+                        <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.value.marks }}</p>
+                      </div>
+                    }
+
+                    @if(summary.value.result==11){
+                      <div>
+                        <p class="text-sm text-gray-500">{{ t('editResumeAcademic.Scale') }}</p>
+                        <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.value.scale }}</p>
+                      </div>
+                    }
+                    <div>
+                      <p class="text-sm text-gray-500">{{ t('editResumeAcademic.Year of Passing') }}</p>
+                      <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.value.year }}</p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500">{{ t('editResumeAcademic.Duration') }}</p>
+                      <p class="mt-1 text-sm font-medium text-gray-900">{{ summary.value.duration }}</p>
+                    </div>
+                    <div class="sm:col-span-2">
+                      <p class="text-sm text-gray-500">{{ t('editResumeAcademic.Achievement') }}</p>
+                      <p class="mt-1 text-sm font-medium text-gray-900">{{ stripHtmlTags(summary.value.achievement) }}</p>
+                    </div>
+                  </div>
+
+
+              }
+
             </div>
-          </div>
 
-          <div>
-            <app-selectbox
-              [options]="degreeTitles()"
-              [label]="'Exam/Degree Title'"
-              [control]="degreeTitleControl()"
-              [isRequired]="true"
-              [placeholder]="'Select your Exam/Degree Title'"
-              class="mt-[8px] text-sm sm:text-base"
-            ></app-selectbox>
-          </div>
+            @if(isDeleteModalOpen()){
+              <div class="fixed inset-0 bg-[#101828]/50 flex items-center justify-center z-[9999]" *transloco="let t">
+                <div class="bg-white w-[476px] h-[216px] p-10 rounded-lg shadow-md flex flex-col justify-between">
+                  <p class="text-primary-900 text-center font-semibold text-[24px] leading-[32px]">
+                    {{t('editResumeAcademic.Are you sure, you want to delete this record')}}
+                  </p>
+                  <div class="flex justify-center gap-6 mt-6">
+                    <button (click)="closeDeleteModal($index)"
+                      class="px-4 py-2 text-sm rounded-lg border border-[#E4E7EC] bg-white shadow-sm text-primary-900 hover:bg-gray-100">
+                      {{t('editResumeAcademic.Cancel')}}
+                    </button>
+                    <button
+                      class="px-4 py-2 text-sm rounded-lg bg-[#C63C92] shadow-sm text-white hover:bg-pink-700" (click) = "confirmDelete()">
+                      {{t('editResumeAcademic.Deleted')}}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          }
         </div>
-
-        <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
-          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
-            <app-input
-              [control]="majorControl()"
-              [isNumericOnly]="false"
-              [label]="'Concentration/ Major/Group'"
-              [placeholder]="'Enter your Concentration/ Major/Group'"
-              [isRequired]="true"
-              [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
-          </div>
-
-          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
-            <app-input
-              [control]="instituteControl()"
-              [isNumericOnly]="false"
-              [label]="'Institute Name'"
-              [placeholder]="'Enter your Institute Name'"
-              [isRequired]="true"
-              [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
-            <div class="flex gap-2 items-start self-start mt-[8px]">
-    <input
-      type="checkbox"
-      id="foreign-institute"
-      class="custom-checkbox w-4 h-4 rounded border border-solid border-gray-300 min-h-4 mt-0.5 focus:ring-0 focus:ring-offset-0 focus:outline-none"
-      (change)="toggleForeignInstitute($event)"
-    />
-    <label for="foreign-institute" class="text-xs leading-[18px] text-slate-700">
-      This is a foreign institute
-    </label>
-  </div>
-
-          </div>
-        </div>
-
-      <div class="flex gap-8 items-start mt-4 w-full max-md:max-w-full" *ngIf="showForeignInstituteCountry()">
-    <div class="flex flex-col w-full max-md:max-w-full">
-      <app-input
-        [control]="countryControl()"
-        [isNumericOnly]="false"
-        [label]="'Country of Foreign University'"
-        [placeholder]="'Enter country name'"
-        [isRequired]="true"
-        [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'">
-      </app-input>
-    </div>
-  </div>
-
-
-        <div class="flex flex-wrap gap-8 items-start w-full max-md:max-w-full">
-          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
-            <app-selectbox
-              [options]="result()"
-              [label]="'Result'"
-              [control]="resultControl()"
-              [isRequired]="true"
-              [placeholder]="'Enter your Result'">
-            </app-selectbox>
-          </div>
-
-          <div class="flex-1 shrink basis-0 min-w-60 max-md:max-w-full">
-            <app-input
-              [control]="marksControl()"
-              [label]="'Marks(%)'"
-              [placeholder]="'Enter your Marks(%)'"
-              [isRequired]="true"
-              [type]="'number'"
-              [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap gap-8 items-start mt-4 w-full max-md:max-w-full">
-          <div class="flex-1 shrink basis-0 min-w-[calc(50%-16px)] max-md:min-w-full">
-            <app-selectbox
-              [control]="passingYearControl()"
-              [options]="year()"
-              [label]="'Year of Passing'"
-              [isRequired]="true"
-              [placeholder]="'Enter your Year of Passing'">
-            </app-selectbox>
-          </div>
-
-          <div class="flex-1 shrink basis-0 min-w-[calc(50%-16px)] max-md:min-w-full">
-            <app-input
-              [control]="durationControl()"
-              [label]="'Duration (Years)'"
-              [placeholder]="'Enter your Duration (Years)'"
-              [isRequired]="true"
-              [type]="'number'"
-              [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'"></app-input>
-          </div>
-        </div>
-
-        <div class="flex gap-8 items-start mt-[8px] w-full max-md:max-w-full">
-          <div class="flex flex-col w-full max-md:max-w-ful">
-            <div class="flex flex-col w-full max-md:max-w-full">
-              <label class="flex gap-0.5 mb-[8px] items-start self-start text-sm font-medium leading-none">
-                <span class="text-sm leading-[20px] text-slate-700">Achievement</span>
-                <span class="sr-only">(required)</span>
-              </label>
-            </div>
-            <div class="w-full">
-              <app-text-editor
-                [control]="achievementControl()"
-                [label]="''"
-                [type]="'Edit-Resume'"
-                [height]="'112px'"
-                [placeholder]="'Enter your writing texts...'">
-              </app-text-editor>
-            </div>
-          </div>
-        </div>
-          
-          <div class="mb-3 flex items-center gap-3">
-            <button
-              (click)="saveAcademicSummary()"
-              class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">Save</button>
-            <button
-              (click)="closeForm()"
-              class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold">Close</button>
-          </div>
-
-
-          
-
-          
       </form>
-    </div>
-  </ng-container>
 
-  <ng-container *ngIf="!isAcademicSummaryNewFormOpen() && !editingSummary()">
-      <div class="mb-5">
+      <div class="mb-5" *transloco="let t">
         <button
-          [disabled]="isAnyFormOpen()"
-          [class.opacity-50]="isAnyFormOpen()"
-          [class.cursor-not-allowed]="isAnyFormOpen()"
-          [class.pointer-events-none]="isAnyFormOpen()"
-          class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 mt-8 hover:bg-pink-50 transition-colors"
-          aria-label="Add Academic Summary"
-          (click)="!isAnyFormOpen() && isAcademicSummaryNewFormOpen.set(true)">
+          [disabled]="isAddButtonDisabled()"
+          class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 mt-8 hover:bg-pink-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          aria-label="Add Academic Summary" (click)="createEducationForButtonClick()">
           <img src="images/plus.svg" alt="Add" />
-          <span class="leading-tight sm:inline hidden">Add Academic Summary</span>
-          <span class="leading-tight sm:hidden inline">Add</span>
+          <span class="leading-tight sm:inline hidden">{{ t('editResumeAcademic.Add Academic Summary') }}</span>
         </button>
       </div>
-  </ng-container>
 
-
-  <ng-container *ngIf="isAcademicSummaryNewFormOpen()">
-      <div class="mb-5">
-      <button
-    [disabled]="isAnyFormOpen()"
-    [class.opacity-50]="isAnyFormOpen()"
-    [class.cursor-not-allowed]="isAnyFormOpen()"
-    [class.pointer-events-none]="isAnyFormOpen()"
-    class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none 
-          text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] 
-          focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 mt-8 
-          hover:bg-pink-50 transition-colors"
-    aria-label="Add Academic Summary"
-    type="button"
-    (click)="!isAnyFormOpen() && isAcademicSummaryNewFormOpen.set(true)">
-    <img src="images/plus.svg" alt="Add" />
-    <span class="leading-tight sm:inline hidden">Add Academic Summary</span>
-    <span class="leading-tight sm:hidden inline">Add</span>
-  </button>
-
+    }
+    @else {
+      <div *transloco="let t">
+        <app-no-details
+        [description]="t('editResumeAcademic.noData')"
+        [btnText]="t('editResumeAcademic.Add Academic Summary')"
+        (openFormBtn)="createEducationForButtonClick()">
+        </app-no-details>
       </div>
-      
-  </ng-container>
+
+    }
+
+  }
+
+
 </accordion-main-body>
 
 
-@if(isDeleteModalOpen()){
-<div class="fixed inset-0 bg-[#101828]/50 flex items-center justify-center z-[9999]">
-    <div class="bg-white w-[476px] h-[216px] p-10 rounded-lg shadow-md flex flex-col justify-between">
-        <p class="text-primary-900 text-center font-semibold text-[24px] leading-[32px]">
-            Are you sure you want to delete Image?
-        </p>
-        <div class="flex justify-center gap-6 mt-6">
-            <button (click)="closeDeleteModal()"
-                class="px-4 py-2 text-sm rounded-lg border border-[#E4E7EC] bg-white shadow-sm text-primary-900 hover:bg-gray-100">
-                Cancel
-            </button>
-            <button (click)="openDeleteModal()"class="px-4 py-2 text-sm rounded-lg bg-[#C63C92] shadow-sm text-white hover:bg-pink-700">
-                Delete
-            </button>
-        </div>
-    </div>
-</div>
-}
 
 
-<!-- 
-<div class="flex flex-col gap-4 mt-4">
-  <div
-    class="flex flex-col bg-[#F9FAFB] justify-center self-stretch pt-6 pb-6 px-4 sm:px-6 border border-solid border-gray-200 rounded-xl cursor-pointer transition-all duration-300 overflow-hidden h-[68px]"
-    (click)="toggleDropdown()" aria-labelledby="army-experience-title">
-    <div class="flex flex-row justify-between items-center gap-4 pointer-events-auto ml-0 sm:ml-5">
-      <h2 id="army-experience-title" class="text-lg font-medium leading-7 text-gray-800 whitespace-nowrap -ml-5">
-        Army Experience
-      </h2>
-      <button (click)="toggleDropdown(); $event.stopPropagation()"
-        class="flex items-center gap-2 text-[16px] font-semibold text-gray-600 hover:text-gray-800 focus:outline-none p-1 rounded-md transition-colors"
-        [attr.aria-expanded]="isExpanded" aria-controls="army-experience-content">
-        <span class="whitespace-nowrap">{{ isExpanded ? 'Collapse' : 'Expand' }}</span>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
-          class="w-5 h-5 transition-transform duration-300" [class.rotate-180]="isExpanded">
-          <path d="M5 7.5L10 12.5L15 7.5" stroke="#475467" stroke-width="1.66667" stroke-linecap="round"
-            stroke-linejoin="round" />
-        </svg>
-      </button>
-    </div>
-  </div>
 
-  <div id="army-experience-content"
-    class="transition-all duration-300 rounded-xl border border-solid border-gray-200 bg-white shadow-sm"
-    [class.hidden]="!isExpanded">
-    <div class="p-6">
-      <app-no-details-training-summary
-        [description]="'If you are a retired army person then you can give that information by clicking on the following button.'"
-        [btnText]="'Add Experience at Bangladesh Army'" (openFormBtn)="handleAddExperience()">
-      </app-no-details-training-summary>
-    </div>
-  </div>
-</div> -->
+
+

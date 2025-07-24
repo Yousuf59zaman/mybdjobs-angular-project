@@ -1,0 +1,20 @@
+{
+  "headlineMobile": "Add a new phone number to set it as your primary User ID.",
+  "headlineEmail": "Add a new email address to set it as your primary User ID.",
+  "titleEM": "আপনার লগইন ইমেল সেট বা আপডেট করুন",
+  "titlePhn":"আপনার লগইন ফোন নম্বর সেট বা আপডেট করুন",
+  "descriptionEM": "আপনার প্রাথমিক ব্যবহারকারী আইডি হিসেবে সেট করার জন্য একটি নতুন ইমেল যোগ করুন। আপনার ইমেল ঠিকানাটি আপনার ব্যবহারকারী আইডি। নিরাপদ লগইন এবং গুরুত্বপূর্ণ বিজ্ঞপ্তি নিশ্চিত করতে এটি আপডেট রাখুন।",
+  "descriptionPhn": "আপনার প্রাথমিক ব্যবহারকারী আইডি হিসেবে সেট করার জন্য একটি নতুন মোবাইল নম্বর যোগ করুন। আপনার মোবাইল নম্বরটি আপনার ব্যবহারকারী আইডি। নিরাপদ লগইন এবং গুরুত্বপূর্ণ বিজ্ঞপ্তি নিশ্চিত করতে এটি আপডেট রাখুন।",
+  "confirm": "Confirm",
+  "secureCode": "Secure code",
+  "Resend code":"Resend code",
+  "okay": "Okay",
+  "verifyOtp": "Verify",
+  "password": "পাসওয়ার্ড",
+  "levelphone": "নতুন মোবাইল নম্বর",
+  "levelemail": "নতুন ইমেল ঠিকানা",
+  "placeholderphn": "নতুন ফোন নম্বর টাইপ করুন",
+  "placeholderemail": "নতুন ইমেল ঠিকানা টাইপ করুন",
+  "resendOtp": "Resend OTP"
+
+}

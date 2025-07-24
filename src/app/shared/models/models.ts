@@ -123,6 +123,7 @@ export interface ModalConfig {
   componentRef: Type<any>;
   inputs?: Record<string, any>;
   isClose?: boolean;
+  callbacks?: { [key: string]: (...args: any[]) => void };
 }
 
 

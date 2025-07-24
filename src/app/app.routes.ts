@@ -53,9 +53,27 @@ export const routes: Routes = [
         loadComponent: () => import('./features/create-account/EducationComponent/education/education.component').then((c) => c.EducationComponent),
       },
       {
+        path: 'change-user-id',
+        data: { layout: 'left' },
+        loadComponent: () =>
+          import(
+            './features/account-settings/changeUserId/change-user-id/change-user-id.component'
+          ).then((c) => c.ChangeUserIdComponent),
+      },
+      {
+        path: 'account-delete-step2',
+        data: { layout: 'left' },
+        loadComponent: () =>
+          import(
+            './features/account-settings/account_delete_feature/account-delete-step2/account-delete-step2.component'
+          ).then((c) => c.AccountDeleteStep2Component),
+
+        },
+      {
         path: 'upload-photo',
         data: { layout: 'right' },
         loadComponent: () => import('./features/create-account/upload-photo/upload-photo.component').then((c) => c.UploadPhotoComponent),
+
       },
       {
         path: 'welcome',
@@ -169,7 +187,6 @@ export const routes: Routes = [
       import(
         './features/account-settings/account_delete_feature/account-delete-step2/account-delete-step2.component'
       ).then((c) => c.AccountDeleteStep2Component),
-
   },
 
   {

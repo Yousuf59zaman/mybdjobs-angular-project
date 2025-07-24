@@ -1,9 +1,9 @@
 import { Component, input, OnChanges, SimpleChanges } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { EditEducationComponent } from "../edit-education/edit-education.component";
-import { ProfessionalCertificationSummaryComponent } from "../professional-certification-summary/professional-certification-summary.component";
 import { TabsElementModel } from '../../../../common/edit-resume-tabs.const';
 import { TrainingComponent } from '../training/training.component';
+import { ProfessionalCertificationSummaryComponent } from '../ProfessionalCertificate/professional-certification-summary/professional-certification-summary.component';
 
 
 @Component({

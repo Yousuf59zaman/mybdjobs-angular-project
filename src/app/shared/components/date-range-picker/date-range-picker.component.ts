@@ -18,6 +18,7 @@ export class DateRangePickerComponent {
   @Output() onConfirmSelection = new EventEmitter<void>();
   @Output() onCancelSelection = new EventEmitter<void>();
   currentDate = new Date();
+   @Output() closePicker = new EventEmitter<void>();
   startCurrentMonth: number = this.currentDate.getMonth() - 1 < 0 ? 11 : this.currentDate.getMonth() - 1;
   startCurrentYear: number = this.startCurrentMonth === 11 ? this.currentDate.getFullYear() - 1 : this.currentDate.getFullYear();
   endCurrentMonth: number = this.currentDate.getMonth();
@@ -166,29 +167,37 @@ getYearRange(): number[] {
 
   
 
-  confirmSelection() {
-    if (this.selectedStartDate && !this.selectedEndDate) {
-      this.selectedEndDate = new Date(this.selectedStartDate.getTime()); 
-      this.selectedStartDate = null; 
+  
+confirmSelection() {
+  if (this.selectedStartDate && !this.selectedEndDate) {
+    this.selectedEndDate = new Date(this.selectedStartDate.getTime());
+    this.selectedStartDate = null;
+  }
+
+  if (this.allowSingleDateSelection) {
+    if (!this.selectedEndDate) {
+      return;
+    }
+  } else {
+    if (!this.selectedStartDate || !this.selectedEndDate) {
+      console.error('Both start and end dates must be selected.');
+      return;
     }
 
-    if (this.allowSingleDateSelection) {
-      if (!this.selectedEndDate) {
-        return; 
-      }
-    } else {
-      if (!this.selectedStartDate || !this.selectedEndDate) {
-        console.error('Both start and end dates must be selected.');
-        return;
-      }
-    }
     this.selectedStartDateChange.emit(this.selectedStartDate);
     this.selectedEndDateChange.emit(this.selectedEndDate);
     this.updateInputField();  
     this.calendarVisible = false;
     this.onConfirmSelection.emit();
-
   }
+  
+  this.selectedStartDateChange.emit(this.selectedStartDate);
+  this.selectedEndDateChange.emit(this.selectedEndDate);
+  this.updateInputField();
+  this.calendarVisible = false;
+  this.closePicker.emit(); // Emit the close event
+}
+  
   
   updateInputField() {
     if (this.selectedStartDate && this.selectedEndDate) {

@@ -1,0 +1,183 @@
+{
+    "appliedJobs": {
+        "title": "আবেদনকৃত চাকরি",
+        "subtitle": "আপনার আবেদনকৃত চাকরিগুলো ট্র্যাক করুন, রিজিউমে স্ট্যাটাস দেখুন এবং চাকরির শিরোনাম, কোম্পানি, তারিখ বা স্ট্যাটাস অনুযায়ী ফিল্টার করুন - সবকিছু এক জায়গায়।",
+        "dateRangeLabel": "তারিখ হইতে তারিখ পর্যন্ত",
+        "datePlaceholder": "দিন/মাস/বছর",
+        "companyNameLabel": "কোম্পানির নাম",
+        "companyPlaceholder": "কোম্পানির নাম লিখুন",
+        "applyButton": "প্রয়োগ করুন",
+        "regularJobsTab": "নিয়মিত চাকরি",
+        "totalJobsLabel": "মোট চাকরি পাওয়া গেছে",
+        "contactedLabel": "যোগাযোগ করা হয়েছে",
+        "offeredLabel": "অফার দেওয়া হয়েছে",
+        "joinedLabel": "যোগদান করেছেন",
+        "exclusiveInsight": "এক্সক্লুসিভ ইনসাইট",
+        "positionLabel": "পজিশন:",
+        "topApplicant": "আপনি শীর্ষ {{percent}}% এ আছেন",
+        "yourPosition": "আপনার অবস্থান: {{percent}}%",
+        "profileMatchNote": "এই চাকরির সাথে আপনার প্রোফাইল ম্যাচের উপর ভিত্তি করে",
+        "recruitmentProgress": "নিয়োগ প্রক্রিয়া:",
+        "shortlistedLabel": "শর্টলিস্টেড",
+        "profilesViewedLabel": "প্রোফাইল দেখা হয়েছে",
+        "lowLabel": "নিম্ন",
+        "highLabel": "উচ্চ",
+        "profileMatched": "প্রোফাইল ম্যাচ হয়েছে",
+        "joinedStatus": "যোগদান করেছেন",
+        "undoApplication": "আবেদন বাতিল করুন",
+        "previousButton": "পূর্ববর্তী",
+        "nextButton": "পরবর্তী",
+        "filters": {
+            "selectOption": "নির্বাচন করুন",
+            "categoryIndustry": "বিভাগ/শিল্প",
+            "employersActions": {
+                "title": "নিয়োগকর্তাদের কর্ম",
+                "viewed": "দেখা হয়েছে",
+                "notViewed": "দেখা হয়নি"
+            },
+            "pendingRequired": {
+                "title": "মুলতুবি (প্রয়োজনীয়)",
+                "videoCv": "ভিডিও সিভি প্রয়োজন",
+                "customizedCv": "কাস্টমাইজড সিভি প্রয়োজন"
+            },
+            "recruitmentStatus": {
+                "title": "নিয়োগের অবস্থা",
+                "interviewInvitation": "ইন্টারভিউ আমন্ত্রণ",
+                "joined": "যোগদান করেছেন",
+                "offered": "অফার দেওয়া হয়েছে",
+                "contracted": "চুক্তিবদ্ধ"
+            },
+            "priority": {
+                "title": "অগ্রাধিকার",
+                "high": "উচ্চ",
+                "regular": "নিয়মিত"
+            },
+            "other": {
+                "title": "অন্যান্য",
+                "other": "অন্যান্য"
+            }
+        },
+        "salarySection": {
+            "expectedSalary": "প্রত্যাশিত বেতন",
+            "editSalaryAlt": "বেতন সম্পাদনা করুন",
+            "enterSalary": "বেতন লিখুন"
+        },
+        "statusSection": {
+            "pending": "মুলতুবি",
+            "helpIconAlt": "সাহায্য আইকন",
+            "videoResume": "ভিডিও রিজিউম",
+            "videoResumeAlt": "ভিডিও রিজিউম আইকন",
+            "customizedCv": "কাস্টমাইজড সিভি",
+            "customizedCvAlt": "সিভি আইকন"
+        },
+        "messageSection": {
+            "sendMessage": "বার্তা পাঠান",
+            "sendMessageAriaLabel": "নিয়োগকর্তাকে বার্তা পাঠান",
+            "messageIconAlt": "বার্তা আইকন"
+        },
+        "boostSection": {
+            "boostApplication": "আবেদন বুস্ট করুন",
+            "boostIconAlt": "বুস্ট আইকন",
+            "boosted": "বুস্ট করা হয়েছে",
+            "boostedIconAlt": "বুস্ট করা আইকন"
+        },
+        "profileStatus": {
+            "viewed": "প্রোফাইল দেখা হয়েছে",
+            "notViewed": "প্রোফাইল দেখা হয়নি"
+        },
+        "status": {
+            "reason": "কারণ",
+            "joined": "যোগদান করেছেন",
+            "contacted": "যোগাযোগ করা হয়েছে",
+            "offered": "অফার দেওয়া হয়েছে",
+            "notJoined": "যোগদান করা হয়নি",
+            "notContacted": "যোগাযোগ করা হয়নি",
+            "reasonLabel": "কারণ",
+            "joinedStatus": "যোগদান করেছেন",
+            "pendingMessage": "নিয়োগকর্তা কি আপনাকে কল বা বার্তা দিয়েছেন?",
+            "contactedMessage": "নিয়োগকর্তা কি আপনাকে অফার দিয়েছেন?",
+            "offeredMessage": "আপনি কি যোগদান করেছেন?",
+            "joinedMessage": "আপনি এই কোম্পানিতে যোগদান করেছেন",
+            "notJoinedMessage": "যোগদান করা হয়নি",
+            "notContactedMessage": "এখনও যোগাযোগ করা হয়নি",
+            "notContactedTempMessage": "এখনও যোগাযোগ করা হয়নি",
+            "notOfferedMessage": "অফার দেওয়া হয়নি",
+            "notOfferedTempMessage": "অফার দেওয়া হয়নি",
+            "rejectedMessage": "আবেদন প্রত্যাখ্যান হয়েছে",
+            "defaultMessage": "আবেদনের অবস্থা"
+        },
+        "buttons": {
+            "yes": "হ্যাঁ",
+            "no": "না",
+            "notYet": "এখনও না"
+        },
+        "actions": {
+            "undoApplication": "আবেদন বাতিল করুন",
+            "undoIconAlt": "বাতিল আইকন"
+        },
+        "edit": {
+            "edit": "সম্পাদনা"
+        },
+        "common": {
+            "cancel": "বাতিল করুন",
+            "save": "সংরক্ষণ করুন",
+            "editAlt": "সম্পাদনা"
+        }
+    },
+    "undoModal": {
+        "title": "আবেদন বাতিল করুন!",
+        "description": "আপনি কি নিশ্চিতভাবে এই আবেদন বাতিল করতে চান?"
+    },
+    "buttons": {
+        "cancel": "বাতিল করুন",
+        "done": "সম্পন্ন হয়েছে",
+        "processing": "প্রসেসিং হচ্ছে...",
+        "close": "বন্ধ করুন",
+        "closeKeep": "বন্ধ করুন এবং রাখুন",
+        "yesSubmit": "হ্যাঁ, জমা দিন"
+    },
+    "boostModal": {
+        "title": "আপনার মাসিক বুস্টিং সীমা শেষ!",
+        "description": "আপনার বুস্টিং সীমা: {{limit}} (মাসিক)"
+    },
+    "selectExperience": "আপনার অভিজ্ঞতা নির্বাচন করুন",
+    "selectCompanyForJob": "'{{jobTitle}}' চাকরির জন্য কোম্পানি নির্বাচন করুন",
+    "basedOnResume": "আপনার রিজিউমের উপর ভিত্তি করে",
+    "boostSuccessModal": {
+        "title": "সফল হয়েছে",
+        "description": "তথ্য সফলভাবে হালনাগাদ হয়েছে",
+        "confirmText": "সম্পন্ন"
+    },
+    "boostingModal": {
+        "title": "আপনি বুস্ট করার যোগ্য নন",
+        "description": "পোস্টকৃত চাকরির সাথে আপনার প্রোফাইলের মিল অন্তত ৬০% হতে হবে",
+        "cancelText": "বাতিল করুন",
+        "confirmText": "সম্পন্ন"
+    },
+    "boostApplicationNormalUserModal": {
+        "title": "আপনি কি আপনার আবেদন বুস্ট করতে চান?",
+        "description": "সাবস্ক্রিপশন আপনাকে এই এক্সক্লুসিভ ফিচার উপভোগ করতে দেবে।",
+        "cancelText": "না, রাখুন",
+        "confirmText": "হ্যাঁ, চালিয়ে যান"
+    },
+    "notJoinedModal": {
+        "title": "আপনি চাকরিতে যোগ না দেওয়ার কারণ জানালে কৃতজ্ঞ হবো",
+        "options": {
+            "1": "প্রতিষ্ঠানে কাজ করতে আগ্রহী নই",
+            "2": "অফিসটি আমার বাসা থেকে অনেক দূরে",
+            "3": "আমি বর্তমানে চাকরিতে আছি এবং চাকরি পরিবর্তন করতে চাই না",
+            "4": "অন্যান্য"
+        },
+        "submit": "হ্যাঁ, সাবমিট করুন"
+    },
+    "experienceModal": {
+        "selectExperienceTitle": "অভিজ্ঞতা নির্বাচন করুন",
+        "companySelectLegend": "আপনাকে যে কোম্পানি নিয়োগ করেছে তা নির্বাচন করুন {{jobTitle}} পদের জন্য",
+        "basedOnResumeNote": "আপনার জীবনবৃত্তান্ত থেকে সংগৃহীত তথ্যের ভিত্তিতে নিচের তালিকা প্রস্তুত করা হয়েছে।",
+        "addExperienceNote": "যদি এই অভিজ্ঞতা আপনার জীবনবৃত্তান্তে যোগ করা না হয়ে থাকে, তাহলে অনুগ্রহ করে",
+        "addExperienceAction": "এখানে ক্লিক করুন",
+        "addExperienceSuffix": "অভিজ্ঞতা যোগ করতে",
+        "closeButton": "বন্ধ করুন, রেখে দিন",
+        "submitButton": "হ্যাঁ, জমা দিন"
+    }
+}

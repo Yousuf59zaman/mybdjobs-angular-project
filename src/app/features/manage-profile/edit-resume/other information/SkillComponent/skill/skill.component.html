@@ -1,0 +1,602 @@
+<accordion-main-body
+  [accordionName]="t('skills.skill')"
+  buttonType="add"
+  buttonTitle="{{ t('skills.addButton') }}"
+  [isAccordionOpen]="isOpen()"
+  [isFormOpen]="isFormOpen()"
+  (formToggleEmitter)="handleFormToggle()"
+  (accordionToggleEmitter)="toggle()"
+  *transloco="let t"
+>
+  <!-- Skills Section -->
+  @if(isLoading()) {
+  <div class="flex items-center justify-center py-[50px]">
+    <img [src]="'/images/loading.gif'" alt="Loading..." />
+  </div>
+  }@else {
+  <div class="my-5">
+     @if(!skills.length) {
+      <!-- Show form when open, no-details when closed -->
+      @if(isFormOpen()) {
+        <!-- Form for new skill when no skills exist -->
+        <div class="col-span-2">
+        <form
+          class="mt-5 space-y-4"
+          [formGroup]="skillsForm"
+          (ngSubmit)="saveSkill()"
+        >
+          <!-- Form fields remain the same -->
+          <div class="flex flex-col gap-4">
+            <!-- Skill Name Input -->
+            <div>
+              <label class="text-sm font-semibold text-primary-700">
+                {{t('skills.skill')}} <span class="text-[#d92c20] text-xs">*</span>
+              </label>
+              <input
+                type="text"
+                name="skillName"
+                formControlName="skillName"
+                (input)="onSkillNameInput($event)"
+                (focus)="onSkillNameInput($event)"
+                class="flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors"
+                placeholder="{{t('skills.placeholder')}}"
+                required
+                autocomplete="off"
+              />
+              @if (formSubmitted && skillsForm.hasError('skillIdRequired')) {
+              <div class="text-red-500 text-sm mt-1">
+                {{ skillsForm.getError("skillIdRequired") }}
+              </div>
+              }
+              <!-- Suggestions dropdown -->
+              @if (showSuggestions() && skillSuggestions().length) {
+              <div
+                class="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto max-h-60 focus:outline-none sm:text-sm suggestions-container"
+              >
+                @for (suggestion of skillSuggestions(); track
+                suggestion.skillID) {
+                <div
+                  class="cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-gray-100"
+                  (click)="selectSuggestion(suggestion)"
+                >
+                  <span class="font-normal block truncate">
+                    {{ suggestion.skillName }}
+                  </span>
+                </div>
+                }
+              </div>
+              } @if (formSubmitted && skillsForm.hasError('duplicateSkill')) {
+              <div class="text-red-500 text-sm mt-1">
+                {{ skillsForm.getError("duplicateSkill") }}
+              </div>
+              }
+            </div>
+
+            <!-- Learning Methods Checkboxes -->
+            <div class="flex flex-col gap-2 mt-4">
+              <label class="text-sm font-medium text-[#344054]"
+                >{{t('skills.HowLearnedlabel')}}</label
+              >
+              <div class="flex flex-wrap gap-4 items-start">
+                @for (method of currentSkillDetails(); track method) {
+                <div class="flex flex-col items-start min-h-[50px]">
+                  <div class="inline-flex items-center gap-2 h-6">
+                    <input
+                      type="checkbox"
+                      #checkbox
+                      [id]="'method-' + method.value"
+                      [checked]="
+                        skillsForm
+                          .get('learnedMethods')
+                          ?.value?.includes(method.value)
+                      "
+                      (change)="
+                        updateLearnedMethods(method.value, checkbox.checked)
+                      "
+                      class="rounded border-gray-300 text-[#C63C92] focus:ring-[#C63C92]"
+                    />
+                    <label
+                      for="method-{{ method.value }}"
+                      class="ml-2 text-gray-700"
+                    >
+                      {{ method.label }}
+                      <!-- or whatever property displays the method name -->
+                    </label>
+                  </div>
+                  @if (method.value === NTVQF_METHOD_VALUE) { @if
+                  (skillsForm.get('learnedMethods')?.value?.includes(NTVQF_METHOD_VALUE)){
+                  <div class="mt-2 w-full">
+                    <select
+                      name="ntqfLevel"
+                      formControlName="ntqfLevel"
+                      class="text-sm rounded-lg border border-gray-300 px-8 py-1.5 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none w-full"
+                    >
+                      @for (level of ntqfLevels; track level.value) {
+                      <option [value]="level.value">{{ level.label }}</option>
+                      }
+                    </select>
+                    @if (formSubmitted &&
+                    skillsForm.hasError('ntqfLevelRequired')) {
+                    <div class="text-red-500 text-sm mt-1">
+                      {{ skillsForm.getError("ntqfLevelRequired") }}
+                    </div>
+                    }
+                  </div>
+                  } }
+                </div>
+                }
+              </div>
+              @if (formSubmitted &&
+              skillsForm.hasError('learningMethodRequired')) {
+              <div class="text-red-500 text-sm">
+                {{ skillsForm.getError("learningMethodRequired") }}
+              </div>
+              }
+            </div>
+          </div>
+
+          <!-- Form Buttons -->
+          <div class="flex gap-3 mt-6">
+            <button
+              type="submit"
+              class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-sm border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold hover:bg-[#a52e7a] transition-colors"
+            >
+              {{ isEditing() ? t('skills.saveChanges') : t('skills.addSkill') }}
+            </button>
+            <button
+              type="button"
+              (click)="cancelEdit()"
+              class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-sm border border-gray-300 text-[#344054] text-sm font-semibold hover:bg-gray-50 transition-colors"
+            >
+              {{t('skills.cancel')}}
+            </button>
+          </div>
+        </form>
+      </div>
+      } @else {
+        <app-no-details
+          (openFormBtn)="openNewSkillForm()"
+          [btnText]="t('skills.addButton')"
+          [description]="t('skills.description')">
+        </app-no-details>
+      }
+    } @else { @if(!isFormOpen()) {
+    <!-- View Mode - Show all skills -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-32 gap-y-5">
+      @for (skill of skills; track $index; let i = $index) {
+      <div class="flex justify-between items-center gap-6">
+        <div class="flex flex-col items-start">
+          <p class="text-xs text-primary-900 font-medium">
+            {{ skill.skillName }}
+          </p>
+          <p class="mt-1 text-xs text-primary-500">
+            @for(learnMethod of skill.learnedMethods; track $index) {
+            {{ learnMethod
+            }}{{ $index === skill.learnedMethods.length - 1 ? "" : "," }} @if
+            (learnMethod === 'NTVQF' && skill.ntqfLevel) { ({{
+              getNtqfLevelLabel(skill.ntqfLevel)
+            }}) } }
+          </p>
+        </div>
+        <div class="flex items-center">
+          <button
+            (click)="editSkill(i)"
+            class="flex items-center px-3 py-2 text-primary-900"
+            aria-label="Edit Skill"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-[15px] w-[15px] text-slate-600"
+            >
+              <path
+                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+              ></path>
+              <path
+                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+              ></path>
+            </svg>
+          </button>
+          <button
+            (click)="openDeleteModal(i)"
+            class="flex items-center px-3 py-2 text-primary-900"
+            aria-label="Delete Skill"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              class="w-4 h-4"
+            >
+              <path
+                d="M2 4H3.33333H14"
+                stroke="#334155"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M5.33325 4V2.66667C5.33325 2.48986 5.40349 2.32029 5.52851 2.19526C5.65354 2.07024 5.82311 2 5.99992 2H9.99992C10.1767 2 10.3463 2.07024 10.4713 2.19526C10.5963 2.32029 10.6666 2.48986 10.6666 2.66667V4"
+                stroke="#334155"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M12.6666 4V13.3333C12.6666 13.5101 12.5963 13.6797 12.4713 13.8047C12.3463 13.9298 12.1767 14 11.9999 14H3.99992C3.82311 14 3.65354 13.9298 3.52851 13.8047C3.40349 13.6797 3.33325 13.5101 3.33325 13.3333V4"
+                stroke="#334155"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M6.66675 7.33334V11.3333"
+                stroke="#334155"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M9.33325 7.33334V11.3333"
+                stroke="#334155"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+    } @else {
+    <!-- Form Mode - Show all skills and form -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-32 gap-y-5">
+      <!-- Show all skills -->
+      @for (skill of skills; track $index; let i = $index) { @if(!isEditing || i
+      !== currentEditingIndex) {
+      <div class="flex justify-between items-center gap-6">
+        <div class="flex flex-col items-start">
+          <p class="text-xs text-primary-900 font-medium">
+            {{ skill.skillName }}
+          </p>
+          <p class="mt-1 text-xs text-primary-500">
+            @for(learnMethod of skill.learnedMethods; track $index) {
+            {{ learnMethod
+            }}{{ $index === skill.learnedMethods.length - 1 ? "" : "," }} @if
+            (learnMethod === 'NTVQF' && skill.ntqfLevel) { ({{
+              getNtqfLevelLabel(skill.ntqfLevel)
+            }}) } }
+          </p>
+        </div>
+        <div class="flex items-center">
+          <button
+            (click)="editSkill(i)"
+            class="flex items-center px-3 py-2 text-primary-900"
+            aria-label="Edit Skill"
+          >
+            <!-- Edit icon -->
+          </button>
+          <button
+            (click)="openDeleteModal(i)"
+            class="flex items-center px-3 py-2 text-primary-900"
+            aria-label="Delete Skill"
+          >
+            <!-- Delete icon -->
+          </button>
+        </div>
+      </div>
+      } }
+
+      <!-- Form (takes full width in its row) -->
+      <div class="col-span-2">
+        <form
+          class="mt-5 space-y-4"
+          [formGroup]="skillsForm"
+          (ngSubmit)="saveSkill()"
+        >
+          <!-- Form fields remain the same -->
+          <div class="flex flex-col gap-4">
+            <!-- Skill Name Input -->
+            <div>
+              <label class="text-sm font-semibold text-primary-700">
+                {{t('skills.skill')}} <span class="text-[#d92c20] text-xs">*</span>
+              </label>
+              <input
+                type="text"
+                name="skillName"
+                formControlName="skillName"
+                (input)="onSkillNameInput($event)"
+                (focus)="onSkillNameInput($event)"
+                class="flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors"
+                placeholder="{{t('skills.placeholder')}}"
+                required
+                autocomplete="off"
+              />
+              @if (formSubmitted && skillsForm.hasError('skillIdRequired')) {
+              <div class="text-red-500 text-sm mt-1">
+                {{ skillsForm.getError("skillIdRequired") }}
+              </div>
+              }
+              <!-- Suggestions dropdown -->
+              @if (showSuggestions() && skillSuggestions().length) {
+              <div
+                class="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto max-h-60 focus:outline-none sm:text-sm suggestions-container"
+              >
+                @for (suggestion of skillSuggestions(); track
+                suggestion.skillID) {
+                <div
+                  class="cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-gray-100"
+                  (click)="selectSuggestion(suggestion)"
+                >
+                  <span class="font-normal block truncate">
+                    {{ suggestion.skillName }}
+                  </span>
+                </div>
+                }
+              </div>
+              } @if (formSubmitted && skillsForm.hasError('duplicateSkill')) {
+              <div class="text-red-500 text-sm mt-1">
+                {{ skillsForm.getError("duplicateSkill") }}
+              </div>
+              }
+            </div>
+
+            <!-- Learning Methods Checkboxes -->
+            <div class="flex flex-col gap-2 mt-4">
+              <label class="text-sm font-medium text-[#344054]"
+                >{{t('skills.HowLearnedlabel')}}</label
+              >
+              <div class="flex flex-wrap gap-4 items-start">
+                @for (method of currentSkillDetails(); track method) {
+                <div class="flex flex-col items-start min-h-[50px]">
+                  <div class="inline-flex items-center gap-2 h-6">
+                    <input
+                      type="checkbox"
+                      #checkbox
+                      [id]="'method-' + method.value"
+                      [checked]="
+                        skillsForm
+                          .get('learnedMethods')
+                          ?.value?.includes(method.value)
+                      "
+                      (change)="
+                        updateLearnedMethods(method.value, checkbox.checked)
+                      "
+                      class="rounded border-gray-300 text-[#C63C92] focus:ring-[#C63C92]"
+                    />
+                    <label
+                      for="method-{{ method.value }}"
+                      class="ml-2 text-gray-700"
+                    >
+                      {{ method.label }}
+                      <!-- or whatever property displays the method name -->
+                    </label>
+                  </div>
+                  @if (method.value === NTVQF_METHOD_VALUE) { @if
+                  (skillsForm.get('learnedMethods')?.value?.includes(NTVQF_METHOD_VALUE)){
+                  <div class="mt-2 w-full">
+                    <select
+                      name="ntqfLevel"
+                      formControlName="ntqfLevel"
+                      class="text-sm rounded-lg border border-gray-300 px-8 py-1.5 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none w-full"
+                    >
+                      @for (level of ntqfLevels; track level.value) {
+                      <option [value]="level.value">{{ level.label }}</option>
+                      }
+                    </select>
+                    @if (formSubmitted &&
+                    skillsForm.hasError('ntqfLevelRequired')) {
+                    <div class="text-red-500 text-sm mt-1">
+                      {{ skillsForm.getError("ntqfLevelRequired") }}
+                    </div>
+                    }
+                  </div>
+                  } }
+                </div>
+                }
+              </div>
+              @if (formSubmitted &&
+              skillsForm.hasError('learningMethodRequired')) {
+              <div class="text-red-500 text-sm">
+                {{ skillsForm.getError("learningMethodRequired") }}
+              </div>
+              }
+            </div>
+          </div>
+
+          <!-- Form Buttons -->
+          <div class="flex gap-3 mt-6">
+            <button
+              type="submit"
+              class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-sm border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold hover:bg-[#a52e7a] transition-colors"
+            >
+              {{ isEditing() ? t('skills.saveChanges') : t('skills.addSkill') }}
+            </button>
+            <button
+              type="button"
+              (click)="cancelEdit()"
+              class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-sm border border-gray-300 text-[#344054] text-sm font-semibold hover:bg-gray-50 transition-colors"
+            >
+              {{t('skills.cancel')}}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    } }
+  </div>
+
+  <div class="mb-5">
+    @if(skills.length<20){
+      <button
+      class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 hover:bg-pink-50 transition-colors"
+      [class.opacity-50]="isFormOpen()"
+      [disabled]="isFormOpen()"
+      aria-label="Add Skill"
+      (click)="addNewSkill()"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#B32D7D"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      <span class="leading-tight">{{t('skills.addSkill')}}</span>
+    </button>
+    }
+    
+  </div>
+
+  <!-- Description -->
+  <div class="my-5">
+    @if(!isDescFormOpen()) { @if( !skillDescription().length ) {
+    <div class="rounded-xl border border-[#E4E7EC]">
+      <app-no-details
+        (openFormBtn)="isDescFormOpen.set(true)"
+        [btnText]="t('skills.AddSkill')"
+        [description]="
+          t('skills.AddDescription')
+        "
+      />
+    </div>
+    } @else {
+    <div class="flex flex-col items-start gap-1.5">
+      <div class="flex items-center justify-between w-full">
+        <p class="text-xs text-primary-500 font-medium">{{t('skills.Desclabel')}}</p>
+        <div class="flex items-center">
+          <button
+            (click)="onClickDescEdit()"
+            [disabled]="isSaving"
+            class="flex items-center px-3 py-2 text-primary-900"
+            aria-label="Edit Skill Desc"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-[15px] w-[15px] text-slate-600"
+            >
+              <path
+                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+              ></path>
+              <path
+                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+              ></path>
+            </svg>
+
+            <!-- <span class="text-sm hidden sm:inline">Edit</span> -->
+          </button>
+        </div>
+      </div>
+      <p
+        class="mt-1 text-xs text-primary-900"
+        [innerHTML]="skillDescription()"
+      ></p>
+    </div>
+    } } @else {
+    <div class="flex flex-col w-full max-md:max-w-full">
+      <div class="flex flex-col w-full max-md:max-w-full">
+        <label
+          class="flex gap-0.5 mb-[8px] items-start self-start text-sm font-medium leading-none"
+        >
+          <span class="text-sm leading-[20px] text-slate-700"
+            >{{t('skills.Skilllabel')}}</span
+          >
+          <span class="text-[#d92c20]">*</span>
+        </label>
+      </div>
+      <div class="w-full">
+        <app-text-editor
+          [control]="descriptionControl"
+          [label]="''"
+          [type]="'Edit-Resume'"
+          [height]="'112px'"
+          [placeholder]="t('skills.Skillplaceholder')"
+        >
+        </app-text-editor>
+      </div>
+      <div
+        *ngIf="charLimitExceeded"
+        class="mt-2 text-sm text-[#d92c20] flex items-start"
+      >
+        <i class="fas fa-exclamation-circle mt-0.5 mr-2"></i>
+        <span>{{t('skills.charLimitError')}}</span>
+      </div>
+      <div class="my-3 flex items-center gap-3">
+        <button
+          (click)="onClickDescSave()"
+          [disabled]="isSaving"
+          class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold"
+        >
+          {{ isSaving ? t('skills.saving') : t('skills.saveButton') }}
+        </button>
+        <button
+          type="button"
+          (click)="onClickDescCancel()"
+          class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold"
+        >
+          {{t('skills.cancel')}}
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+  }
+</accordion-main-body>
+
+<!-- Delete Modal -->
+@if(isDeleteModalOpen()){
+<div
+  class="fixed inset-0 bg-[#101828]/50 flex items-center justify-center z-[9999]"
+  *transloco="let t"
+>
+  <div
+    class="bg-white w-[476px] h-[216px] p-10 rounded-lg shadow-md flex flex-col justify-between"
+  >
+    <p
+      class="text-primary-900 text-center font-semibold text-[24px] leading-[32px]"
+    >
+      {{t('skills.SureTitle')}}
+    </p>
+    <div class="flex justify-center gap-6 mt-6">
+      <button
+        (click)="closeDeleteModal()"
+        class="px-4 py-2 text-sm rounded-lg border border-[#E4E7EC] bg-white shadow-sm text-primary-900 hover:bg-gray-100"
+      >
+        {{t('skills.cancelButton')}}
+      </button>
+      <button
+        (click)="confirmDelete()"
+        [disabled]="isSaving"
+        class="px-4 py-2 text-sm rounded-lg bg-[#C63C92] shadow-sm text-white hover:bg-pink-700 disabled:opacity-50"
+      >
+        {{ isSaving ? t('skills.deleting') : t('skills.delete')}}
+      </button>
+    </div>
+  </div>
+</div>
+}

@@ -1,0 +1,283 @@
+<div *transloco="let t">
+@if(userNameType === 1)  
+{
+
+<div class="bg-gray-100 flex flex-col gap-6">
+    <div class="bg-white rounded-t-xl shadow-md outline outline-1 outline-gray-200 flex flex-col gap-0.5">
+        <div class="px-6 py-5 border-b border-gray-200 flex items-center gap-5">
+            <div class="flex flex-1 items-start gap-4">
+                <div class="flex flex-col gap-1.5">
+                    <h2 class="text-2xl font-semibold text-gray-900">{{ t('accountChangeUserId.titleEM') }}</h2>
+                    <p class="text-sm font-medium text-gray-500">
+                        {{ t('accountChangeUserId.descriptionEM') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-6 flex flex-col items-start gap-6 overflow-hidden w-full">
+            <div class="w-full flex flex-col items-center gap-6">
+                <div class="w-full max-w-3xl p-5 bg-white rounded-xl flex flex-col gap-8">
+                    <div class="w-full flex flex-col gap-2">
+                        <div class="flex flex-col gap-1">
+                            <div
+                                class="w-fit h-[26px] inline-flex items-center gap-2 bg-[#FCF3FA] border border-[#F6D4ED] text-[#B32D7D] text-xs font-medium px-2 py-1 rounded-full">
+                                <img src="https://ui-avatars.com/api/?name=J+BD&background=F472B6&color=fff&size=24"
+                                    alt="Avatar" class="w-4 h-4 rounded-full" />
+                                <span>{{userName}}</span>
+                            </div>
+                            <p class="text-lg font-semibold text-gray-900">
+                                {{ t('accountChangeUserId.headlineEmail') }}
+                            </p>
+                        </div>
+                    </div>
+                    <!-- STEP 1: Email + Password form -->
+                    <ng-container *ngIf="!showOtpSection">
+                        <form [formGroup]="emailForm" (ngSubmit)="onSave()" class="w-full flex flex-col gap-8">
+                            <div class="w-full flex flex-col gap-5">
+                                <div class="w-full flex flex-col gap-1.5">
+                                    <label for="newEmail" class="text-sm font-medium text-gray-700">{{t('accountChangeUserId.levelemail')}}</label>
+                                    <app-input [type]="'email'" [control]="emailController()"
+                                        [placeholder]="t('accountChangeUserId.placeholderemail')"
+                                        [isNumericOnly]="false" (input)="onEmailInput($event)">
+                                    </app-input>
+                                    <div *ngIf="errorMessage" class="text-red-600 text-sm mt-1">{{errorMessage}}</div>
+                                </div>
+
+                                 @if(showPasswordField) {
+                                    <div class="w-full flex flex-col gap-1.5">
+                                      <label for="password" class="text-sm font-medium text-gray-700">{{t('accountChangeUserId.password')}}</label>
+                                      <div class="relative">
+                                        <app-input [type]="password()" formControlName="password"
+                                                  [isDecimalAllowed]="true" [isNumericOnly]="false"
+                                                  [maxLength]="maxLength" [maxValue]="maxValue" (input)="onPasswordInput($event)">
+                                        </app-input>
+                                        <span (click)="showPassword()"
+                                            [ngClass]="password() === 'password' ?   'icon-eye-slash' : 'icon-eye'"
+                                            class="cursor-pointer text-[#5D6679] text-base absolute right-4 top-4">
+                                        </span>
+                                      </div>
+                                    </div>
+                                  }
+                                <div class="w-full flex flex-col gap-1.5">
+                                    <button type="submit" class="mb-3 flex items-center gap-3 button-save">{{t('accountChangeUserId.confirm')}}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </ng-container>
+
+                    <!-- STEP 2: Secure code input -->
+                    <ng-container *ngIf="showOtpSection">
+                        <div class="p-6 flex flex-col items-start gap-10">
+                            <div class="flex flex-col items-start gap-2 w-full">
+                                <div class="text-gray-700 text-sm font-medium">
+                                    {{t('accountChangeUserId.secureCode')}}
+                                </div>
+
+                                <div class="flex items-center gap-3">
+                                    <ng-container *ngFor="let d of digits.slice(0,3); let i = index">
+                                        <input
+                                            type="text"
+                                            maxlength="1"
+                                            [attr.data-index]="i"
+                                            (input)="onInput($event, i)"
+                                            (keydown)="onKeyDown($event, i)"
+                                            [value]="code[i]"
+                                            [ngClass]="{
+                                                    'border border-red-500': otpError,
+                                                    'border border-green-500': otpSuccess && !otpError,
+                                                    'outline outline-1 outline-gray-200': !otpError && !otpSuccess
+                                                }"
+                                            class="w-20 h-20 bg-white rounded-xl shadow-md text-center text-gray-900 text-5xl font-medium leading-tight focus:outline-none focus:ring-2 focus:ring-pink-500"
+                                            placeholder=""
+                                        />
+                                    </ng-container>
+
+                                    <div class="text-gray-400 text-6xl font-medium leading-tight">–</div>
+
+                                    <ng-container *ngFor="let d of digits.slice(3); let i = index">
+                                        <input
+                                            type="text"
+                                            maxlength="1"
+                                            [attr.data-index]="i+3"
+                                            (input)="onInput($event, i+3)"
+                                            (keydown)="onKeyDown($event, i+3)"
+                                            [value]="code[i+3]"
+                                            [ngClass]="{
+                                                    'border border-red-500': otpError,
+                                                    'border border-green-500': otpSuccess && !otpError,
+                                                    'outline outline-1 outline-gray-200': !otpError && !otpSuccess
+                                                }"
+                                            class="w-20 h-20 bg-white rounded-xl shadow-md text-center text-gray-900 text-5xl font-medium leading-tight focus:outline-none focus:ring-2 focus:ring-pink-500"
+                                            placeholder=""
+                                        />
+                                    </ng-container>
+                                </div>
+                                <div *ngIf="otpError" class="text-red-600 text-sm mt-2">Incorrect code. Please try again</div>
+
+                                <div class="text-sm">
+                                  <span class="text-gray-600">Code valid for </span>
+                                  <span class="text-gray-900 font-medium">{{ formattedCountdown }} s</span>
+                                  <span class="text-gray-700 ml-[239px]">Didn’t get a code?</span>
+                                   <button type="button" class="text-gray-900 font-medium underline ml-1" (click)="resendCode()" [disabled]="resendDisabled">
+                                      {{t('accountChangeUserId.Resend code')}}
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <button (click)="verifyCode()"  [disabled]="isVerifying"
+                                class="px-6 py-3 bg-[#C63C92] text-white rounded-lg font-semibold">
+                                <span *ngIf="!isVerifying">{{t('accountChangeUserId.verifyOtp')}}</span>
+                            </button>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@else if(userNameType === 2)
+{
+<div class="bg-gray-100 flex flex-col gap-6">
+    <div class="bg-white rounded-t-xl shadow-md outline outline-1 outline-gray-200 flex flex-col gap-0.5">
+        <div class="px-6 py-5 border-b border-gray-200 flex items-center gap-5">
+            <div class="flex flex-1 items-start gap-4">
+                <div class="flex flex-col gap-1.5">
+                    <h2 class="text-2xl font-semibold text-gray-900">{{t('accountChangeUserId.titlePhn')}}</h2>
+                    <p class="text-sm font-medium text-gray-500">{{t('accountChangeUserId.descriptionPhn')}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-6 flex flex-col items-start gap-6 overflow-hidden w-full">
+            <div class="w-full flex flex-col items-center gap-6">
+                <div class="w-full max-w-3xl p-5 bg-white rounded-xl flex flex-col gap-8">
+                    <div class="w-full flex flex-col gap-2">
+                        <div class="flex flex-col gap-1">
+                            <div
+                                class="w-[166px] h-[26px] inline-flex items-center gap-2 bg-[#FCF3FA] text-pink-700 text-xs font-medium px-2 py-1 rounded-full">
+                                <img src="https://ui-avatars.com/api/?name=J+BD&background=F472B6&color=fff&size=24"
+                                    alt="Avatar" class="w-4 h-4 rounded-full" />
+                                <span>{{userName}}</span>
+                            </div>
+
+                            <p class="text-lg font-semibold text-gray-900">
+                               {{t('accountChangeUserId.headlineMobile')}}
+                            </p>
+                        </div>
+                    </div>
+                    <!-- STEP 1: Mobile form -->
+                    <ng-container *ngIf="!showOtpSection">
+                        <form [formGroup]="mobileForm" (ngSubmit)="onSubmit()" class="w-full flex flex-col gap-8">
+                            <div class="w-full flex flex-col gap-5">
+                                <div class="w-full flex flex-col gap-1.5">
+                                    <label for="newMobile" class="text-sm font-medium text-gray-700">{{t('accountChangeUserId.levelphone')}} </label>
+                                    <app-input [type]="'text'" formControlName="mobile"
+                                        [placeholder]="t('accountChangeUserId.placeholderphn')" [isNumericOnly]="true"  (input)="onMobileInput($event)">
+                                    </app-input>
+                                </div>
+                                <div class="w-full flex flex-col gap-1.5">
+                                    <button type="submit" class="mb-3 flex items-center gap-3 button-save">{{t('accountChangeUserId.confirm')}} </button>
+                                </div>
+                            </div>
+                        </form>
+                    </ng-container>
+
+                    <!-- STEP 2: Secure code input -->
+                    <ng-container *ngIf="showOtpSection">
+                        <div class="p-6 flex flex-col items-start gap-10">
+                            <div class="flex flex-col items-start gap-2 w-full">
+                                <div class="text-gray-700 text-sm font-medium">
+                                   {{t('accountChangeUserId.secureCode')}}
+                                </div>
+
+                                 <div class="flex items-center gap-3">
+                                    <ng-container *ngFor="let d of digits.slice(0,3); let i = index">
+                                        <input
+                                            type="text"
+                                            maxlength="1"
+                                            [attr.data-index]="i"
+                                            (input)="onInput($event, i)"
+                                            [value]="code[i]"
+                                             [ngClass]="{
+                                                    'border border-red-500': otpError,
+                                                    'border border-green-500': otpSuccess && !otpError,
+                                                    'outline outline-1 outline-gray-200': !otpError && !otpSuccess
+                                                }"
+                                            class="w-20 h-20 bg-white rounded-xl shadow-md text-center text-gray-900 text-5xl font-medium leading-tight focus:outline-none focus:ring-2 focus:ring-pink-500"
+                                            placeholder=""
+                                        />
+                                    </ng-container>
+
+                                    <div class="text-gray-400 text-6xl font-medium leading-tight">–</div>
+
+                                    <ng-container *ngFor="let d of digits.slice(3); let i = index">
+                                        <input
+                                            type="text"
+                                            maxlength="1"
+                                            [attr.data-index]="i+3"
+                                            (input)="onInput($event, i+3)"
+                                            [value]="code[i+3]"
+                                             [ngClass]="{
+                                                    'border border-red-500': otpError,
+                                                    'border border-green-500': otpSuccess && !otpError,
+                                                    'outline outline-1 outline-gray-200': !otpError && !otpSuccess
+                                                }"
+                                            class="w-20 h-20 bg-white rounded-xl shadow-md text-center text-gray-900 text-5xl font-medium leading-tight focus:outline-none focus:ring-2 focus:ring-pink-500"
+                                            placeholder=""
+                                        />
+                                    </ng-container>
+                                </div>
+                                <div *ngIf="otpError" class="text-red-600 text-sm mt-2">Incorrect code. Please try again</div>
+                                 <div class="text-sm">
+                                  <span class="text-gray-600">Code valid for </span>
+                                  <span class="text-gray-900 font-medium">{{ formattedCountdown }} s</span>
+                                  <span class="text-gray-700 ml-[239px]">Didn’t get a code?</span>
+                                   <button type="button" class="text-gray-900 font-medium underline ml-1" (click)="resendCode()">
+                                    {{t('accountChangeUserId.Resend code')}}
+                                  </button>
+                                </div>
+                            </div>
+
+                            <button (click)="verifyCode()"
+                                class="px-6 py-3 bg-[#C63C92] text-white rounded-lg font-semibold">
+                                {{t('accountChangeUserId.verifyOtp')}}
+                            </button>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+
+
+<!-- Add this success modal at the bottom of your template -->
+@if(isSuccessModalOpen) {
+ <div class="fixed inset-0 bg-black bg-opacity-10 flex items-center justify-center z-50">
+    <div class="w-[480px] h-60 px-8 pt-20 pb-5 relative bg-white rounded-xl flex flex-col justify-start items-center gap-6 overflow-hidden">
+        <button (click)="closeSuccessModal()"
+            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold focus:outline-none z-10">
+            &times;
+        </button>
+        <img src="/images/donesign.svg" alt="Success" class="absolute left-1/2 -translate-x-1/2"
+            style="width: 336px; height: 336px; top: -120px; z-index: 1;" />
+
+        <div class="text-center flex flex-col items-center gap-1.5 relative z-20 mt-1.5">
+            <h3 class="text-lg font-semibold text-gray-700 leading-7">User ID Updated Successfully.</h3>
+            <p class="text-sm text-gray-500 leading-tight w-full text-center">
+                You’ve added a new email address as your User ID. You can now use it to log in to your account.
+            </p>
+        </div>
+        <button (click)="closeSuccessModal()"
+            class="w-full py-2.5 bg-[#C63C92] text-white rounded-lg font-semibold text-sm leading-tight transition hover:opacity-90 z-20">
+            {{t('accountChangeUserId.okay')}}
+        </button>
+    </div>
+</div>
+}
+</div>

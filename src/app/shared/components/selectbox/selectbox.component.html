@@ -12,6 +12,7 @@
 <div (click)="isDropdownOpen.set(!isDropdownOpen())" class="relative">
     <button 
       type="button"
+
       [ngClass]="isDropdownOpen() ?'border-2 border-[#D95BB0]':'border border-[#DEDEDE]' "
       class="h-[38px]  text-left my-2 flex items-center justify-between text-[#667085] cursor-pointer w-full px-3 py-2  sm:text-sm  rounded-md"
       placeholder="Select job nature">
@@ -23,7 +24,9 @@
   </div>
   
   @if (isDropdownOpen()) {
-    <div [ngClass]="label() ? 'top-[72px]':'top-[40px]'" class="w-full absolute z-10 mt-1 bg-white dropdown-shadow rounded-md border border-[#DAE5EC] px-2 py-2">
+
+    <div [ngClass]="label() ? 'top-[72px]':'top-[40px]'" class="w-full absolute z-10 top-[72px] mt-1 bg-white dropdown-shadow rounded-md border border-[#DAE5EC] px-2 py-2">
+
       <div class="max-h-[140px] overflow-y-auto">
         @for (item of options(); track item.value) {
           <div 

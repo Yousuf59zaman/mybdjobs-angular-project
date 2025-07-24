@@ -1,0 +1,44 @@
+<div class="flex overflow-hidden relative gap-6 pt-16 flex-col bg-white rounded-xl max-w-[480px] w-[580px] mx-auto">
+  <!-- Header and visual elements remain the same -->
+  
+  <section class="flex flex-col justify-center items-center self-center w-full mb-11">
+    <h1 class="text-lg font-semibold text-slate-700 whitespace-nowrap m-0">
+      {{ 'appliedJobs.undoModal.title' | transloco }}
+      
+    </h1>
+    <div class="flex items-center -translate-y-[20%]">
+      <div class="flex flex-col justify-center text-[14px] mt-2 leading-5 text-gray-500">
+        <p>{{ 'appliedJobs.undoModal.description' | transloco }}</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="flex z-0 gap-4 items-center w-full -translate-y-[120%] text-sm font-semibold leading-none whitespace-nowrap">
+    <button
+      type="button"
+      class="flex overflow-hidden flex-1 shrink gap-1 justify-center items-center self-stretch px-3.5 py-2.5 my-auto bg-white rounded-lg border border-gray-300 border-solid shadow-sm basis-0 text-slate-700"
+      (click)="handleCancel()"
+    >
+      <div class="flex justify-center items-center self-stretch px-0.5 py-0 my-auto">
+        <span class="self-stretch my-auto text-sm leading-5 text-slate-700">
+          {{ 'appliedJobs.buttons.cancel' | transloco }}
+        </span>
+      </div>
+    </button>
+    <button
+      type="button"
+      class="flex overflow-hidden flex-1 shrink gap-1 justify-center items-center self-stretch px-3.5 py-2.5 my-auto text-white bg-pink-600 rounded-lg border-2 border-solid shadow-sm basis-0 border-white border-opacity-10"
+      (click)="handleConfirm()"
+      [disabled]="isLoading"
+    >
+      <div class="flex justify-center items-center self-stretch px-0.5 py-0 my-auto">
+        <span *ngIf="!isLoading" class="self-stretch my-auto text-sm leading-5 text-white">
+          {{ 'appliedJobs.buttons.done' | transloco }}
+        </span>
+        <span *ngIf="isLoading" class="self-stretch my-auto text-sm leading-5 text-white">
+          {{ 'appliedJobs.buttons.processing' | transloco }}
+        </span>
+      </div>
+    </button>
+  </footer>
+</div>

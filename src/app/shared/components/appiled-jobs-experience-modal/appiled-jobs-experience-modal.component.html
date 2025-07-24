@@ -1,0 +1,102 @@
+<div class="relative px-8 pt-4 pb-8 bg-white rounded-xl max-w-full">
+  <header class="z-0 gap-2 w-full text-lg font-medium leading-loose text-slate-700">
+    <h1 class="text-lg leading-7 text-slate-700">
+    {{ 'appliedJobs.experienceModal.selectExperienceTitle' | transloco }}
+    </h1>
+  </header>
+
+  <main class="z-0 mt-2.5 w-full">
+    <section class="gap-4 w-full">
+      <div class="gap-3 w-full">
+        <fieldset class="flex flex-col gap-2 justify-center w-full rounded-lg">
+          <legend class="text-lg font-semibold leading-7 text-slate-700">
+         {{ 'appliedJobs.experienceModal.companySelectLegend' | transloco: { jobTitle: jobTitle } }}
+          </legend>
+
+          <div class="flex gap-1 justify-center items-center mt-2 w-full text-sm leading-5 text-slate-600">
+            <p class="flex-1 shrink self-stretch my-auto text-sm leading-5 basis-0 text-slate-600">
+             {{ 'appliedJobs.experienceModal.basedOnResumeNote' | transloco }}
+            </p>
+          </div>
+        </fieldset>
+
+        <div class="flex flex-col gap-4 items-start p-3 mt-3 w-full rounded-lg border border-gray-200 border-solid">
+          <div *ngFor="let experience of experiences; trackBy: trackByExperienceId" class="flex gap-2 items-start max-w-full w-[344px]">
+            <div class="flex justify-center items-center pt-0.5 w-4">
+              <input
+                type="radio"
+                [id]="'exp-' + experience.experience_ID"
+                name="company-experience"
+                [value]="experience.experience_ID"
+                [checked]="selectedExperienceId === experience.experience_ID.toString()"
+                (change)="onExperienceSelected(experience.experience_ID.toString())"
+                class="w-4 h-4 rounded-full border border-gray-300 border-solid min-h-4 appearance-none checked:bg-blue-500 checked:border-blue-500 relative checked:after:content-[''] checked:after:w-2 checked:after:h-2 checked:after:bg-white checked:after:rounded-full checked:after:absolute checked:after:top-1/2 checked:after:left-1/2 checked:after:transform checked:after:-translate-x-1/2 checked:after:-translate-y-1/2"
+              />
+            </div>
+            <label
+              [for]="'exp-' + experience.experience_ID"
+              class="flex-1 shrink text-sm font-medium leading-none basis-0 min-w-60 text-slate-700 cursor-pointer"
+            >
+              <span class="text-sm leading-5 text-slate-700">
+                <span style="font-weight: 400">{{ experience.companyName }}</span>
+                <span style="font-weight: 600">
+                  ( {{ formatDate(experience.experienceFrom) }} - {{ formatDate(experience.experienceTo) }} )
+                </span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 block">
+        <div class="flex flex-col gap-3 justify-center px-4 py-2 w-full text-sm font-medium leading-5 bg-pink-50 rounded-lg border border-pink-200 border-solid text-slate-700">
+          <div class="flex gap-10 justify-center items-center w-full">
+            <div class="flex flex-1 shrink gap-1.5 items-center self-stretch my-auto w-full basis-0 min-w-60">
+              <p class="flex-1 shrink self-stretch my-auto text-sm leading-5 basis-0">
+               {{ 'appliedJobs.experienceModal.addExperienceNote' | transloco }}
+                <button
+                  type="button"
+                  (click)="onAddExperienceClick()"
+                  class="font-bold text-pink-600 hover:text-pink-700 underline focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-1 rounded"
+                  style="font-weight: 700; color: rgba(198, 60, 146, 1)"
+                >
+                {{ 'appliedJobs.experienceModal.addExperienceAction' | transloco }}
+                </button>
+                {{ 'appliedJobs.experienceModal.addExperienceSuffix' | transloco }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 w-full text-xs font-medium">
+        <div class="flex gap-4 justify-center items-start w-full">
+          <button
+            type="button"
+            (click)="onCloseClick()"
+            class="flex overflow-hidden flex-1 shrink gap-1 justify-center items-center px-3 py-2 text-pink-700 bg-white rounded-lg border border-pink-300 border-solid shadow-sm basis-0 hover:bg-pink-50 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <div class="flex justify-center items-center self-stretch px-0.5 py-0 my-auto">
+              <span class="self-stretch my-auto text-xs leading-5 text-pink-700">
+               {{ 'appliedJobs.experienceModal.closeButton' | transloco }}
+              </span>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            (click)="onSubmitClick()"
+            [disabled]="!selectedExperienceId"
+            class="flex overflow-hidden flex-1 shrink gap-1 justify-center items-center px-3 py-2 text-white bg-pink-600 rounded-lg border-2 border-solid shadow-sm basis-0 border-white border-opacity-10 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <div class="flex justify-center items-center self-stretch px-0.5 py-0 my-auto">
+              <span class="self-stretch my-auto text-xs leading-5 text-white">
+               {{ 'appliedJobs.experienceModal.submitButton' | transloco }}
+              </span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

@@ -1,0 +1,20 @@
+{
+  "headlineMobile": "Add a new phone number to set it as your primary User ID..",
+  "headlineEmail": "Add a new email address to set it as your primary User ID.",
+  "titleEM": "Set or Update Your Login Email Number",
+  "titlePhn":"Set or Update Your Login Mobile Number",
+  "descriptionEM": "Your email address is your User ID. Keep it updated to ensure secure login and important notifications.",
+  "descriptionPhn": "Your phone number is your User ID. Keep it updated to ensure secure login and important notifications.",
+  "confirm": "Confirm",
+  "okay": "Okay",
+  "verifyOtp": "Verify",
+  "password": "Password",
+  "Resend code":"Resend code",
+  "secureCode":"Secure code",
+  "levelphone": "New Phone Number",
+  "levelemail": "New Email Address",
+  "placeholderphn": "Type new phone number",
+  "placeholderemail": "Type new email address",
+  "resendOtp": "Resend OTP"
+
+}

@@ -8,6 +8,7 @@
       <span class="text-primary-500 font-medium text-xs"> {{extraLabelText}}</span>
     }
   </label>
+
     <input
       type="text"
       id="input-label"
@@ -16,7 +17,8 @@
       [placeholder]="placeholderText"
       (focus)="onSearchInputFocus()"
       (blur)="onSearchInputBlur()"
-      [(ngModel)]="searchQueryInput"
+      [value]="displayValue() || searchQueryInput()"
+      (input)="onInput($event)"
     />
   </div>
   } @else {
@@ -30,6 +32,9 @@
       id="input-label"
       name="input-label-name"
       class="flex-grow rounded border border-gray-300 px-3 py-2 focus:outline-none"
+
+      [value]="displayValue() || searchQueryInput()"
+      (input)="onInput($event)"
       [placeholder]="placeholderText"
       [(ngModel)]="searchQueryInput"
     />
@@ -81,10 +86,11 @@
 
       @if (searchQueryInput().trim() && suggestions().length === 0) {
       <li class="px-4 py-2.5">
+
         <p>No Item found!</p>
       </li>
       }
     </ul>
   </div>
-  }
+    }
 </div>

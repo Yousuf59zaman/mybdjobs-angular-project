@@ -2,14 +2,14 @@
   class="gap-2 self-stretch border border-solid shadow bg-[#FFF] border-[var(--Colors-Border-border-secondary,#E4E7EC)] rounded-[12px]"
 >
   <header
-    class="flex flex-wrap gap-3 items-center py-3 w-full border-b border-solid border-b-[color:var(--Colors-Border-border-secondary,#E4E7EC)] px-4 max-md:px-3 max-md:max-w-full"
+    class="flex flex-wrap gap-3 items-center py-5 px-6 w-full border-b border-solid border-b-[color:var(--Colors-Border-border-secondary,#E4E7EC)] px-4 max-md:px-3 max-md:max-w-full"
   >
     <div
       class="flex flex-1 shrink gap-4 items-start self-stretch my-auto basis-0 min-w-60 max-md:max-w-full"
     >
       <div class="gap-1 min-w-60">
         <h1
-          class="text-xl max-md:text-lg font-semibold text-gray-900 leading-[28px] max-md:leading-[24px]"
+          class="text-2xl max-md:text-lg font-semibold text-gray-900 leading-[28px] max-md:leading-[24px]"
         >
           {{ headerTitle }}
         </h1>
@@ -37,7 +37,7 @@
             class="flex gap-2 items-center text-xs max-md:text-[10px] font-medium text-slate-700"
           >
             <p
-              class="text-xs max-md:text-[10px] leading-[18px] max-md:leading-[16px] text-slate-700"
+              class="text-xs max-md:text-[12px] leading-[18px] max-md:leading-[16px] text-slate-700"
             >
               {{ badgeMessage }}
             </p>
@@ -77,7 +77,7 @@
           type="button"
         >
           <span
-            class="text-sm max-md:text-xs text-white leading-[20px] max-md:leading-[16px]"
+            class="text-base max-md:text-xs text-white leading-[20px] max-md:leading-[16px]"
             >{{ headerButtonText }}</span
           >
         </button>
@@ -216,7 +216,7 @@
 
   <div
     *ngIf="showMessagesSection || isProUser"
-    class="flex overflow-hidden flex-col gap-4 justify-center self-stretch p-2"
+    class="flex overflow-hidden flex-col gap-4 justify-center self-stretch p-4"
   >
     <div
       class="flex overflow-hidden flex-1 rounded-xl border border-solid border-[color:var(--Colors-Border-border-secondary,#E4E7EC)] size-full"
@@ -226,19 +226,19 @@
         [class.max-md:hidden]="showChatView"
       >
         <div class="w-full text-xs leading-none">
-          <div class="flex flex-col gap-2 justify-center w-full p-1">
+          <div class="flex flex-col gap-2 justify-center w-full py-3 px-5">
             <div
-              class="flex gap-1 mt-0 items-center w-full font-medium text-gray-500 rounded-full border border-solid shadow-sm bg-[#FFF] border-[color:var(--Colors-Border-border-secondary,#E4E7EC)] px-2"
+              class="flex gap-1 mt-0 items-center w-full font-medium text-gray-500 rounded-full border border-solid shadow-sm bg-[#FFF] border-[color:var(--Colors-Border-border-secondary,#E4E7EC)] pl-5 pr-1.5 py-1"
             >
               <img
                 src="images/search-icon.svg"
-                class="object-contain shrink-0 self-stretch my-auto w-3 aspect-square"
+                class="object-contain shrink-0 self-stretch my-auto w-4 aspect-square"
                 alt="Search icon"
               />
               <input
                 type="text"
                 placeholder="Search your chat"
-                class="text-xs text-gray-500 leading-[16px] bg-transparent border-none outline-none flex-1 px-1 focus:ring-0 focus:outline-none"
+                class="custom-placeholder text-xs text-gray-500 leading-[16px] bg-transparent border-none outline-none flex-1 px-1 focus:ring-0 focus:outline-none"
                 (input)="onSearchChange($event)"
                 [value]="searchTerm"
               />
@@ -251,25 +251,25 @@
                 (click)="setActiveTab('all')"
                 [class.bg-[#C63C92]]="activeTab === 'all'"
                 [class.text-white]="activeTab === 'all'"
-                class="flex gap-1 justify-center items-center px-2 py-1 whitespace-nowrap rounded-lg border border-solid shadow-sm bg-[#C63C92] border-[color:var(--Component-colors-Components-Buttons-Secondary-button-secondary-border,#D0D5DD)]"
+                class="flex gap-1 justify-center items-center px-3 py-2.5 whitespace-nowrap rounded-lg border border-solid shadow-sm bg-[#C63C92] border-[color:var(--Component-colors-Components-Buttons-Secondary-button-secondary-border,#D0D5DD)]"
               >
-                <span class="text-[10px] leading-[12px]">All</span>
+                <span class="text-[14px] leading-[12px]">All</span>
               </button>
               <button
                 (click)="setActiveTab('unread')"
                 [class.bg-[#C63C92]]="activeTab === 'unread'"
                 [class.text-white]="activeTab === 'unread'"
-                class="flex gap-1 justify-center items-center px-2 py-1 whitespace-nowrap rounded-lg border border-solid shadow-sm bg-[#C63C92] border-[color:var(--Component-colors-Components-Buttons-Secondary-button-secondary-border,#D0D5DD)]"
+                class="flex gap-1 justify-center items-center px-3 py-2.5 whitespace-nowrap rounded-lg border border-solid shadow-sm bg-[#C63C92] border-[color:var(--Component-colors-Components-Buttons-Secondary-button-secondary-border,#D0D5DD)]"
               >
-                <span class="text-[10px] leading-[12px]">Unread</span>
+                <span class="text-[14px] leading-[12px]">Unread</span>
               </button>
               <button
                 (click)="setActiveTab('mayMessage')"
                 [class.bg-[#C63C92]]="activeTab === 'mayMessage'"
                 [class.text-white]="activeTab === 'mayMessage'"
-                class="flex gap-1 justify-center items-center px-2 py-1 whitespace-nowrap rounded-lg border border-solid shadow-sm bg-[#C63C92] border-[color:var(--Component-colors-Components-Buttons-Secondary-button-secondary-border,#D0D5DD)]"
+                class="flex gap-1 justify-center items-center px-3 py-2.5 whitespace-nowrap rounded-lg border border-solid shadow-sm bg-[#C63C92] border-[color:var(--Component-colors-Components-Buttons-Secondary-button-secondary-border,#D0D5DD)]"
               >
-                <span class="text-[8px] leading-[10px]"
+                <span class="text-[14px] leading-[12px]"
                   >You May Message ({{ mayMessageCount }})</span
                 >
               </button>
@@ -280,7 +280,7 @@
         <div class="relative mt-1 w-full h-[calc(70vh-50px)] overflow-y-auto">
           <div
             *ngFor="let message of filteredMessages"
-            class="flex relative z-0 gap-2 items-start w-full p-1 md:p-2 cursor-pointer transition-colors duration-200"
+            class="flex relative z-0 gap-2 items-start w-full pr-8 py-4 pl-4 md:p-2 cursor-pointer transition-colors duration-200"
             [class.bg-pink-50]="
               message.conversationId === selectedMessage?.conversationId
             "
@@ -296,10 +296,10 @@
 
             <img
               [src]="message.companyLogo"
-              class="object-contain shrink-0 w-7 h-7 md:w-9 md:h-9 rounded-full"
+              class="object-contain shrink-0 w-11 h-11 pl-1 md:w-9 md:h-9 rounded-full"
               [alt]="message.companyName + ' avatar'"
             />
-            <div class="flex flex-col flex-1 min-w-0 overflow-hidden">
+            <div class="flex flex-col flex-1 pl-1 pr-4 min-w-0 overflow-hidden">
               <div class="flex justify-between items-center w-full">
                 <h3
                   class="text-xs md:text-sm font-medium text-slate-600 truncate"
@@ -307,6 +307,23 @@
                   {{ message.companyName }}
                 </h3>
                 <div
+                  *ngIf="message.unreadMessage"
+                  class="flex-shrink-0 flex items-center justify-center w-4 h-4 md:w-5 md:h-5 text-[8px] md:text-[10px] font-semibold text-pink-50 bg-pink-600 rounded-full"
+                >
+                  {{ message.unreadMessage.toString().padStart(2, "0") }}
+                </div>
+              </div>
+
+              <div class="flex justify-between items-center mb-1 w-full">
+                <p
+                  class="text-[14px] md:text-xs text-slate-700 truncate min-w-0"
+                  [class.font-semibold]="!message.isRead"
+                >
+                  {{ message.lastMessage }}
+                </p>
+                
+              </div>
+              <div
                   class="flex items-center gap-1 text-[10px] md:text-xs text-slate-500"
                 >
                   <img
@@ -314,24 +331,8 @@
                     class="w-2 h-2 md:w-3 md:h-3"
                     alt="Time icon"
                   />
-                  <span>{{ getRelativeTime(message.lastChattedOn) }}</span>
+                  <span class="text-xs">{{ getRelativeTime(message.lastChattedOn) }}</span>
                 </div>
-              </div>
-
-              <div class="flex justify-between items-center w-full">
-                <p
-                  class="text-[10px] md:text-xs text-slate-700 truncate min-w-0"
-                  [class.font-semibold]="!message.isRead"
-                >
-                  {{ message.lastMessage }}
-                </p>
-                <div
-                  *ngIf="message.unreadMessage"
-                  class="flex-shrink-0 flex items-center justify-center w-4 h-4 md:w-5 md:h-5 text-[8px] md:text-[10px] font-semibold text-pink-50 bg-pink-600 rounded-full"
-                >
-                  {{ message.unreadMessage.toString().padStart(2, "0") }}
-                </div>
-              </div>
             </div>
           </div>
 
@@ -429,7 +430,7 @@
         class="flex flex-col flex-1 shrink justify-between min-w-0 h-[calc(100vh-150px)] max-md:w-full"
       >
         <header
-          class="flex gap-2 items-center self-stretch px-2 py-1 border-b border-gray-200 bg-white rounded-t-xl"
+          class="flex gap-2 items-center self-stretch px-6 py-3 border-b border-gray-200 bg-white rounded-t-xl"
         >
           <button
             class="md:hidden flex items-center justify-center w-8 h-8"
@@ -454,7 +455,7 @@
           </button>
           <div class="flex-shrink-0">
             <div
-              class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold"
+              class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold"
             >
               <ng-container
                 *ngIf="selectedMessage?.companyLogo; else defaultAvatar"
@@ -471,10 +472,10 @@
             </div>
           </div>
           <div class="flex flex-col flex-1 gap-0 items-start">
-            <h1 class="text-xs font-semibold leading-4 text-gray-900">
+            <h1 class="text-base font-semibold leading-4 text-gray-900">
               {{ selectedMessage?.companyName || "HR" }}
             </h1>
-            <p class="text-[10px] leading-3 text-gray-600 truncate w-full">
+            <p class="text-[14px] leading-3 text-gray-600 truncate w-full mt-1">
               {{ selectedMessage?.jobTitle }}
             </p>
           </div>
@@ -540,7 +541,7 @@
           >
             <div
               *ngIf="msg.textSenderType === 'R'"
-              class="flex gap-1 items-start w-full"
+              class="flex gap-1 items-start max-w-[60%]"
             >
               <div class="flex-shrink-0">
                 <ng-container
@@ -549,7 +550,7 @@
                   <img
                     [src]="selectedMessage.companyLogo"
                     alt="{{ selectedMessage?.companyName }}"
-                    class="w-6 h-6 rounded-full object-cover"
+                    class="w-7 h-7 rounded-full object-cover"
                   />
                 </ng-container>
                 <ng-template #placeholderLogo>
@@ -562,15 +563,21 @@
               </div>
               <div class="flex flex-col gap-0 max-w-[70%]">
                 <div
-                  class="px-2 py-1 bg-white rounded-lg border border-gray-200 shadow-xs"
+                  class="px-3 py-3 bg-white rounded-lg border border-gray-200 shadow-xs"
                 >
-                  <div class="text-[10px] leading-3 text-gray-800">
-                    {{ msg.text }}
-                  </div>
+                 <div class="text-[12px] leading-3 text-gray-800"
+                    [ngStyle]="{
+                      'overflow-wrap': 'break-word',
+                      'word-break'  : 'break-word', 
+                      'white-space' : 'pre-wrap'    
+                    }">
+                  {{ msg.text }}
                 </div>
-                <div class="text-[8px] text-gray-500 ml-1">
+                  <div class="text-[10px] text-gray-500 ml-1">
                   {{ msg.textSendTime }}
                 </div>
+                </div>
+                
               </div>
             </div>
 
@@ -580,13 +587,19 @@
             >
               <div class="flex flex-col gap-0 items-end max-w-[70%]">
                 <div
-                  class="px-2 py-1 bg-indigo-50 rounded-lg border border-indigo-100 shadow-xs"
+                  class="ml-0 px-3 py-3 bg-indigo-50 rounded-lg border border-indigo-100 shadow-xs"
                 >
-                  <div class="text-[10px] leading-3 text-gray-800">
-                    {{ msg.text }}
-                  </div>
-                </div>
-                <div class="flex items-center gap-0.5 text-[8px] text-gray-500">
+                  <!-- APPLICANT (A) bubble – identical change -->
+              <div class="text-[12px] leading-3 text-gray-800"
+                  [ngStyle]="{
+                    'overflow-wrap': 'break-word',
+                    'word-break'  : 'break-word',
+                    'white-space' : 'pre-wrap'
+                  }">
+                {{ msg.text }}
+              </div>
+
+                  <div class="flex items-center gap-0.5 text-[10px] text-gray-500">
                   <span>{{ msg.textSendTime }}</span>
                   <img
                     src="images/double-tik-message.svg"
@@ -598,6 +611,8 @@
                     }"
                   />
                 </div>
+                </div>
+                
               </div>
             </div>
           </div>
@@ -609,6 +624,17 @@
             "
             class="w-full px-1 py-0 translate-y-[80px]"
           >
+            <!-- System notice: “messaging‑limit reached” -->
+        <section
+          class="w-full py-2 px-10 flex justify-center"
+          role="alert"
+          aria-label="System notice – messaging limit reached"
+        >
+          <p class="text-[13px] leading-5 text-slate-500 text-center">
+            Thank you. You’ve reached your messaging limit.&nbsp;
+            Please wait – you’ll be able to reply once the employer responds.
+          </p>
+        </section>
             <section
               class="flex relative flex-col gap-0.5 items-start self-stretch p-1 bg-red-50 rounded-md border border-red-200 border-solid shadow-sm"
               role="alert"
@@ -638,16 +664,17 @@
                     </svg>
                   </div>
                   <div class="flex-1 min-w-0">
-                    <h2 class="text-[10px] font-medium text-slate-700 truncate">
+                    <h2 class="text-[14px] font-medium text-slate-700 truncate">
                       {{ title }}
                     </h2>
-                    <p class="text-[8px] text-slate-600">
+                    <p class="text-[12px] text-slate-600">
                       {{ description }}
                     </p>
                   </div>
                 </div>
               </div>
             </section>
+
           </div>
         </main>
 
@@ -692,16 +719,16 @@
           class="flex gap-1 items-center self-stretch px-1.5 py-1 bg-[#F9FAFB]"
         >
           <div
-            class="flex flex-1 gap-0.5 items-center py-0.5 pr-1 pl-1.5 bg-white rounded-full border border-gray-200 border-solid shadow-sm"
+            class="flex flex-1 gap-0.5 items-center py-2 pr-2 pl-5 bg-white rounded-full border border-gray-200 border-solid shadow-sm"
           >
             <input
               type="text"
               [placeholder]="inputPlaceholder"
-              class="flex-1 text-[10px] leading-3 text-gray-500 bg-transparent border-none outline-none focus:ring-0 focus:outline-none focus:shadow-none"
+              class="custom-placeholder flex-1 text-[10px] leading-3 text-gray-500 bg-transparent border-none outline-none focus:ring-0 focus:outline-none focus:shadow-none"
               [(ngModel)]="currentMessage"
               (keyup.enter)="onSendMessage()"
             />
-            <div class="relative w-5 h-5 flex items-center justify-center">
+            <div class="relative w-6 h-6 flex items-center justify-center">
               <div
                 class="absolute w-full h-full rounded-full border-[1px] border-gray-200"
               ></div>
@@ -710,7 +737,7 @@
                 [style.background]="conicGradient"
                 [style.mask]="'radial-gradient(transparent 55%, black 56%)'"
               ></div>
-              <div class="relative z-10 text-[8px] font-semibold text-gray-900">
+              <div class="relative z-10 text-[12px] font-semibold text-gray-900">
                 {{
                   formatNumber(
                     max - sentMessageCounts[selectedMessage?.conversationId]
@@ -720,13 +747,13 @@
             </div>
           </div>
           <button
-            class="flex gap-0.5 items-center p-2 bg-pink-600 rounded-full border border-gray-200 border-solid shadow-sm cursor-pointer"
+            class="flex gap-0.5 items-center p-3 bg-pink-600 rounded-full border border-gray-200 border-solid shadow-sm cursor-pointer"
             (click)="onSendMessage()"
             [disabled]="!currentMessage.trim()"
           >
             <svg
-              width="12"
-              height="12"
+              width="16"
+              height="16"
               viewBox="0 0 20 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -776,7 +803,7 @@
                         ></p>
                         <p class="flex items-center gap-1">
                           <span
-                            class="text-[12px] leading-[20px] ml-8 text-slate-700"
+                            class="text-[14px] leading-[20px] ml-8 text-slate-700"
                           >
                             As a
                           </span>
@@ -786,14 +813,14 @@
                             alt="Premium badge"
                           />
                           <span
-                            class="text-[12px] leading-[20px] text-slate-700"
+                            class="text-[14px] leading-[20px] text-slate-700"
                           >
                             user, you're able to message employers directly to
                             ask
                           </span>
                         </p>
                         <p
-                          class="text-[12px] text-center leading-[20px] text-slate-700 max-md:max-w-full"
+                          class="text-[14px] text-center leading-[20px] text-slate-700 max-md:max-w-full"
                         >
                           questions and understand what they're looking for.
                         </p>
@@ -809,7 +836,7 @@
                       <div
                         class="flex flex-wrap items-center justify-center gap-1 text-gray-600 mb-20 max-w-md text-center"
                       >
-                        <span class="text-[12px]"
+                        <span class="text-[14px]"
                           >Want to reach out to employers directly? Get</span
                         >
                         <img
@@ -817,7 +844,7 @@
                           alt="Premium logo"
                           class="h-5 object-contain"
                         />
-                        <span class="text-[12px]"
+                        <span class="text-[14px]"
                           >subscription and start connecting right away.</span
                         >
                       </div>
@@ -835,13 +862,13 @@
               <div
                 class="flex items-center gap-2 text-sm font-medium text-slate-700 min-w-0 overflow-hidden"
               >
-                <span class="text-[11px]">Get</span>
+                <span class="text-[16px]">Get</span>
                 <img
                   src="images/bdjobs-pro.svg"
                   alt="Premium logo"
                   class="w-[80px] object-contain shrink-0"
                 />
-                <span class="text-[11px]">
+                <span class="text-[16px]">
                   Subscription use 'You May Message' feature.
                 </span>
               </div>

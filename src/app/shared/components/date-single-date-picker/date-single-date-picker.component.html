@@ -34,18 +34,18 @@
       <!-- First Calendar -->
       <div class="w-auto sm:w-full">
         <div class="flex  justify-between items-center px-1 sm:px-4 py-2 ">
-          <button (click)="previousMonth('start')" class="text-primary-900 hover:text-[#C63C92] text-xs sm:text-sm flex items-center"><span class="icon-angle-left-o text-primary-700"></span></button>
+          <button type="button" (click)="previousMonth('start')" class="text-primary-900 hover:text-[#C63C92] text-xs sm:text-sm flex items-center"><span class="icon-angle-left-o text-primary-700"></span></button>
           <div class="text-center text-xs sm:text-base font-semibold cursor-pointer flex items-center gap-1">
         
             <div class=" relative inline-block z-30 ml-1">
-              <button (click)="toggleMonthDropdown('start'); $event.stopPropagation()" class="hover:text-[#C63C92] text-primary-700 font-semibold">
+              <button type="button" (click)="toggleMonthDropdown('start'); $event.stopPropagation()" class="hover:text-[#C63C92] text-primary-700 font-semibold">
                 {{ months[startCurrentMonth] }}
 
                 @if (showStartMonthDropdown) {
                   <span class="absolute left-0 mt-1 w-[120px] sm:w-24 max-h-[200px] overflow-y-auto bg-white border border-gray-300 rounded shadow-lg z-20">
                     <div class="grid grid-cols-2 sm:grid-cols-1 gap-1 p-1 text-primary-900">
                       @for (month of months; track $index; let i = $index) {
-                        <button 
+                        <button type="button"
                           (click)="selectMonth(i, 'start'); $event.stopPropagation()"
                           class="p-1 text-[10px] sm:text-xs hover:bg-[#F2F4F7] rounded text-center"
                         >
@@ -60,14 +60,14 @@
 
             
             <div class="relative inline-block ml-1">
-              <button (click)="toggleYearDropdown('start'); $event.stopPropagation()" class="hover:text-[#C63C92]">
+              <button type="button" (click)="toggleYearDropdown('start'); $event.stopPropagation()" class="hover:text-[#C63C92]">
                 {{ selectedLang === 'bn' ? convertToBanglaNumber(startCurrentYear) : startCurrentYear }}
               </button>
               @if(showStartYearDropdown) {
                 <div class="absolute left-0 top-full mt-1 z-50 w-[160px] max-h-[300px] overflow-y-auto bg-white border border-gray-300 rounded shadow-lg">
                   <div class="grid grid-cols-2 sm:grid-cols-1 gap-1 p-1">
                     @for (year of getYearRange(); track year) {
-                      <button 
+                      <button type="button"
                         (click)="selectYear(year, 'start'); $event.stopPropagation()"
                         class="p-1 text-[10px] sm:text-xs hover:bg-[#F2F4F7] rounded text-center"
                       >
@@ -79,7 +79,7 @@
               }
             </div>
           </div>
-          <button (click)="nextMonth('start')" class="text-gray-800 hover:text-blue-600 text-xs sm:text-sm"><span class="icon-angle-right-o text-primary-700 font-semibold"></span></button>
+          <button type="button" (click)="nextMonth('start')" class="text-gray-800 hover:text-blue-600 text-xs sm:text-sm"><span class="icon-angle-right-o text-primary-700 font-semibold"></span></button>
         </div>
 
         
@@ -96,7 +96,7 @@
           
           @for (day of startDaysInMonth; track $index) {
             @if (day) {
-              <button 
+              <button type="button"
                 [ngClass]="{
                   'bg-[#C63C92] text-white': isSelected(day),
                   'text-gray-400 cursor-not-allowed': day.getMonth() !== startCurrentMonth,

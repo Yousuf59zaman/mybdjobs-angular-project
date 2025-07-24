@@ -51,7 +51,6 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
   readonly validationText = input<string>('');
   readonly isExtraAttempt = input<boolean>(false);
   readonly extraLabel = input<string>('')
-  
   valid = true;
 
   ngOnInit() {
@@ -100,4 +99,6 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
   ngAfterViewInit(): void {
     reinitializePreline();
   }
+
+
 }

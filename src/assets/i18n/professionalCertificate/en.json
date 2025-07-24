@@ -1,0 +1,18 @@
+{
+    "professionalCertificateSummary":"Professional Certification Summary",
+    "ProfessionalCertification" : "Professional Certification",
+    "Certification" : "Certification",
+    "Institute" : "Institute",
+    "Location" : "Location",
+    "Duration" : "Duration",
+    "Add_Professional_Certification": "Add Professional Certification",
+    "Save" : "Save",
+    "Close" : "Close",
+    "AreYouSure" : "Are you sure you want to delete this record?",
+    "Cancel" : "Cancel",
+    "Delete" : "Delete",
+    "Edit" : "Edit",
+    "JustDelete" : "Delete",
+    "CertificationNotEmpty": "Certification is required. Maximum length exceeded (80 characters)",
+    "InstituteNotEmpty":"Institute is required. Maximum length exceeded (80 characters)"
+}
