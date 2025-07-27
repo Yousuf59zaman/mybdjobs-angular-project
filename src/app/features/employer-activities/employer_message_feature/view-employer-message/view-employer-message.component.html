@@ -33,7 +33,9 @@
         <div
           class="flex gap-2 items-center rounded-md border border-solid bg-[#F9FAFB] border-[color:var(--Colors-Border-border-secondary,#E4E7EC)] px-3 py-2 max-md:px-2 max-md:py-1.5"
         >
-            <div class="flex gap-2 items-center text-xs max-md:text-[10px] font-medium text-slate-700 group relative">
+          <div
+            class="flex gap-2 items-center text-xs max-md:text-[10px] font-medium text-slate-700 group relative"
+          >
             <p
               class="text-xs max-md:text-[12px] leading-[18px] max-md:leading-[16px] text-slate-700"
             >
@@ -44,13 +46,13 @@
               class="object-contain w-5 max-md:w-4 aspect-square cursor-pointer"
               alt="Info icon"
             />
-            <!-- Tooltip -->
             <div
               class="absolute left-1/2 -translate-x-1/2 top-[120%] z-20 min-w-[280px] max-w-xs px-4 py-3 bg-gray-900 text-white text-xs rounded-lg shadow-lg whitespace-pre-line text-center opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-200"
             >
-              This shows how many new messages you can initiate with employers during your subscription period
+              This shows how many new messages you can initiate with employers
+              during your subscription period
             </div>
-            </div>
+          </div>
 
           <div
             class="relative w-[26px] h-[26px] max-md:w-[20px] max-md:h-[20px] flex items-center justify-center"
@@ -325,19 +327,20 @@
                 >
                   {{ message.lastMessage }}
                 </p>
-                
               </div>
               <div
-                 *ngIf="!(activeTab === 'mayMessage')"
-                  class="flex items-center gap-1 text-[10px] md:text-xs text-slate-500"
-                >
-                  <img
-                    [src]="'images/clock.svg'"
-                    class="w-2 h-2 md:w-3 md:h-3"
-                    alt="Time icon"
-                  />
-                  <span class="text-xs">{{ getRelativeTime(message.lastChattedOn) }}</span>
-                </div>
+                *ngIf="!(activeTab === 'mayMessage')"
+                class="flex items-center gap-1 text-[10px] md:text-xs text-slate-500"
+              >
+                <img
+                  [src]="'images/clock.svg'"
+                  class="w-2 h-2 md:w-3 md:h-3"
+                  alt="Time icon"
+                />
+                <span class="text-xs">{{
+                  getRelativeTime(message.lastChattedOn)
+                }}</span>
+              </div>
             </div>
           </div>
 
@@ -361,178 +364,180 @@
               role="alert"
               aria-live="polite"
             >
-            @if(currentAvaileableMessage==0 && !packageExpired) {
-            <div class="flex relative gap-2 items-start p-2 w-full">
-                <img
-                  src="images/upgrade-mesagesvg.svg"
-                  class="object-contain z-0 shrink-0 w-8 md:w-10 aspect-[1/1] fill-green-100 stroke-[1px] stroke-emerald-300"
-                  alt="Upgrade notification icon"
-                />
-
-                <section class="z-0 flex-1 shrink gap-2 basis-4 min-w-0">
-                  <header class="gap-1 w-full">
-                    <h2
-                      class="flex-1 shrink self-stretch w-full text-xs md:text-sm font-semibold leading-none text-slate-700"
-                    >
-                      Upgrade Your Plan
-                    </h2>
-                    <p
-                      class="text-[10px] md:text-xs leading-[14px] md:leading-[16px] text-slate-600"
-                    >
-                      Upgrade your plan to send more messages and talk directly
-                      to more employers.
-                    </p>
-                  </header>
-
-                  <section
-                    class="flex gap-2 items-center mt-1 w-full text-xs md:text-sm font-semibold leading-none"
-                    role="group"
-                    aria-label="Notification actions"
-                  >
-                    <button
-                      type="button"
-                      (click)="dismissToast()"
-                      class="text-[10px] md:text-xs"
-                    >
-                      Dismiss
-                    </button>
-                    <button
-                      type="button"
-                      class="text-[10px] md:text-xs text-pink-700 leading-[16px]"
-                      (click)="upgradeNow()"
-                    >
-                      Upgrade Plan
-                    </button>
-                  </section>
-                </section>
-
-                <button
-                  type="button"
-                  class="flex overflow-hidden absolute top-0 right-0 z-0 gap-1 justify-center items-center p-1 w-6 md:w-8 rounded-lg"
-                  aria-label="Close notification"
-                  (click)="dismissToast()"
-                >
-                  <img
-                    src="images/x-close.svg"
-                    class="object-contain self-stretch my-auto w-3 md:w-4 aspect-square"
-                    alt="Close"
-                  />
-                </button>
-              </div>
-            }@else if(packageExpired && currentAvaileableMessage== 0) {
+              @if (currentAvaileableMessage == 0 && !packageExpired) {
                 <div class="flex relative gap-2 items-start p-2 w-full">
-                <img
-                  src="images/upgrade-mesagesvg.svg"
-                  class="object-contain z-0 shrink-0 w-8 md:w-10 aspect-[1/1] fill-green-100 stroke-[1px] stroke-emerald-300"
-                  alt="Upgrade notification icon"
-                />
-
-                <section class="z-0 flex-1 shrink gap-2 basis-4 min-w-0">
-                  <header class="gap-1 w-full">
-                    <h2
-                      class="flex-1 shrink self-stretch w-full text-xs md:text-sm font-semibold leading-none text-slate-700"
-                    >
-                      Renew Your Subscription
-                    </h2>
-                    <p
-                      class="text-[10px] md:text-xs leading-[14px] md:leading-[16px] text-slate-600"
-                    >
-                      Subscription will expire soon. Renew it to keep using the service without interruption.
-                    </p>
-                  </header>
-
-                  <section
-                    class="flex gap-2 items-center mt-1 w-full text-xs md:text-sm font-semibold leading-none"
-                    role="group"
-                    aria-label="Notification actions"
-                  >
-                    <button
-                      type="button"
-                      (click)="dismissToast()"
-                      class="text-[10px] md:text-xs"
-                    >
-                      Dismiss
-                    </button>
-                    <button
-                      type="button"
-                      class="text-[10px] md:text-xs text-pink-700 leading-[16px]"
-                      (click)="upgradeNow()"
-                    >
-                      Renew Now
-                    </button>
-                  </section>
-                </section>
-
-                <button
-                  type="button"
-                  class="flex overflow-hidden absolute top-0 right-0 z-0 gap-1 justify-center items-center p-1 w-6 md:w-8 rounded-lg"
-                  aria-label="Close notification"
-                  (click)="dismissToast()"
-                >
                   <img
-                    src="images/x-close.svg"
-                    class="object-contain self-stretch my-auto w-3 md:w-4 aspect-square"
-                    alt="Close"
+                    src="images/upgrade-mesagesvg.svg"
+                    class="object-contain z-0 shrink-0 w-8 md:w-10 aspect-[1/1] fill-green-100 stroke-[1px] stroke-emerald-300"
+                    alt="Upgrade notification icon"
                   />
-                </button>
-              </div>
-            }@else if (currentAvaileableMessage > 0 && packageExpired) {
-                  <div class="flex relative gap-2 items-start p-2 w-full">
-                <img
-                  src="images/upgrade-mesagesvg.svg"
-                  class="object-contain z-0 shrink-0 w-8 md:w-10 aspect-[1/1] fill-green-100 stroke-[1px] stroke-emerald-300"
-                  alt="Upgrade notification icon"
-                />
 
-                <section class="z-0 flex-1 shrink gap-2 basis-4 min-w-0">
-                  <header class="gap-1 w-full">
-                    <h2
-                      class="flex-1 shrink self-stretch w-full text-xs md:text-sm font-semibold leading-none text-slate-700"
-                    >
-                      Renew Your Subscription
-                    </h2>
-                    <p
-                      class="text-[10px] md:text-xs leading-[14px] md:leading-[16px] text-slate-600"
-                    >
-                      Subscription will expire soon. Renew it to keep using the service without interruption.
-                    </p>
-                  </header>
+                  <section class="z-0 flex-1 shrink gap-2 basis-4 min-w-0">
+                    <header class="gap-1 w-full">
+                      <h2
+                        class="flex-1 shrink self-stretch w-full text-xs md:text-sm font-semibold leading-none text-slate-700"
+                      >
+                        Upgrade Your Plan
+                      </h2>
+                      <p
+                        class="text-[10px] md:text-xs leading-[14px] md:leading-[16px] text-slate-600"
+                      >
+                        Upgrade your plan to send more messages and talk
+                        directly to more employers.
+                      </p>
+                    </header>
 
-                  <section
-                    class="flex gap-2 items-center mt-1 w-full text-xs md:text-sm font-semibold leading-none"
-                    role="group"
-                    aria-label="Notification actions"
-                  >
-                    <button
-                      type="button"
-                      (click)="dismissToast()"
-                      class="text-[10px] md:text-xs"
+                    <section
+                      class="flex gap-2 items-center mt-1 w-full text-xs md:text-sm font-semibold leading-none"
+                      role="group"
+                      aria-label="Notification actions"
                     >
-                      Dismiss
-                    </button>
-                    <button
-                      type="button"
-                      class="text-[10px] md:text-xs text-pink-700 leading-[16px]"
-                      (click)="upgradeNow()"
-                    >
-                      Renew Now
-                    </button>
+                      <button
+                        type="button"
+                        (click)="dismissToast()"
+                        class="text-[10px] md:text-xs"
+                      >
+                        Dismiss
+                      </button>
+                      <button
+                        type="button"
+                        class="text-[10px] md:text-xs text-pink-700 leading-[16px]"
+                        (click)="upgradeNow()"
+                      >
+                        Upgrade Plan
+                      </button>
+                    </section>
                   </section>
-                </section>
 
-                <button
-                  type="button"
-                  class="flex overflow-hidden absolute top-0 right-0 z-0 gap-1 justify-center items-center p-1 w-6 md:w-8 rounded-lg"
-                  aria-label="Close notification"
-                  (click)="dismissToast()"
-                >
+                  <button
+                    type="button"
+                    class="flex overflow-hidden absolute top-0 right-0 z-0 gap-1 justify-center items-center p-1 w-6 md:w-8 rounded-lg"
+                    aria-label="Close notification"
+                    (click)="dismissToast()"
+                  >
+                    <img
+                      src="images/x-close.svg"
+                      class="object-contain self-stretch my-auto w-3 md:w-4 aspect-square"
+                      alt="Close"
+                    />
+                  </button>
+                </div>
+              } @else if (packageExpired && currentAvaileableMessage == 0) {
+                <div class="flex relative gap-2 items-start p-2 w-full">
                   <img
-                    src="images/x-close.svg"
-                    class="object-contain self-stretch my-auto w-3 md:w-4 aspect-square"
-                    alt="Close"
+                    src="images/upgrade-mesagesvg.svg"
+                    class="object-contain z-0 shrink-0 w-8 md:w-10 aspect-[1/1] fill-green-100 stroke-[1px] stroke-emerald-300"
+                    alt="Upgrade notification icon"
                   />
-                </button>
-              </div>
+
+                  <section class="z-0 flex-1 shrink gap-2 basis-4 min-w-0">
+                    <header class="gap-1 w-full">
+                      <h2
+                        class="flex-1 shrink self-stretch w-full text-xs md:text-sm font-semibold leading-none text-slate-700"
+                      >
+                        Renew Your Subscription
+                      </h2>
+                      <p
+                        class="text-[10px] md:text-xs leading-[14px] md:leading-[16px] text-slate-600"
+                      >
+                        Subscription will expire soon. Renew it to keep using
+                        the service without interruption.
+                      </p>
+                    </header>
+
+                    <section
+                      class="flex gap-2 items-center mt-1 w-full text-xs md:text-sm font-semibold leading-none"
+                      role="group"
+                      aria-label="Notification actions"
+                    >
+                      <button
+                        type="button"
+                        (click)="dismissToast()"
+                        class="text-[10px] md:text-xs"
+                      >
+                        Dismiss
+                      </button>
+                      <button
+                        type="button"
+                        class="text-[10px] md:text-xs text-pink-700 leading-[16px]"
+                        (click)="upgradeNow()"
+                      >
+                        Renew Now
+                      </button>
+                    </section>
+                  </section>
+
+                  <button
+                    type="button"
+                    class="flex overflow-hidden absolute top-0 right-0 z-0 gap-1 justify-center items-center p-1 w-6 md:w-8 rounded-lg"
+                    aria-label="Close notification"
+                    (click)="dismissToast()"
+                  >
+                    <img
+                      src="images/x-close.svg"
+                      class="object-contain self-stretch my-auto w-3 md:w-4 aspect-square"
+                      alt="Close"
+                    />
+                  </button>
+                </div>
+              } @else if (currentAvaileableMessage > 0 && packageExpired) {
+                <div class="flex relative gap-2 items-start p-2 w-full">
+                  <img
+                    src="images/upgrade-mesagesvg.svg"
+                    class="object-contain z-0 shrink-0 w-8 md:w-10 aspect-[1/1] fill-green-100 stroke-[1px] stroke-emerald-300"
+                    alt="Upgrade notification icon"
+                  />
+
+                  <section class="z-0 flex-1 shrink gap-2 basis-4 min-w-0">
+                    <header class="gap-1 w-full">
+                      <h2
+                        class="flex-1 shrink self-stretch w-full text-xs md:text-sm font-semibold leading-none text-slate-700"
+                      >
+                        Renew Your Subscription
+                      </h2>
+                      <p
+                        class="text-[10px] md:text-xs leading-[14px] md:leading-[16px] text-slate-600"
+                      >
+                        Subscription will expire soon. Renew it to keep using
+                        the service without interruption.
+                      </p>
+                    </header>
+
+                    <section
+                      class="flex gap-2 items-center mt-1 w-full text-xs md:text-sm font-semibold leading-none"
+                      role="group"
+                      aria-label="Notification actions"
+                    >
+                      <button
+                        type="button"
+                        (click)="dismissToast()"
+                        class="text-[10px] md:text-xs"
+                      >
+                        Dismiss
+                      </button>
+                      <button
+                        type="button"
+                        class="text-[10px] md:text-xs text-pink-700 leading-[16px]"
+                        (click)="upgradeNow()"
+                      >
+                        Renew Now
+                      </button>
+                    </section>
+                  </section>
+
+                  <button
+                    type="button"
+                    class="flex overflow-hidden absolute top-0 right-0 z-0 gap-1 justify-center items-center p-1 w-6 md:w-8 rounded-lg"
+                    aria-label="Close notification"
+                    (click)="dismissToast()"
+                  >
+                    <img
+                      src="images/x-close.svg"
+                      class="object-contain self-stretch my-auto w-3 md:w-4 aspect-square"
+                      alt="Close"
+                    />
+                  </button>
+                </div>
               }
             </div>
           </div>
@@ -545,11 +550,14 @@
           class="absolute right-0 top-0 bottom-0 w-px bg-gray-200 max-md:hidden"
         ></div>
       </div>
-      
-      <div 
-        *ngIf="showChatView && (isProUser || hasReceiverMessage) &&
-            selectedMessage?.receivedMessages?.length > 0 &&
-            !(isProUser && !hasReceiverMessage)"
+
+      <div
+        *ngIf="
+          showChatView &&
+          (isProUser || hasReceiverMessage) &&
+          selectedMessage?.receivedMessages?.length > 0 &&
+          !(isProUser && !hasReceiverMessage)
+        "
         class="flex flex-col flex-1 shrink justify-between min-w-0 h-[calc(100vh-150px)] max-md:w-full"
       >
         <header
@@ -648,158 +656,166 @@
             <span>subscription to connect.</span>
           </div>
         </div>
-        @if (activeTab !== 'mayMessage') {
-<main class="flex flex-col flex-1 gap-2 items-start self-stretch px-2 py-1 bg-gray-50 overflow-y-auto"
-          #messageContainer
-        >
-          <div
-            *ngFor="let msg of selectedMessage?.receivedMessages"
-            class="w-full"
+        @if (activeTab !== "mayMessage") {
+          <main
+            class="flex flex-col flex-1 gap-2 items-start self-stretch px-2 py-1 bg-gray-50 overflow-y-auto"
+            #messageContainer
           >
             <div
-              *ngIf="msg.textSenderType === 'R'"
-              class="flex gap-1 items-start max-w-[60%]"
+              *ngFor="let msg of selectedMessage?.receivedMessages"
+              class="w-full"
             >
-              <div class="flex-shrink-0">
-                <ng-container
-                  *ngIf="selectedMessage?.companyLogo; else placeholderLogo"
-                >
-                  <img
-                    [src]="selectedMessage.companyLogo"
-                    alt="{{ selectedMessage?.companyName }}"
-                    class="w-7 h-7 rounded-full object-cover"
-                  />
-                </ng-container>
-                <ng-template #placeholderLogo>
-                  <div
-                    class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-[10px]"
-                  >
-                    HR
-                  </div>
-                </ng-template>
-              </div>
-              <div class="flex flex-col gap-0 max-w-[70%]">
-                <div
-                  class="px-3 py-3 bg-white rounded-lg border border-gray-200 shadow-xs"
-                >
-                 <div class="text-[12px] leading-3 text-gray-800"
-                    [ngStyle]="{
-                      'overflow-wrap': 'break-word',
-                      'word-break'  : 'break-word', 
-                      'white-space' : 'pre-wrap'    
-                    }">
-                  {{ msg.text }}
-                </div>
-                  <div class="text-[10px] text-gray-500 ml-1">
-                  {{ msg.textSendTime }}
-                </div>
-                </div>
-                
-              </div>
-            </div>
-
-            <div
-              *ngIf="msg.textSenderType === 'A'"
-              class="flex gap-1 justify-end items-start w-full"
-            >
-              <div class="flex flex-col gap-0 items-end max-w-[70%]">
-                <div
-                  class="ml-0 px-3 py-3 bg-indigo-50 rounded-lg border border-indigo-100 shadow-xs"
-                >
-                  <!-- APPLICANT (A) bubble – identical change -->
-              <div class="text-[12px] leading-3 text-gray-800"
-                  [ngStyle]="{
-                    'overflow-wrap': 'break-word',
-                    'word-break'  : 'break-word',
-                    'white-space' : 'pre-wrap'
-                  }">
-                {{ msg.text }}
-              </div>
-
-                  <div class="flex items-center gap-0.5 text-[10px] text-gray-500">
-                  <span>{{ msg.textSendTime }}</span>
-                  <img
-                    src="images/double-tik-message.svg"
-                    class="w-2 h-2"
-                    [ngStyle]="{
-                      filter: selectedMessage?.isRead
-                        ? 'invert(33%) sepia(74%) saturate(5361%) hue-rotate(316deg) brightness(97%) contrast(92%)'
-                        : 'none',
-                    }"
-                  />
-                </div>
-                </div>
-                
-              </div>
-            </div>
-          </div>
-
-        <div
-          *ngIf="
-            shouldShowLimitNotice(selectedMessage?.conversationId) ||
-            !canReply(selectedMessage?.conversationId) ||
-            selectedMessage?.isBlockChat
-          "
-          class="w-full px-1 py-0 translate-y-[80px]"
-        >
-           <!-- System notice: “messaging‑limit reached” -->
-          <section
-            *ngIf="shouldShowLimitNotice(selectedMessage?.conversationId)"
-            class="w-full py-2 px-10 flex justify-center"
-            role="alert"
-            aria-label="System notice – messaging limit reached"
-          >
-            <p class="text-[13px] leading-5 text-slate-500 text-center">
-              Thank you. You’ve reached your messaging limit.&nbsp;
-              Please wait – you’ll be able to reply once the employer responds.
-            </p>
-          </section>
-          <section
-            *ngIf="!canReply(selectedMessage?.conversationId) || selectedMessage?.isBlockChat"
-            class="flex relative flex-col gap-0.5 items-start self-stretch p-1 bg-red-50 rounded-md border border-red-200 border-solid shadow-sm"
-            role="alert"
-            [attr.aria-label]="ariaLabel"
-          >
               <div
-                class="flex relative justify-between items-center self-stretch"
+                *ngIf="msg.textSenderType === 'R'"
+                class="flex gap-1 items-start max-w-[60%]"
               >
-                <div class="flex relative gap-0.5 items-center w-full">
-                  <div class="flex-shrink-0">
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      [attr.aria-label]="'Error: ' + title"
-                      role="img"
+                <div class="flex-shrink-0">
+                  <ng-container
+                    *ngIf="selectedMessage?.companyLogo; else placeholderLogo"
+                  >
+                    <img
+                      [src]="selectedMessage.companyLogo"
+                      alt="{{ selectedMessage?.companyName }}"
+                      class="w-7 h-7 rounded-full object-cover"
+                    />
+                  </ng-container>
+                  <ng-template #placeholderLogo>
+                    <div
+                      class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-[10px]"
                     >
-                      <path
-                        d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"
-                        stroke="#F04438"
-                        stroke-width="1.2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    <h2 class="text-[14px] font-medium text-slate-700 truncate">
-                      {{ title }}
-                    </h2>
-                    <p class="text-[12px] text-slate-600">
-                      {{ description }}
-                    </p>
+                      HR
+                    </div>
+                  </ng-template>
+                </div>
+                <div class="flex flex-col gap-0 max-w-[70%]">
+                  <div
+                    class="px-3 py-3 bg-white rounded-lg border border-gray-200 shadow-xs"
+                  >
+                    <div
+                      class="text-[12px] leading-3 text-gray-800"
+                      [ngStyle]="{
+                        'overflow-wrap': 'break-word',
+                        'word-break': 'break-word',
+                        'white-space': 'pre-wrap',
+                      }"
+                    >
+                      {{ msg.text }}
+                    </div>
+                    <div class="text-[10px] text-gray-500 ml-1">
+                      {{ msg.textSendTime }}
+                    </div>
                   </div>
                 </div>
               </div>
-            </section>
 
-          </div>
-        </main>
-   
-        }@else if (!isProUser && activeTab === 'mayMessage') {
-          <div class="flex flex-col items-center justify-center h-full p-2 text-center">
+              <div
+                *ngIf="msg.textSenderType === 'A'"
+                class="flex gap-1 justify-end items-start w-full"
+              >
+                <div class="flex flex-col gap-0 items-end max-w-[70%]">
+                  <div
+                    class="ml-0 px-3 py-3 bg-indigo-50 rounded-lg border border-indigo-100 shadow-xs"
+                  >
+                    <div
+                      class="text-[12px] leading-3 text-gray-800"
+                      [ngStyle]="{
+                        'overflow-wrap': 'break-word',
+                        'word-break': 'break-word',
+                        'white-space': 'pre-wrap',
+                      }"
+                    >
+                      {{ msg.text }}
+                    </div>
+
+                    <div
+                      class="flex items-center gap-0.5 text-[10px] text-gray-500"
+                    >
+                      <span>{{ msg.textSendTime }}</span>
+                      <img
+                        src="images/double-tik-message.svg"
+                        class="w-2 h-2"
+                        [ngStyle]="{
+                          filter: selectedMessage?.isRead
+                            ? 'invert(33%) sepia(74%) saturate(5361%) hue-rotate(316deg) brightness(97%) contrast(92%)'
+                            : 'none',
+                        }"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              *ngIf="
+                shouldShowLimitNotice(selectedMessage?.conversationId) ||
+                !canReply(selectedMessage?.conversationId) ||
+                selectedMessage?.isBlockChat
+              "
+              class="w-full px-1 py-0 translate-y-[80px]"
+            >
+              <section
+                *ngIf="shouldShowLimitNotice(selectedMessage?.conversationId)"
+                class="w-full py-2 px-10 flex justify-center"
+                role="alert"
+                aria-label="System notice – messaging limit reached"
+              >
+                <p class="text-[13px] leading-5 text-slate-500 text-center">
+                  Thank you. You’ve reached your messaging limit.&nbsp; Please
+                  wait – you’ll be able to reply once the employer responds.
+                </p>
+              </section>
+              <section
+                *ngIf="
+                  !canReply(selectedMessage?.conversationId) ||
+                  selectedMessage?.isBlockChat
+                "
+                class="flex relative flex-col gap-0.5 items-start self-stretch p-1 bg-red-50 rounded-md border border-red-200 border-solid shadow-sm"
+                role="alert"
+                [attr.aria-label]="ariaLabel"
+              >
+                <div
+                  class="flex relative justify-between items-center self-stretch"
+                >
+                  <div class="flex relative gap-0.5 items-center w-full">
+                    <div class="flex-shrink-0">
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        [attr.aria-label]="'Error: ' + title"
+                        role="img"
+                      >
+                        <path
+                          d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"
+                          stroke="#F04438"
+                          stroke-width="1.2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <h2
+                        class="text-[14px] font-medium text-slate-700 truncate"
+                      >
+                        {{ title }}
+                      </h2>
+                      <p class="text-[12px] text-slate-600">
+                        {{ description }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </main>
+        } @else if (!isProUser && activeTab === "mayMessage") {
+          <div
+            class="flex flex-col items-center justify-center h-full p-2 text-center"
+          >
             <img
               src="images/bdjobsprononpro.svg"
               class="object-contain self-center max-w-full aspect-[2.13] w-[350px] h-auto mb-2"
@@ -822,7 +838,10 @@
               <span>subscription to connect.</span>
             </div>
           </div>
-            <div *ngIf="!isProUser && activeTab === 'mayMessage'" class="w-full px-6 pb-6 max-md:px-5">
+          <div
+            *ngIf="!isProUser && activeTab === 'mayMessage'"
+            class="w-full px-6 pb-6 max-md:px-5"
+          >
             <div
               class="flex items-center justify-between gap-4 p-4 w-full bg-gray-50 rounded-xl border-t border-l border-solid border-l-[color:var(--Colors-Border-border-secondary,#E4E7EC)] border-t-[color:var(--Colors-Border-border-secondary,#E4E7EC)] flex-nowrap overflow-hidden"
             >
@@ -848,8 +867,10 @@
               </button>
             </div>
           </div>
-        }@else if (isProUser && activeTab === 'mayMessage') {
-<div class="flex flex-col items-center justify-center h-full p-2 text-center">
+        } @else if (isProUser && activeTab === "mayMessage") {
+          <div
+            class="flex flex-col items-center justify-center h-full p-2 text-center"
+          >
             <img
               src="images/bdjobsprouser.svg"
               class="object-contain self-center max-w-full aspect-[2.13] w-[350px] h-auto mb-2"
@@ -863,93 +884,87 @@
             <div
               class="flex flex-wrap text-[9px] md:text-sm items-center justify-center gap-0.5 md:gap-2 text-gray-600 mb-2 max-w-[280px] md:max-w-[480px]"
             >
-              <span>Use this feature to follow up on your application, ask questions, or share important updates. It’s a fast and easy way to stay connected and show your interest.</span>
+              <span
+                >Use this feature to follow up on your application, ask
+                questions, or share important updates. It’s a fast and easy way
+                to stay connected and show your interest.</span
+              >
             </div>
           </div>
         }
-        
 
-      
-         @if(!isProUser && !hasReceiverMessage && !(
-            activeTab === 'mayMessage')){
- <div
-         
-          class="flex flex-col items-center justify-center h-full"
-        >
-          <div
-            class="transform translate-y-[40px] md:translate-y-[70px] w-full"
-          >
+        @if (
+          !isProUser && !hasReceiverMessage && !(activeTab === "mayMessage")
+        ) {
+          <div class="flex flex-col items-center justify-center h-full">
             <div
-              class="flex items-center justify-between gap-1 md:gap-4 p-1 md:p-4 w-full bg-gray-50 border-t border-l border-solid border-t-[color:var(--Colors-Border-border-secondary,#E4E7EC)] border-l-[color:var(--Colors-Border-border-secondary,#E4E7EC)]"
+              class="transform translate-y-[40px] md:translate-y-[70px] w-full"
             >
               <div
-                class="flex items-center gap-0.5 md:gap-2 text-[9px] md:text-sm font-medium text-slate-700 min-w-0 overflow-hidden"
+                class="flex items-center justify-between gap-1 md:gap-4 p-1 md:p-4 w-full bg-gray-50 border-t border-l border-solid border-t-[color:var(--Colors-Border-border-secondary,#E4E7EC)] border-l-[color:var(--Colors-Border-border-secondary,#E4E7EC)]"
               >
-              <div>
-                
+                <div
+                  class="flex items-center gap-0.5 md:gap-2 text-[9px] md:text-sm font-medium text-slate-700 min-w-0 overflow-hidden"
+                >
+                  <div></div>
+
+                  <span>Get</span>
+                  <img
+                    src="images/bdjobs-pro.svg"
+                    alt="Premium logo"
+                    class="w-[50px] md:w-[80px] object-contain shrink-0"
+                  />
+                  <span> to message employers. </span>
+                </div>
+                <button
+                  class="flex-shrink-0 px-1.5 md:px-3 py-0.5 md:py-1.5 text-[9px] md:text-sm font-semibold text-white rounded-md border border-white shadow-sm bg-[#0DB14B] hover:bg-green-600 transition-colors duration-200"
+                  (click)="onGetProClick()"
+                >
+                  Get pro
+                </button>
               </div>
-            
-                <span>Get</span>
-                <img
-                  src="images/bdjobs-pro.svg"
-                  alt="Premium logo"
-                  class="w-[50px] md:w-[80px] object-contain shrink-0"
-                />
-                <span> to message employers. </span>
-              </div>
-              <button
-                class="flex-shrink-0 px-1.5 md:px-3 py-0.5 md:py-1.5 text-[9px] md:text-sm font-semibold text-white rounded-md border border-white shadow-sm bg-[#0DB14B] hover:bg-green-600 transition-colors duration-200"
-                (click)="onGetProClick()"
-              >
-                Get pro
-              </button>
             </div>
           </div>
-        </div>
-         }@else if(!isProUser && !hasReceiverMessage && activeTab === 'mayMessage') {
- <div
-          
-          class="flex flex-col items-center justify-center h-full"
-        >
-          <div
-            class="transform translate-y-[40px] md:translate-y-[70px] w-full"
-          >
+        } @else if (
+          !isProUser && !hasReceiverMessage && activeTab === "mayMessage"
+        ) {
+          <div class="flex flex-col items-center justify-center h-full">
             <div
-              class="flex items-center justify-between gap-1 md:gap-4 p-1 md:p-4 w-full bg-gray-50 border-t border-l border-solid border-t-[color:var(--Colors-Border-border-secondary,#E4E7EC)] border-l-[color:var(--Colors-Border-border-secondary,#E4E7EC)]"
+              class="transform translate-y-[40px] md:translate-y-[70px] w-full"
             >
               <div
-                class="flex items-center gap-0.5 md:gap-2 text-[9px] md:text-sm font-medium text-slate-700 min-w-0 overflow-hidden"
+                class="flex items-center justify-between gap-1 md:gap-4 p-1 md:p-4 w-full bg-gray-50 border-t border-l border-solid border-t-[color:var(--Colors-Border-border-secondary,#E4E7EC)] border-l-[color:var(--Colors-Border-border-secondary,#E4E7EC)]"
               >
-              <div>
-                
+                <div
+                  class="flex items-center gap-0.5 md:gap-2 text-[9px] md:text-sm font-medium text-slate-700 min-w-0 overflow-hidden"
+                >
+                  <div></div>
+
+                  <span>You need</span>
+                  <img
+                    src="images/bdjobsprononpro.svg"
+                    alt="Premium logo"
+                    class="w-[50px] md:w-[80px] object-contain shrink-0"
+                  />
+                  <span> Subscription use this feature. Unlock now! </span>
+                </div>
+                <button
+                  class="flex-shrink-0 px-1.5 md:px-3 py-0.5 md:py-1.5 text-[9px] md:text-sm font-semibold text-white rounded-md border border-white shadow-sm bg-[#0DB14B] hover:bg-green-600 transition-colors duration-200"
+                  (click)="onGetProClick()"
+                >
+                  Get pro
+                </button>
               </div>
-            
-                <span>You need</span>
-                <img
-                  src="images/bdjobsprononpro.svg"
-                  alt="Premium logo"
-                  class="w-[50px] md:w-[80px] object-contain shrink-0"
-                />
-                <span> Subscription use this feature. Unlock now! </span>
-              </div>
-              <button
-                class="flex-shrink-0 px-1.5 md:px-3 py-0.5 md:py-1.5 text-[9px] md:text-sm font-semibold text-white rounded-md border border-white shadow-sm bg-[#0DB14B] hover:bg-green-600 transition-colors duration-200"
-                (click)="onGetProClick()"
-              >
-                Get pro
-              </button>
             </div>
           </div>
-        </div>
-         }
-     
+        }
 
         <div
           *ngIf="
             ((!isProUser && activeTab !== 'mayMessage') || isProUser) &&
             selectedMessage?.receivedMessages?.length > 0 &&
             canReply(selectedMessage?.conversationId) &&
-            !selectedMessage?.isBlockChat 
+            !selectedMessage?.isBlockChat
           "
           class="flex gap-1 items-center self-stretch px-1.5 py-1 bg-[#F9FAFB]"
         >
@@ -972,7 +987,9 @@
                 [style.background]="conicGradient"
                 [style.mask]="'radial-gradient(transparent 55%, black 56%)'"
               ></div>
-              <div class="relative z-10 text-[12px] font-semibold text-gray-900">
+              <div
+                class="relative z-10 text-[12px] font-semibold text-gray-900"
+              >
                 {{
                   formatNumber(
                     max - sentMessageCounts[selectedMessage?.conversationId]
@@ -1017,23 +1034,23 @@
               class="flex flex-col items-center self-center max-w-full w-[493px] transform translate-y-[20%]"
             >
               <div class="flex flex-col gap-5 w-full">
-                @if (isProUser || activeTab !== 'mayMessage') {
-                <img
-                  src="images/eployermessagelanding.svg"
-                  class="object-contain self-center max-w-full aspect-[2.13] w-[308px] mb-6"
-                  alt="Direct messaging illustration"
-                />
-                }@else if (!isProUser && activeTab === 'mayMessage') {
+                @if (isProUser || activeTab !== "mayMessage") {
+                  <img
+                    src="images/eployermessagelanding.svg"
+                    class="object-contain self-center max-w-full aspect-[2.13] w-[308px] mb-6"
+                    alt="Direct messaging illustration"
+                  />
+                } @else if (!isProUser && activeTab === "mayMessage") {
                   <img
                     src="images/bdjobsprononpro.svg"
                     class="object-contain self-center max-w-full aspect-[2.13] w-[308px] mb-6"
                     alt="Direct messaging illustration"
                   />
                 }
-                
+
                 <div class="gap-5 mt-5 w-full max-md:max-w-full">
                   <div class="flex flex-col w-full max-md:max-w-full">
-                    @if (isProUser && activeTab === 'mayMessage') {
+                    @if (isProUser && activeTab === "mayMessage") {
                       <h1
                         class="text-xl font-semibold text-center text-gray-900 leading-[30px] max-md:max-w-full"
                       >
@@ -1059,17 +1076,19 @@
                           <span
                             class="text-[14px] leading-[20px] text-slate-700"
                           >
-                            user, you can initiate messages to introduce yourself
+                            user, you can initiate messages to introduce
+                            yourself
                           </span>
                         </p>
                         <p
                           class="text-[14px] text-center leading-[20px] text-slate-700 max-md:max-w-full"
                         >
-                          express interest, and understand what they’re looking for.
+                          express interest, and understand what they’re looking
+                          for.
                         </p>
                       </div>
-                    }@else if (isProUser && activeTab !== 'mayMessage') {
-                       <h2
+                    } @else if (isProUser && activeTab !== "mayMessage") {
+                      <h2
                         class="text-xl font-semibold text-center text-gray-900 mb-2"
                       >
                         You can message the employers directly
@@ -1078,7 +1097,8 @@
                         class="flex flex-wrap items-center justify-center gap-1 text-gray-600 mb-20 max-w-md text-center"
                       >
                         <span class="text-[14px]"
-                          >Message employers directly to introduce yourself, express interest</span
+                          >Message employers directly to introduce yourself,
+                          express interest</span
                         >
                         <img
                           src="images/bdjobs-pro.svg"
@@ -1089,8 +1109,8 @@
                           >and learn more about what they’re looking for.</span
                         >
                       </div>
-                    }@else if (!isProUser && activeTab !== 'mayMessage') {
-                       <h2
+                    } @else if (!isProUser && activeTab !== "mayMessage") {
+                      <h2
                         class="text-xl font-semibold text-center text-gray-900 mb-2"
                       >
                         Send a Direct Message to The Employer
@@ -1110,8 +1130,8 @@
                           >subscription and start conversation right away.</span
                         >
                       </div>
-                    }@else if(!isProUser && activeTab === 'mayMessage'){
-                        <h2
+                    } @else if (!isProUser && activeTab === "mayMessage") {
+                      <h2
                         class="text-xl font-semibold text-center text-gray-900 mb-2"
                       >
                         Send a Direct Message to The Employer
@@ -1138,7 +1158,10 @@
             </div>
           </section>
 
-          <div *ngIf="!isProUser && activeTab !== 'mayMessage'" class="w-full px-6 pb-6 max-md:px-5">
+          <div
+            *ngIf="!isProUser && activeTab !== 'mayMessage'"
+            class="w-full px-6 pb-6 max-md:px-5"
+          >
             <div
               class="flex items-center justify-between gap-4 p-4 w-full bg-gray-50 rounded-xl border-t border-l border-solid border-l-[color:var(--Colors-Border-border-secondary,#E4E7EC)] border-t-[color:var(--Colors-Border-border-secondary,#E4E7EC)] flex-nowrap overflow-hidden"
             >
@@ -1164,9 +1187,11 @@
               </button>
             </div>
           </div>
-               
-          
-          <div *ngIf="!isProUser && activeTab === 'mayMessage'" class="w-full px-6 pb-6 max-md:px-5">
+
+          <div
+            *ngIf="!isProUser && activeTab === 'mayMessage'"
+            class="w-full px-6 pb-6 max-md:px-5"
+          >
             <div
               class="flex items-center justify-between gap-4 p-4 w-full bg-gray-50 rounded-xl border-t border-l border-solid border-l-[color:var(--Colors-Border-border-secondary,#E4E7EC)] border-t-[color:var(--Colors-Border-border-secondary,#E4E7EC)] flex-nowrap overflow-hidden"
             >
