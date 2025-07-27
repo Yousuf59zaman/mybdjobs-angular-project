@@ -39,7 +39,7 @@ export const routes: Routes = [
         path: "physical-obstacle",
         data: { layout: 'right' },
         loadComponent: () =>
-                  import('./features/create-account/physical-obstacle/physicalObstacle/physical-obstacle.component').then(
+          import('./features/create-account/physical-obstacle/physicalObstacle/physical-obstacle.component').then(
             (c) => c.PhysicalObstaclesComponent),
       },
       {
@@ -53,22 +53,13 @@ export const routes: Routes = [
         loadComponent: () => import('./features/create-account/EducationComponent/education/education.component').then((c) => c.EducationComponent),
       },
       {
-        path: 'change-user-id',
-        data: { layout: 'left' },
-        loadComponent: () =>
-          import(
-            './features/account-settings/changeUserId/change-user-id/change-user-id.component'
-          ).then((c) => c.ChangeUserIdComponent),
-      },
-      {
         path: 'account-delete-step2',
         data: { layout: 'left' },
         loadComponent: () =>
           import(
             './features/account-settings/account_delete_feature/account-delete-step2/account-delete-step2.component'
           ).then((c) => c.AccountDeleteStep2Component),
-
-        },
+      },
       {
         path: 'upload-photo',
         data: { layout: 'right' },
@@ -116,6 +107,14 @@ export const routes: Routes = [
       import(
         './features/my-activities/resume-email/resume-email/resume-email/resume-email.component'
       ).then((c) => c.ResumeEmailComponent),
+  },
+  {
+    path: 'change-user-id',
+    data: { layout: 'left' },
+    loadComponent: () =>
+      import(
+        './features/account-settings/changeUserId/change-user-id/change-user-id.component'
+      ).then((c) => c.ChangeUserIdComponent),
   },
 
   {
@@ -265,13 +264,13 @@ export const routes: Routes = [
     // canActivate: [AuthGuard]
   },
   {
-    path:'dashboard',
-    data:{layout:'left'},
-    loadComponent:() => import('./features/dashboard/dashboard/dashboard.component').then((c) => c.DashboardComponent)
+    path: 'dashboard',
+    data: { layout: 'left' },
+    loadComponent: () => import('./features/dashboard/dashboard/dashboard.component').then((c) => c.DashboardComponent)
   },
   {
     path: 'delete-resume',
-     data: {layout:'left'},
+    data: { layout: 'left' },
     loadComponent: () =>
       import('./features/account-settings/delete-resume/delete-resume.component').then(
         (c) => c.DeleteResumeComponent
@@ -279,7 +278,7 @@ export const routes: Routes = [
   },
   {
     path: 'payment-confirmation',
-     data: {layout:'left'},
+    data: { layout: 'left' },
     loadComponent: () =>
       import('./features/payment-activity/payment/payment.component').then(
         (c) => c.PaymentComponent
@@ -287,7 +286,7 @@ export const routes: Routes = [
   },
   {
     path: 'email-notification',
-    data: {layout:'left'},
+    data: { layout: 'left' },
     loadComponent: () =>
       import('./features/notifications/email-notification/email-notification.component').then(
         (c) => c.EmailNotificationComponent
@@ -295,12 +294,68 @@ export const routes: Routes = [
   },
   {
     path: 'account-settings',
-    data: {layout:'left'},
+    data: { layout: 'left' },
     loadComponent: () =>
       import('./features/account-settings/account-settings/account-settings.component').then(
         (c) => c.AccountSettingsComponent
       ),
   },
+  {
+    path: 'professional-certificate',
+    data: {layout:'left'},
+    loadComponent: () =>
+      import('./features/manage-profile/edit-resume/academic/ProfessionalCertificate/professional-certification-summary/professional-certification-summary.component').then(
+        (c) => c.ProfessionalCertificationSummaryComponent
+      ),
+  },
+   {
+    path: 'employement-army',
+    data: {layout:'left'},
+    loadComponent: () =>
+      import('./features/manage-profile/edit-resume/employment/ArmyEmployment/employment-history-armyperson/employment-history-armyperson.component').then(
+        (c) => c.EmploymentHistoryArmypersonComponent
+      ),
+  },
+  {
+    path: 'skill',
+    data: {layout:'left'},
+    loadComponent: () =>
+      import('./features/manage-profile/edit-resume/other information/SkillComponent/skill/skill.component').then(
+        (c) => c.SkillComponent
+      ),
+  },
+  {
+    path: 'reference',
+    data: {layout:'left'},
+    loadComponent: () =>
+      import('./features/manage-profile/edit-resume/other information/ReferenceComponent/references/references.component').then(
+        (c) => c.ReferencesComponent
+      ),
+  },
+  {
+    path: 'applied-jobs',
+    data: {layout:'left'},
+    loadComponent: () =>
+      import('./features/my-activities/applied-jobs/applied-jobs.component').then(
+        (c) => c.AppliedJobsComponent
+      ),
+  },
+  {
+    path: 'resume-privacy',
+    data: {layout:'left'},
+    loadComponent: () =>
+      import('./features/account-settings/account_resume_privacy/profile-preference/profile-preference.component').then(
+        (c) => c.ProfilePreferenceComponent
+      ),
+  },
+  {
+  path: 'change-user-id',
+  data: { layout: 'left' },
+  loadComponent: () =>
+    import(
+      './features/account-settings/changeUserId/change-user-id/change-user-id.component'
+    ).then((c) => c.ChangeUserIdComponent),
+  }
 
 ];
 

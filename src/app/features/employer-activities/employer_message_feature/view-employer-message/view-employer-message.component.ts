@@ -101,7 +101,7 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
     private cdRef: ChangeDetectorRef,
     private employerMessageService: EmployerMessageService,
     private cookieService: CookieService,
-  ) {}
+  ) { }
   getMessageList(): void {
     this.userGuid =
       'YlL9PTBlYTGyY7ZuPQ00ZxOcMRhcBFGyYlJlZiOhYiLzYlL1BFPtBFUwBiJjIGU=';
@@ -136,12 +136,13 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
 
         this.cdRef.detectChanges();
       },
-      error: (err) => {},
+      error: (err) => { },
     });
   }
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       this.isProUser = params['bdjobsuser'] === 'pro';
+      console.log('Is Pro User:', this.isProUser);
       this._currentAvaileableMessage = this.isProUser ? 5 : 0;
       this.userGuid =
         'ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung=';
@@ -221,7 +222,7 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
                 this.countConsecutiveApplicantMessages(
                   this.selectedMessage.receivedMessages,
                 );
-               this.limitReached[message.conversationId] =
+              this.limitReached[message.conversationId] =
                 this.sentMessageCounts[message.conversationId] >= this.max;
               this.scrollToBottom = true;
 
@@ -537,7 +538,7 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
         this.messageContainer.nativeElement.scrollTop =
           this.messageContainer.nativeElement.scrollHeight;
       }
-    } catch (err) {}
+    } catch (err) { }
   }
 
   ngAfterViewChecked(): void {

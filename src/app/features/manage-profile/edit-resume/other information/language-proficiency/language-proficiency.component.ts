@@ -90,15 +90,13 @@ proficiencyLevels: any[] = [];
     { label: 'Japanese', value: 'Japanese' }
   ]);
 
-  // proficiencyLevels = signal([
-  //   { label: 'High', value: 'High' },
-  //   { label: 'Medium', value: 'Medium' },
-  //   { label: 'Low', value: 'Low' }
-  // ]);
-
   ngOnChanges(changes: SimpleChanges): void {
     if(this.isLanguageProficiencyOpen() && !this.isOpen()) {
+      const willOpen = !this.accordionService.isOpen(this.id)();
       this.toggle();
+      if (willOpen) {
+        this.loadLanguageInfo();
+      }
     }
   }
 
@@ -107,7 +105,11 @@ proficiencyLevels: any[] = [];
   }
 
   toggle() {
+    const willOpen = !this.accordionService.isOpen(this.id)();
     this.accordionService.toggle(this.id);
+    if (willOpen) {
+      this.loadLanguageInfo();
+    }
   }
 
     createFormGroup(language?: LanguageResponse): FormGroup {
@@ -126,9 +128,12 @@ editLanguage(language: LanguageResponse) {
   this.editingLanguage = language;
 }
 
-
-
  saveLanguageProficiency() {
+
+  const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
+
   if (this.editingLanguage) {
     // Handle edit form
     const editForm = this.editingForms.get(this.editingLanguage.languageId);
@@ -138,7 +143,7 @@ editLanguage(language: LanguageResponse) {
     }
 
     const formValue = editForm.value;
-    const userGuid = 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=';
+    const userGuid = userGuidId ?? "";
 
     const updateCommand: updateLanguage = {
       userGuid: userGuid,
@@ -151,7 +156,6 @@ editLanguage(language: LanguageResponse) {
 
     this.languageService.updateLanguage(updateCommand).subscribe({
       next: (response) => {
-        // Update local state after successful API call
         const index = this.languageProficiencies.findIndex(l => l.languageId === this.editingLanguage.languageId);
         if (index !== -1) {
           this.languageProficiencies[index] = {
@@ -165,14 +169,13 @@ editLanguage(language: LanguageResponse) {
         this.isLanguageEditFormOpen.set(false);
         this.editingForms.delete(this.editingLanguage.languageId);
         this.editingLanguage = null;
-        this.loadLanguageInfo(); // Reload data from API
+        this.loadLanguageInfo();
       },
       error: (error) => {
         console.error('Error updating language:', error);
       }
     });
   } else {
-    // Check if already have 3 languages
     if (this.languageProficiencies.length >= 3) {
       alert('You can only add up to 3 languages.');
       this.isLanguageNewFormOpen.set(false);
@@ -185,7 +188,7 @@ editLanguage(language: LanguageResponse) {
     }
 
     const formValue = this.languageform.value;
-    const userGuid = 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=';
+    const userGuid = userGuidId ?? ""
 
     const insertCommand: insertLanguage = {
       userGuid: userGuid,
@@ -199,11 +202,10 @@ editLanguage(language: LanguageResponse) {
       next: (response) => {
         this.isLanguageNewFormOpen.set(false);
         this.resetForm();
-        this.loadLanguageInfo(); // Reload data from API
+        this.loadLanguageInfo(); 
       },
       error: (error) => {
         console.error('Error inserting language:', error);
-        // Handle error appropriately
       }
     });
   }
@@ -222,19 +224,19 @@ editLanguage(language: LanguageResponse) {
 
 
   ngOnInit(): void {
-    this.loadLanguageInfo();
+    //this.loadLanguageInfo();
 
   }
 
   loadLanguageInfo(): void{
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
 
      const query: LanguageQuery = {
-       UserGuid: 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung='
+       UserGuid: userGuidId ?? ""
      };
-     // const rawGuid = this.cookieService.getCookie('MybdjobsGId') || 'ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung%3D'; // for development only
-     // this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-     // console.log('User GUID ID Photo Component:', this.userGuidId);
-
+   
 
      this.languageService.getLanguageInfo(query).subscribe({
        next: (summaries) => {
@@ -289,8 +291,12 @@ editLanguage(language: LanguageResponse) {
   newLanguageForm = this.createFormGroup();
 
   deleteLanguage(languageId: number) {
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
+
     const command: deleteLanguage = {
-      userGuid: 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=',
+      userGuid: userGuidId ?? "",
       l_ID: languageId
     };
 

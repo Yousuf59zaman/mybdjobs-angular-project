@@ -113,30 +113,24 @@ export class PasswordComponent {
     };
 
     this.loginService.postUserPassword(userPasswordBody)
-      .pipe(take(1))
-      .subscribe({
-        next: (value) => {
-
-
-          if (value.event.eventType === 1) {
-            // redirectExternal(mybdjobsWelcome);
-            // this.router.navigate(['/edit-profile']);
-            alert('Login successful!')
-            this.isWrongPass.set(false);
-
-          } else {
-            this.isWrongPass.set(true);
-          }
-          // this.sharedService.isLoading.set(false);
-          this.isLoading.set(false)
-
-        },
-        error: (error) => {
-          this.sharedService.isLoading.set(false);
-          console.error("Error occurred:", error);
+    .pipe(take(1))
+    .subscribe({
+      next: (value) => {
+        if (value.event.eventType === 1) {
+          this.loginService.setAuthData(value); // Store auth data
+          alert('Login successful!');
+          this.isWrongPass.set(false);
+        } else {
           this.isWrongPass.set(true);
         }
-      });
+        this.isLoading.set(false);
+      },
+      error: (error) => {
+        console.error("Error occurred:", error);
+        this.isWrongPass.set(true);
+        this.isLoading.set(false);
+      }
+    });
 
 
   }

@@ -1,8 +1,13 @@
 <div *transloco="let t">
 
-<accordion-main-body [accordionName]="'Language Proficiency'" buttonType="add" buttonTitle="Add Language"
-  [isAccordionOpen]="isOpen()" [isFormOpen]="isLanguageNewFormOpen() || isLanguageEditFormOpen()"
-  (formToggleEmitter)="isLanguageNewFormOpen.set(!isLanguageNewFormOpen())" (accordionToggleEmitter)="toggle()">
+<accordion-main-body
+ [accordionName]="'Language Proficiency'" 
+ buttonType="add" 
+ buttonTitle="Add Language"
+  [isAccordionOpen]="isOpen()"
+  [isFormOpen]="isLanguageNewFormOpen() || isLanguageEditFormOpen()"
+  (formToggleEmitter)="isLanguageNewFormOpen.set(!isLanguageNewFormOpen())" 
+  (accordionToggleEmitter)="toggle()">
   
   @if (!isInfoAvailable && !isLanguageNewFormOpen() && !isLanguageEditFormOpen()) {
     <div>

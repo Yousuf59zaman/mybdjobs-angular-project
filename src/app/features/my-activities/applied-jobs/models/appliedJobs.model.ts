@@ -190,9 +190,10 @@ export interface JobCardData {
   id: string;
   title: string;
   company: string;
-   hideStatusBadge?: boolean; 
+  hideStatusBadge?: boolean; 
+  bdjobsPro?: BdjobsPro;
   appliedDate: string;
-    conversationId: string;
+  conversationId: string;
   companyId: number;
   jobId: number;
   companyName: string;
@@ -393,6 +394,7 @@ export interface CareerInfo {
   exp_Sal: number;
   available: string;
   pref: string;
+  bdjobsPro?: BdjobsPro;
 }
 export interface UpdateCareerInfo {
   userGuid: string;
@@ -501,6 +503,15 @@ export interface UpadteExistAppliedJob{
     responseType: number;
 }
 
+export interface BdjobsPro {
+  isProUser: boolean;
+  packageName: string;
+  packageStartDate: string;
+  packageDuration: number;
+  packageEnddate: string;
+  applylimit: number;
+  messageLimit: number;
+}
 
 
 export type TooltipTag = 'h1' | 'h2' | 'h3' | 'p' | 'span'

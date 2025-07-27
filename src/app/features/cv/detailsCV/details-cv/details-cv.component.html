@@ -17,6 +17,7 @@
             <h2 class="text-[18px] pl-[7px] font-bold text-[#333399] font-sans">
               {{ cvData.fullName }}
             </h2>
+            @if(getAddressByType(1) || getAddressByType(2)) {
             <p class="text-[11px] pl-[7px] pt-[2px] pb-[2px]">
               Address:
               @if (getAddressByType(1) === null || getAddressByType(1) === '') {
@@ -25,23 +26,33 @@
               {{getAddressByType(1)}}
               }
             </p>
-            <p class="text-[11px] pl-[7px] pt-[2px] pb-[2px]">
-              Primary Mobile No: {{ cvData.mobileNumber }}
-
-            </p>
+          }
+            @if(cvData.mobileNumber) {
+              <p class="text-[11px] pl-[7px] pt-[2px] pb-[2px]">
+                Primary Mobile No: {{ cvData.mobileNumber }}
+              </p>
+            }
+            @if(cvData.officePhone) {
             <p class="text-[11px] pl-[7px] pt-[2px] pb-[2px]">
               Secondary Mobile No: {{ cvData.officePhone }}
             </p>
+            }
+            @if(cvData.homePhone) {
             <p class="text-[11px] pl-[7px] pt-[2px] pb-[2px]">
               Emergency Contact No: {{ cvData.homePhone }}
             </p>
+            }
+            @if(cvData.primaryEmail) {
             <p class="text-[11px] pl-[7px] pt-[2px] pb-[2px]">
 
               Primary Email: {{ cvData.primaryEmail }}
             </p>
+            }
+            @if(cvData.secondaryEmail) {
             <p class="text-[11px] pl-[7px] pt-[2px] pb-[2px]">
               Alternate Email: {{ cvData.secondaryEmail }}
             </p>
+            }
           </td>
 
           <!-- Right side: Photo -->

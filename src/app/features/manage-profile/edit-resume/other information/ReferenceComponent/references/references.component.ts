@@ -83,9 +83,7 @@ export class ReferencesComponent {
   referenceService = inject(ReferencesService);
   referenceCheckingId: number | null = 0;
   //guid cookies here
-  rawGuid = this.cookieService.getCookie('MybdjobsGId')
-  #userGuid = 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=';
-  userGuid = decodeURIComponent(this.rawGuid || '');
+  userGuid = '';
   ngOnChanges(changes: SimpleChanges): void {
     if (this.isReferencesOpen() && !this.isOpen()) {
       const willOpen = !this.accordionService.isOpen(this.id)();
@@ -95,7 +93,11 @@ export class ReferencesComponent {
       }
     }
   }
-  ngOnInit() {}
+  ngOnInit() {
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId');  //uncomment this line before testing/live
+    this.userGuid = rawGuid ? decodeURIComponent(rawGuid) : "";
+
+  }
   isOpen() {
     return this.accordionService.isOpen(this.id)();
   }
@@ -414,12 +416,8 @@ export class ReferencesComponent {
     const id = this.pendingDeleteId();
     if (this.isSaving) return;
     if (id === null) return;
-    console.log('I am clicked', id);
-
-    const userGuid =
-      'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=';
     this.isSaving = true;
-    this.referenceService.deleteReference(userGuid, id).subscribe({
+    this.referenceService.deleteReference(this.userGuid, id).subscribe({
       next: (res) => {
         // reload your list
         this.loadReference(this.userGuid);

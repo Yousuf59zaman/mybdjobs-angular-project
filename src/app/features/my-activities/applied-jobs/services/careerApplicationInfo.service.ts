@@ -91,9 +91,6 @@ export class CareerApplicationInfoServiceService {
     return this.http.get<CareerInfoResponseCookies>(this.getApi, { params });
   }
 
-  updateCareerInfo(command: UpdateCareerInfo) {
-    return this.http.post<void>(this.updateApi, command);
-  }
 
   boostJob(boostJobDate: JobBoosting) {
     return this.http.post<void>(this.boostApi, boostJobDate);

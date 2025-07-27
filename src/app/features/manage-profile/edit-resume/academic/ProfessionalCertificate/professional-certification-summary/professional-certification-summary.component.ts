@@ -88,7 +88,7 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
   constructor(private _eref: ElementRef) {}
   isExpanded = false;
   @Output() addExperience = new EventEmitter<void>();
-
+  userGuid = '';
   toggleDropdown() {
     this.isExpanded = !this.isExpanded;
   }
@@ -98,31 +98,21 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
   }
 
   ngOnInit() {
-     // const rawGuid = this.cookieService.getCookie('MybdjobsGId');  //uncomment this line before testing/live
-    // const rawGuid = this.cookieService.getCookie('MybdjobsGId') || 'ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung%3D'; // for development only
-    // this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    this.loadCertifications();
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || '';
+    this.userGuid = rawGuid ? decodeURIComponent(rawGuid) : "";
   }
   loadCertifications() {
-    const userGuid =
-      'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung='; // raw guid will be here
     this.isLoading.set(true);
     this.certificationService
-    .getCertifications(userGuid)
+    .getCertifications(this.userGuid)
     .pipe(finalize(() => {
-      // always clear the loading flag when complete (success or error)
       this.isLoading.set(false);
     }))
     .subscribe({
       next: (response) => {
-        // grab the raw value (it should be an array)
         const raw = response.event.eventData.find(d => d.key === 'message')?.value;
         const certs = Array.isArray(raw) ? raw : [];
-
-        // replace the array _reference_
         this.professionalCertifications = certs;
-
-        // flip the “is info available” flag based on length
         this.isInfoAvailable.set(certs.length > 0);
       },
       error: (err) => {
@@ -134,9 +124,14 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.isProfCertificateSummaryOpen() && !this.isOpen()) {
+      const willOpen = !this.accordionService.isOpen(this.id)();
       this.toggle();
+      if (willOpen) {
+        this.loadCertifications();
+      }
     }
   }
+
 
   isOpen() {
     return this.accordionService.isOpen(this.id)();
@@ -346,7 +341,7 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
       startDate: this.toIsoOrEmpty(startDateStr),
       endDate: this.toIsoOrEmpty(endDateStr),
       userGuid:
-        'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=',
+        this.userGuid,
       pe_ID: this.editingCertification?.pe_ID,
     };
     console.log('this is update payload', updatePayload);
@@ -407,11 +402,8 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
       location: this.newCertificationForm.value.location || '',
       startDate: this.toIsoOrEmpty(this.newDateRangeString.split(' - ')[0]),
       endDate: this.toIsoOrEmpty(this.newDateRangeString.split(' - ')[1]),
-      userGuid:
-        'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=',
+      userGuid:this.userGuid,
     };
-    console.log('this is new form payload 0', newAddPayload);
-
     this.certificationService.createCertification(newAddPayload).subscribe({
       next: () => {
         this.loadCertifications();
@@ -442,18 +434,10 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
     }
     this.editCalendarVisible = !this.editCalendarVisible;
     if (this.editCalendarVisible) {
-      console.log(
-        'editing certification form ',
-        this.editingCertification.fromDate
-      );
-
       const dateRangeString = `${this.editingCertification.fromDate} - ${this.editingCertification.toDate}`;
       const dates = this.parseDateRangeString(dateRangeString);
-
       this.editSelectedStartDate = dates.start;
       this.editSelectedEndDate = dates.end;
-      console.log('start date', this.editSelectedStartDate);
-      console.log('end date ', this.editSelectedEndDate);
     }
   }
 
@@ -501,8 +485,6 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
       event.stopPropagation();
     }
     this.newCalendarVisible = !this.newCalendarVisible;
-
-    console.log('calender visible ', this.newCalendarVisible);
   }
 
   closeNewCalendar() {
@@ -510,14 +492,12 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
   }
   onNewStartDateChange(date: Date | null) {
     this.newSelectedStartDate = date;
-    console.log('selected start date ');
     this.updateNewDateRangeString();
     this.newCertificationForm.patchValue({ startDate: date?.toString() });
   }
 
   onNewEndDateChange(date: Date | null) {
     this.newSelectedEndDate = date;
-    console.log('selected end date ');
     this.updateNewDateRangeString();
     this.newCertificationForm.patchValue({ endDate: date?.toString() });
   }
@@ -531,7 +511,6 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
     } else {
       this.newDateRangeString = '';
     }
-    console.log('this is date that I have selected', this.newDateRangeString);
   }
 
   confirmEditSelection() {
@@ -553,26 +532,30 @@ closeDeleteModal() {
   document.body.style.overflow = '';
 }
 
-// your-component.ts
 confirmDelete() {
   const id = this.pendingDeleteId();
   if (id === null) return;
 
-  const userGuid = 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=';
+  const userGuid = this.userGuid;
   this.certificationService.deleteCertification(id, userGuid)
     .subscribe({
       next: (res) => {
-        // reload your list
         this.loadCertifications();
-        // now that it's done, close the modal
         this.closeDeleteModal();
       },
       error: (err) => {
         console.error('Delete failed', err);
-        // optionally show a toast or keep the dialog open
       }
     });
 }
 
+onExpandClick() {
+    const willOpen = !this.accordionService.isOpen(this.id)();
+    this.toggle(); // toggles the accordion
+
+    if (willOpen) {
+      this.loadCertifications();
+    }
+  }
 
 }

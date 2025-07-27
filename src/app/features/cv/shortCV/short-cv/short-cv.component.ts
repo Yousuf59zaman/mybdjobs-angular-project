@@ -100,14 +100,14 @@ export class ShortCvComponent implements OnInit {
   }
 
   loadCv(): void {
-    const query: GetShortCvViewInfoRequest = {
-      UserGuid: 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung='
-    };
-    
-      // const rawGuid = this.cookieService.getCookie('MybdjobsGId') || 'ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung%3D'; // for development only
-     // this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-     // console.log('User GUID ID Photo Component:', this.userGuidId);
 
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
+
+    const query: GetShortCvViewInfoRequest = {
+      UserGuid:  userGuidId ?? ""
+    };
     this.isLoading = true;
     this.shortCvService.getShortCv(query).subscribe({
       next: (res) => {

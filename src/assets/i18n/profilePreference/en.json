@@ -1,0 +1,44 @@
+{
+    "title": "Profile Preference",
+    "description": "Set your profile preferences to control who can view your resume, indicate if you're available to join immediately, and manage access to your Video CV.",
+    "profileVisibility": "Profile Visibility",
+    "availability": "Availability Status",
+    "public": "Public",
+    "recommended": "Recommended",
+    "private": "Private",
+    "limited": "Limited",
+    "forPrivate":"Employers cannot view your Bdjobs resume and Video resume from Bdjobs CV Bank. Your resume will only be seen for the job you applied for.",
+    
+    "forLimited1":"Selected Employer(s)",
+    "forLimited2" :" can not see your profile",
+    "forPublic":"All Employer(s) can see your profile.",
+    "yes": "Yes",
+    "no": "No",
+    "forNo":"Your availability will not visible to employers.",
+    "forYes": "Employers will see that you can join immediately.",  
+    "save": "Save",
+    "edit" : "Edit",
+    "close": "Close",
+    "setAvailability": "Set your job availability:",
+    "toJoinImmediately": "to join immediately",
+    "ifNotAvailable": "if not available right away",
+    "setVisibility": "Set your CV visibility:",
+    "orToRestrict": "or to restrict employer access",
+    "or": "or",
+    "selectOption": "select the appropriate option.",
+    "videoCvVisibility": "Video Resume Employer Show",
+    "availabilityVisible": "Employers will see that you can join immediately.",
+    "availabilityHidden": "Your availability will not be visible to employers.",
+    "cvVisibleToAll": "Your CV is visible to all employers.",
+    "cvNotVisible": "Your CV is not visible to any employers.",
+    "cvWillBeVisibleToAll": "Your CV will be visible to all employers.",
+    "cvWilNotBeVisibleToAll": "Your CV will not be visible to any employers.",
+    "searchEmployerLabel": "Search Employer Name to block",
+    "searchEmployerPlaceholder": "Type Employer Name",
+    "selectedEmployers": "Selected Employer(s)"
+
+    
+
+    
+
+}

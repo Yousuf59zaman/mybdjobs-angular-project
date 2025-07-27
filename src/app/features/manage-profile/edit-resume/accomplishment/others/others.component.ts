@@ -164,10 +164,15 @@ export class OthersComponent implements OnChanges {
   }
 
   confirmDelete() {
+
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
+
     if (this.accomPlishmentId !== null) {
       const request: DeleteAccomplishmentRequest = {
         acmId: this.accomPlishmentId,
-        userGuid: 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung='
+        userGuid:  userGuidId ?? ""
       };
 
       this.accompolishmentService.deleteInfo(request).subscribe({
@@ -254,15 +259,15 @@ export class OthersComponent implements OnChanges {
   }
 
   loadOtherInfo(): void {
+
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
     this.isLoading.set(true);
 
     const query: AccomplishmentInfoQuery = {
-      UserGuid: 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung='
+      UserGuid:  userGuidId ?? ""
     };
-
-    // const rawGuid = this.cookieService.getCookie('MybdjobsGId') || 'ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung%3D'; // for development only
-    // this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    // console.log('User GUID ID Photo Component:', this.userGuidId);
 
     this.accompolishmentService.getAccomplishmentInfo(query, 5).subscribe({
       next: (summaries) => {
@@ -300,6 +305,11 @@ export class OthersComponent implements OnChanges {
   }
 
   saveOtherSummary() {
+
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
+
     this.isLoading.set(true);
     this.formSubmitted = true;
     Object.keys(this.otherForm.controls).forEach(key => {
@@ -322,7 +332,7 @@ export class OthersComponent implements OnChanges {
 
     const formValue = this.otherForm.value;
     const command: AccomplishmentUpdateInsert = {
-      userGuid: 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=',
+      userGuid:  userGuidId ?? "",
       type: 5, // other type
       title: formValue.title || '',
       url: formValue.url || '',

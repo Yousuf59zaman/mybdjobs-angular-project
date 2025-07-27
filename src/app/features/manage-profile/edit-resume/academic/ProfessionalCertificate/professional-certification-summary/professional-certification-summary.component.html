@@ -7,7 +7,7 @@
   (formToggleEmitter)="
     isProfCertificateSummaryFormOpen.set(!isProfCertificateSummaryFormOpen())
   "
-  (accordionToggleEmitter)="toggle()"
+  (accordionToggleEmitter)="onExpandClick()"
   *transloco="let t"
 >
   @if(isLoading()) {

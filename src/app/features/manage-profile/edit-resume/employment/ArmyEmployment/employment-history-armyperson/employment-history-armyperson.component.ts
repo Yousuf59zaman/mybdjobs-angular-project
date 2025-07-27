@@ -94,10 +94,12 @@ export class EmploymentHistoryArmypersonComponent {
   private resizeObserver!: ResizeObserver;
   constructor(private cd: ChangeDetectorRef) {}
  //guid cookies here
-  rawGuid = this.cookieService.getCookie('MybdjobsGId')
-  #userGuid = 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=';
-  userGuid = decodeURIComponent(this.rawGuid || '');
+ 
+  userGuid = '';
+
   ngOnInit() {
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId');  //uncomment this line before testing/live
+    this.userGuid = rawGuid ? decodeURIComponent(rawGuid) : "";
     this.updatePlaceholder();
     this.resizeObserver = new ResizeObserver(() => {
       this.updatePlaceholder();
@@ -132,11 +134,9 @@ export class EmploymentHistoryArmypersonComponent {
 
   onStartDateChanged(date: Date | null): void {
     this.DateOfCommissionControl().setValue(date);
-    console.log('Selected Start Date:', date);
   }
   onEndDateChanged(date: Date | null): void {
     this.DateOfRetirementControl().setValue(date);
-    console.log('Selected End Date:', date);
   }
 
   employmentArmyForm = new FormGroup(
@@ -249,10 +249,8 @@ export class EmploymentHistoryArmypersonComponent {
   currentData: ArmyHistoryItem[] = [];
 
   loadArmyData(): void {
-    const userGuid =
-      'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=';
     this.employmentService
-      .getRetiredArmyMessages(userGuid)
+      .getRetiredArmyMessages(this.userGuid)
       .pipe(
         finalize(() => {
           // always clear the loading flag when complete (success or error)
@@ -275,11 +273,6 @@ export class EmploymentHistoryArmypersonComponent {
               this.isInfoAvailable.set(false) 
             }
             if (this.currentData.length == 1) {
-              console.log(
-                'current data length is is is isii is is',
-                this.currentData.length
-              );
-
               this.formIsOpen.set(true);
               this.isInfoAvailable.set(true);
             }
@@ -329,8 +322,6 @@ export class EmploymentHistoryArmypersonComponent {
     const startingDate = this.employmentArmyForm.value.dateOfCommission!;
     const endingDate = this.employmentArmyForm.value.dateOfRetirement!;
     if (baValue === '' || baValue.length > 9) {
-      console.log('inside of form msldfsdl sdaldsajf salfjasl ');
-
       const baNumericControl = this.employmentArmyForm.controls['baNumeric'];
       const value = baNumericControl.value?.toString();
       // Reset errors first
@@ -399,8 +390,7 @@ export class EmploymentHistoryArmypersonComponent {
           this.DateOfRetirementControl().value!
         ),
         retiredArmyId: this.currentData[0].retiredArmyId || '',
-        userGuidId:
-          'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=',
+        userGuidId:this.userGuid,
         version: 'en',
       };
       this.employmentService.postRetiredArmy(payload).subscribe({
@@ -484,9 +474,7 @@ export class EmploymentHistoryArmypersonComponent {
     document.body.style.overflow = '';
   }
   confirmDelete() {
-    const userGuid =
-      'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=';
-    this.employmentService.deleteRetiredArmy(userGuid).subscribe({
+    this.employmentService.deleteRetiredArmy(this.userGuid).subscribe({
       next: (response) => {
         if (response.length > 0) {
           const apiResponse = response[0];

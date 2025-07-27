@@ -254,29 +254,27 @@ export class DetailsCVComponent implements OnInit {
   }
 
   loadCv(): void {
-  const query: GetDetailsCvViewInfoRequest = {
-    UserGuid: 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung='
-  };
-       // const rawGuid = this.cookieService.getCookie('MybdjobsGId') || 'ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung%3D'; // for development only
-     // this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-     // console.log('User GUID ID Photo Component:', this.userGuidId);
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
+    const query: GetDetailsCvViewInfoRequest = {
+      UserGuid: userGuidId ?? ""
+    };
 
   this.isLoading = true;
   this.detailsCvService.getDetailsCv(query).subscribe({
     next: (res) => {
-      // First check if the response structure is correct
+
       if (!res?.event?.eventData || res.event.eventData.length === 0) {
         console.error('Invalid API response structure', res);
         this.isLoading = false;
         return;
       }
-
-      // Access the value through the correct path
       this.cvData = res.event.eventData[0].value;
       console.log("Cv Data", this.cvData);
       console.log("References from API:", this.cvData.reference);
 
-      // Initialize all your arrays with proper null checks
+
       this.address = this.cvData.address || [];
       this.skills = this.cvData.skills || [];
       this.trainings = this.cvData.training || [];
@@ -289,7 +287,6 @@ export class DetailsCVComponent implements OnInit {
       this.bdJamCertificate = this.cvData.bdJamCertificate || [];
       this.disability = this.cvData.disability || [];
       
-      // Handle accomplishments
       const rawAccomplishments = this.cvData.accomplishment || [];
       console.log('Raw accomplishments:', rawAccomplishments);
       

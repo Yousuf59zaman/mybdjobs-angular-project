@@ -1,8 +1,9 @@
 import { inject, Injectable, signal } from '@angular/core';
 // import { ApiResponse, authApiRequest, AuthApiResponse, checkUserNameRequest, checkUserNameResponse, editPasswordRequest, getUserListResponse, sendOtpRequest } from '../models/login.model';
 import { map, Observable, tap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { checkUserNameResponse, ApiResponse, authApiRequest, AuthApiResponse, checkUserNameRequest, editPasswordRequest, getUserListResponse, sendOtpRequest } from '../models/login.model';
+import { CookieService } from '../../../core/services/cookie/cookie.service';
 
 export type rightPanel = 'username' | 'password' | 'otp' | 'find-acc' | 'choose_acc' | 'welcome' | 'sec_code' | 'access_acc' | 'reset_pass'
 @Injectable({
@@ -18,7 +19,12 @@ export class LoginService {
   private getUserListUrl = "https://accountsubsystem-52061700766.asia-southeast1.run.app/api/ForgotPassword/GetUserList";
   private sendOtpUrl = "https://mybdjobsorchestrator-52061700766.asia-southeast1.run.app/api/ForgotPassword/SendOtp";
   private forgetPasswordVerifyOtpUrl = "https://accountsubsystem-52061700766.asia-southeast1.run.app/api/ForgotPassword/ForgotPasswordVerifyOTP"
-  private updatePasswordUrl = "https://accountsubsystem-52061700766.asia-southeast1.run.app/api/ForgotPassword/UpdateNewPassword"
+  private updatePasswordUrl = "https://accountsubsystem-52061700766.asia-southeast1.run.app/api/ForgotPassword/UpdateNewPassword";
+  private supportingInfoUrl = "https://gateway.bdjobs.com/bdjobs-auth-dev/api/Login/GetSupportingInfoJobseeker";
+
+  readonly authToken = signal<string | null>(null);
+  readonly currentUserInfo = signal<any>(null);
+  private readonly AUTH_STORAGE_KEY = 'authData';
 
 
   currentPanel = signal<rightPanel>('username')
@@ -28,7 +34,7 @@ export class LoginService {
   userInfo = signal<checkUserNameResponse | null>(null)
 
 
-  constructor() { }
+  constructor(private cookieService: CookieService) {}
   readonly selectedTab = signal<string>('Sign In');
 
   setTab(tab: string) {
@@ -74,4 +80,63 @@ export class LoginService {
   updateNewPassword(userInfo: editPasswordRequest): Observable<ApiResponse<string>[]> {
     return this.http.put<ApiResponse<string>[]>(this.updatePasswordUrl, userInfo)
   }
+
+   getAuthTokenFromCookie(): string | null {
+    return this.cookieService.getCookie('authToken');
+  }
+
+
+  getSupportingInfo(token: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    
+    return this.http.get<any>(this.supportingInfoUrl, { headers }).pipe(
+      tap(response => {
+        if (response.event.eventType === 1) {
+          this.currentUserInfo.set(response.event.eventData[0].value.currentUser);
+        }
+      })
+    );
+  }
+
+
+   setAuthData(response: any): void {
+    const authData = {
+      token: response.event.eventData[0]?.value?.token,
+      refreshToken: response.event.eventData[0]?.value?.refreshToken,
+      isBdjobsPro: response.event.eventData[0]?.value?.currentUser?.bdjobsPro?.isProUser || false
+    };
+    
+    // Store in localStorage
+    localStorage.setItem(this.AUTH_STORAGE_KEY, JSON.stringify(authData));
+    
+    // Also set cookies if needed
+    this.setAuthCookies(response);
+  }
+
+  private setAuthCookies(response: any): void {
+    const token = response.event.eventData[0]?.value?.token;
+    const isPro = response.event.eventData[0]?.value?.currentUser?.bdjobsPro?.isProUser;
+    
+    if (token) {
+      this.cookieService.setCookie('authToken', token, 1);
+    }
+    
+    if (isPro !== undefined) {
+      this.cookieService.setCookie('IsBdjobsPro', isPro.toString(), 1);
+    }
+  }
+
+  getAuthData(): { token: string; isBdjobsPro: boolean } | null {
+    const data = localStorage.getItem(this.AUTH_STORAGE_KEY);
+    return data ? JSON.parse(data) : null;
+  }
+
+  clearAuthData(): void {
+    localStorage.removeItem(this.AUTH_STORAGE_KEY);
+    this.cookieService.deleteCookie('authToken');
+    this.cookieService.deleteCookie('IsBdjobsPro');
+  }
+
 }

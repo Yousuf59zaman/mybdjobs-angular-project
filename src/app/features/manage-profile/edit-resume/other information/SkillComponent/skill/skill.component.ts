@@ -71,7 +71,7 @@ export class SkillComponent {
   isLoading = signal(true);
   private id = 'skillinfo';
   userGuid: string =
-    'ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung=';
+    '';
 
   ntqfLevels = [
     { value: '-1', label: 'Select' },

@@ -6,7 +6,7 @@ import { interval, Subscription } from 'rxjs';
 import { ChangeUserIdService } from '../service/change-user-id.service';
 import { ApiEventResponse, ChangeUserIdQuery, CheckUserInfoResponse, CheckUserNameExist, CheckUserNameExistResponse, EventDataItem, SendOtpCodeInEmail, SendOtpData, UpdateUserName, UpdateUserResponse, UserInfoPayload } from '../model/change-user-id';
 import { provideTranslocoScope, TranslocoModule } from '@jsverse/transloco';
-// import { CookieService } from '../../../../core/services/cookie/cookie.service';
+import { CookieService } from '../../../../core/services/cookie/cookie.service';
 
 @Component({
   selector: 'app-change-user-id',
@@ -21,7 +21,7 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
   isBlueCollar = false;
   maxLength = 50;
   maxValue = 999999999999;
-  accountType: string = 'w';
+  accountType: string = '';
   type = signal<InputType>('text');
   password = signal<'password' | 'text'>('password');
   showOtpSection = false;
@@ -48,12 +48,14 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
   currentUserId = ''; // To store current user ID (email/mobile)
   newUserId = '';
   formattedCountdown: string = this.formatTime(this.countdown);
+  userGuid: string | null = null;
 
   userName: string = '';
   userNameType: number = 0;
   hasPassword: boolean = false;
   socialMediaId: number = 0;
-  constructor(private fb: FormBuilder, private changeUserIdService: ChangeUserIdService) {
+
+  constructor(private fb: FormBuilder, private changeUserIdService: ChangeUserIdService,private cookieService: CookieService) {
     this.emailForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -64,11 +66,12 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
   }
   emailController = computed(() => this.emailForm.get('email') as FormControl)
   phoneController = computed(()=> this.mobileForm.get('mobile') as FormControl)
-  // passwordController = computed(()=> this.emailForm.value.get('password') as FormControl)
 
 
   ngOnInit() {
     this.loadCheckUserInfo();
+      this.userGuid = this.cookieService.getCookie('MybdjobsGId') || '';
+      this.userGuid = this.userGuid ? decodeURIComponent(this.userGuid) : null;
   }
 
   ngOnDestroy() {
@@ -76,11 +79,12 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
   }
 
   loadCheckUserInfo(): void {
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
     const query: ChangeUserIdQuery = {
-      userGuid: 'Z7YzZFZuPiUyITDjIQ00ZxCuMTLuITSyBiL7P7VjBTL9IRL3BFPtBFVRIGL3UWg='
-      // const rawGuid = this.cookieService.getCookie('MybdjobsGId') || 'ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung%3D'; // for development only
-      // this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-      // console.log('User GUID ID Photo Component:', this.userGuidId);
+      userGuid: userGuidId ?? ""
+
     };
 
     this.changeUserIdService.checkUserInfo(query)
@@ -138,6 +142,12 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
   }
 
   verifyCode() {
+
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
+
+
     const enteredOtp = this.code.join('');
     if (enteredOtp.length !== 6) {
       this.otpError = true;
@@ -146,22 +156,16 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
     }
 
     const otpData: SendOtpData = {
-      UserGuidId: 'Z7YzZFZuPiUyITDjIQ00ZxCuMTLuITSyBiL7P7VjBTL9IRL3BFPtBFVRIGL3UWg=',
+      UserGuidId:  userGuidId ?? "",
       UserName: this.currentUserId,
       OTP: enteredOtp
-      // const rawGuid = this.cookieService.getCookie('MybdjobsGId') || 'ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung%3D'; // for development only
-      // this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-      // console.log('User GUID ID Photo Component:', this.userGuidId);
+
     };
 
     const updateUserNameData: UpdateUserName = {
-      userGuid: 'Z7YzZFZuPiUyITDjIQ00ZxCuMTLuITSyBiL7P7VjBTL9IRL3BFPtBFVRIGL3UWg=',
+      userGuid:  userGuidId ?? "",
       newUserName: this.newUserId,
       userType: this.userNameType
-
-      // const rawGuid = this.cookieService.getCookie('MybdjobsGId') || 'ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung%3D'; // for development only
-      // this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-      // console.log('User GUID ID Photo Component:', this.userGuidId);
     };
 
     this.changeUserIdService.verifyOtpCode(otpData).subscribe({
@@ -272,17 +276,17 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
     this.password.set(current === 'password' ? 'text' : 'password')
   }
   onSave() {
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
+
     if (this.emailForm.invalid) {
       this.emailForm.markAllAsTouched();
       return;
     }
     const newEmail = this.emailForm.value.email;
-    const userGuid = 'Z7YzZFZuPiUyITDjIQ00ZxCuMTLuITSyBiL7P7VjBTL9IRL3BFPtBFVRIGL3UWg=';
+    const userGuid =  userGuidId ?? "";
     const currentEmail = this.userName;
-
-    // const rawGuid = this.cookieService.getCookie('MybdjobsGId') || 'ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung%3D'; // for development only
-      // this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-      // console.log('User GUID ID Photo Component:', this.userGuidId);
 
     this.changeUserIdService.checkUserNameExist({
       UserGuid: userGuid,
@@ -385,17 +389,19 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
 
 
   onSubmit(): void {
+    
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
+
     if (this.mobileForm.invalid) {
       this.mobileForm.markAllAsTouched();
       return;
     }
 
     const newMobile = this.mobileForm.value.mobile;
-    const userGuid = 'YTLxP7BbYxYyIFJiPb00P7Z9MRczBEYyPlY6IEG0YiG9ITG3BFPtBFU1ZGOhPlG=';
+    const userGuid =  userGuidId ?? "";
     const currentMobile = this.userName;
-    // const rawGuid = this.cookieService.getCookie('MybdjobsGId') || 'ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung%3D'; // for development only
-      // this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-      // console.log('User GUID ID Photo Component:', this.userGuidId);
 
     this.changeUserIdService.checkUserNameExist({
       UserGuid: userGuid,

@@ -127,10 +127,14 @@ export class PortfolioComponent implements OnChanges {
   }
 
   confirmDelete() {
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; 
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
+
     if (this.accomPlishmentId !== null) {
       const request: DeleteAccomplishmentRequest = {
         acmId: this.accomPlishmentId,
-        userGuid: 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung='
+        userGuid:  userGuidId ?? ""
       };
 
       this.accompolishmentService.deleteInfo(request).subscribe({
@@ -218,14 +222,14 @@ export class PortfolioComponent implements OnChanges {
   }
 
   loadPortfolioInfo(): void {
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
+
     this.isLoading.set(true);
     const query: AccomplishmentInfoQuery = {
-      UserGuid: 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung='
+      UserGuid:  userGuidId ?? ""
     };
-
-    // const rawGuid = this.cookieService.getCookie('MybdjobsGId') || 'ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung%3D'; // for development only
-    // this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    // console.log('User GUID ID Photo Component:', this.userGuidId);
 
     this.accompolishmentService.getAccomplishmentInfo(query, 1).subscribe({
       next: (summaries) => {
@@ -261,6 +265,10 @@ export class PortfolioComponent implements OnChanges {
   }
 
   savePortfolioSummary() {
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    console.log('User GUID ID Photo Component:', userGuidId);
+
     this.isLoading.set(true);
     this.formSubmitted = true;
     if (this.portfolioForm.invalid) {
@@ -270,7 +278,7 @@ export class PortfolioComponent implements OnChanges {
 
     const formValue = this.portfolioForm.value;
     const command: AccomplishmentUpdateInsert = {
-      userGuid: 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=',
+      userGuid:  userGuidId ?? "",
       type: 1, // portfolio type
       title: formValue.title || '',
       url: formValue.url || '',
@@ -292,9 +300,7 @@ export class PortfolioComponent implements OnChanges {
         );
 
         if (successMsg) {
-          // Update local state
           if (this.editingSummary) {
-            // Update existing portfolio
             const idx = this.portfolioSummaries.findIndex(s => s.accomPlishmentId === this.editingSummary?.accomPlishmentId);
             if (idx > -1) {
               this.portfolioSummaries[idx] = {

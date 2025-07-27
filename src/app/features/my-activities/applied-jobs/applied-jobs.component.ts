@@ -11,6 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
+  BdjobsPro,
   CareerInfoResponse,
   ChatMessage,
   ExperienceApiResponse,
@@ -44,6 +45,8 @@ import { AppliedJobsBoostingApplicationComponent } from '../../../shared/compone
 import { AppliedJobsBoostApplicationNormalUserModalComponent } from '../../../shared/components/applied-jobs-boost-application-normal-user-modal/applied-jobs-boost-application-normal-user-modal.component';
 import { AppiledJobsExperienceModalComponent } from '../../../shared/components/appiled-jobs-experience-modal/appiled-jobs-experience-modal.component';
 import { provideTranslocoScope, TranslocoDirective } from '@jsverse/transloco';
+import { SharedService } from '../../signin/services/share.service';
+import { LoginService } from '../../signin/services/login.service';
 
 @Component({
   selector: 'app-applied-jobs',
@@ -121,7 +124,10 @@ export class AppliedJobsComponent {
   insightUnlocked: boolean = false;
   chatApiResponse: any;
   public isModalOpen = false;
+  private sharedService = inject(SharedService);
+  private loginService = inject(LoginService);
   currentBoostJob: JobCardData | null = null;
+  bdjobsProInfo: BdjobsPro | null = null;
   consecutiveACount: number = 0;
   disableSendButton: boolean = false;
   sentMessagesCount: number = 0;
@@ -262,43 +268,82 @@ export class AppliedJobsComponent {
     this.setupCompanySuggestions();
   }
 
-  private loadCareerInfoCookies(): void {
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId');
-    this.UserGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
-    this.IsBdjobsPro = this.cookieService.getCookie('IsBdjobsPro') || 'false';
+private loadCareerInfoCookies(): void {
+  const authData = this.loginService.getAuthData();
+  
+  if (authData) {
+    this.IsBdjobsPro = authData.isBdjobsPro.toString();
+    this.loadSupportingInfo(authData.token);
+    return;
+  }
+  const token = this.cookieService.getCookie('authToken');
+  const rawGuid = this.cookieService.getCookie('MybdjobsGId');
+  this.UserGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
+  this.IsBdjobsPro = this.cookieService.getCookie('IsBdjobsPro') || 'false';
 
+  if (!token || !this.UserGuid) {
+    console.error('Authentication failed - missing token or GUID');
+    return;
+  }
+
+  this.loadSupportingInfo(token);
+}
+
+private loadSupportingInfo(token: string): void {
+  this.sharedService.isLoading.set(true);
+
+  this.loginService.getSupportingInfo(token).subscribe({
+    next: (supportingInfo) => {
+      const bdjobsProData = supportingInfo?.event?.eventData?.[0]?.value?.currentUser?.bdjobsPro;
+      
+      if (bdjobsProData) {
+        this.bdjobsProInfo = bdjobsProData;
+        this.loginService.setAuthData(supportingInfo);
+      }
+      
+      this.loadCareerInfo();
+      this.sharedService.isLoading.set(false);
+    },
+    error: (err) => {
+      console.error('Supporting info error:', err);
+      this.sharedService.isLoading.set(false);
+      this.loadCareerInfo();
+    }
+  });
+}
+
+  private loadCareerInfo(filters?: any, page: number = 1): void {
     if (!this.UserGuid) {
-      console.error('UserGuid not found in cookies');
+      console.error('UserGuid not available - cannot load career info');
+      this.circularLoaderService.setLoading(false);
       return;
     }
 
     const query: GetCareerInfoQuery = {
       UserGuid: this.UserGuid,
+      Version: 'EN',
+      NoOfRecordPerPage: this.itemsPerPage,
+      PageNumber: page,
       IsBdjobsPro: this.IsBdjobsPro,
+      ...filters,
     };
 
-    this.careerService.getCareerInfo(query).subscribe({
-      next: (res) => {
-        const payload = res.event;
-        if (payload.eventData.length > 0 && payload.eventData[0].value) {
-          const res = payload.eventData[0].value;
-          this.isInfoAvailable = true;
-          this.careerForm.patchValue({
-            obj: res.obj || '',
-            cur_Sal: res.cur_Sal?.toString() || '',
-            exp_Sal: res.exp_Sal?.toString() || '',
-            pref: res.pref || '',
-            available: res.available || '',
-          });
-        } else {
-          this.isInfoAvailable = false;
-        }
-      },
-      error: (error) => {
-        console.error('Error loading career info:', error);
-        this.isInfoAvailable = false;
-      },
-    });
+    this.circularLoaderService.setLoading(true);
+
+    this.careerService
+      .getAppliedJobs(query)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.circularLoaderService.setLoading(false))
+      )
+      .subscribe({
+        next: (response: CareerInfoResponse) => {
+          this.processApiResponse(response, page);
+        },
+        error: (error) => {
+          console.error('Error fetching applied jobs:', error);
+        },
+      });
   }
 
   private loadInitialData() {
@@ -1337,40 +1382,6 @@ export class AppliedJobsComponent {
   toggleDropdown(event: Event) {
     event.stopPropagation();
     this.showDropdown = !this.showDropdown;
-  }
-
-  private loadCareerInfo(filters?: any, page: number = 1): void {
-    if (!this.UserGuid) {
-      console.error('UserGuid not available - cannot load career info');
-      this.circularLoaderService.setLoading(false);
-      return;
-    }
-
-    const query: GetCareerInfoQuery = {
-      UserGuid: this.UserGuid,
-      Version: 'EN',
-      NoOfRecordPerPage: this.itemsPerPage,
-      PageNumber: page,
-      IsBdjobsPro: this.IsBdjobsPro,
-      ...filters,
-    };
-
-    this.circularLoaderService.setLoading(true);
-
-    this.careerService
-      .getAppliedJobs(query)
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.circularLoaderService.setLoading(false))
-      )
-      .subscribe({
-        next: (response: CareerInfoResponse) => {
-          this.processApiResponse(response, page);
-        },
-        error: (error) => {
-          console.error('Error fetching applied jobs:', error);
-        },
-      });
   }
 
   private setupCompanySuggestions() {

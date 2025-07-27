@@ -1,7 +1,7 @@
 {
     "title": "★ Shortlisted jobs",
-    "description": "Here you can view the list of shortlisted jobs, Company, Job Title and Deadline. In the search option you can search jobs using date and company name.",
-    "fromDate": "From Date",
+"description": "You can set Profile Preference on your CV to prevent Employer(s) from seeing it in the Bdjobs CV Bank.\n- To show your profile to all Employer(s) select Public.\n- To restrict seeing your profile select Private or Limited.\nAlso you can set your Availability for the next job on your profile for the employers while applying.\n- Select Yes if you can join immediately on the next applicable job.\n- Select No if you can not join immediately on the next applicable job.",
+    "module1Title": "From Date",
     "toDate": "To Date",
     "companyName": "Company Name",
     "selectDate" : "MM/DD/YYYY",
