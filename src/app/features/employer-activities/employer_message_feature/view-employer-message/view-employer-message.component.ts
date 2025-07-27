@@ -83,12 +83,6 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
   toastShown: boolean = false;
   userGuid: string | null = null;
   sentMessageCounts: { [key: string]: number } = {};
-  /**
-   * Tracks if a conversation has ever reached the applicant messaging limit.
-   * When the employer responds after the limit is reached the applicant is
-   * allowed to reply again, but we still want to notify them that the limit was
-   * previously hit.
-   */
   limitReached: { [key: string]: boolean } = {};
   messages: Message[] = [];
   IsBdjobsPro: string = 'false';
@@ -108,7 +102,7 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
     private cdRef: ChangeDetectorRef,
     private employerMessageService: EmployerMessageService,
     private cookieService: CookieService,
-  ) { }
+  ) {}
   getMessageList(): void {
     this.userGuid =
       'YlL9PTBlYTGyY7ZuPQ00ZxOcMRhcBFGyYlJlZiOhYiLzYlL1BFPtBFUwBiJjIGU=';
@@ -143,13 +137,12 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
 
         this.cdRef.detectChanges();
       },
-      error: (err) => { },
+      error: (err) => {},
     });
   }
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       this.loadCareerInfoCookies();
-      console.log('Is Pro User:', this.isProUser);
       this._currentAvaileableMessage = this.isProUser ? 5 : 0;
       this.hasReceiverMessage = true;
 
@@ -171,7 +164,6 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
 
   private loadCareerInfoCookies(): void {
     const authData = this.loginService.getAuthData();
-    console.log('Auth Data:', authData);
     if (authData) {
       this.IsBdjobsPro = authData.isBdjobsPro.toString();
       this.loadSupportingInfo(authData.token);
@@ -183,7 +175,6 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
     this.IsBdjobsPro = this.cookieService.getCookie('IsBdjobsPro') || 'false';
 
     if (!token || !this.userGuid) {
-      console.error('Authentication failed - missing token or GUID');
       return;
     }
 
@@ -192,15 +183,14 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
 
   private loadSupportingInfo(token: string): void {
     this.sharedService.isLoading.set(true);
-    console.log('Loading supporting info with token:', token);
 
     this.loginService.getSupportingInfo(token).subscribe({
       next: (supportingInfo) => {
-        const bdjobsProData = supportingInfo?.event?.eventData?.[0]?.value?.currentUser?.bdjobsPro;
+        const bdjobsProData =
+          supportingInfo?.event?.eventData?.[0]?.value?.currentUser?.bdjobsPro;
 
         if (bdjobsProData) {
           this.bdjobsProInfo = bdjobsProData;
-          console.log('Bdjobs Pro Info:', this.bdjobsProInfo);
           this.packageExpired = this.isPackageExpired();
           this.loginService.setAuthData(supportingInfo);
         }
@@ -208,13 +198,10 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
         this.sharedService.isLoading.set(false);
       },
       error: (err) => {
-        console.error('Supporting info error:', err);
         this.sharedService.isLoading.set(false);
-
-      }
+      },
     });
   }
-  // Add this function within your ViewEmployerMessageComponent class
 
   isPackageExpired(): boolean {
     if (!this.bdjobsProInfo || !this.bdjobsProInfo.packageEnddate) {
@@ -588,10 +575,11 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
   }
 
   upgradeNow(): void {
-    // Redirect to new tab
-    window.open('https://mybdjobs.bdjobs.com/bdjobs-pro/bdjobs-pro-package-pricing', '_blank');
+    window.open(
+      'https://mybdjobs.bdjobs.com/bdjobs-pro/bdjobs-pro-package-pricing',
+      '_blank',
+    );
   }
-
 
   private scrollToBottomOfChat(): void {
     try {
@@ -599,7 +587,7 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
         this.messageContainer.nativeElement.scrollTop =
           this.messageContainer.nativeElement.scrollHeight;
       }
-    } catch (err) { }
+    } catch (err) {}
   }
 
   ngAfterViewChecked(): void {
