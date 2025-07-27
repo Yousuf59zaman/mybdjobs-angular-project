@@ -8,6 +8,7 @@ import {
   Input,
   Output,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { Message } from '../../../../shared/models/models';
 import { ActivatedRoute } from '@angular/router';
@@ -20,6 +21,9 @@ import {
   EmployerInfoEventData,
   SendMessageRequest,
 } from '../models/employer-message';
+import { LoginService } from '../../../signin/services/login.service';
+import { SharedService } from '../../../signin/services/share.service';
+import { BdjobsPro } from '../../../my-activities/applied-jobs/models/appliedJobs.model';
 
 @Component({
   selector: 'app-view-employer-message',
@@ -33,7 +37,7 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
     'Read the latest communication from your employer';
   @Input() headerButtonText: string = 'Get bdjobs pro';
   @Input() upgradeNowButtonText: string = 'Upgrade Plan';
-  @Input() badgeMessage: string = 'Message Left';
+  @Input() badgeMessage: string = 'New Message Limit';
   @Input() badgeIconSrc: string = 'images/reviewhelp-circle.svg';
   @Input() progressValue: string = '00';
   @Input() emptyStateTitle: string = "You Don't Have Any Messages Yet";
@@ -45,11 +49,11 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
   @Input() emptyStateIllustrationSrc: string =
     'images/eployermessagelanding.svg';
   @Input() emptyStateIllustrationSrcPro: string = 'images/proemptyinbox.svg';
-  @Input() emptyStateBadgeSrc: string = 'images/Bdjobs Pro 1.svg';
+  @Input() emptyStateBadgeSrc: string = 'images/bdjobs-pro.svg';
   @Input() emptyStateButtonIconSrc: string = 'images/arrow-right.svg';
   @Output() getProClick = new EventEmitter<void>();
   @Output() goToJobListClick = new EventEmitter<void>();
-  @Input() logoUrl: string = 'images/Bdjobs Pro 1.svg';
+  @Input() logoUrl: string = 'images/bdjobs-pro.svg';
   @Input() logoAltText: string = 'Frame';
   @Input() promoText: string =
     "Subscription use 'You May Message' feature. Unlock now!";
@@ -64,15 +68,16 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
   @Input() maxMessage: number = 30;
   @Input() title: string = 'Your message limit has been reached.';
   @Input() description: string =
-    'You can send up to 3 messages at a time. If the employer replies to your message, your messaging feature will be activated again. Please wait for their response.';
+    'You can send up to 3 messages at a time. If the employer replies to you, can message again. Please wait for their response.';
   @Input() ariaLabel: string = 'Error alert notification';
   private _currentAvaileableMessage: number = 30;
   activeTab: 'all' | 'unread' | 'mayMessage' = 'all';
   showMessagesSection = false;
   selectedMessage: any = null;
+  packageExpired: boolean = false;
   showChatView = false;
   searchTerm: string = '';
-  isProUser: boolean = false;
+  isProUser: boolean = true;
   hideProgressRing: boolean = false;
   showUpgradeToast: boolean = false;
   toastShown: boolean = false;
@@ -86,16 +91,18 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
    */
   limitReached: { [key: string]: boolean } = {};
   messages: Message[] = [];
-
+  IsBdjobsPro: string = 'false';
   allmessages: Message[] = [];
   hasMessagesFromEmployer: boolean = false;
   hasReceiverMessage: boolean = true;
   toastPermanentlyDismissed: boolean = false;
-
+  bdjobsProInfo: BdjobsPro | null = null;
   @ViewChild('messageContainer')
   private messageContainer!: ElementRef;
-  private scrollToBottom: boolean = false;
 
+  private loginService = inject(LoginService);
+  private scrollToBottom: boolean = false;
+  private sharedService = inject(SharedService);
   constructor(
     private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
@@ -141,12 +148,10 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
   }
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
-      this.isProUser = params['bdjobsuser'] === 'pro';
+      this.loadCareerInfoCookies();
       console.log('Is Pro User:', this.isProUser);
       this._currentAvaileableMessage = this.isProUser ? 5 : 0;
-      this.userGuid =
-        'ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung=';
-      this.hasReceiverMessage = params['receivermessage'] !== '0';
+      this.hasReceiverMessage = true;
 
       this.messages.forEach((msg) => {
         this.sentMessageCounts[msg.conversationId] = 0;
@@ -164,6 +169,63 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
     });
   }
 
+  private loadCareerInfoCookies(): void {
+    const authData = this.loginService.getAuthData();
+    console.log('Auth Data:', authData);
+    if (authData) {
+      this.IsBdjobsPro = authData.isBdjobsPro.toString();
+      this.loadSupportingInfo(authData.token);
+      return;
+    }
+    const token = this.cookieService.getCookie('authToken');
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId');
+    this.userGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
+    this.IsBdjobsPro = this.cookieService.getCookie('IsBdjobsPro') || 'false';
+
+    if (!token || !this.userGuid) {
+      console.error('Authentication failed - missing token or GUID');
+      return;
+    }
+
+    this.loadSupportingInfo(token);
+  }
+
+  private loadSupportingInfo(token: string): void {
+    this.sharedService.isLoading.set(true);
+    console.log('Loading supporting info with token:', token);
+
+    this.loginService.getSupportingInfo(token).subscribe({
+      next: (supportingInfo) => {
+        const bdjobsProData = supportingInfo?.event?.eventData?.[0]?.value?.currentUser?.bdjobsPro;
+
+        if (bdjobsProData) {
+          this.bdjobsProInfo = bdjobsProData;
+          console.log('Bdjobs Pro Info:', this.bdjobsProInfo);
+          this.packageExpired = this.isPackageExpired();
+          this.loginService.setAuthData(supportingInfo);
+        }
+
+        this.sharedService.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Supporting info error:', err);
+        this.sharedService.isLoading.set(false);
+
+      }
+    });
+  }
+  // Add this function within your ViewEmployerMessageComponent class
+
+  isPackageExpired(): boolean {
+    if (!this.bdjobsProInfo || !this.bdjobsProInfo.packageEnddate) {
+      return false;
+    }
+
+    const packageEndDate = new Date(this.bdjobsProInfo.packageEnddate);
+    const today = new Date();
+
+    return today > packageEndDate;
+  }
   openChat(message: Message) {
     this.messages.forEach((m) => (m.isSelected = false));
     message.isSelected = true;
@@ -526,11 +588,10 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
   }
 
   upgradeNow(): void {
-    this.toastPermanentlyDismissed = true;
-    this.showUpgradeToast = false;
-    this.cdRef.detectChanges();
-    this.getProClick.emit();
+    // Redirect to new tab
+    window.open('https://mybdjobs.bdjobs.com/bdjobs-pro/bdjobs-pro-package-pricing', '_blank');
   }
+
 
   private scrollToBottomOfChat(): void {
     try {
