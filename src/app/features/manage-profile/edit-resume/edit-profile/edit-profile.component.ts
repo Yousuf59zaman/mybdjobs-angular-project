@@ -29,6 +29,5 @@ export class EditProfileComponent {
   getSubTab(event: TabEmitterModel) {
     this.mainTabGetter.set(event.mainTab);
     this.subTab.set(event.subTab);
-    console.log('emit Getter',event)
   }
 }

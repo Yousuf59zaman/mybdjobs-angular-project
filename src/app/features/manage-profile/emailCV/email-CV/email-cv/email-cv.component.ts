@@ -23,7 +23,7 @@ export class EmailCVComponent implements OnInit {
   showIframe = false;
   iframeUrl!: SafeResourceUrl;
 
-  
+
   Cvmail: FormGroup;
   cvType = [
     { id: '0', name: 'cvType', label: 'Bdjobs Profile (Details)' },
@@ -48,7 +48,7 @@ export class EmailCVComponent implements OnInit {
     });
 
     this.bdjobsProfileControl.valueChanges.subscribe((value: string) => {
-      console.log('Selected CV Type:', value);
+      // console.log('Selected CV Type:', value);
     });
   }
 

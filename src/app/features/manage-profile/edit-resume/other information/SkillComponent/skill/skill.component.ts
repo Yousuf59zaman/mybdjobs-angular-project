@@ -60,7 +60,7 @@ export class SkillComponent {
   isDeleteModalOpen = signal(false);
   isSkillOpen = input(false);
   isFormOpen = signal(false);
-  isEditing = signal(false); 
+  isEditing = signal(false);
   currentEditingIndex: number | null = null;
   skillDescription = signal('');
   isDescFormOpen = signal(false);
@@ -177,13 +177,11 @@ export class SkillComponent {
   this.isFormOpen.set(true);
   this.isEditing.set(false);
   this.skillsForm.reset(); // Reset form when opening
-  console.log("Form should be open now", this.isFormOpen());
+
 }
 
   addNewSkill() {
     this.openNewSkillForm();
-    console.log("I am clickedddddddddddddddddd");
-    
   }
 
   editSkill(index: number) {
@@ -228,7 +226,6 @@ export class SkillComponent {
     this.skillsForm.markAllAsTouched();
 
     if (this.skillsForm.invalid) {
-      console.log('Form is invalid', this.skillsForm.errors);
       return;
     }
 
@@ -262,12 +259,10 @@ export class SkillComponent {
         )
         .subscribe({
           next: (response) => {
-            console.log('Skill updated successfully', response);
             this.loadSkills(this.userGuid);
             this.cancelEdit();
           },
           error: (err) => {
-            console.error('Failed to update skill:', err);
           },
         });
     } else {
@@ -288,12 +283,10 @@ export class SkillComponent {
         )
         .subscribe({
           next: (response) => {
-            console.log('Skill added successfully', response);
             this.loadSkills(this.userGuid);
             this.cancelEdit();
           },
           error: (err) => {
-            console.error('Failed to add skill:', err);
           },
         });
     }
@@ -305,10 +298,6 @@ export class SkillComponent {
     this.isFormOpen.set(false);
     this.isEditing.set(false);
     this.currentEditingIndex = null;
-  }
-
-  toggleMethod(method: string) {
-    console.log('toggle this method ');
   }
 
   getNtqfLevelLabel(value: string): string {

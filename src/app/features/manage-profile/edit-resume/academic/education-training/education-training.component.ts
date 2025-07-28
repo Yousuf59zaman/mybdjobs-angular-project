@@ -20,10 +20,9 @@ import { ProfessionalCertificationSummaryComponent } from '../ProfessionalCertif
 export class EducationTrainingComponent implements OnChanges {
 
   subTabDetails = input<TabsElementModel>({} as TabsElementModel);
-  
+
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['subTabDetails'] && changes['subTabDetails'].currentValue) {
-    console.log('sub',this.subTabDetails());
     this.scrollToSection(this.subTabDetails().id.toString());
     }
   }

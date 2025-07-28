@@ -27,7 +27,6 @@ export class PersonalInfoComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['subTabDetails'] && changes['subTabDetails'].currentValue) {
-    console.log('sub',this.subTabDetails());
     this.scrollToSection(this.subTabDetails().id.toString());
     }
   }

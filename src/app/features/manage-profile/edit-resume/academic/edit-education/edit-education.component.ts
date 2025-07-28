@@ -392,9 +392,6 @@ export class EditEducationComponent implements OnChanges {
 
 
         },
-        error: (err) => {
-          console.log("Error ", err);
-        }
       });
 
 
@@ -423,9 +420,6 @@ export class EditEducationComponent implements OnChanges {
           }
 
         },
-        error: (err) => {
-          console.log("Error ", err);
-        }
       });
   }
 
@@ -496,9 +490,6 @@ export class EditEducationComponent implements OnChanges {
 
           }
         },
-        error: (err) => {
-          console.log("Error ", err);
-        }
       });
 
   }
@@ -680,11 +671,7 @@ export class EditEducationComponent implements OnChanges {
                 (this.gEf.controls.at(index) as any).get('isOpen').setValue(false);
                 this.isAddButtonDisabled.set(false);
 
-              },
-              error: (err) => {
-                console.log("Error ", err);
               }
-
           });
         }
         else{
@@ -726,10 +713,6 @@ export class EditEducationComponent implements OnChanges {
                 (this.gEf.controls.at(index) as any).get('isOpen').setValue(false);
                 formGroup.get('isNew')?.setValue(false);
               },
-              error: (err) => {
-                console.log("Error ", err);
-              }
-
           });
         }
 
@@ -1077,9 +1060,6 @@ export class EditEducationComponent implements OnChanges {
           this.instituteSuggestions.set(response.event.eventData[0].value);
         }
       },
-      error: (err) => {
-        console.log("Error ", err);
-      }
     });
 
   }
@@ -1138,9 +1118,6 @@ export class EditEducationComponent implements OnChanges {
           this.majorSuggestions.set(response.event.eventData[0].value);
         }
       },
-      error: (err) => {
-        console.log("Error ", err);
-      }
     });
 
   }

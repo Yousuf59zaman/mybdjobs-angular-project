@@ -17,27 +17,21 @@ export class AuthInterceptor implements HttpInterceptor{
 
     private isRefreshing = false
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log(`[HTTP] ${req.method} → ${req.url}`);
+        // console.log(`[HTTP] ${req.method} → ${req.url}`);
         // const Token = this.localStorage.getItem("Token");
         // const refToken = this.localStorage.getItem("refToken");
         const Token = this.cookieService.getCookie(Cookies.AUTH);
         const refToken = this.cookieService.getCookie(Cookies.REFTOKEN);
-       
-         const authReq = this.addToken(req, Token);
-        
-        
-        if(Token){
-            console.log(`Interceptor Access Token, ${Token}, Interceptor Ref Token, ${refToken}`);
-        }
 
-        
+         const authReq = this.addToken(req, Token);
+
         return next.handle(authReq).pipe(
             catchError(err => {
                 if(err.status === 401 && !this.isRefreshing) {
                     this.isRefreshing = true;
                     return this.refreshToken().pipe(
                         switchMap( newToken => {
-                            console.log("refreshToken", newToken);
+
                             const newReq = this.addToken(req, newToken);
                             return next.handle(newReq);
                         }),
@@ -49,7 +43,7 @@ export class AuthInterceptor implements HttpInterceptor{
         );
     }
 
-   
+
     private addToken(req: HttpRequest<any>, token: string | null){
         return token ? req.clone({setHeaders: {Authorization: `Bearer ${token}`}}) : req;
     }
@@ -71,6 +65,6 @@ export class AuthInterceptor implements HttpInterceptor{
             })
         );
     }
-    
+
 
 }

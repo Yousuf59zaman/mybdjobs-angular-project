@@ -21,10 +21,9 @@ import { LinkAccountComponent } from "../link-account/link-account/link-account.
 export class OtherInfoComponent {
 
   subTabDetails = input<TabsElementModel>({} as TabsElementModel);
-  
+
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['subTabDetails'] && changes['subTabDetails'].currentValue) {
-    console.log('sub',this.subTabDetails());
     this.scrollToSection(this.subTabDetails().id.toString());
     }
   }

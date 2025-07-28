@@ -643,17 +643,13 @@ export class PersonalDetailsFormComponent {
     }
 
     const payload = this.preparePayload();
-    console.log(payload);
 
     this.personalInfoService.savePersonalInfo(payload).subscribe({
       next: (response) => {
-        console.log('Save successful', response);
-
         this.closeForm();
         this.onSaveAndClose.emit();
       },
       error: (error) => {
-        console.error('Save failed', error);
         // Handle error (show error message)
       },
     });

@@ -247,9 +247,7 @@ export class UploadimageComponent implements AfterViewInit {
     this.uploadError = null;
     const canvas = this.previewCanvas.nativeElement;
     const fileType = this.selectedFile.type || 'image/png';
-    console.log('Attempting to create blob with fileType:', fileType);
     canvas.toBlob((blob) => {
-      console.log('canvas.toBlob callback, blob:', blob);
       if (!blob) {
         this.uploadError = 'Failed to crop image.';
         this.uploading = false;
@@ -265,7 +263,6 @@ export class UploadimageComponent implements AfterViewInit {
         imageYAxis: this.cropData?.y ?? 0,
         guidId: this.userGuidId || ''
       };
-      console.log('Uploading model:', model);
       this.photoUploadService.uploadImage(model).subscribe({
         next: (res) => {
           this.uploading = false;

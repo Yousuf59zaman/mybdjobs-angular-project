@@ -22,10 +22,9 @@ import {TabsElementModel} from '../../../../common/edit-resume-tabs.const';
 export class AccomplishmentInfoComponent {
 
   subTabDetails = input<TabsElementModel>({} as TabsElementModel);
-  
+
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['subTabDetails'] && changes['subTabDetails'].currentValue) {
-    console.log('sub',this.subTabDetails());
     this.scrollToSection(this.subTabDetails().id.toString());
     }
   }

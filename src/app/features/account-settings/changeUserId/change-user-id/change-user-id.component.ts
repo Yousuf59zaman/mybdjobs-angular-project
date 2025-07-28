@@ -48,6 +48,7 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
   currentUserId = ''; // To store current user ID (email/mobile)
   newUserId = '';
   formattedCountdown: string = this.formatTime(this.countdown);
+  cookieValue = '';
   userGuid: string | null = null;
 
   userName: string = '';
@@ -70,8 +71,6 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadCheckUserInfo();
-      this.userGuid = this.cookieService.getCookie('MybdjobsGId') || '';
-      this.userGuid = this.userGuid ? decodeURIComponent(this.userGuid) : null;
   }
 
   ngOnDestroy() {
@@ -81,7 +80,7 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
   loadCheckUserInfo(): void {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
+
     const query: ChangeUserIdQuery = {
       userGuid: userGuidId ?? ""
 
@@ -145,7 +144,6 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
 
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
 
     const enteredOtp = this.code.join('');
@@ -176,14 +174,13 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
           this.errorMessage = null;
           this.changeUserIdService.updateUserNameInfo(updateUserNameData).subscribe({
             next: (updateResp) => {
-              console.log('Full updateResp:', updateResp);
+
               const updateEvent = updateResp[0]?.eventType;
-              console.log('Extracted updateEvent:', updateEvent);
+
               if (updateEvent) {
                 if (updateEvent === 1) {
                   const message = updateResp[0]?.eventData;
-                  console.log("I am inside if", updateEvent);
-                  console.log('Success message:', message);
+
                   this.showSuccessModal(message);
                   this.resetAfterSuccess();
 
@@ -192,12 +189,12 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
                   this.errorMessage = typeof msg === 'string' ? msg : 'Failed to update user ID.';
                 }
               } else {
-                console.error('No updateEvent property found in response');
+
                 this.errorMessage = 'Invalid update response from server';
               }
             },
             error: (err) => {
-              console.error('Error in updateUserNameInfo:', err);
+
               this.errorMessage = 'Failed to update user ID. Please try again.';
             }
           });
@@ -208,7 +205,7 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
 
 
   private showSuccessModal(eventData: UpdateUserResponse[]) {
-    console.log('Success event data:', eventData);
+
     this.isSuccessModalOpen = true;
     const messageItem = eventData.find(d => d.key === 'message');
     this.successMessage = typeof messageItem?.value === 'string'
@@ -278,7 +275,6 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
   onSave() {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
     if (this.emailForm.invalid) {
       this.emailForm.markAllAsTouched();
@@ -389,10 +385,10 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
 
 
   onSubmit(): void {
-    
+
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
+
 
     if (this.mobileForm.invalid) {
       this.mobileForm.markAllAsTouched();

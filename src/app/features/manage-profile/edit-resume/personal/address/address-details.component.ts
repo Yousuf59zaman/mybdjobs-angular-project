@@ -345,7 +345,7 @@ export class AddressDetailsComponent implements AfterViewInit,OnChanges {
 
       },
       error: (err) => {
-        console.log("Error ", err);
+
       }
     });
   }
@@ -397,7 +397,7 @@ export class AddressDetailsComponent implements AfterViewInit,OnChanges {
         }
       },
       error: (err) => {
-        console.log("Error ", err);
+
       }
     });
   }
@@ -451,7 +451,7 @@ export class AddressDetailsComponent implements AfterViewInit,OnChanges {
         }
       },
       error: (err) => {
-        console.log("Error ", err);
+
       }
     });
   }
@@ -475,7 +475,7 @@ export class AddressDetailsComponent implements AfterViewInit,OnChanges {
 
       },
       error: (err) => {
-        console.log("Error ", err);
+        // Removed for production
       }
     });
   }
@@ -498,7 +498,7 @@ export class AddressDetailsComponent implements AfterViewInit,OnChanges {
 
       },
       error: (err) => {
-        console.log("Error ", err);
+        // Removed for production
       }
     });
   }
@@ -578,7 +578,6 @@ export class AddressDetailsComponent implements AfterViewInit,OnChanges {
       this.addressDetailsService.saveAddress(payload).subscribe({
         next: (response: saveAddressResponse[]) => {
           if(response[0].eventType === 1){
-            console.log("success")
 
             this.toaster.show('Address saved successfully!',
               {
@@ -592,7 +591,6 @@ export class AddressDetailsComponent implements AfterViewInit,OnChanges {
 
           }
           else{
-            console.log("error");
             this.toaster.show('Address saved failed!',
               {
                 iconClass: 'lucide-check-circle',
@@ -602,7 +600,7 @@ export class AddressDetailsComponent implements AfterViewInit,OnChanges {
           }
         },
         error: (err) => {
-          console.log("Error ", err);
+          // Removed for production
         }
 
       });

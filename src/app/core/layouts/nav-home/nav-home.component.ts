@@ -171,8 +171,7 @@ export class NavHomeComponent {
   }
 
   changeLanguage() {
-    console.log("button Clicked")
-    console.log(this.isBanglaLang.value)
+
     this.isBanglaLang.setValue(!this.isBanglaLang.value)
     this.languageChange.emit(
       this.controlIsBanglaLang().value

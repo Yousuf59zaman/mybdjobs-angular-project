@@ -269,15 +269,48 @@ export class AppliedJobsComponent {
   }
 
 private loadCareerInfoCookies(): void {
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId');
+    this.UserGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
+
+    if (!this.UserGuid) {
+      console.error('UserGuid not found in cookies');
+      return;
+    }
+
+    const query: GetCareerInfoQuery = {
+      UserGuid: this.UserGuid,
+    };
+
+    this.careerService.getCareerInfo(query).subscribe({
+      next: (res) => {
+        const payload = res.event;
+        if (payload.eventData.length > 0 && payload.eventData[0].value) {
+          const res = payload.eventData[0].value;
+          this.isInfoAvailable = true;
+          this.careerForm.patchValue({
+            obj: res.obj || '',
+            cur_Sal: res.cur_Sal?.toString() || '',
+            exp_Sal: res.exp_Sal?.toString() || '',
+            pref: res.pref || '',
+            available: res.available || '',
+          });
+        } else {
+          this.isInfoAvailable = false;
+        }
+      },
+      error: (error) => {
+        console.error('Error loading career info:', error);
+        this.isInfoAvailable = false;
+      },
+    });
   const authData = this.loginService.getAuthData();
-  
+
   if (authData) {
     this.IsBdjobsPro = authData.isBdjobsPro.toString();
     this.loadSupportingInfo(authData.token);
     return;
   }
   const token = this.cookieService.getCookie('authToken');
-  const rawGuid = this.cookieService.getCookie('MybdjobsGId');
   this.UserGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
   this.IsBdjobsPro = this.cookieService.getCookie('IsBdjobsPro') || 'false';
 
@@ -295,12 +328,12 @@ private loadSupportingInfo(token: string): void {
   this.loginService.getSupportingInfo(token).subscribe({
     next: (supportingInfo) => {
       const bdjobsProData = supportingInfo?.event?.eventData?.[0]?.value?.currentUser?.bdjobsPro;
-      
+
       if (bdjobsProData) {
         this.bdjobsProInfo = bdjobsProData;
         this.loginService.setAuthData(supportingInfo);
       }
-      
+
       this.loadCareerInfo();
       this.sharedService.isLoading.set(false);
     },
@@ -515,7 +548,6 @@ private loadSupportingInfo(token: string): void {
   }
 
   handleUndoClick(job: JobCardData) {
-    console.log('Undo clicked for job:', job.id);
     this.showUndoApplicationModal(job);
   }
 
@@ -749,7 +781,6 @@ private loadSupportingInfo(token: string): void {
       )
       .subscribe({
         next: (response) => {
-          console.log('API Response:', response);
           if (response && response.length > 0) {
             const eventData = response[0].eventData;
             const chatData = eventData.find(
@@ -770,7 +801,6 @@ private loadSupportingInfo(token: string): void {
                 textSendBy: msg.textSendBy,
                 status: 'delivered',
               }));
-              console.log('Processed messages:', this.chatMessages);
               this.checkMessageLimit();
             }
             const remainingMsgData = eventData.find(
@@ -1101,7 +1131,6 @@ private loadSupportingInfo(token: string): void {
     page?: number
   ): void {
     if (!response?.event?.eventData?.[0]?.value?.data) {
-      console.log('No job data in API response:', response);
       this.appliedJobs = [];
       this.paginatedJobs = [];
       this.totalJobsCount = 0;
@@ -1110,7 +1139,6 @@ private loadSupportingInfo(token: string): void {
 
     const responseData = response.event.eventData[0].value;
     const jobsData = responseData.data;
-    console.log('API response jobs:', jobsData);
     if (responseData.activity && responseData.activity.length > 0) {
       const activity = responseData.activity[0];
       this.contactedCount = activity.totalContacted;
@@ -1587,16 +1615,10 @@ private loadSupportingInfo(token: string): void {
       }
 
       if (deadline > now) {
-        console.log(
-          `Job ${job.id}: Deadline ${deadline} is in the future, hiding options`
-        );
         return false;
       }
     }
     if (job.statusMessage?.includes('Reason:')) {
-      console.log(
-        `Job ${job.id}: Status message includes 'Reason:', hiding options`
-      );
       return false;
     }
 
@@ -1606,20 +1628,13 @@ private loadSupportingInfo(token: string): void {
       case 'pending':
       case 'contacted':
       case 'offered':
-        console.log(
-          `Job ${job.id}: statusType=${job.statusType}, showing options`
-        );
         return true;
       case 'not-contacted':
       case 'not-offered':
       case 'not-joined':
       case 'joined':
-        console.log(
-          `Job ${job.id}: statusType=${job.statusType}, hiding options`
-        );
         return false;
       default:
-        console.log(`Job ${job.id}: Default case, showing options`);
         return true;
     }
   }
@@ -1834,12 +1849,6 @@ private loadSupportingInfo(token: string): void {
   }
 
   private showNotJoinedModal(job: JobCardData): void {
-    console.log(
-      'Opening Not Joined modal for job:',
-      job.id,
-      'with userGuid:',
-      this.UserGuid
-    );
     if (!this.UserGuid || !job.id) {
       console.error('Missing userGuid or jobId:', {
         userGuid: this.UserGuid,
@@ -1860,14 +1869,12 @@ private loadSupportingInfo(token: string): void {
       },
       callbacks: {
         reasonSelected: (reasonId: number) => {
-          console.log('Reason selected from modal:', reasonId);
           this.updateNotJoinedStatus(job, reasonId);
         },
       },
     });
 
     this.modalService.onCloseModal$.subscribe(() => {
-      console.log('Not Joined modal closed');
       this.loadInitialData();
     });
   }
@@ -1900,11 +1907,9 @@ private loadSupportingInfo(token: string): void {
       responseType: 4,
     };
 
-    console.log('Sending payload:', payload);
 
     this.careerService.updateJobStatus(payload).subscribe({
       next: (response) => {
-        console.log('Not Joined status updated successfully:', response);
         job.statusType = 'not-joined';
         job.statusMessage = this.generateStatusMessage('not-joined', reasonId);
         job.reasonId = reasonId;

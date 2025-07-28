@@ -167,8 +167,6 @@ export class CreateNewPassComponent {
             if (message === "Confirm Password must match the New Password.") {
               message = "These passwords do not match"
             }
-            console.log("message", message)
-
             this.isOldPasswordMatch.set(true);
             this.apiError.set(message);
 
@@ -176,11 +174,9 @@ export class CreateNewPassComponent {
             this.sharedService.updateType('success');
           }
 
-          console.log(response)
         },
         error: (error) => {
           this.sharedService.isLoading.set(false);
-          console.log("error", error)
         }
       })
   }

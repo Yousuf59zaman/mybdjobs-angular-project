@@ -50,7 +50,6 @@ export class AccountDeleteStep2Component {
   }
 
   onSubmit() {
-    console.log(this.form.value);
-    // hook up your delete service here…
+
   }
 }

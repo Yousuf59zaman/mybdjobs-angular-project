@@ -72,7 +72,6 @@ export class AddressComponent implements OnInit {
       this.isDisability = type === "d";
       if (this.isBlueCollar || this.isDisability) {
         this.currentLanguage = 'BN';
-        console.log(this.currentLanguage);
 
         this.translocoService.setActiveLang('bn');
       }
@@ -82,7 +81,7 @@ export class AddressComponent implements OnInit {
     this.loadDistricts();
 
     this.guid = decodeURIComponent(this.cookieService.getCookie('MybdjobsGId') as string);
-    console.log('guid from cookie:', this.guid);
+
   }
 
   houseNoOrRoadVillageControl = computed(
@@ -139,7 +138,7 @@ export class AddressComponent implements OnInit {
     this.isSubmitted = true;
     this.checkValidation(this.addressForm.value);
     this.addressForm.markAllAsTouched();
-    console.log(this.addressForm.valid);
+
     if (this.addressForm.valid) {
        const payload: PostLocation = {
         GuidId: this.guid,
@@ -155,15 +154,10 @@ export class AddressComponent implements OnInit {
       this.addressService.submitAddress(payload).subscribe((result:any)=>{
         const event = result[0];
         if (event.eventType === 1) {
-            console.log("Success");
+
           }
           this.router.navigate(['create-account/age-info']);
       });
-    }
-    else
-    {
-      console.log("form is invalid");
-
     }
   }
 }

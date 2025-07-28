@@ -9,7 +9,7 @@ export class PersonalInformationService {
   private personalInfoData: ApiResponse | null = null;
   private apiUrl= "https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/JobSeekerResume/GetPersonalDetails"
    private personalInfoSubject = new BehaviorSubject<ApiResponse | null>(null);
-  
+
   // Expose public observable for components
   public personalInfo$ = this.personalInfoSubject.asObservable().pipe(
     distinctUntilChanged() // Prevent duplicate emissions
@@ -25,18 +25,16 @@ export class PersonalInformationService {
       tap(response => {
         this.personalInfoData = response;
         this.personalInfoSubject.next(response);
-        console.log("this is response reponse reponse ",response);
-        
+
       })
     );
   }
 
   get getUserPhoto(): string | null {
     if (!this.personalInfoData) {
-      console.log('Personal info not loaded yet. Call getPersonalInfo() first.');
       return null;
     }
-    var response= this.personalInfoData.event.eventData.find(d => d.key === 'message');     
+    var response= this.personalInfoData.event.eventData.find(d => d.key === 'message');
     return response?.value.photo ?? null;
   }
 

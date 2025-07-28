@@ -141,7 +141,7 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
     this.accordionService.toggle(this.id);
   }
   openCertificationData()
-  {   
+  {
     this.isInfoAvailable.set(true)
     this.isNewFormOpen.set(true)
     this.showCertificationForm()
@@ -158,7 +158,7 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
 
   toggleCalendar() {
     this.calendarVisible = !this.calendarVisible;
-    console.log('selected calender');
+
   }
 
   onStartDateChange(date: Date | null) {
@@ -193,7 +193,6 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
 
   toggleDatePicker() {
     this.showDatePicker = !this.showDatePicker;
-    console.log('Datepicker visible:', this.showDatePicker);
 
     if (!this.showDatePicker) {
       this.dateControl.reset();
@@ -226,7 +225,7 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
     () => this.certificationForm.get('location') as FormControl<string>
   );
 
-  closeForm() {    
+  closeForm() {
     this.onClose.emit();
   }
 
@@ -327,7 +326,6 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
   saveCertification() {
     if (this.certificationForm.invalid) {
       this.certificationForm.markAllAsTouched();
-      console.log('form is invalid');
       return;
     }
     const dates = this.editDateRangeString?.split(' - ') || [];
@@ -344,7 +342,6 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
         this.userGuid,
       pe_ID: this.editingCertification?.pe_ID,
     };
-    console.log('this is update payload', updatePayload);
 
     this.certificationService.updateCertification(updatePayload).subscribe({
       next: (res: PostApiResponse[]) => {
@@ -379,15 +376,12 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
 
   showCertificationForm() {
     this.isProfCertificateSummaryFormOpen.set(true);
-    this.newCertificationForm.reset();   
+    this.newCertificationForm.reset();
   }
   isSaving = signal(false);
 
   addCertification() {
     if (this.newCertificationForm.invalid) {
-      console.log('new certification form is invalid');
-      console.log(this.newCertificationForm.value);
-
       this.newCertificationForm.markAllAsTouched();
       return;
     }

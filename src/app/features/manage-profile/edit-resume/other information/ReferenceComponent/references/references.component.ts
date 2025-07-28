@@ -179,7 +179,7 @@ export class ReferencesComponent {
                 this.referenceData = referenceResponse.value;
                 // Update reference count based on your actual data structure
                 this.referenceCount.set(this.referenceData.length);
-              }          
+              }
               this.isInfoAvalable.set(true);
             } else {
               this.isInfoAvalable.set(false);
@@ -222,7 +222,6 @@ export class ReferencesComponent {
     );
 
     if (!isRequiredFieldsValid) {
-      console.log('Validation failed for required fields');
       return;
     }
 
@@ -231,7 +230,6 @@ export class ReferencesComponent {
     const addressHtml = addressValue
       ? this.prosemirrorToHtml(addressValue)
       : null;
-    console.log('thsi is is is ', addressHtml);
 
     const payload: UpdateReferencePayload = {
       r_ID: this.referenceCheckingId || 0,
@@ -314,9 +312,8 @@ export class ReferencesComponent {
   addNewReference() {
     if (this.isSaving) return;
     this.referenceForm.markAllAsTouched();
-    console.log('reference form values are ', this.referenceForm.value);
+
     if (this.referenceForm.invalid) {
-      console.log('form is invalid of reference');
       return;
     }
     this.referenceCheckingId = null;

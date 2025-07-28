@@ -27,15 +27,14 @@ export class ShortlistedJobService {
       .get<ApiResponse<ShortlistedJob>>(this.apiUrl, { params, withCredentials: true })
       .pipe(
         map(res => {
-          const entry = res.eventData.find(e => e.key === 'ShortlistedJobs');          
+          const entry = res.eventData.find(e => e.key === 'ShortlistedJobs');
           return entry?.value ?? [];
         })
       );
   }
 
-  deleteShortlistedJobs(req: DeleteShortlistedJobsRequest): Observable<void> {  
-    console.log("this is req body ",req);
-      
+  deleteShortlistedJobs(req: DeleteShortlistedJobsRequest): Observable<void> {
+
     return this.http.delete<void>(this.deleteUrl, { body: req,withCredentials: true });
   }
 }

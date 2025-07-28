@@ -52,7 +52,7 @@ export class NavComponent implements OnChanges{
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['isSidebarOpen']) {
-      console.log('here', this.isSidebarOpen());
+      // console.log('here', this.isSidebarOpen());
     }
   }
 

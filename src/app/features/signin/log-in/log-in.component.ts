@@ -66,9 +66,6 @@ export class LogInComponent {
   isLoading = false;
   errorMessage: string | null = null;
   ngOnInit(): void {
-    console.log("normal cookie", this.cookieService.getCookie('MybdjobsGId'))
-    console.log("http Only Cookies", this.cookieService.getCookie('HSID')),
-      console.log('http only with secure', this.cookieService.getCookie('LSID'))
     this.title.setTitle('Signin')
     // this.googleAuthServic.initGoogleAuth(
     //   '656340698751-kt8lk3hujr2grfo7rnjmddb85rmg1c2q.apps.googleusercontent.com',
@@ -76,14 +73,9 @@ export class LogInComponent {
     // );
     this.socialAuthService.authState.subscribe((result) => {
       if (result && result.idToken) {
-        console.log("Google Token", result.idToken)
-        console.log("Result", result)
         this.http.post('https://gateway.bdjobs.com/bdjobs-auth-dev/api/Login/Socialmedialogin', {
           idToken: result.idToken
-        }).subscribe({
-          next: (res) => console.log("api success", res),
-          error: (err) => console.error('Api error', err),
-        })
+        }).subscribe()
       }
 
     })
@@ -199,7 +191,6 @@ export class LogInComponent {
               }
               this.sharedService.updateUserObject(userInfo);
               if (userobj.status === 0) {
-                console.log("Status", userobj.status)
                 this.sharedService.updateType('otp')
               } else {
                 this.sharedService.updateType('password')

@@ -64,8 +64,6 @@ export class BirthInfoComponent implements OnInit {
   ngOnInit() {
     // Get account type and set language
     const accountType = this.createAccountService.getAccountType();
-    console.log('aaaaaaaaAccount Type:', accountType);
-
       this.isBlueCollar = accountType === 'b';
       this.isDisability = accountType === 'd';
 
@@ -83,7 +81,6 @@ export class BirthInfoComponent implements OnInit {
     this.formGroup.setValidators(this.atLeastOneFieldValidator.bind(this));
 
     this.guid = decodeURIComponent(this.cookieService.getCookie('MybdjobsGId') as string);
-    console.log ('GUID from Cookie:',this.guid)
   }
 
   private atLeastOneFieldValidator(): { [key: string]: boolean } | null {
@@ -167,7 +164,6 @@ export class BirthInfoComponent implements OnInit {
 
       this.birthInfoService.addDateOfBirth(request).subscribe({
         next: () => {
-          console.log('Date of birth or age successfully submitted.');
 
           if (acctype === 'd') {
             this.router.navigate(['create-account/physical-obstacle']);
@@ -177,7 +173,6 @@ export class BirthInfoComponent implements OnInit {
 
         },
         error: (err) => {
-          console.error('Error submitting date of birth or age:', err);
           alert('Error submitting date of birth or age. Please try again.');
         }
       });

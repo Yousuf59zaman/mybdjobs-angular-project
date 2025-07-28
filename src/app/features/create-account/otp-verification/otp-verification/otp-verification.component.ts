@@ -65,52 +65,31 @@ export class OtpVerificationComponent implements OnInit {
         () => this.getValidationText()
       );
 
-    // Debug logging
-    console.log('Initial Values:', {
-      accountType: this.accountType,
-      userNameType: this.userNameType,
-      userNumber: this.userNumber,
-      userEmail: this.userEmail,
-      userId: this.userId,
-      guidID: this.guidID
-    });
   }
 
   getCreatedTempId(): void{
     this.userId = this.createAccountService.getCreatedTempId()|| '';
-    console.log('userId:', this.userId);
 
   }
 
   getAccountType(): void {
     this.accountType = this.createAccountService.getAccountType() || '';
-    console.log('Account Type from service:', this.accountType);
   }
 
   getUserNameType(): void {
     this.userNameType = this.createAccountService.getUserNameType() || '';
-    console.log('Username Type from service:', this.userNameType);
   }
 
   getCreatedGuid(): void {
     this.guidID = this.createAccountService.getCreatedGuid() || '';
-    console.log('GUID:', this.guidID);
   }
 
   getCreatedPhone(): void {
     this.userNumber = this.createAccountService.getCreatedPhone() || '';
-    console.log('User Phone from service:', this.userNumber);
-    console.log('Service state:', {
-      userNameType: this.userNameType,
-      accountType: this.accountType,
-      tempId: this.userId,
-      guidId: this.guidID
-    });
   }
 
   getUserEmail(): void {
     this.userEmail = this.createAccountService.getCreatedEmail() || '';
-    console.log('User Email:', this.userEmail);
   }
 
   get OtpControll(): FormControl {
@@ -124,15 +103,6 @@ export class OtpVerificationComponent implements OnInit {
     this.getCreatedPhone();
     this.getUserEmail();
 
-    console.log('Creating payload with:', {
-      accountType: this.accountType,
-      userNameType: this.userNameType,
-      guidId: this.guidID,
-      tempUserId: this.userId,
-      userNumber: this.userNumber,
-      userEmail: this.userEmail
-    });
-
     // For email verification - use guidId
     if (this.userNameType?.toLowerCase() === 'email') {
       const payload: OtpData = {
@@ -143,7 +113,6 @@ export class OtpVerificationComponent implements OnInit {
         sendOtpToMobileOrEmail: this.userNameType,
         createdFrom: 0
       };
-      console.log('Email verification payload:', payload);
       return payload;
     }
     if (this.userNameType?.toLowerCase() === 'mobile') {
@@ -156,7 +125,6 @@ export class OtpVerificationComponent implements OnInit {
         sendOtpToMobileOrEmail: this.userNameType,
         createdFrom: 0
       };
-      console.log('Mobile verification payload:', payload);
       return payload;
     }
 
@@ -175,9 +143,7 @@ export class OtpVerificationComponent implements OnInit {
     this.otpForm.markAllAsTouched();
 
     if (this.otpForm.valid && this.otpForm.value.otpCode?.length === 6) {
-      console.log('Form is valid, submitting OTP...');
       const payload = this.createPayload(this.otpForm.value.otpCode);
-      console.log('Submitting payload:', payload);
       this.loadr.setLoading(true);
       this.otpService.submitOtpCode(payload)
         .pipe(
@@ -187,22 +153,17 @@ export class OtpVerificationComponent implements OnInit {
         )
         .subscribe({
           next: (res: OtpApiResponse) => {
-            console.log('API Response:', res);
-            console.log('Success, message is:', res.eventData.find(d => d.key === 'message')?.value);
             // Get guidId from response
             const guidId = res.eventData.find(d => d.key === 'Guid')?.value;
             if (guidId) {
               this.createAccountService.setCreatedGuid(guidId);
-              console.log('Set new guidId:', guidId);
             }
 
             if (this.userNameType?.toLowerCase() === 'email')
             {
               this.serviceGUID = this.guidID
-              console.log('service api previous guid:',this.serviceGUID)
             } else if(this.userNameType?.toLowerCase()=='mobile'){
               this.serviceGUID = this.createAccountService.getCreatedGuid() || '';
-              console.log('service api new guid:',this.serviceGUID)
             }
 
             const servicePayload: serviceData = {
@@ -216,33 +177,19 @@ export class OtpVerificationComponent implements OnInit {
 
             this.otpService.executeService(servicePayload).subscribe({
               next: (response) => {
-                console.log('Service API Response:', response);
+                this.router.navigate(['create-account/address-info']);
               },
-              error: (error) => {
-                console.error('Service API Error:', error);
-              }
             });
-            this.router.navigate(['create-account/address-info']);
-            // console.error('Server returned error eventType:', res.eventType);
-            // console.error('Error details:', res.eventData);
+
           },
           error: err => {
             this.validationText.set((this.accountType === 'd' || this.accountType === 'b') ? 'সঠিক OTP কোডটি টাইপ করুন।' : 'Please provide valid OTP code.');
-            console.error('HTTP error verifying OTP:', err);
-            console.error('Error status:', err.status);
-            console.error('Error message:', err.message);
-            console.error('Error response:', err.error);
             this.errorMsg = err.error?.message || 'Failed to verify OTP';
           }
         });
     } else {
       this.validationText.set((this.accountType === 'd' || this.accountType === 'b') ? 'OTP কোডটি টাইপ করুন।' : 'Please provide valid OTP code.');
-      console.log("Form is invalid or OTP is not 6 digits, submission blocked!");
-      console.log('Form Status:', {
-        valid: this.otpForm.valid,
-        otpLength: this.otpForm.value.otpCode?.length,
-        errors: this.otpForm.errors
-      });
+
     }
   }
 
@@ -270,12 +217,12 @@ export class OtpVerificationComponent implements OnInit {
       this.otpService.submitOtpCode(payload).subscribe({
         next: (res: OtpApiResponse) => {
           this.loadr.setLoading(false);
-          console.log("API Response:", res);
+
           if (res.eventType === 1) {
-            console.log("OTP Resent Successfully");
+
             alert("A new OTP has been sent to your number.");
           } else {
-            console.log("Error in OTP resend");
+
             alert("Failed to resend OTP. Please try again.");
           }
         },
@@ -283,8 +230,6 @@ export class OtpVerificationComponent implements OnInit {
           console.error('HTTP error resending OTP:', err);
         }
       });
-    } else {
-      console.log("Invalid OTP code or form not valid for resending OTP.");
     }
   }
 }

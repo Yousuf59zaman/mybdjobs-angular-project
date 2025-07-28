@@ -21,11 +21,10 @@ export class AccomplishmentService {
     }
 
     const params = new HttpParams().set('UserGuid', query.UserGuid);
-    
+
     return this.http.get<AccomplishmentResponse>(this.getApiUrl, { params }).pipe(
       map(response => {
         if (!response?.event?.eventData?.[0]?.value) {
-          console.log('No accomplishment data found');
           return [];
         }
         // Filter data based on the specified type
@@ -33,12 +32,11 @@ export class AccomplishmentService {
         return filteredData;
       }),
       catchError(error => {
-        console.error('Error fetching accomplishment info:', error);
         return of([]);
       })
     );
 
-    
+
   }
 
    insertUpdateInfo(command: AccomplishmentUpdateInsert): Observable<any> {

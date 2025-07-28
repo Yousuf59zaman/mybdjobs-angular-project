@@ -56,7 +56,6 @@ export class UploadPhotoComponent {
 
   ngOnInit() {
     this.guid = decodeURIComponent(this.cookieService.getCookie('MybdjobsGId') as string);
-    console.log('Cookie from GUID:',this.guid);
 
     this.route.queryParamMap.subscribe(params => {
       const type = params.get('type');
@@ -135,12 +134,6 @@ export class UploadPhotoComponent {
   isCropped = signal<boolean>(false);
   showCroppedPhoto() {
     this.isCropped.set(true);
-    if (this.cropData) {
-      console.log('Final Crop Data:', {
-        ...this.cropData,
-        croppedFile: this.croppedFile,
-      });
-    }
   }
 
   resetState() {

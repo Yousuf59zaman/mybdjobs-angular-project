@@ -80,7 +80,7 @@ export class DetailsCVComponent implements OnInit {
     militaryCourse: '',
     commissionDate: '',
     retirementDate: '',
-    
+
     experienceUpdate: [],
     category: [],
     organization: [],
@@ -127,23 +127,23 @@ export class DetailsCVComponent implements OnInit {
     if (!address || !address.location) {
       return '';
     }
-    
+
     if (address.addressData === address.location) {
       return address.location;
     }
-    
+
     if (address.addressData?.includes(address.location)) {
       return address.addressData;
     }
     if (address.location?.includes(address.addressData)) {
       return address.location;
     }
-    
+
     const parts = [address.addressData, address.location]
       .filter(Boolean)
       .map(part => part.trim())
       .filter((part, index, self) => self.indexOf(part) === index);
-      
+
     return parts.join(', ');
   }
 
@@ -154,14 +154,14 @@ export class DetailsCVComponent implements OnInit {
   formatDate(dateString: string): string {
   if (!dateString) return '';
   const date = new Date(dateString);
-  
+
   // Handle invalid dates
   if (isNaN(date.getTime())) return '';
 
   const month = this.datePipe.transform(date, 'MMMM');
   const day = this.datePipe.transform(date, 'dd');
   const year = date.getFullYear();
-  
+
   return `${day} ${month}, ${year}`;
   }
 
@@ -181,10 +181,10 @@ export class DetailsCVComponent implements OnInit {
 
   calculateEmploymentDuration(startDate: string, endDate: string, isCurrentlyServing: number): string {
     if (!startDate) return '';
-    
+
     const start = new Date(startDate);
     if (isNaN(start.getTime())) return '';
-    
+
     let end: Date;
     if (isCurrentlyServing === 1) {
       end = new Date();
@@ -198,21 +198,21 @@ export class DetailsCVComponent implements OnInit {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     const years = parseFloat((diffDays / 365.25).toFixed(1));
     const yearLabel = years === 1.0 ? 'yr' : 'yrs';
-    
+
     return `${years} ${yearLabel}`;
   }
 
   formatSkillExperience(experience: string): string {
     if (!experience) return '';
-    
+
     // Split multiple skills if they exist
     const skills = experience.split('#*#');
     return skills.map(skill => {
       const [skillName, skillId, experienceValue] = skill.split('^$^');
-      
+
       const value = Number(experienceValue);
       if (isNaN(value)) return skillName;
-    
+
       let years: number;
 
       if (value >= 400000) {
@@ -224,9 +224,9 @@ export class DetailsCVComponent implements OnInit {
       } else {
         years = parseFloat((value / 365.25).toFixed(1));
       }
-      
+
       const yearLabel = years === 1.0 ? 'yr' : 'yrs';
-      
+
       return `${skillName} (${years} ${yearLabel})`;
     }).join(', ');
   }
@@ -256,7 +256,7 @@ export class DetailsCVComponent implements OnInit {
   loadCv(): void {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
+
     const query: GetDetailsCvViewInfoRequest = {
       UserGuid: userGuidId ?? ""
     };
@@ -271,9 +271,6 @@ export class DetailsCVComponent implements OnInit {
         return;
       }
       this.cvData = res.event.eventData[0].value;
-      console.log("Cv Data", this.cvData);
-      console.log("References from API:", this.cvData.reference);
-
 
       this.address = this.cvData.address || [];
       this.skills = this.cvData.skills || [];
@@ -282,14 +279,14 @@ export class DetailsCVComponent implements OnInit {
       this.educations = this.cvData.education || [];
       this.experiences = this.cvData.experience || [];
       this.reference = this.cvData.reference || [];
-      console.log("Processed references:", this.reference);
+
       this.qualifications = this.cvData.qualifications || [];
       this.bdJamCertificate = this.cvData.bdJamCertificate || [];
       this.disability = this.cvData.disability || [];
-      
+
       const rawAccomplishments = this.cvData.accomplishment || [];
-      console.log('Raw accomplishments:', rawAccomplishments);
-      
+
+
       this.accomplishments = {
         portfolio: rawAccomplishments.filter(a => Number(a.accomplishmenttype) === 1),
         publication: rawAccomplishments.filter(a => Number(a.accomplishmenttype) === 2),
@@ -297,8 +294,6 @@ export class DetailsCVComponent implements OnInit {
         project: rawAccomplishments.filter(a => Number(a.accomplishmenttype) === 4),
         other: rawAccomplishments.filter(a => Number(a.accomplishmenttype) === 5)
       };
-      
-      console.log('Processed accomplishments:', this.accomplishments);
 
       this.updateContactInfo();
       this.isLoading = false;

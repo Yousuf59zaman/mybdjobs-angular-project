@@ -33,7 +33,6 @@ export class RadioComponent implements OnChanges{
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['control'] && this.control()) {
       this.control().valueChanges.subscribe((res) => {
-        console.log('Radio emitted value:', res);
         this.selectionChange.emit(res);
       });
     }

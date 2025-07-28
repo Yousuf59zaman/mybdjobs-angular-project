@@ -200,7 +200,6 @@ saveRecording(): void {
     a.download = `grabacion_${Date.now()}.webm`;
     a.click();
     URL.revokeObjectURL(url);
-    console.log('Recording saved');
   }
 }
 

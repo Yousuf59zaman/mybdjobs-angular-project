@@ -94,7 +94,7 @@ export class EmploymentHistoryArmypersonComponent {
   private resizeObserver!: ResizeObserver;
   constructor(private cd: ChangeDetectorRef) {}
  //guid cookies here
- 
+
   userGuid = '';
 
   ngOnInit() {
@@ -270,7 +270,7 @@ export class EmploymentHistoryArmypersonComponent {
             this.currentData = this.armyData;
             if (this.currentData.length == 38) {
               this.formIsOpen.set(true)
-              this.isInfoAvailable.set(false) 
+              this.isInfoAvailable.set(false)
             }
             if (this.currentData.length == 1) {
               this.formIsOpen.set(true);
@@ -279,10 +279,8 @@ export class EmploymentHistoryArmypersonComponent {
             this.bindData();
           } else {
             this.isInfoAvailable.set(false);
-            console.log('No message data found');
           }
         } catch (e) {
-          console.error('Data parsing error:', e);
         }
       });
   }
@@ -374,7 +372,7 @@ export class EmploymentHistoryArmypersonComponent {
     this.employmentArmyForm.markAllAsTouched();
     this.checkValidation(this.employmentArmyForm);
     if (this.employmentArmyForm.valid) {
-      const formValue = this.employmentArmyForm.value;      
+      const formValue = this.employmentArmyForm.value;
       const payload: PostArmyDetails = {
         bA_No: formValue.baNo || '',
         bA_Number: formValue.baNumeric ?? 0,
@@ -400,12 +398,10 @@ export class EmploymentHistoryArmypersonComponent {
           this.isEmploymentArmyHistoryEditFormOpen.set(false);
         },
         error: (err) => {
-          console.log('error posting retired army form');
         },
       });
     } else {
       this.isSubmitting.set(false);
-      console.log('error in employment army post form');
     }
   }
 
@@ -456,7 +452,7 @@ export class EmploymentHistoryArmypersonComponent {
 
     return `${yyyy}-${MM}-${dd} ${HH}:${mm}:${ss}`;
   }
- 
+
   openCertificationData() {
     this.formIsOpen.set(true);
     this.isEmploymentArmyHistoryEditFormOpen.set(true);
@@ -487,7 +483,6 @@ export class EmploymentHistoryArmypersonComponent {
         }
       },
       error: (err) => {
-        console.log('error deleting retired army form');
       },
     });
   }

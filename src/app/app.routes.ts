@@ -349,7 +349,7 @@ export const routes: Routes = [
       ),
   },
   {
-  path: 'change-user-id',
+  path: 'change-userid',
   data: { layout: 'left' },
   loadComponent: () =>
     import(

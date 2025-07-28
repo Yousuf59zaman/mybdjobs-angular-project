@@ -157,7 +157,7 @@ export class ExperienceComponent implements OnInit {
   ngOnInit(): void {
 
     this.guid = decodeURIComponent(this.cookieService.getCookie('MybdjobsGId') as string);
-    console.log('Cookie from GUID:',this.guid)
+
 
     this.getWorkAreaCategory();
 
@@ -206,7 +206,6 @@ export class ExperienceComponent implements OnInit {
 
   getWorkAreaCategory(): void {
     this.accCatId = this.createAccountService.getWorkAreaCategory() || 0;
-    console.log('category id', this.accCatId)
   }
 
   private setDefaultLanguage() {
@@ -619,10 +618,8 @@ export class ExperienceComponent implements OnInit {
       };
       this.experienceservice.createExperience(payload).subscribe((result: any) => {
         if (Array.isArray(result) && result.length > 0 && result[0].eventType === 1) {
-          console.log("success");
+
           this.router.navigate(['create-account/education-info']);
-        } else {
-          console.log("error in inserting experience");
         }
       });
 

@@ -79,7 +79,6 @@ export class PhysicalObstaclesComponent implements OnInit {
   }
   ngOnInit(): void {
     this.guid = decodeURIComponent(this.cookieService.getCookie('MybdjobsGId') as string);
-    console.log('Cookie from GUID:',this.guid)
   }
 
   getQuestionControl(questionName: string): FormControl {
@@ -110,7 +109,6 @@ export class PhysicalObstaclesComponent implements OnInit {
 
   onSubmit(): void {
   this.phyObstacle.markAllAsTouched();
-  console.log("Form Value", this.phyObstacle.value);
 
   if (this.phyObstacle.valid) {
     const payload: PostForm = {
@@ -130,20 +128,13 @@ export class PhysicalObstaclesComponent implements OnInit {
       tCareProblem: this.getAnswerByControl('tcareproblem'),
       disabilityId: this.phyObstacle.value.disabilityId,
     };
-    console.log("Payload", payload);
+
 
     this.phyObstacleService.submitPhysicalForm(payload).subscribe((result: ApiResponse[]) => {
-      console.log("API Response:", result);
-
       if (result && result.length > 0 && result[0].eventType === 1) {
-        console.log("Success");
         this.router.navigate(['create-account/experience-info']);
-      } else {
-        console.log("Error in form submission");
       }
     });
-  } else {
-    console.log('Form is invalid');
   }
    // Navigate to OTP verification page
 }

@@ -48,14 +48,11 @@ export class EducationService {
   }
 
   postUserEducation(data: EducationPost): Observable<any> {
-    return this.http.post<any>(this.postApiUrl, data).pipe(
-      tap(response => console.log('POST Education response:', response))
-    );
+    return this.http.post<any>(this.postApiUrl, data)
   }
 
   getInstituteSuggestions(payload: InstituteSearchPayload): Observable<Institute[]> {
     return this.http.post<GetBoardNameAPIResponse<InstituteResponse[]>>(this.instituteApiUrl, payload).pipe(
-      tap((res) => console.log('Institute Suggestion API response:', res)),
       map((response) => {
         // Response structure: eventData is an array with one object where key = "Message"
         let suggestions: Institute[] = [];
@@ -71,5 +68,5 @@ export class EducationService {
       })
     );
   }
-  
+
 }

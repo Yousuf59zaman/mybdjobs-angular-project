@@ -76,15 +76,15 @@ export class DateSingleDatePickerComponent<T> implements OnInit {
   // }
   toggleYearDropdown(type: 'start' | 'end') {
     if (type === 'start') {
-      console.log('Before toggle:', this.showStartYearDropdown);
+      // Removed for production
       this.showStartYearDropdown = !this.showStartYearDropdown;
       this.showStartMonthDropdown = false;
-      console.log("After toggle:", this.showStartYearDropdown);
+      // Removed for production
     } else {
-      console.log('Before toggle:', this.showEndYearDropdown);
+      // Removed for production
       this.showEndYearDropdown = !this.showEndYearDropdown;
       this.showEndMonthDropdown = false;
-      console.log("After toggle:", this.showEndYearDropdown);
+      // Removed for production
     }
   }
   
@@ -173,7 +173,7 @@ export class DateSingleDatePickerComponent<T> implements OnInit {
   
     ngOnInit() {
       this.control().valueChanges.subscribe((value) => {
-        console.log("date",value)
+        // Removed for production
       })
       this.tempStartDate = this.selectedStartDate;
       this.tempEndDate = this.selectedEndDate;
@@ -255,13 +255,13 @@ export class DateSingleDatePickerComponent<T> implements OnInit {
     
     
     onStartDateChange(date: Date | null) {
-      console.log('Start date changed:', date);
+      // Removed for production
       this.selectedStartDate = date;
       this.selectedStartDateChange.emit(this.selectedStartDate);
     }
     
     onEndDateChange(date: Date | null) {
-      console.log('End date changed:', date);
+      // Removed for production
       this.selectedEndDate = date;
       this.selectedEndDateChange.emit(this.selectedEndDate);
     }

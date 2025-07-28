@@ -151,9 +151,6 @@ export class TransactionOverviewComponent implements OnInit {
    };
 
 
-   console.log('API Request:', request);
-
-
    this.transactionService.getTransactionList(request).pipe(
      catchError(error => {
        this.isLoading = false;
@@ -161,7 +158,6 @@ export class TransactionOverviewComponent implements OnInit {
      })
    ).subscribe((data: Transaction[]) => {
      this.isLoading = false;
-     console.log('API Response:', data);
      this.transactions = data;
 
 

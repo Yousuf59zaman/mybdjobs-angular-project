@@ -139,7 +139,6 @@ export class LinkAccountComponent {
   loadLinkAccountInfo(): void {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
     this.isLoading = true;
     const query: LinkQuery = {
@@ -185,7 +184,6 @@ export class LinkAccountComponent {
   saveAccount() {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
     if (this.linkFrom.invalid) {
       this.linkFrom.markAllAsTouched();
       return;
@@ -237,8 +235,6 @@ export class LinkAccountComponent {
   deleteSummary(otherProfileId: number) {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
-
     const deleteCommand: DeleteLinkPayload = {
       userGuid: userGuidId ?? "",
       otherProfileId: otherProfileId
@@ -253,7 +249,6 @@ export class LinkAccountComponent {
         }
       },
       error: (err) => {
-        console.error('Failed to delete training summary', err);
         alert('An error occurred while deleting. Please try again.');
       }
     });

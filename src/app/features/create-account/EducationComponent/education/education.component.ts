@@ -139,7 +139,7 @@ export class EducationComponent implements OnInit {
 
       this.guid = decodeURIComponent(this.cookieService.getCookie('MybdjobsGId') as string);
       this.EducationForm.get('GuidId')?.setValue(this.guid);
-      console.log('Cookie from GUID:', this.guid);
+
     });
 
     //year list loading here
@@ -229,7 +229,7 @@ export class EducationComponent implements OnInit {
     Object.keys(this.EducationForm.controls).forEach(key => {
       this.EducationForm.get(key)?.updateValueAndValidity({ emitEvent: false });
     });
-    console.log('set Validator Called');
+
   }
 
   loadExamTitles(eCode: number) {
@@ -295,19 +295,17 @@ export class EducationComponent implements OnInit {
           majorGroup: this.majorgroupControl().value ?? '',
           educationType: this.nameofexaminationControl().value,
         };
-        console.log(payload);
+
 
         // Call the post API to submit education data.
         this.educationService.postUserEducation(payload).subscribe((response) => {
-          console.log('Form submitted successfully', response);
+
           // Navigate to experience page
           this.router.navigate(['create-account/upload-photo']);
         });
       } else {
         this.router.navigate(['create-account/upload-photo']);
       }
-    } else {
-      console.log('error in submitting the form');
     }
   }
   // When a suggestion is clicked, update the InstituteName form control and clear suggestions.

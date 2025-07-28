@@ -68,7 +68,7 @@ export class OthersComponent implements OnChanges {
   @ViewChild('textEditor') textEditor: any;
   @Output() contentChanged = new EventEmitter<string>();
 
-  nextId = 2; 
+  nextId = 2;
 
   constructor(private _eref: ElementRef, private cdRef: ChangeDetectorRef,private cookieService: CookieService) { }
 
@@ -167,7 +167,7 @@ export class OthersComponent implements OnChanges {
 
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
+
 
     if (this.accomPlishmentId !== null) {
       const request: DeleteAccomplishmentRequest = {
@@ -198,7 +198,7 @@ export class OthersComponent implements OnChanges {
     }
   }
 
-  
+
   toggleOtherSummary() {
     this.isOtherExpanded = !this.isOtherExpanded;
     if (!this.isOtherExpanded) {
@@ -262,7 +262,7 @@ export class OthersComponent implements OnChanges {
 
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
+
     this.isLoading.set(true);
 
     const query: AccomplishmentInfoQuery = {
@@ -282,14 +282,12 @@ export class OthersComponent implements OnChanges {
             description: this.summary.description
           });
         } else {
-          console.log('No other summaries received from API');
           this.isInfoAvailable = false;
           this.summary = null;
         }
         this.isLoading.set(false);
       },
       error: (error) => {
-        console.error('Error loading other summaries:', error);
         this.isInfoAvailable = false;
         this.summary = null;
         this.isLoading.set(false);
@@ -308,7 +306,7 @@ export class OthersComponent implements OnChanges {
 
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
+
 
     this.isLoading.set(true);
     this.formSubmitted = true;
@@ -345,7 +343,6 @@ export class OthersComponent implements OnChanges {
 
     this.accompolishmentService.insertUpdateInfo(command).subscribe({
       next: (response) => {
-        console.log('API Response:', response);
         const successMsg = response.some(
           (r: any) =>
             r.eventType === 1 &&
@@ -422,7 +419,7 @@ export class OthersComponent implements OnChanges {
     }
   }
 
-  // Helper getters    
+  // Helper getters
   get titleControl(): FormControl {
     return this.otherForm.get('title') as FormControl;
   }

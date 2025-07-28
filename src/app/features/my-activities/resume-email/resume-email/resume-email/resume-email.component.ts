@@ -76,7 +76,7 @@ export class ResumeEmailComponent {
 
     ngOnInit(): void {
         this.loadInitialData();
-        this.deleteControl.valueChanges.subscribe((check) => console.log("checkbox Value", check))
+        this.deleteControl.valueChanges.subscribe((check) => {/* Removed for production */})
     }
 
     loadInitialData(): void {
@@ -169,7 +169,6 @@ export class ResumeEmailComponent {
 
     onSearch(): void {
         const formValue = this.searchForm.value;
-        console.log('Form Values:', formValue);
         
         const fromDate = formValue.FromDate ? new Date(formValue.FromDate).toISOString().split('T')[0] : '';
         const toDate = formValue.SearchToDate ? new Date(formValue.SearchToDate).toISOString().split('T')[0] : '';
@@ -184,7 +183,6 @@ export class ResumeEmailComponent {
             SearchToDate: toDate,
             SearchSubjectName: formValue.SearchSubjectName || ''
         };
-        console.log('Search Query:', query);
         this.search(query);
     }
 
@@ -196,8 +194,6 @@ export class ResumeEmailComponent {
                     return (item.totalJob || 0);
                 }, 0);
                 this.totalItems = this.count;
-                console.log('Results:', this.results);
-                console.log('Total Jobs:', this.count);
             },
             error: (err) => {
                 console.error('Error fetching resumes', err);
@@ -248,7 +244,6 @@ export class ResumeEmailComponent {
 
             Promise.all(deletePromises)
                 .then(() => {
-                    console.log('All items deleted successfully');
                     this.searchForm.reset();
                     this.loadInitialData();
                 })
@@ -261,9 +256,7 @@ export class ResumeEmailComponent {
 
     onCheckboxChange(id: string, event: Event): void {
         const isChecked = (event.target as HTMLInputElement).checked;
-        console.log("isChecked",isChecked)
         this.selectedItems[id] = isChecked;
-        console.log('Selected Items:', this.selectedItems);
     }
 
     getSelectedIds(): string[] {

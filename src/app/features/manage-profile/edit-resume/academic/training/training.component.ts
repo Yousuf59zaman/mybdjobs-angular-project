@@ -161,7 +161,7 @@ export class TrainingComponent {
         this.toggle();
       }
     }
-    
+
   }
     toggleTrainingSummary() {
     this.isTrainingExpanded = !this.isTrainingExpanded;
@@ -196,12 +196,12 @@ export class TrainingComponent {
   loadTraining(): void {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
+
 
     const query: TrainingInfoQuery = {
       UserGuid:  userGuidId ?? ""
     };
- 
+
 
 
     this.trainingService.getTrainingInfo(query).subscribe({
@@ -221,7 +221,6 @@ export class TrainingComponent {
             location: summary.location
           });
         } else {
-          console.log('No summaries received from API');
           this.isInfoAvailable = false;
         }
       },
@@ -230,7 +229,6 @@ export class TrainingComponent {
         this.isInfoAvailable = false;
       },
       complete: () => {
-        console.log('API call completed');
       }
     });
   }
@@ -312,7 +310,6 @@ export class TrainingComponent {
 
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
     this.formSubmitted = true;
     if (this.trainingform.invalid) {
@@ -340,7 +337,6 @@ export class TrainingComponent {
 
       this.trainingService.updateTrainingInfo(updateCmd).subscribe({
         next: (response) => {
-          console.log('Update Response:', response);
           const successMsg = response.some(
             (r: any) =>
               r.eventType === 1 &&
@@ -393,7 +389,6 @@ export class TrainingComponent {
 
       this.trainingService.insertTrainingInfo(insertCmd).subscribe({
         next: (response: any) => {
-          console.log('Insert Response:', response);
           const newSummary: TrainingSummary = {
             t_ID: response.t_ID || this.getNextId(),
             trainingTitle: insertCmd.trainingTitle,
@@ -425,7 +420,6 @@ export class TrainingComponent {
   deleteSummary(trainingId: number) {
       const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
     const deleteCommand: DeleteTrainingInfo = {
       userGuid:  userGuidId ?? "",

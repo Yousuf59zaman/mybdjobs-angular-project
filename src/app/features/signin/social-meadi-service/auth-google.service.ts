@@ -43,28 +43,20 @@ export class AuthGoogleService {
 
         // Only runs when this page is opened (either directly or from popup)
         this.oAuthService.loadDiscoveryDocumentAndTryLogin().then(() => {
-            console.log('[Auth] Attempted login code flow.');
             if (this.oAuthService.hasValidAccessToken()) {
-                console.log('[Auth] has token.');
                 const idToken = this.oAuthService.getIdToken();
                 const accessToken = this.oAuthService.getAccessToken();
                 const claims = this.oAuthService.getIdentityClaims();
 
-                console.log('[Auth] ✅ Login successful.');
-                console.log('[Auth] ID Token:', idToken);
-                console.log('[Auth] Access Token:', accessToken);
-                console.log('[Auth] Claims:', claims);
 
                 // Send back to parent if in popup
                 if (window.opener) {
-                    console.log('[Auth] Sending tokens to main window via postMessage...');
                     window.opener.postMessage({
                         type: 'google-auth-success',
                         idToken,
                         accessToken,
                         claims
                     }, window.location.origin);
-                    console.log('[Auth] Closing popup...');
                     window.close(); // ✅ Close popup after sending
                 } else {
                     // Fallback: you are in main tab
@@ -85,7 +77,6 @@ export class AuthGoogleService {
 
 
     login() {
-        console.log('[Auth] Opening Google login popup...');
         const loginUrl = `${authConfig.issuer}/o/oauth2/v2/auth` +
             `?client_id=${authConfig.clientId}` +
             `&redirect_uri=${encodeURIComponent(authConfig.redirectUri!)}` +
@@ -123,9 +114,6 @@ export class AuthGoogleService {
             localStorage.setItem('idToken', event.data.idToken);
             localStorage.setItem('accessToken', event.data.accessToken);
             this.profile.set(event.data.claims);
-            console.log('[Auth] 🔄 Received tokens from popup.');
-            console.log('[Auth] Access Token:', event.data.accessToken);
-            console.log('[Auth] ID Token:', event.data.idToken);
         }
     };
 
@@ -163,11 +151,9 @@ export class AuthGoogleService {
         ).subscribe({
             next: (res) => {
                 const eventType = res.event.eventType;
-                console.log(eventType === 2 ? false : true);
             },
             error: (err) => {
                 console.error('[Auth] ❌ Token verification failed', err);
-                console.log(false);
             }
         });
     }

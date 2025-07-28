@@ -564,10 +564,6 @@ export class PreferredAreasComponent implements OnChanges {
       totalOrganizations: this.selectedOrganizationIds().length
     };
 
-    // TEMP DEBUG: Print payload and do not call API
-    console.log('Preferred Areas Payload:', payload);
-    // return here to skip API call
-    // return;
 
     this.preferredAreasService.updatePreferredAreas(payload).subscribe({
       next: () => {

@@ -24,11 +24,11 @@ export class AddressDataService {
       map(response => response.event.eventData?.[0]?.value || [])
     );
   }
-  
+
 
   getThanas(districtId: number): Observable<District[]> {
     return this.http.get<LocationApiResponse>(this.apiUrl, {
-      params: new HttpParams().set('lang', this.translocoService.getActiveLang().toUpperCase()).set('districtId', districtId.toString())    
+      params: new HttpParams().set('lang', this.translocoService.getActiveLang().toUpperCase()).set('districtId', districtId.toString())
     })
     .pipe(
       map(response => response.event.eventData?.[0].value || [])
@@ -45,8 +45,6 @@ export class AddressDataService {
   }
 
   submitAddress(addressData: PostLocation) {
-    console.log("called here");
-    
     return this.http.post(this.postUrl, addressData);
   }
 }

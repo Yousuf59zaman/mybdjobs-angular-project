@@ -46,19 +46,15 @@ export class SocialMediaService {
                 console.warn('FedCM skipped by browser or user');
                 this.showOneTapOrManualPopup();
             } else {
-                console.log('FedCM prompt displayed successfully');
             }
         });
     }
 
     private sendToBackend(response: any) {
         const token = response.credential;
-        console.log("Google token", token)
 
-        this.http.post('/api/auth/google', { token }).subscribe({
-            next: res => console.log('Login success:', res),
-            error: err => console.error('Login failed:', err)
-        });
+
+        this.http.post('/api/auth/google', { token }).subscribe();
     }
 
     private showOneTapOrManualPopup() {

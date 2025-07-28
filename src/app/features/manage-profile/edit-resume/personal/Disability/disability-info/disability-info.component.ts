@@ -175,7 +175,6 @@ export class DisabilityInfoComponent implements OnChanges {
   isShownOnResume = true;
   setResumeVisibilityBtn(value: boolean): void {
     this.isShownOnResume = value;
-    console.log('show on resume value ', value);
 
     this.form.patchValue({ showOnResume: value ? 1 : 0 });
   }
@@ -192,7 +191,6 @@ export class DisabilityInfoComponent implements OnChanges {
   isNationalDisabilityIdNumberAvailableChange(value: string): void {
     const isYes = value === 'yes';
     this.isNationalDisabilityIdNumberAvailable.set(value);
-    console.log('this is ', value);
 
     this.form.get('hasDisability')?.setValue(isYes);
     this.form.get('nationalId')?.setErrors(null);
@@ -228,11 +226,9 @@ export class DisabilityInfoComponent implements OnChanges {
   }
 
   onSubmit(): void {
-    console.log('I am clicked', this.form.value);
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      console.log('form is unvalid');
 
       return;
     }
@@ -284,12 +280,11 @@ export class DisabilityInfoComponent implements OnChanges {
 
     this.svc.saveData(payload).subscribe({
       next: () => {
-        console.log('Data saved successfully');
         this.loadData(); // Reload the latest data
         this.isSaved.set(true);
         this.closeForm();
       },
-      error: (err) => console.log('error is post api'),
+      error: (err) => {/* Removed for production */},
     });
   }
 
@@ -458,7 +453,6 @@ export class DisabilityInfoComponent implements OnChanges {
     records: DisabilityRecord[]
   ): string {
     const match = records.find((r) => r.dtID === dtID);
-    console.log('this is dis level', match?.disability_Level);
 
     return match?.disability_Level ?? '';
   }

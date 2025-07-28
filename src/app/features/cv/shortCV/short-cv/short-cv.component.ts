@@ -85,14 +85,14 @@ export class ShortCvComponent implements OnInit {
   formatDate(dateString: string): string {
     if (!dateString) return '';
     const date = new Date(dateString);
-    
+
     // Handle invalid dates
     if (isNaN(date.getTime())) return '';
 
     const month = this.datePipe.transform(date, 'MMMM');
     const day = this.datePipe.transform(date, 'dd');
     const year = date.getFullYear();
-    
+
     return `${day} ${month}, ${year}`;
   }
   ngOnInit(): void {
@@ -103,7 +103,6 @@ export class ShortCvComponent implements OnInit {
 
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
     const query: GetShortCvViewInfoRequest = {
       UserGuid:  userGuidId ?? ""
@@ -112,26 +111,24 @@ export class ShortCvComponent implements OnInit {
     this.shortCvService.getShortCv(query).subscribe({
       next: (res) => {
         if (!res?.event?.eventData || res.event.eventData.length === 0) {
-          console.error('Invalid API response structure', res);
+          // Error handling for invalid API response structure
           this.isLoading = false;
           return;
         }
 
         this.cvData = res.event.eventData[0].value;
-        console.log("cv Data",this.cvData)
+
         this.address = this.cvData.addressShort
         this.skills = this.cvData.skillShort
-        console.log("skills", this.skills)
         this.trainings = this.cvData.trainingShort;
         this.educations = this.cvData.educationShort;
         this.experiences = this.cvData.experienceShort;
         this.references = this.cvData.referenceShort || [];
         this.updateContactInfo();
         this.isLoading = false;
-        console.log("Api Data", res)
       },
       error: (err) => {
-        console.error('API Error:', err);
+
         this.errorMessage = 'Failed to load CV data';
         this.isLoading = false;
       }

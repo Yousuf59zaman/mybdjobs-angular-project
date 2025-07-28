@@ -21,12 +21,12 @@ export class WelcomeComponent {
   private localStorageService = inject(LocalstorageService)
 
   private destroyRef = inject(DestroyRef);
-  private translocoService = inject(TranslocoService);   
-    
+  private translocoService = inject(TranslocoService);
+
   currentLang = signal(this.translocoService.getActiveLang());
   langChanges$ = this.translocoService.langChanges$
     .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe(lang => { 
+    .subscribe(lang => {
         this.currentLang.set(lang);
   });
 
@@ -36,7 +36,6 @@ export class WelcomeComponent {
   ngOnInit(): void {
       this.resetType.valueChanges.subscribe((value: string | null) =>{
         this.updateUserInfo(value);
-        console.log("sendotp request",this.userInfo())
       })
   }
 
@@ -50,10 +49,10 @@ export class WelcomeComponent {
   resetType = new FormControl<string | null>('',{
     validators: [Validators.required]
   })
- 
+
   onSubmit(event:Event) {
     event.preventDefault();
-    
+
     this.sharedService.updateUserInfo(
       this.userInfo().username,
       this.userInfo().fullName,
@@ -63,10 +62,10 @@ export class WelcomeComponent {
       this.userInfo().phone
     )
     if(this.resetType.valid){
-      
+
       if(this.resetType.value === 'password'){
-        
-       
+
+
         this.sharedService.isLoaderTrue()
         this.sharedService.updateType('password');
       }else{
@@ -84,11 +83,11 @@ export class WelcomeComponent {
           next:(response) =>{
             this.sharedService.isLoading.set(false);
             if (response[0].eventType === 1) {
-              
+
               const isEmail = typeof response[0]?.eventData?.[0]?.value === 'boolean'
                 ? response[0].eventData[0].value
                 : false;
-            
+
               this.localStorageService.setItem('isEmail', String(isEmail));
               this.sharedService.updateType('sec_code');
             }
@@ -98,9 +97,9 @@ export class WelcomeComponent {
           }
         })
       }
-      
-      
+
+
     }
-    
+
   }
 }

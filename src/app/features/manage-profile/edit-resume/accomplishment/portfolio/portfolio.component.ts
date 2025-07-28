@@ -127,9 +127,9 @@ export class PortfolioComponent implements OnChanges {
   }
 
   confirmDelete() {
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; 
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || '';
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
+
 
     if (this.accomPlishmentId !== null) {
       const request: DeleteAccomplishmentRequest = {
@@ -224,7 +224,7 @@ export class PortfolioComponent implements OnChanges {
   loadPortfolioInfo(): void {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
+
 
     this.isLoading.set(true);
     const query: AccomplishmentInfoQuery = {
@@ -243,14 +243,12 @@ export class PortfolioComponent implements OnChanges {
             description: this.summary.description
           });
         } else {
-          console.log('No portfolio summaries received from API');
           this.isInfoAvailable = false;
           this.summary = null;
         }
         this.isLoading.set(false);
       },
       error: (error) => {
-        console.error('Error loading portfolio summaries:', error);
         this.isInfoAvailable = false;
         this.summary = null;
         this.isLoading.set(false);
@@ -267,7 +265,7 @@ export class PortfolioComponent implements OnChanges {
   savePortfolioSummary() {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
+
 
     this.isLoading.set(true);
     this.formSubmitted = true;
@@ -292,7 +290,6 @@ export class PortfolioComponent implements OnChanges {
 
     this.accompolishmentService.insertUpdateInfo(command).subscribe({
       next: (response) => {
-        console.log('API Response:', response);
         const successMsg = response.some(
           (r: any) =>
             r.eventType === 1 &&
@@ -367,7 +364,7 @@ export class PortfolioComponent implements OnChanges {
     }
   }
 
-  // Helper getters    
+  // Helper getters
   get titleControl(): FormControl {
     return this.portfolioForm.get('title') as FormControl;
   }

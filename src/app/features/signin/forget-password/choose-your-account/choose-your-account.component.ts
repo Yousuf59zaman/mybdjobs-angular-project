@@ -17,13 +17,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class ChooseYourAccountComponent {
   private loginService = inject(LoginService)
   private destroyRef = inject(DestroyRef);
-  private translocoService = inject(TranslocoService);   
+  private translocoService = inject(TranslocoService);
   protected sharedService = inject(SharedService)
-  
+
   currentLang = signal(this.translocoService.getActiveLang());
      langChanges$ = this.translocoService.langChanges$
        .pipe(takeUntilDestroyed(this.destroyRef))
-       .subscribe(lang => { 
+       .subscribe(lang => {
         this.currentLang.set(lang);
  });
   selectedUser = signal<getUserListResponse>({} as getUserListResponse)
@@ -38,10 +38,10 @@ export class ChooseYourAccountComponent {
       this.account.valueChanges.subscribe((value) =>{
         this.selectUser(value);
       } )
-      
+
   }
 
-  
+
   private selectUser(username:string | null){
     const user = this.userList().find(
       user => (user.userName || user.socialMediaName) === this.account.value
@@ -49,11 +49,10 @@ export class ChooseYourAccountComponent {
     if(user){
       this.selectedUser.set(user);
     }
-    console.log("selectedUSer:",this.selectedUser())
   }
 
-  
-  
+
+
 
 
 
@@ -62,7 +61,6 @@ export class ChooseYourAccountComponent {
 
     if(this.account.valid){
       this.sharedService.isLoaderTrue()
-      console.log("True",this.account.value)
       const user = {
         userGuid:this.selectedUser().userGuid,
         recoveryType:2,
@@ -93,11 +91,11 @@ export class ChooseYourAccountComponent {
       else{
         this.sharedService.updateType('welcome')
       }
-      
-      
-      
+
+
+
     }
   // throw new Error('Method not implemented.');
-    
+
   }
 }

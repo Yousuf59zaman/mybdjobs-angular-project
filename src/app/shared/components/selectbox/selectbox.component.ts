@@ -36,7 +36,7 @@ export class SelectboxComponent implements OnInit   {
       .subscribe((value) => {
         const selected = this.options().find(item => item.value === value);
         this.selectedItem.set(selected || null);
-        //console.log("selected Item from",this.selectedItem())
+        // Removed for production
         if (this.onChange) {
           this.onChange(value, this.formIndex); 
         }

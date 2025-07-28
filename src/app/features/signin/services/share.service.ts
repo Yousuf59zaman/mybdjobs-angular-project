@@ -43,13 +43,11 @@ export class SharedService {
 
   updateType(value: rightPanel) {
     this.currentPanel.set(value)
-    console.log("current Panel", value);
 
   }
 
   updateUserObject(value: checkUserNameResponse | null) {
     this.userInfo.set(value)
-    console.log("Service Obj:", this.userInfo())
   }
 
   updateUserInfo = (username: string, fullName: string, guidId: string, profilePicture: string, emailAddress: string, phoneNumber: string) => {
@@ -67,16 +65,13 @@ export class SharedService {
 
       } as checkUserNameResponse;
     });
-    console.log("userInfo", this.userInfo())
   };
 
   updateUserList(userList: getUserListResponse[]) {
     this.userList.set(userList);
-    console.log(userList);
   }
   updateSelectedUser(user: any) {
     this.selectedUser.set(user);
-    console.log("selected User", this.selectedUser())
   }
 
   isLoaderTrue() {

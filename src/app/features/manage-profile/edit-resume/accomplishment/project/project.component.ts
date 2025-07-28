@@ -26,7 +26,7 @@ import { CookieService } from '../../../../../core/services/cookie/cookie.servic
     TextEditorComponent,
     NgClass,
     AccordionMainBodyComponent,
-    NoDetailsComponent, 
+    NoDetailsComponent,
     TranslocoModule,
     InputComponent
   ],
@@ -62,7 +62,7 @@ export class ProjectComponent implements OnChanges {
   jobForm!: FormGroup;
   maxLengthError = signal(false);
   showProject = false;
-  
+
   @ViewChild('container', { static: true }) containerRef!: ElementRef;
   @ViewChild('textEditor') textEditor: any;
   @Output() contentChanged = new EventEmitter<string>();
@@ -109,7 +109,7 @@ export class ProjectComponent implements OnChanges {
     url: '',
     description: ''
   }, { emitEvent: false });
-  
+
   setTimeout(() => {
     Object.keys(this.projectForm.controls).forEach(key => {
       const control = this.projectForm.get(key);
@@ -118,7 +118,7 @@ export class ProjectComponent implements OnChanges {
       control?.setErrors(null);
     });
   });
-  
+
   this.editingSummary = null;
   this.dateRangeString = '';
   this.selectedStartDate = null;
@@ -133,7 +133,7 @@ export class ProjectComponent implements OnChanges {
     this.isProjectNewFormOpen.set(false);
   }
 
-  
+
   toggleCalendar() {
     this.calendarVisible = !this.calendarVisible;
   }
@@ -179,7 +179,6 @@ export class ProjectComponent implements OnChanges {
   confirmDelete() {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
     if (this.accomPlishmentId !== null) {
       const request: DeleteAccomplishmentRequest = {
@@ -196,11 +195,11 @@ export class ProjectComponent implements OnChanges {
             return;
           }
           this.projectSummaries = this.projectSummaries.filter(p => p.accomPlishmentId !== this.accomPlishmentId);
-          
+
           if (this.editingSummary?.accomPlishmentId === this.accomPlishmentId) {
             this.closeForm();
           }
-          
+
           this.closeDeleteModal();
         },
         error: (error) => {
@@ -236,7 +235,7 @@ export class ProjectComponent implements OnChanges {
       url: project.url,
       description: project.description
     });
-    this.cdRef.detectChanges(); 
+    this.cdRef.detectChanges();
   }
 
   closeProjectForm(): void {
@@ -274,7 +273,6 @@ export class ProjectComponent implements OnChanges {
   loadProjectInfo(): void {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
     this.isLoading.set(true);
     const query: AccomplishmentInfoQuery = {
@@ -294,14 +292,12 @@ export class ProjectComponent implements OnChanges {
             description: this.summary.description
           });
         } else {
-          console.log('No project summaries received from API');
           this.isInfoAvailable = false;
           this.summary = null;
         }
         this.isLoading.set(false);
       },
       error: (error) => {
-        console.error('Error loading project summaries:', error);
         this.isInfoAvailable = false;
         this.summary = null;
          this.isLoading.set(false);
@@ -318,7 +314,6 @@ export class ProjectComponent implements OnChanges {
   saveProjectSummary() {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
     this.isLoading.set(true);
     this.formSubmitted = true;
@@ -355,7 +350,6 @@ export class ProjectComponent implements OnChanges {
 
     this.accompolishmentService.insertUpdateInfo(command).subscribe({
       next: (response) => {
-        console.log('API Response:', response);
         const successMsg = response.some(
           (r: any) =>
             r.eventType === 1 &&
@@ -388,7 +382,7 @@ export class ProjectComponent implements OnChanges {
             this.projectSummaries.push(newSummary);
           }
           this.closeProjectForm();
-          
+
           this.toaster.show('Project saved successfully!', {
             iconClass: 'lucide-check-circle',
             imageUrl: 'images/check-circle.svg',
@@ -432,18 +426,18 @@ export class ProjectComponent implements OnChanges {
     }
   }
 
-  // Helper getters    
+  // Helper getters
   get titleControl(): FormControl {
     return this.projectForm.get('title') as FormControl;
   }
   get issueDateControl(): FormControl{
     return this.projectForm.get('issueDate') as FormControl;
   }
-    
+
   get urlControl(): FormControl {
     return this.projectForm.get('url') as FormControl;
   }
-    
+
   get descriptionControl(): FormControl {
     return this.projectForm.get('description') as FormControl;
   }

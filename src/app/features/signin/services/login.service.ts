@@ -48,13 +48,10 @@ export class LoginService {
 
   updateType(value: rightPanel) {
     this.currentPanel.set(value)
-    console.log("current Panel", value);
-
   }
 
   updateUserObject(value: checkUserNameResponse | null) {
     this.userInfo.set(value)
-    console.log("Service Obj:", this.userInfo())
   }
 
   postUserName(userInformation: checkUserNameRequest): Observable<{ event: ApiResponse<checkUserNameResponse> }> {
@@ -90,7 +87,7 @@ export class LoginService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    
+
     return this.http.get<any>(this.supportingInfoUrl, { headers }).pipe(
       tap(response => {
         if (response.event.eventType === 1) {
@@ -107,26 +104,29 @@ export class LoginService {
       refreshToken: response.event.eventData[0]?.value?.refreshToken,
       isBdjobsPro: response.event.eventData[0]?.value?.currentUser?.bdjobsPro?.isProUser || false
     };
-    
-    // Store in localStorage
+
     localStorage.setItem(this.AUTH_STORAGE_KEY, JSON.stringify(authData));
-    
-    // Also set cookies if needed
-    this.setAuthCookies(response);
+
+    // this.setAuthCookies(response);
   }
 
-  private setAuthCookies(response: any): void {
-    const token = response.event.eventData[0]?.value?.token;
-    const isPro = response.event.eventData[0]?.value?.currentUser?.bdjobsPro?.isProUser;
-    
-    if (token) {
-      this.cookieService.setCookie('authToken', token, 1);
-    }
-    
-    if (isPro !== undefined) {
-      this.cookieService.setCookie('IsBdjobsPro', isPro.toString(), 1);
-    }
-  }
+//   private setAuthCookies(response: any): void {
+//   const token = response.event.eventData[0]?.value?.token;
+//   const isPro = response.event.eventData[0]?.value?.currentUser?.bdjobsPro?.isProUser;
+//   const userGuidId = response.event.eventData[0]?.value?.currentUser?.userGuidId;
+
+//   if (token) {
+//     this.cookieService.setCookie('authToken', token, 1);
+//   }
+
+//   if (isPro !== undefined) {
+//     this.cookieService.setCookie('IsBdjobsPro', isPro.toString(), 1);
+//   }
+
+//   if (userGuidId) {
+//     this.cookieService.setCookie('MybdjobsGId', encodeURIComponent(userGuidId), 1);
+//   }
+// }
 
   getAuthData(): { token: string; isBdjobsPro: boolean } | null {
     const data = localStorage.getItem(this.AUTH_STORAGE_KEY);

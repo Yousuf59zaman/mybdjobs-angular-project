@@ -683,7 +683,6 @@ userIdTypeRadioItems = [
   // Update your onSubmit to check captcha before proceeding
   onSubmit(): void {
     // Validate captcha first
-    console.log('OnSubmit called');
 
     if(!this.isBlueCollar && !this.isDisability){
       if (!this.validateCaptcha()) {
@@ -698,7 +697,6 @@ userIdTypeRadioItems = [
       let payload = this.generatePayload();
 
       this.createAccountService.setUserNameType(payload.userNameType);
-      console.log('CreateAccount API request body:', payload);
       this.createAccountService.createAccount(payload)
         .pipe(
           finalize(() => this.loadr.setLoading(false)),
@@ -926,7 +924,6 @@ userIdTypeRadioItems = [
   }
 
   onClickImport(type: 'fb' | 'google') {
-    console.log(type);
     if(type === 'fb'){}
   }
 }

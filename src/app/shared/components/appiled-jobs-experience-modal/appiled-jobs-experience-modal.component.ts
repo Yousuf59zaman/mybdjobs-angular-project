@@ -39,7 +39,7 @@ export class AppiledJobsExperienceModalComponent {
   }
 
  onExperienceSelected(experienceId: string): void {
-  console.log('Experience selected:', experienceId); 
+  // Removed for production
   this.selectedExperienceId = experienceId;
   this.experienceSelected.emit(experienceId);
 }

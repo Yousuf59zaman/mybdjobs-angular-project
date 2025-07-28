@@ -29,7 +29,7 @@ export class EmploymentHistoryComponent implements OnChanges {
   isEmploymentHistoryNewFormOpen = signal(false);
   private id = "employmenthistory"
   private accordionService = inject(AccordionManagerService)
-  
+
   ngOnChanges(changes: SimpleChanges): void {
     if(this.isEmploymentHistoryOpen() && !this.isOpen()) {
       this.toggle();
@@ -46,18 +46,18 @@ export class EmploymentHistoryComponent implements OnChanges {
 
   // isAcademicSummaryExpanded = false;
   @Output() onClose = new EventEmitter<void>()
- 
+
   isExpanded = false;
   @Output() addExperience = new EventEmitter<void>();
-  
+
   toggleDropdown() {
     this.isExpanded = !this.isExpanded;
   }
-  
+
   handleAddExperience() {
     this.addExperience.emit();
   }
-  
+
   // toggleAcademicSummary() {
   //   this.isAcademicSummaryExpanded = !this.isAcademicSummaryExpanded;
   // }
@@ -67,9 +67,8 @@ export class EmploymentHistoryComponent implements OnChanges {
    }
 
   onStartDateChanged(date: Date | null): void {
-    console.log('Selected Start Date:', date);
   }
-  
+
 
 
 

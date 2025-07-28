@@ -290,16 +290,11 @@ export class CareerApplicationInfoComponent implements OnChanges {
       isWebOrApp: 1
     };
 
-
-    console.log('Sending update payload:', payload); // Debug log
-
     this.careerService.updateCareerInfo(payload).subscribe({
       next: (response) => {
-        console.log('Update successful:', response);
         this.isCareerFormOpen.set(false);
       },
       error: (err) => {
-        console.error('Update failed:', err);
       }
     });
   }

@@ -43,12 +43,12 @@ export class AppiledJobsNotJoinedModalComponent {
   }
 
   onReasonChange(value: number): void {
-    console.log('Radio button selected, value:', value);
+    // Removed for production
     this.selectedReason = value;
   }
 
 onSubmit(): void {
-  console.log('onSubmit called, selectedReason:', this.selectedReason);
+  // Removed for production
   if (this.selectedReason !== undefined && this.userGuid && this.jobId) {
     const payload = {
       userGuid: this.userGuid,
@@ -59,11 +59,11 @@ onSubmit(): void {
       reasonPackage: "",
       responseType: 4 
     };
-    console.log('Submitting payload:', payload);
+    // Removed for production
 
     this.careerService.updateJobStatus(payload).subscribe({
       next: (response) => {
-        console.log('Not Joined status updated successfully:', response);
+        // Removed for production
         this.reasonSelected.emit(this.selectedReason);
         this.modalService.closeModal();
         this.closed.emit(); // This triggers the parent's closed callback
@@ -84,7 +84,7 @@ onSubmit(): void {
 }
 
 onClose(): void {
-  console.log('Closing modal without submitting');
+  // Removed for production
   this.modalService.closeModal();
   this.closed.emit(); // This triggers the parent's closed callback
 }

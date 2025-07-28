@@ -55,7 +55,6 @@ export class SecurityCodeComponent {
   isEmail = this.localStorageService.getItem('isEmail').toString() ?? 'false'
   isCounting = computed(() => this.timeLeft() > 0);
   constructor() {
-    console.log("sdjkfskjdf", this.userInfo())
     this.restartCountdown$.next(Time.InitialTime);
   }
 
@@ -163,8 +162,6 @@ export class SecurityCodeComponent {
 
         },
         error: error => {
-
-          console.log(error);
 
         }
 

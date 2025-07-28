@@ -46,25 +46,23 @@ export class StepperComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadStepLabels(); 
+    this.loadStepLabels();
     this.updateCurrentStep(this.router.url);
-    console.log('Current Step on Init:', this.currentStep);
-  
+
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       takeUntilDestroyed(this.destroyRef)
     ).subscribe(() => {
       this.updateCurrentStep(this.router.url);
-      console.log('Current Step on Navigation:', this.currentStep);
     });
   }
-  
+
   private loadStepLabels(): void {
     this.translocoService.selectTranslateObject('stepper').pipe(
-      takeUntilDestroyed(this.destroyRef) 
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe((translations: any) => {
       if (!translations) return;
-        
+
       this.stepLabels = {
         1: translations['address'] || 'Address',
         2: translations['age'] || 'Age',
@@ -75,13 +73,13 @@ export class StepperComponent implements OnInit {
       };
     });
   }
-  
+
   currentStep$ = new BehaviorSubject<number>(0);
   private updateCurrentStep(url: string): void {
     const matchedRoute = Object.keys(this.routeToStepMap).find((route) => url.includes(route));
     const step = matchedRoute ? this.routeToStepMap[matchedRoute] : 0;
-    this.currentStep$.next(step); 
-    this.currentStep = step; 
+    this.currentStep$.next(step);
+    this.currentStep = step;
   }
 
   isStepCompleted(index: number): boolean {

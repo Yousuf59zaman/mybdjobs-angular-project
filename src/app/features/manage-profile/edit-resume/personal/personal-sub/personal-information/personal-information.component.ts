@@ -79,14 +79,21 @@ export class PersonalInformationComponent implements OnChanges {
   loadPersonalInfo(): void {
     // const UserGuid = 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=';
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') // for development only
+
+    if (!rawGuid) {
+      console.error('User Guid is not available');
+    } else {
+      console.log('User Guid:', rawGuid);
+    }
     this.userGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
+
+    console.log('Decoded User Guid:', this.userGuid);
 
     const isCvPosted = 1;
     this.personalInfoService
       .getPersonalInfo(this.userGuid ?? '', isCvPosted)
       .pipe(finalize(() => this.isLoading.update(() => false)))
       .subscribe((response) => {
-        console.log('from ts ', response);
         const successData = response.event.eventData.find(
           (d) => d.key === 'message'
         );

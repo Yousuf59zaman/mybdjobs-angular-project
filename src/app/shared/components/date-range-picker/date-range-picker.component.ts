@@ -226,13 +226,13 @@ confirmSelection() {
   
   
   onStartDateChange(date: Date | null) {
-    console.log('Start date changed:', date);
+    // Removed for production
     this.selectedStartDate = date;
     this.selectedStartDateChange.emit(this.selectedStartDate);
   }
   
   onEndDateChange(date: Date | null) {
-    console.log('End date changed:', date);
+    // Removed for production
     this.selectedEndDate = date;
     this.selectedEndDateChange.emit(this.selectedEndDate);
   }

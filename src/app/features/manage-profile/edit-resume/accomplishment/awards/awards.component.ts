@@ -165,7 +165,7 @@ export class AwardsComponent implements OnChanges {
   confirmDelete() {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
+
 
     if (this.accomPlishmentId !== null) {
       const request: DeleteAccomplishmentRequest = {
@@ -261,7 +261,7 @@ export class AwardsComponent implements OnChanges {
 
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
+
 
     this.isLoading.set(true);
     const query: AccomplishmentInfoQuery = {
@@ -281,14 +281,12 @@ export class AwardsComponent implements OnChanges {
             description: this.summary.description
           });
         } else {
-          console.log('No award summaries received from API');
           this.isInfoAvailable = false;
           this.summary = null;
         }
         this.isLoading.set(false);
       },
       error: (error) => {
-        console.error('Error loading award summaries:', error);
         this.isInfoAvailable = false;
         this.summary = null;
         this.isLoading.set(false);
@@ -306,7 +304,7 @@ export class AwardsComponent implements OnChanges {
 
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
+
 
 
     this.isLoading.set(true);
@@ -344,7 +342,6 @@ export class AwardsComponent implements OnChanges {
 
     this.accompolishmentService.insertUpdateInfo(command).subscribe({
       next: (response) => {
-        console.log('API Response:', response);
         const successMsg = response.some(
           (r: any) =>
             r.eventType === 1 &&
@@ -424,7 +421,7 @@ export class AwardsComponent implements OnChanges {
     }
   }
 
-  // Helper getters    
+  // Helper getters
   get titleControl(): FormControl {
     return this.awardForm.get('title') as FormControl;
   }

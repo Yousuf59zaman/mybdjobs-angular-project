@@ -106,7 +106,6 @@ export class CareerApplicationInfoServiceService {
       .set('JobId', jobId);
 
     return this.http.delete(this.cancelApplyApi, { params }).pipe(
-      tap((response) => console.log('Service received response:', response)),
       catchError((error) => {
         console.error('Service error:', error);
         return throwError(error);
@@ -115,12 +114,7 @@ export class CareerApplicationInfoServiceService {
   }
 
   updateJobStatus(payload: any) {
-    console.log(
-      'Calling updateJobStatus with payload:',
-      JSON.stringify(payload, null, 2)
-    );
     return this.http.put<any>(this.updateJobStatusApi, payload).pipe(
-      tap((response) => console.log('API response:', response)),
       catchError((error) => {
         console.error('Error updating job status:', error);
         return throwError(() => error);

@@ -72,7 +72,7 @@ export class ShortlistedJobComponent {
   );
   SearchData = computed(() => this.searchForm.get('SearchData') as FormControl);
   ngOnInit() {
-    this.FromDate().valueChanges.subscribe((raw) => {   
+    this.FromDate().valueChanges.subscribe((raw) => {
       if (raw) {
         const d = new Date(raw);
         d.setHours(0, 0, 0, 0);
@@ -106,8 +106,8 @@ export class ShortlistedJobComponent {
       GuidId: this.userGuid || "",
       PerPageData: 10,
       LanType: 'EN',
-      SearchData: this.SearchData().value, 
-      FromDate: this.fromDateFormatted, 
+      SearchData: this.SearchData().value,
+      FromDate: this.fromDateFormatted,
       ToDate: this.toDateFormatted,
     };
     this.svc.getShortlistedJobs(req).subscribe((jobs) => {
@@ -116,7 +116,7 @@ export class ShortlistedJobComponent {
         deadline: this.datePipe.transform(job.deadline, 'MMM d, y') || ''
       }));
       this.count = jobs.length;
-          
+
     });
   }
 
@@ -140,8 +140,7 @@ export class ShortlistedJobComponent {
     const isChecked = (event.target as HTMLInputElement).checked;
     if (isChecked) {
       this.selectedJobIds.push(id);
-      console.log(this.selectedJobIds);
-           
+
     } else {
       this.selectedJobIds = this.selectedJobIds.filter(id => id !== id);
     }
@@ -155,7 +154,7 @@ export class ShortlistedJobComponent {
     const f = this.datePipe.transform(d, 'yyyy-MM-dd HH:mm:ss');
     if (f) {
       this.fromDateFormatted = f;
-      this.FromDate().setValue(f); 
+      this.FromDate().setValue(f);
     }
   }
 
@@ -177,20 +176,20 @@ export class ShortlistedJobComponent {
   confirmDelete() {
     this.showDeleteConfirm = false;
     const req: DeleteShortlistedJobsRequest = {
-      GuidId: this.userGuid || "",          
-      
+      GuidId: this.userGuid || "",
+
       JP_ID : this.selectedJobIds.toString()
     };
 
     this.svc.deleteShortlistedJobs(req).subscribe(() => {
-      this.loadJobs();        
-      this.cancelDelete();    
+      this.loadJobs();
+      this.cancelDelete();
       this.selectedJobIds = [];
     }, error => {
       console.error('Delete failed', error);
     });
     complete: () => {
-      this.selectedJobIds = []; 
+      this.selectedJobIds = [];
     }
   }
 }

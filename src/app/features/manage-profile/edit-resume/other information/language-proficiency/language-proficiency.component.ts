@@ -132,7 +132,6 @@ editLanguage(language: LanguageResponse) {
 
   const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
   if (this.editingLanguage) {
     // Handle edit form
@@ -202,7 +201,7 @@ editLanguage(language: LanguageResponse) {
       next: (response) => {
         this.isLanguageNewFormOpen.set(false);
         this.resetForm();
-        this.loadLanguageInfo(); 
+        this.loadLanguageInfo();
       },
       error: (error) => {
         console.error('Error inserting language:', error);
@@ -231,12 +230,11 @@ editLanguage(language: LanguageResponse) {
   loadLanguageInfo(): void{
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
      const query: LanguageQuery = {
        UserGuid: userGuidId ?? ""
      };
-   
+
 
      this.languageService.getLanguageInfo(query).subscribe({
        next: (summaries) => {
@@ -253,16 +251,13 @@ editLanguage(language: LanguageResponse) {
 
            });
          } else {
-           console.log('No summaries received from API');
            this.isInfoAvailable = false;
          }
        },
        error: (error) => {
-         console.error('Error loading language summaries:', error);
          this.isInfoAvailable = false;
        },
        complete: () => {
-         console.log('API call completed');
        }
      });
    }
@@ -293,7 +288,6 @@ editLanguage(language: LanguageResponse) {
   deleteLanguage(languageId: number) {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
     const command: deleteLanguage = {
       userGuid: userGuidId ?? "",

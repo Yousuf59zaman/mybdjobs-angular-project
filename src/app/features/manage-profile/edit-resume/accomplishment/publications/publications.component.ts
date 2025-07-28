@@ -61,7 +61,7 @@ export class PublicationsComponent implements OnChanges {
   selectedStartDate: Date | null = null;
   selectedEndDate: Date | null = null;
   dateRangeString = '';
-  
+
 
   @ViewChild('container', { static: true }) containerRef!: ElementRef;
   // Add this property
@@ -89,7 +89,7 @@ export class PublicationsComponent implements OnChanges {
        this.loadPublicationInfo();
       }
     }
-    
+
   }
 
   isOpen() {
@@ -114,7 +114,7 @@ export class PublicationsComponent implements OnChanges {
     url: '',
     description: ''
   }, { emitEvent: false });
-  
+
   this.editingSummary = null;
   this.dateRangeString = '';
   this.selectedStartDate = null;
@@ -174,7 +174,6 @@ export class PublicationsComponent implements OnChanges {
 
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
     if (this.accomPlishmentId !== null) {
       const request: DeleteAccomplishmentRequest = {
@@ -269,7 +268,6 @@ export class PublicationsComponent implements OnChanges {
   loadPublicationInfo(): void {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
     this.isLoading.set(true);
 
@@ -289,14 +287,12 @@ export class PublicationsComponent implements OnChanges {
             description: this.summary.description
           });
         } else {
-          console.log('No publication summaries received from API');
           this.isInfoAvailable = false;
           this.summary = null;
         }
          this.isLoading.set(false);
       },
       error: (error) => {
-        console.error('Error loading publication summaries:', error);
         this.isInfoAvailable = false;
         this.summary = null;
         this.isLoading.set(false);
@@ -314,7 +310,6 @@ export class PublicationsComponent implements OnChanges {
 
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-    console.log('User GUID ID Photo Component:', userGuidId);
 
     this.isLoading.set(true);
     this.formSubmitted = true;
@@ -350,7 +345,6 @@ export class PublicationsComponent implements OnChanges {
 
     this.accompolishmentService.insertUpdateInfo(command).subscribe({
       next: (response) => {
-        console.log('API Response:', response);
         const successMsg = response.some(
           (r: any) =>
             r.eventType === 1 &&
@@ -381,7 +375,7 @@ export class PublicationsComponent implements OnChanges {
             this.publicationSummaries.push(newSummary);
           }
           this.closePublicationForm();
-          
+
           this.toaster.show('Publication saved successfully!', {
             iconClass: 'lucide-check-circle',
             imageUrl: 'images/check-circle.svg',
@@ -425,7 +419,7 @@ export class PublicationsComponent implements OnChanges {
     }
   }
 
-  // Helper getters    
+  // Helper getters
   get titleControl(): FormControl {
     return this.publicationForm.get('title') as FormControl;
   }

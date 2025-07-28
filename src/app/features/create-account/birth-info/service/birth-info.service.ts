@@ -12,8 +12,7 @@ export class BirthInfoService {
 
   addDateOfBirth(request: AddDateOfBirthRequest): Observable<void> {
     // 1. Build HttpParams with PascalCase keys:
-    console.log(request);
-    
+
     let params = new HttpParams()
       .set('UserGuidId', request.UserGuidId.toString())
       // only set BirthDate if provided

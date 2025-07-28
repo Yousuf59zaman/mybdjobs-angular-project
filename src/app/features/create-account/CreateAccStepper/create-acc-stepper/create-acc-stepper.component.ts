@@ -21,7 +21,7 @@ export class CreateAccStepperComponent implements OnInit {
   stepHeadings: Record<number, string> = {};
   type: string = '';
   showStepper: boolean = true;
-  
+
   @Input() parentStep?: number;
 
   ngOnChanges(): void {
@@ -69,7 +69,7 @@ export class CreateAccStepperComponent implements OnInit {
       takeUntilDestroyed(this.destroyRef)
     ).subscribe(params => {
       this.type = params['type'] || '';
-      console.log('Account Type:', this.type);
+
     });
   }
 
@@ -78,7 +78,6 @@ export class CreateAccStepperComponent implements OnInit {
     if (this.type === 'd') {
       steps.splice(2, 0, 3); // Insert physical obstacle step at index 2
     }
-    console.log('Visible Steps:', steps);
     return steps;
   }
 
@@ -127,7 +126,7 @@ export class CreateAccStepperComponent implements OnInit {
           console.error('Translations not found');
           return;
         }
-    
+
         this.stepHeadings = {
           1: translations['address'] || 'Your Present Address',
           2: translations['age'] || 'Other Information',
