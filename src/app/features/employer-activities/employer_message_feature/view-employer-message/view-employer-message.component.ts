@@ -170,6 +170,7 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
       return;
     }
     const token = this.cookieService.getCookie('authToken');
+    console.log(token+"asdsdasda");
     const rawGuid = this.cookieService.getCookie('MybdjobsGId');
     this.userGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
     this.IsBdjobsPro = this.cookieService.getCookie('IsBdjobsPro') || 'false';
@@ -177,13 +178,13 @@ export class ViewEmployerMessageComponent implements AfterViewChecked {
     if (!token || !this.userGuid) {
       return;
     }
-
+   console.log('User Guid:', this.userGuid);
     this.loadSupportingInfo(token);
   }
 
   private loadSupportingInfo(token: string): void {
     this.sharedService.isLoading.set(true);
-
+    console.log('Loading supporting info with token:', token);
     this.loginService.getSupportingInfo(token).subscribe({
       next: (supportingInfo) => {
         const bdjobsProData =

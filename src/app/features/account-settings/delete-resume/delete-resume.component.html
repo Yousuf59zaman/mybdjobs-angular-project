@@ -8,7 +8,15 @@
   </div>
 
   <hr class="border my-0 mx-0">
-  @if(true){
+
+  @if (isLoading()) {
+    <div class="max-w-[668px] mx-auto p-5 text-center">
+      <div class="flex items-center justify-center py-10">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#C63C92]"></div>
+      </div>
+    </div>
+  } @else if (currentStep() === 'initial' && isBlueCaller()) {
+    <!-- White Collar User Form -->
    <div class="max-w-[668px] mx-auto">
     <div class="w-full p-5">
       <div class="flex flex-col gap-1">
@@ -63,7 +71,8 @@
 
     </div>
   </div>
-  } @else if(false){
+  } @else if (currentStep() === 'initial' && !isBlueCaller()) {
+    <!-- Blue Collar User Form -->
   <div class="max-w-[668px] mx-auto">
     <div class="w-full p-5">
       <!-- small pill like the screenshot -->
@@ -100,6 +109,7 @@
           maxlength="11"
           inputmode="numeric"
           placeholder="017XXXXXXXX"
+          [(ngModel)]="phoneNumber"
         >
       </div>
 
@@ -110,7 +120,8 @@
       </button>
     </div>
   </div>
-  } @else if(false) {
+  } @else if (currentStep() === 'otp') {
+    <!-- OTP Verification Step -->
   <div class="max-w-[668px] mx-auto">
     <div class="w-full p-5">
       <!-- phone pill -->
@@ -174,7 +185,8 @@
       </button>
     </div>
   </div>
-} @else if(false){
+  } @else if (currentStep() === 'confirmation') {
+    <!-- Final Confirmation Step -->
   <div class="max-w-[668px] mx-auto">
     <div class="w-full p-5">
       <!-- phone pill -->
@@ -217,7 +229,8 @@
       </div>
     </div>
   </div>
-}@else {
+  } @else {
+    <!-- Fallback UI -->
   <div class="max-w-[668px] mx-auto">
     <div class="w-full p-5">
       <!-- small pill with username (optional) -->
@@ -243,9 +256,5 @@
       </button>
     </div>
   </div>
-}
-
-
-
-  
+  }
 </div>

@@ -1,5 +1,5 @@
 import {
-  Component, inject, signal, ViewChildren, ElementRef, QueryList, OnInit
+  Component, inject, signal, ViewChildren, ElementRef, QueryList, OnInit, OnDestroy
 } from '@angular/core';
 
 import { NumericOnlyDirective } from '../../../core/directives/numeric-only.dir';
@@ -9,6 +9,8 @@ import { DeleteResumeService } from './service/delete-resume.service';
 import { DeleteResumeQuery } from './model/delete-resume';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { LoginService } from '../../signin/services/login.service';
+import { CookieService } from '../../../core/services/cookie/cookie.service';
 
 @Component({
   selector: 'app-delete-resume',
@@ -16,17 +18,30 @@ import { CommonModule } from '@angular/common';
   templateUrl: './delete-resume.component.html',
   styleUrl: './delete-resume.component.scss'
 })
-export class DeleteResumeComponent implements OnInit {
+export class DeleteResumeComponent implements OnInit, OnDestroy {
   showPassword = false;
   trackByIndex(index: number) { return index; }
+
   private deleteResumeService = inject(DeleteResumeService);
-  // Bound properties for form inputs
-  password: string = '';
-  reason: string = '';
+  private loginService = inject(LoginService);
+  private cookieService = inject(CookieService);
   private toastr = inject(ToastrService);
   private confirmModal = inject(ConfirmationModalService);
 
+  // Bound properties for form inputs
+  password: string = '';
+  reason: string = '';
+  phoneNumber: string = '';
+
   profileUsername = signal('YousufTest');
+
+  // User info
+  isBlueCaller = signal<boolean | null>(null);
+  userGuid: string = "YiLzZxZuPiCyIFU6Bb00ITBbMTDbIRLyZiS1ZTZ3PEc0PRg6BFPtBFU7d7kRZ7U=";
+  isLoading = signal(true);
+
+  // Flow control signals
+  currentStep = signal<'initial' | 'otp' | 'confirmation'>('initial');
 
   // ===== OTP state =====
   otp: string[] = Array(6).fill('');
@@ -35,7 +50,74 @@ export class DeleteResumeComponent implements OnInit {
   private timerId?: any;
 
   ngOnInit(): void {
+    this.loadUserInfo();
     this.startTimer();
+  }
+
+  ngOnDestroy(): void {
+    if (this.timerId) {
+      clearInterval(this.timerId);
+    }
+  }
+
+  private loadUserInfo(): void {
+    const authData = this.loginService.getAuthData();
+    
+    if (authData) {
+      //this.IsBdjobsPro = authData.isBdjobsPro.toString();
+      // this.loadSupportingInfo(authData.token);
+       this.loginService.getSupportingInfo(authData.token).subscribe({
+      next: (response) => {
+        console.log('User Info Response:', response);
+        this.extractUserInfo(response);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Error loading user info:', err);
+        this.isLoading.set(false);
+      }
+    });
+      return;
+    }
+
+    const token = this.cookieService.getCookie('AccessTokenForJobseeker');
+    console.log(token)
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId');
+    console.log('User Guid:', this.userGuid);
+    if (!token || !this.userGuid) {
+      this.isLoading.set(false);
+      return;
+    }
+
+    this.loginService.getSupportingInfo(token).subscribe({
+      next: (response) => {
+        console.log('User Info Response:', response);
+        this.extractUserInfo(response);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Error loading user info:', err);
+        this.isLoading.set(false);
+      }
+    });
+  }
+
+  private extractUserInfo(response: any): void {
+    console.log('Extracting user info from response:', response);
+    if (response?.event?.eventType === 1) {
+      console.log('Response Event:', response.event);
+      const currentUser = response.event.eventData?.[0]?.value?.currentUser;
+      if (currentUser) {
+        console.log('Current User:', currentUser);
+        console.log('is BlueCollar:', currentUser.isBlueCaller);
+        this.isBlueCaller.set(currentUser.isBlueCaller || false);
+        this.profileUsername.set(currentUser.username || 'User');
+        this.userGuid = currentUser.guid;
+
+        // Store auth data if not already stored
+        this.loginService.setAuthData(response);
+      }
+    }
   }
 
   // UI already built earlier
@@ -45,6 +127,21 @@ export class DeleteResumeComponent implements OnInit {
 
   // Modal from previous step
   onClickConfirmDelete() {
+    // Validate inputs based on user type
+    if (!this.isBlueCaller()) {
+      // White collar validation
+      if (!this.password || !this.reason) {
+        this.toastr.error('Please fill in all required fields.');
+        return;
+      }
+    } else {
+      // Blue collar validation
+      if (!this.phoneNumber) {
+        this.toastr.error('Please enter your phone number.');
+        return;
+      }
+    }
+
     this.confirmModal.openModal({
       content: {
         title: 'Are you sure you want to Delete this Resume?',
@@ -58,7 +155,14 @@ export class DeleteResumeComponent implements OnInit {
     })
       .subscribe(({ event }) => {
         if (event?.isConfirm) {
-          this.deleteResume();            // <- proceed with API call
+          // Move to OTP step for blue collar users
+          if (this.isBlueCaller()) {
+            this.currentStep.set('otp');
+            this.startTimer();
+          } else {
+            // For white collar, proceed with deletion
+            this.deleteResume();
+          }
         } else {
           this.toastr.info('Deletion cancelled.');
         }
@@ -136,24 +240,27 @@ export class DeleteResumeComponent implements OnInit {
     }
     // TODO: verify code via API
     this.toastr.success('Code verified. Proceeding…');
+
+    // Move to confirmation step
+    this.currentStep.set('confirmation');
   }
 
   // ===== From previous step (kept for completeness) =====
   private deleteResume() {
     const query: DeleteResumeQuery = {
-      UserGuid: 'YiLzZxZuPiCyIFU6Bb00ITBbMTDbIRLyZiS1ZTZ3PEc0PRg6BFPtBFU7d7kRZ7U=',
-      UserName: 'YousufTest',
+      UserGuid: this.userGuid || '',
+      UserName: this.profileUsername(),
       Password: this.password,
       Reason: this.reason
     };
+
     this.deleteResumeService.deleteResume(query).subscribe({
       next: (response) => {
-        // this.toastr.success('Resume deleted successfully.');
         this.openSuccessModal();
       },
       error: (error) => {
         console.error(error);
-        this.toastr.error('Deletion failed.');
+        this.toastr.error('Failed to delete resume. Please try again.');
       }
     });
   }
@@ -179,29 +286,11 @@ export class DeleteResumeComponent implements OnInit {
   onKeepResume() {
     // go back or simply notify
     this.toastr.info('Keeping your resume. No changes made.');
-    // e.g., navigate back or set your previous step here
-    // this.router.navigate(['/jobseeker-panel']);
+    this.currentStep.set('initial');
   }
 
   onContinueDeletion() {
-    // If your flow goes to OTP next, trigger that here.
-    // Or show your existing confirmation modal if you prefer.
-    // Example: open OTP step route/signal OR reuse modal:
-    this.confirmModal.openModal({
-      content: {
-        title: 'Final confirmation',
-        content: 'Do you want to proceed with deleting your resume?',
-        closeButtonText: 'No, Keep It',
-        saveButtonText: 'Yes, Delete',
-        isCloseButtonVisible: true,
-        isSaveButtonVisible: true
-      }
-    }).subscribe(({ event }) => {
-      if (event?.isConfirm) {
-        // proceed to OTP or call delete API
-        this.toastr.success('Proceeding…');
-        // e.g. this.step.set('otp');  or this.deleteResume();
-      }
-    });
+    // Final deletion
+    this.deleteResume();
   }
 }
