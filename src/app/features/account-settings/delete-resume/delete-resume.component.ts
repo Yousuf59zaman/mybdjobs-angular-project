@@ -148,13 +148,31 @@ export class DeleteResumeComponent implements OnInit {
     };
     this.deleteResumeService.deleteResume(query).subscribe({
       next: (response) => {
-        console.log(response);
-        this.toastr.success('Resume deleted successfully.');
+        // this.toastr.success('Resume deleted successfully.');
+        this.openSuccessModal();
       },
       error: (error) => {
         console.error(error);
         this.toastr.error('Deletion failed.');
       }
+    });
+  }
+
+  /** Modal that looks like the provided screenshot */
+  private openSuccessModal() {
+    this.confirmModal.openModal({
+      content: {
+        title: 'Your Resume Delete Successfully.',
+        content:
+          "You've deleted your resume from your Bdjobs profile. Employers can no longer view or access it.",
+        closeButtonText: 'Okay',
+        saveButtonText: '',
+        isCloseButtonVisible: true,
+        isSaveButtonVisible: false
+      }
+    }).subscribe(() => {
+      // Optional: redirect or refresh state after user clicks "Okay"
+      // this.router.navigate(['/jobseeker-panel']);
     });
   }
 
