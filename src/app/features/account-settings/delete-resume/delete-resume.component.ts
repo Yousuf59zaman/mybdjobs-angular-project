@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ConfirmationModalService } from '../../../core/services/confirmationModal/confirmation-modal.service';
 import { DeleteResumeService } from './service/delete-resume.service';
 import { DeleteResumeQuery } from './model/delete-resume';
+import { SendOtpRequest, DeleteResumeOtpQuery } from './model/delete-resume';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LoginService } from '../../signin/services/login.service';
@@ -36,9 +37,13 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
   profileUsername = signal('YousufTest');
 
   // User info
-  isBlueCaller = signal<boolean | null>(null);
+  isBlueCaller = signal<boolean>(true);
   userGuid: string = "YiLzZxZuPiCyIFU6Bb00ITBbMTDbIRLyZiS1ZTZ3PEc0PRg6BFPtBFU7d7kRZ7U=";
   isLoading = signal(true);
+
+  // Static values for BlueCollar users as specified
+  private blueCollarUserGuid = 'YlG0IRUxZiZyPxPhYb00BEBjMTG6YiLyBlU7PlY6IEdzPiDbBFPtBFVnRRVZBUw=';
+  private blueCollarUserName = '01604226197';
 
   // Flow control signals
   currentStep = signal<'initial' | 'otp' | 'confirmation'>('initial');
@@ -46,7 +51,7 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
   // ===== OTP state =====
   otp: string[] = Array(6).fill('');
   @ViewChildren('otpBox') otpBoxes!: QueryList<ElementRef<HTMLInputElement>>;
-  timerSeconds = signal(30);
+  timerSeconds = signal(120); // Start with 2 minutes
   private timerId?: any;
 
   ngOnInit(): void {
@@ -62,21 +67,21 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
 
   private loadUserInfo(): void {
     const authData = this.loginService.getAuthData();
-    
+
     if (authData) {
       //this.IsBdjobsPro = authData.isBdjobsPro.toString();
       // this.loadSupportingInfo(authData.token);
-       this.loginService.getSupportingInfo(authData.token).subscribe({
-      next: (response) => {
-        console.log('User Info Response:', response);
-        this.extractUserInfo(response);
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        console.error('Error loading user info:', err);
-        this.isLoading.set(false);
-      }
-    });
+      this.loginService.getSupportingInfo(authData.token).subscribe({
+        next: (response) => {
+          console.log('User Info Response:', response);
+          this.extractUserInfo(response);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Error loading user info:', err);
+          this.isLoading.set(false);
+        }
+      });
       return;
     }
 
@@ -110,7 +115,7 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
       if (currentUser) {
         console.log('Current User:', currentUser);
         console.log('is BlueCollar:', currentUser.isBlueCaller);
-        this.isBlueCaller.set(currentUser.isBlueCaller || false);
+        this.isBlueCaller.set(true);
         this.profileUsername.set(currentUser.username || 'User');
         this.userGuid = currentUser.guid;
 
@@ -142,31 +147,53 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.confirmModal.openModal({
-      content: {
-        title: 'Are you sure you want to Delete this Resume?',
-        content:
-          'If you agree, the resume will be removed from your collection and cannot be restored.',
-        closeButtonText: 'No, Keep it',
-        saveButtonText: 'Yes, Continue',
-        isCloseButtonVisible: true,
-        isSaveButtonVisible: true
-      }
-    })
-      .subscribe(({ event }) => {
-        if (event?.isConfirm) {
-          // Move to OTP step for blue collar users
-          if (this.isBlueCaller()) {
-            this.currentStep.set('otp');
-            this.startTimer();
-          } else {
-            // For white collar, proceed with deletion
-            this.deleteResume();
-          }
-        } else {
-          this.toastr.info('Deletion cancelled.');
+    // For BlueCollar users, directly call the OTP API
+    if (this.isBlueCaller()) {
+      this.isLoading.set(true);
+
+      const request: SendOtpRequest = {
+        userGuid: this.blueCollarUserGuid,
+        userName: this.blueCollarUserName,
+        isForDeleteResume: true
+      };
+
+      this.deleteResumeService.sendOtpForDeleteResume(request).subscribe({
+        next: (response) => {
+          this.isLoading.set(false);
+          this.currentStep.set('otp');
+          this.startTimer();
+          // Focus on the first OTP input box after view renders
+          setTimeout(() => this.focusBox(0), 100);
+          this.toastr.success('Verification code sent successfully.');
+        },
+        error: (error) => {
+          this.isLoading.set(false);
+          this.toastr.error('Failed to send verification code. Please try again.');
+          console.error('Error sending OTP:', error);
         }
       });
+    } else {
+      // Keep existing modal confirmation logic for white collar users
+      this.confirmModal.openModal({
+        content: {
+          title: 'Are you sure you want to Delete this Resume?',
+          content:
+            'If you agree, the resume will be removed from your collection and cannot be restored.',
+          closeButtonText: 'No, Keep it',
+          saveButtonText: 'Yes, Continue',
+          isCloseButtonVisible: true,
+          isSaveButtonVisible: true
+        }
+      })
+        .subscribe(({ event }) => {
+          if (event?.isConfirm) {
+            // For white collar, proceed with deletion
+            this.deleteResume();
+          } else {
+            this.toastr.info('Deletion cancelled.');
+          }
+        });
+    }
   }
 
   // ===== OTP handlers =====
@@ -214,7 +241,7 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
   }
 
   private startTimer() {
-    this.timerSeconds.set(30);
+    this.timerSeconds.set(120); // 2 minutes for OTP validity
     clearInterval(this.timerId);
     this.timerId = setInterval(() => {
       const left = this.timerSeconds() - 1;
@@ -225,11 +252,28 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
 
   onResendCode() {
     if (this.timerSeconds() > 0) return;
-    // TODO: call resend API here
-    this.toastr.success('Code resent.');
-    this.otp = Array(6).fill('');
-    this.startTimer();
-    setTimeout(() => this.focusBox(0)); // focus first box again
+
+    this.isLoading.set(true);
+    const request: SendOtpRequest = {
+      userGuid: this.blueCollarUserGuid,
+      userName: this.blueCollarUserName,
+      isForDeleteResume: true
+    };
+
+    this.deleteResumeService.sendOtpForDeleteResume(request).subscribe({
+      next: () => {
+        this.isLoading.set(false);
+        this.otp = Array(6).fill('');
+        this.startTimer();
+        this.toastr.success('Code resent successfully.');
+        setTimeout(() => this.focusBox(0), 100);
+      },
+      error: (error) => {
+        this.isLoading.set(false);
+        this.toastr.error('Failed to resend code. Please try again.');
+        console.error('Error resending OTP:', error);
+      }
+    });
   }
 
   onClickVerify() {
@@ -238,11 +282,27 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
       this.toastr.error('Please enter the 6‑digit code.');
       return;
     }
-    // TODO: verify code via API
-    this.toastr.success('Code verified. Proceeding…');
 
-    // Move to confirmation step
-    this.currentStep.set('confirmation');
+    this.isLoading.set(true);
+
+    const query: DeleteResumeOtpQuery = {
+      userGuid: this.blueCollarUserGuid,
+      UserName: this.blueCollarUserName,
+      OTPCode: code
+    };
+
+    this.deleteResumeService.verifyOtpAndDeleteResume(query).subscribe({
+      next: (response) => {
+        this.isLoading.set(false);
+        this.currentStep.set('confirmation');
+        this.toastr.success('Code verified successfully.');
+      },
+      error: (error) => {
+        this.isLoading.set(false);
+        this.toastr.error('Failed to verify code. Please check and try again.');
+        console.error('Error verifying OTP:', error);
+      }
+    });
   }
 
   // ===== From previous step (kept for completeness) =====
@@ -290,7 +350,12 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
   }
 
   onContinueDeletion() {
-    // Final deletion
-    this.deleteResume();
+    if (this.isBlueCaller()) {
+      // For blue collar, we've already verified the OTP, just show success
+      this.openSuccessModal();
+    } else {
+      // For white collar, use existing deleteResume method
+      this.deleteResume();
+    }
   }
 }

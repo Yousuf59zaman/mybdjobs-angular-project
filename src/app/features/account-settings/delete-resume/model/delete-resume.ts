@@ -51,6 +51,19 @@ export interface DeleteResumeQuery {
     OTPCode?: string;
 }
 
+export interface SendOtpRequest {
+    userGuid: string;
+    userName: string;
+    isForDeleteResume: boolean;
+}
+
+export interface DeleteResumeOtpQuery {
+    userGuid: string;
+    UserName: string;
+    OTPCode?: string;
+}
+
+
 /**
  * Helper to convert DeleteResumeQuery to HttpParams.
  * Only defined (non-null/undefined) fields are added.

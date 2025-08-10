@@ -15,7 +15,7 @@
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#C63C92]"></div>
       </div>
     </div>
-  } @else if (currentStep() === 'initial' && isBlueCaller()) {
+  } @else if (currentStep() === 'initial' && !isBlueCaller()) {
     <!-- White Collar User Form -->
    <div class="max-w-[668px] mx-auto">
     <div class="w-full p-5">
@@ -71,7 +71,7 @@
 
     </div>
   </div>
-  } @else if (currentStep() === 'initial' && !isBlueCaller()) {
+  } @else if (currentStep() === 'initial' && isBlueCaller()) {
     <!-- Blue Collar User Form -->
   <div class="max-w-[668px] mx-auto">
     <div class="w-full p-5">
