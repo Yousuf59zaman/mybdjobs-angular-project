@@ -311,65 +311,74 @@ export class EmploymentHistoryArmypersonComponent {
     this.DateOfRetirementControl().setValue(retDate);
   }
 
-  checkValidation(data: any): void {
-    const baNumericValue = this.employmentArmyForm.value.baNumeric!; // Assert non-null
-    const baValue = baNumericValue.toString();
-    const ranksValue = this.employmentArmyForm.value.ranks!;
-    const typeValue = this.employmentArmyForm.value.type!;
-    const armsValue = this.employmentArmyForm.value.type!;
-    const startingDate = this.employmentArmyForm.value.dateOfCommission!;
-    const endingDate = this.employmentArmyForm.value.dateOfRetirement!;
-    if (baValue === '' || baValue.length > 9) {
-      const baNumericControl = this.employmentArmyForm.controls['baNumeric'];
-      const value = baNumericControl.value?.toString();
-      // Reset errors first
-      baNumericControl.setErrors(null);
-      // Check for empty/null (required)
-      if (value === null || value === undefined || value == '') {
-        baNumericControl.setErrors({ required: true });
-        return;
-      }
+  // MODIFIED checkValidation function
+checkValidation(data: any): void {
+  const baNumericControl = this.employmentArmyForm.controls['baNumeric'];
+  const ranksControl = this.employmentArmyForm.controls['ranks'];
+  const typeControl = this.employmentArmyForm.controls['type'];
+  const armsControl = this.employmentArmyForm.controls['arms'];
+  const retirementControl = this.employmentArmyForm.controls['dateOfRetirement'];
 
-      // Check max length (9 digits)
-      if (value.toString().length > 9) {
-        baNumericControl.setErrors({
-          maxlength: {
-            requiredLength: 9,
-            actualLength: value.toString().length,
-          },
-        });
-        return;
-      }
+  // Clear previous manually set errors
+  baNumericControl.setErrors(null);
+  ranksControl.setErrors(null);
+  typeControl.setErrors(null);
+  armsControl.setErrors(null);
+  retirementControl.setErrors(null);
 
-      // If all valid, mark as valid
-      baNumericControl.setErrors(null);
-    }
-    if (ranksValue == null || ranksValue == undefined || ranksValue == '') {
-      this.employmentArmyForm.controls['ranks'].setErrors({ required: true });
-    }
-    if (typeValue == null || typeValue == undefined || typeValue == '') {
-      this.employmentArmyForm.controls['type'].setErrors({ required: true });
-    }
-    if (armsValue == null || armsValue == undefined || armsValue == '') {
-      this.employmentArmyForm.controls['arms'].setErrors({ required: true });
-    }
-    const start = new Date(startingDate);
+  // Now run validation checks
+  const baNumericValue = baNumericControl.value?.toString() || '';
+  const ranksValue = ranksControl.value;
+  const typeValue = typeControl.value;
+  const armsValue = armsControl.value;
+  
+  // BA Numeric validation
+  if (!baNumericValue) {
+    baNumericControl.setErrors({ required: true });
+  } else if (baNumericValue.length > 9) {
+    baNumericControl.setErrors({
+      maxlength: {
+        requiredLength: 9,
+        actualLength: baNumericValue.length,
+      }
+    });
+  }
+
+  // Other field validations
+  if (!ranksValue) {
+    ranksControl.setErrors({ required: true });
+  }
+  
+  if (!typeValue) {
+    typeControl.setErrors({ required: true });
+  }
+  
+  if (!armsValue) {
+    armsControl.setErrors({ required: true });
+  }
+
+  // Date validation
+  const commissionDate = this.DateOfCommissionControl().value;
+  const retirementDate = this.DateOfRetirementControl().value;
+  
+  if (commissionDate && retirementDate) {
+    const start = new Date(commissionDate);
+    const end = new Date(retirementDate);
+    
     start.setHours(0, 0, 0, 0);
-
-    const end = new Date(endingDate);
     end.setHours(0, 0, 0, 0);
 
     if (end <= start) {
-      this.employmentArmyForm.controls['dateOfRetirement'].setErrors({
-        required: true,
-      });
+      retirementControl.setErrors({ dateSequence: true });
     }
   }
+}
 
   onSubmit() {
     if (this.isSubmitting()) return;
     this.isSubmitting.set(true);
     this.employmentArmyForm.markAllAsTouched();
+    this.employmentArmyForm.updateValueAndValidity();
     this.checkValidation(this.employmentArmyForm);
     if (this.employmentArmyForm.valid) {
       const formValue = this.employmentArmyForm.value;
@@ -406,22 +415,23 @@ export class EmploymentHistoryArmypersonComponent {
   }
 
   private dateComparisonValidator(
-    formGroup: AbstractControl
-  ): ValidationErrors | null {
-    const group = formGroup as FormGroup;
-    const commissionDate = group.get('dateOfCommission')?.value;
-    const retirementDate = group.get('dateOfRetirement')?.value;
-    if (!commissionDate || !retirementDate) return null;
+  formGroup: AbstractControl
+): ValidationErrors | null {
+  const group = formGroup as FormGroup;
+  const commissionDate = group.get('dateOfCommission')?.value;
+  const retirementDate = group.get('dateOfRetirement')?.value;
+  
+  if (!commissionDate || !retirementDate) return null;
 
-    const commDate = new Date(commissionDate);
-    const retDate = new Date(retirementDate);
+  const commDate = new Date(commissionDate);
+  const retDate = new Date(retirementDate);
 
-    // Clear time portions for accurate date comparison
-    commDate.setHours(0, 0, 0, 0);
-    retDate.setHours(0, 0, 0, 0);
+  // Clear time portions for accurate date comparison
+  commDate.setHours(0, 0, 0, 0);
+  retDate.setHours(0, 0, 0, 0);
 
-    return retDate < commDate ? { retirementBeforeCommission: true } : null;
-  }
+  return retDate < commDate ? { retirementBeforeCommission: true } : null;
+}
 
   formatToDisplay(
     input: Date | string | number | null | undefined
@@ -470,6 +480,7 @@ export class EmploymentHistoryArmypersonComponent {
     document.body.style.overflow = '';
   }
   confirmDelete() {
+    this.isLoading.set(true);
     this.employmentService.deleteRetiredArmy(this.userGuid).subscribe({
       next: (response) => {
         if (response.length > 0) {

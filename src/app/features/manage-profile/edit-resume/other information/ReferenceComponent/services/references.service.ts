@@ -28,6 +28,9 @@ export class ReferencesService {
     return this.http.post(this.insertUrl, payload)
   }
   deleteReference(userGuid:string, referenceId:number):Observable<any>{
-    return this.http.delete(this.deleteUrl,{body:{userGuid,referenceId} })
+      const params = new HttpParams()
+    .set('referenceId', referenceId)
+    .set('UserGuid', userGuid);
+    return this.http.delete(this.deleteUrl,{params})
   }
 }

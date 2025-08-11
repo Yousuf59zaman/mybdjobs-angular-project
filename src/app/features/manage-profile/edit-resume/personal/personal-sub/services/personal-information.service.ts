@@ -14,7 +14,11 @@ export class PersonalInformationService {
   public personalInfo$ = this.personalInfoSubject.asObservable().pipe(
     distinctUntilChanged() // Prevent duplicate emissions
   );
+
+
   constructor(private http:HttpClient) { }
+
+
   getPersonalInfo(UserGuid: string, isCvPosted: number): Observable<ApiResponse> {
     const params = {
       UserGuid: UserGuid.toString(),

@@ -61,7 +61,7 @@ export class PublicationsComponent implements OnChanges {
   selectedStartDate: Date | null = null;
   selectedEndDate: Date | null = null;
   dateRangeString = '';
-
+  userGuidId: string=''
 
   @ViewChild('container', { static: true }) containerRef!: ElementRef;
   // Add this property
@@ -77,7 +77,7 @@ export class PublicationsComponent implements OnChanges {
     accomplishmentId: new FormControl<number | null>(null),
     title: new FormControl('', [Validators.required]),
     issueDate: new FormControl('', [Validators.required]),
-    url: new FormControl('', [Validators.required]),
+    url: new FormControl(''),
     description: new FormControl('', [Validators.required])
   });
 
@@ -103,8 +103,6 @@ export class PublicationsComponent implements OnChanges {
         this.loadPublicationInfo();
       }
   }
-
-  // publicationForm methods
 
   resetForm(): void {
     this.publicationForm.reset({
@@ -171,25 +169,23 @@ export class PublicationsComponent implements OnChanges {
   }
 
   confirmDelete() {
-
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-
+    this.isLoading.set(true)
     if (this.accomPlishmentId !== null) {
       const request: DeleteAccomplishmentRequest = {
         acmId: this.accomPlishmentId,
-        userGuid:  userGuidId ?? ""
+        userGuid:  this.userGuidId ?? ""
       };
 
       this.accompolishmentService.deleteInfo(request).subscribe({
         next: (response) => {
-          // Check if the response contains an error
           const errorEvent = response.find(r => r.eventType === 2);
           if (errorEvent) {
             const errorMessage = errorEvent.eventData.find(d => d.key === 'message')?.value[0] || 'Delete failed';
             console.error('Delete error:', errorMessage);
+            this.isLoading.set(false)
             return;
           }
+          this.isLoading.set(false)
           this.publicationSummaries = this.publicationSummaries.filter(p => p.accomPlishmentId !== this.accomPlishmentId);
 
           if (this.editingSummary?.accomPlishmentId === this.accomPlishmentId) {
@@ -200,6 +196,7 @@ export class PublicationsComponent implements OnChanges {
         },
         error: (error) => {
           console.error('Error deleting publication:', error);
+          this.isLoading.set(false)
         }
       });
     }
@@ -267,12 +264,12 @@ export class PublicationsComponent implements OnChanges {
 
   loadPublicationInfo(): void {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : '';
 
     this.isLoading.set(true);
 
     const query: AccomplishmentInfoQuery = {
-      UserGuid:  userGuidId ?? ""
+      UserGuid:  this.userGuidId ?? ""
     };
     this.accompolishmentService.getAccomplishmentInfo(query, 2).subscribe({
       next: (summaries) => {
@@ -307,10 +304,6 @@ export class PublicationsComponent implements OnChanges {
   }
 
   savePublicationSummary() {
-
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-
     this.isLoading.set(true);
     this.formSubmitted = true;
     Object.keys(this.publicationForm.controls).forEach(key => {
@@ -332,8 +325,8 @@ export class PublicationsComponent implements OnChanges {
 
     const formValue = this.publicationForm.value;
     const command: AccomplishmentUpdateInsert = {
-      userGuid:  userGuidId ?? "",
-      type: 2, // publication type
+      userGuid:  this.userGuidId ?? "",
+      type: 2, 
       title: formValue.title || '',
       url: formValue.url || '',
       description: this.stripHtmlTags(formValue.description || ''),
@@ -433,6 +426,13 @@ export class PublicationsComponent implements OnChanges {
 
   get descriptionControl(): FormControl {
     return this.publicationForm.get('description') as FormControl;
+  }
+
+  onAddPublicationClick()
+  {
+    this.resetForm();
+    this.isPublicationsNewFormOpen.set(true);
+    this.editingSummary = null; // Ensure we're in "add" mode, not "
   }
 
   showEditor = false;

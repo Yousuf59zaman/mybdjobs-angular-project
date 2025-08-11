@@ -59,6 +59,7 @@ export class AwardsComponent implements OnChanges {
   selectedStartDate: Date | null = null;
   selectedEndDate: Date | null = null;
   dateRangeString = '';
+  userGuidId: string = ''
 
   @ViewChild('container', { static: true }) containerRef!: ElementRef;
   showAward = false;
@@ -74,7 +75,7 @@ export class AwardsComponent implements OnChanges {
     accomplishmentId: new FormControl<number | null>(null),
     title: new FormControl('', [Validators.required]),
     issueDate: new FormControl('', [Validators.required]),
-    url: new FormControl('', [Validators.required]),
+    url: new FormControl(''),
     description: new FormControl('', [Validators.required])
   });
 
@@ -163,14 +164,11 @@ export class AwardsComponent implements OnChanges {
   }
 
   confirmDelete() {
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-
-
+    this.isLoading.set(true)
     if (this.accomPlishmentId !== null) {
       const request: DeleteAccomplishmentRequest = {
         acmId: this.accomPlishmentId,
-        userGuid:  userGuidId ?? ""
+        userGuid:  this.userGuidId ?? ""
       };
 
       this.accompolishmentService.deleteInfo(request).subscribe({
@@ -179,8 +177,10 @@ export class AwardsComponent implements OnChanges {
           if (errorEvent) {
             const errorMessage = errorEvent.eventData.find(d => d.key === 'message')?.value[0] || 'Delete failed';
             console.error('Delete error:', errorMessage);
+            this.isLoading.set(false)
             return;
           }
+          this.isLoading.set(false)
           this.awardSummaries = this.awardSummaries.filter(p => p.accomPlishmentId !== this.accomPlishmentId);
 
           if (this.editingSummary?.accomPlishmentId === this.accomPlishmentId) {
@@ -191,6 +191,7 @@ export class AwardsComponent implements OnChanges {
         },
         error: (error) => {
           console.error('Error deleting award:', error);
+          this.isLoading.set(false)
         }
       });
     }
@@ -260,12 +261,12 @@ export class AwardsComponent implements OnChanges {
   loadAwardInfo(): void {
 
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : '';
 
 
     this.isLoading.set(true);
     const query: AccomplishmentInfoQuery = {
-      UserGuid:  userGuidId ?? ""
+      UserGuid:  this.userGuidId ?? ""
     };
 
     this.accompolishmentService.getAccomplishmentInfo(query, 3).subscribe({
@@ -301,12 +302,6 @@ export class AwardsComponent implements OnChanges {
   }
 
   saveAwardSummary() {
-
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-
-
-
     this.isLoading.set(true);
     this.formSubmitted = true;
     Object.keys(this.awardForm.controls).forEach(key => {
@@ -327,7 +322,7 @@ export class AwardsComponent implements OnChanges {
     }
     const formValue = this.awardForm.value;
     const command: AccomplishmentUpdateInsert = {
-      userGuid:  userGuidId ?? "",
+      userGuid:  this.userGuidId ?? "",
       type: 3, // award type
       title: formValue.title || '',
       url: formValue.url || '',
@@ -349,9 +344,8 @@ export class AwardsComponent implements OnChanges {
         );
 
         if (successMsg) {
-          // Update local state
+
           if (this.editingSummary) {
-            // Update existing award
             const idx = this.awardSummaries.findIndex(s => s.accomPlishmentId === this.editingSummary?.accomPlishmentId);
             if (idx > -1) {
               this.awardSummaries[idx] = {
@@ -363,7 +357,6 @@ export class AwardsComponent implements OnChanges {
               };
             }
           } else {
-            // Add new award
             const newSummary: AccomplishmentEventDataItem = {
               accomPlishmentId: response[0]?.eventData?.[0]?.value?.[0]?.accomplishmentId || this.getNextId(),
               type: 3,
@@ -375,7 +368,7 @@ export class AwardsComponent implements OnChanges {
             this.awardSummaries.push(newSummary);
           }
           this.closeawardForm();
-
+          this.loadAwardInfo();
           this.toaster.show('Award/Honors saved successfully!',
             {
               iconClass: 'lucide-check-circle',
@@ -439,6 +432,13 @@ export class AwardsComponent implements OnChanges {
 
   showEditor = false;
 
+
+  onAddAwardClick()
+  {
+    this.resetForm();
+    this.isAwardNewFormOpen.set(true);
+    this.editingSummary = null;
+  }
   showAwardForm() {
     this.showAward = true;
     this.cdRef.detectChanges();

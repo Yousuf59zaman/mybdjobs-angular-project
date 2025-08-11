@@ -35,7 +35,7 @@ export const MainMenuItems: AccordionItem[] = [
     isActive: true,
     items: [],
     icon: 'icon-view-dashboard',
-    routeLink: '#'
+    routeLink: '/dashboard'
   },
   {
     id: 'main-manageProfile',

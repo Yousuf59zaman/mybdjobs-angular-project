@@ -13,13 +13,14 @@
           @if(isAccordionOpen()) {
           <div class="flex items-center sm:gap-4 gap-0 text-primary-700"
             [ngClass]="{'hidden': buttonType() === 'none' || (buttonType() === 'edit' && isFormOpen())}">
-            <button (click)="onClickHeaderBtn()" [disabled]="isFormOpen()"
-              class="flex items-center gap-1.5 text-[#C63C92] disabled:opacity-55 disabled:cursor-not-allowed"
-              [ngClass]="{'sm:text-[#344054]': buttonType()==='edit'}">
-              <span class="sm:text-base text-sm sm:font-medium font-semibold"
-                [ngClass]="buttonType() === 'edit' ? 'icon-edit' : 'icon-plus'"></span>
-              <span class="sm:font-medium font-semibold text-sm">{{ buttonTitle() }}</span>
-            </button>
+          <button (click)="onClickHeaderBtn()" 
+            [disabled]="isFormOpen() || isAddButtonDisabled"
+            class="flex items-center gap-1.5 text-[#C63C92] disabled:opacity-55 disabled:cursor-not-allowed"
+            [ngClass]="{'sm:text-[#344054]': buttonType()==='edit'}">
+            <span class="sm:text-base text-sm sm:font-medium font-semibold"
+              [ngClass]="buttonType() === 'edit' ? 'icon-edit' : 'icon-plus'"></span>
+            <span class="sm:font-medium font-semibold text-sm">{{ buttonTitle() }}</span>
+          </button>
             <p class="hidden sm:block w-px h-4 bg-[#D0D5DD]"></p>
           </div>
           <p (click)="accordionToggleEmitter.emit(true)" class="flex items-center space-x-2">

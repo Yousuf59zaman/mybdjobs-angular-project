@@ -1,130 +1,179 @@
-<div class="bg-white rounded-none md:rounded-2xl border border-gray-200 shadow-sm w-full">
-  <div class="p-4 sm:p-6">
-    <div class="flex flex-col justify-center gap-1.5 mb-5">
-      <p class="text-primary-900 text-base sm:text-2xl font-semibold">
-        <span>Hello🖐, </span>
-        <span>Sajeeb Molla</span>
-      </p>
-      <p class="text-[#00000099] text-xs sm:text-sm">
-        Last Update Date 25th January, 2024
-      </p>
-    </div>
-    <hr>
-    <div class="mt-5">
-      <div class="w-full sm:flex sm:flex-row flex flex-col gap-4">
-        <div class="flex-1 flex flex-col">
-          <div
-            class="p-5 sm:flex sm:flex-row  sm:items-center flex flex-col gap-4 divide-y divide-[#E4E7EC] sm:divide-y-0 sm:divide-x sm:divide-[#E4E7EC] border border-[#E4E7EC] rounded-md">
-            <div class="flex-1 flex flex-col gap-4 ">
-              <span class="flex items-center gap-4">
-                <span
-                  class="inline-flex items-center justify-center bg-[#F9FAFB] rounded-full p-1.5 border border-#E4E7EC]">
-                  <img [src]="'images/crown.svg'" alt="" class="w-5 h-5" />
+
+@defer(when isLoading() === 'done') {
+  <div class="bg-white rounded-none md:rounded-2xl border border-gray-200 shadow-sm w-full">
+     <!-- *transloco="let t" -->
+    <div class="w-full py-5">
+      <div class="flex flex-col justify-center gap-1.5 mb-5 px-4 sm:px-6">
+        <p class="text-primary-900 text-base sm:text-2xl font-semibold">
+          <span>Hello🖐, </span>
+          <span>{{ profileName() }}</span>
+        </p>
+        <p class="text-[#00000099] text-xs sm:text-sm">
+          Last Update Date 25th January, 2024
+        </p>
+      </div>
+      <hr>
+      <div class="mt-5 px-4 sm:px-6">
+        <div class="w-full grid grid-cols-1 md:grid-cols-7 gap-4">
+          <div class="col-span-1 md:col-span-5 flex flex-col">
+            <div
+              class="p-5 grid sm:grid-cols-3 grid-cols-1 items-center md:items-start gap-4 divide-y divide-[#E4E7EC] sm:divide-y-0 sm:divide-x sm:divide-[#E4E7EC] border border-[#E4E7EC] rounded-md">
+              <div class="col-span-1 flex flex-col gap-4 ">
+                <span class="flex items-center gap-2">
+                  <span
+                    class="inline-flex items-center justify-center rounded-full">
+                    <img [src]="'images/crown.svg'" alt="" class="w-5 h-5" />
+                  </span>
+                  <p class="text-primary-900 font-semibold text-sm">{{ 'dashboard.currentPlan' | transloco }}</p>
                 </span>
-                <p class="text-primary-900 font-medium text-base">Current Plan</p>
-              </span>
 
-              <div class="flex justify-between items-center">
-                @if(isPro()){
-                <button class="flex items-center justify-center gap-3 px-3 py-1.5 rounded-md text-sm w-[100px] max-w-[100px]
-                                       bg-[#EBFFF2] border border-[#C7FEDC] shadow-xs-custom ">
-                  Premium
-                  <img [src]="'images/green-badge.svg'" alt="badge.svg" class="w-4 h-[18px]">
-                </button>
-                <p class="text-[#C63C92] text-xs font-semibold flex items-center gap-1">
-                  <img [src]="'images/calendar_pink.svg'" alt="">
-                  <span class="font-medium">06 May, 2025</span>
-                </p>
-                <!-- <button
-                  class="flex items-center justify-center gap-3 px-3 py-1.5 rounded-md text-sm max-w-fit font-medium text-white
-                                                                         bg-[#0DB14B] border border-[#C7FEDC] shadow-xs-custom ">
-                  Upgrade
-                </button> -->
-                }@else {
-                <button class="flex items-center justify-between px-3 py-1.5 rounded-md text-sm w-[100px] max-w-[100px]
-                                                         bg-[#F2F4F7]   shadow-xs-custom ">
-                  Free
-                  <img [src]="'images/free.svg'" alt="badge.svg" class="">
-                </button>
+                @if( personalData().planAndPointsResponse.packageName?.length ){
+                  <div class="flex justify-between items-center -mb-3 -mt-2 text-[11px]">
+                    <button class="flex items-center justify-center gap-1 px-2 py-0.5 -mb-0.5 rounded-full w-fit max-w-[92px] bg-[#EBFFF2] border border-[#C7FEDC] shadow-xs-custom ">
+                      {{ personalData().planAndPointsResponse.packageName }}
+                      <img [src]="'images/green-badge.svg'" alt="badge.svg" class="w-4 h-[14px]">
+                    </button>
+                    <p class="text-[#C63C92] font-semibold flex items-center gap-1">
+                      <img [src]="'images/calendar_pink.svg'" alt="">
+                      <span class="font-medium">{{ personalData().planAndPointsResponse.packageEndDate | date : "dd MMM, yyyy" }}</span>
+                    </p>
+                    <!-- <button
+                      class="flex items-center justify-center gap-3 px-3 py-1.5 rounded-md text-sm max-w-fit font-medium text-white bg-[#0DB14B] border border-[#C7FEDC] shadow-xs-custom ">
+                      Upgrade
+                    </button> -->
+                  </div>
+                  <progress-bar
+                    [achievedProgress]="premiumProgress()"
+                    [minValue]="0"
+                    [maxValue]="premiumProgressMax()"
+                    [progressBarColor]="'#DC6803'"
+                    [isShowAchievedProgress]="false"
+                  ></progress-bar>
+                } @else {
+                  <button class="flex items-center justify-center gap-1 mt-0.5 text-[13px] px-2 py-0.5 rounded-full w-fit max-w-[92px] bg-[#F2F4F7] border shadow-xs-custom ">
+                    Free
+                    <img [src]="'images/free.svg'" alt="badge.svg" class="w-4 h-[14px]">
+                  </button>
                 }
+                <a
+                  class="text-primary-900 text-sm underline underline-offset-4 mb-1.5"
+                  (click)="onClickChangePlan('up')"
+                  [ngClass]=" personalData().planAndPointsResponse.packageName === 'Premium' ? 'invisible pointer-events-none' : 'cursor-pointer'"
+                >
+                  {{ 'dashboard.planUpgrade' | transloco }}
+                </a>
 
+                <button
+                  class=" px-6 py-2 flex items-center justify-center gap-1.5 bg-[#0DB14B] rounded-lg text-white font-medium text-sm hover:bg-[#008020] transition-colors duration-300 ease-in-out"
+                  (click)="onClickChangePlan( personalData().planAndPointsResponse.packageName?.length ? 'rep' : '')">
+                  {{ (personalData().planAndPointsResponse.packageName?.length ? 'dashboard.planRenewRepurchase' : 'dashboard.planGetPro') | transloco }}
+                  <img [src]="'images/arrow-up-right.svg'" alt="arrow-up-right.svg">
+                </button>
 
               </div>
-              <progress-bar [label]="''" [achievedProgress]="2500" [minValue]="0" [maxValue]="4000"
-                [progressBarColor]="'#DC6803'"></progress-bar>
-              <a href="#" class="text-primary-900 text-sm underline underline-offset-4 cursor-pointer mb-1.5">
-                Want to Upgrade Package?
-              </a>
 
-              <button class=" px-6 py-2 flex items-center justify-center gap-1.5
-                       bg-[#0DB14B] rounded-lg text-white font-medium text-sm">
-                Renew/Repurchase
-                <img [src]="'images/arrow-up-right.svg'" alt="arrow-up-right.svg">
+              <div class="pt-2 sm:pt-0 sm:pl-4 col-span-1 flex flex-col gap-4 ">
+                <span class="flex items-center gap-2">
+                  <span
+                    class="inline-flex items-center justify-center rounded-full">
+                  <img [src]="'images/point.svg'" alt="" class="w-5 h-5" />
+                  </span>
+                  <p class="text-primary-900 font-semibold text-sm">{{ 'dashboard.myPoints' | transloco }}</p>
+                </span>
+                <progress-bar
+                  label="{{ 'dashboard.totalPoints' | transloco }}"
+                  [achievedProgress]="personalData().planAndPointsResponse.totalPoints"
+                  [minValue]="0"
+                  [maxValue]="1000"
+                ></progress-bar>
+                <a
+                  href="https://mybdjobs.bdjobs.com/mybdjobs/user-guide-point-system.asp"
+                  class="text-primary-900 text-sm underline underline-offset-4 cursor-pointer mb-1.5"
+                  target="_blank">
+                  {{ 'dashboard.howEarnPoint' | transloco }}
+                </a>
+                <a
+                  [href]="'https://mybdjobs.bdjobs.com/mybdjobs/point-dashboard.asp'"
+                  class=" px-6 py-2 flex items-center justify-center gap-1.5 border border-[#D0D5DD] rounded-lg text-primary-900  font-medium text-sm">
+                  {{ 'dashboard.myPoints' | transloco }}
+                  <img [src]="'images/arrow-up-right-p.svg'" alt="arrow-up-right.svg">
+                </a>
 
-              </button>
+              </div>
+
+              <div class="pt-2 sm:pt-0 sm:pl-4 col-span-1 flex flex-col gap-4 ">
+                <span class="flex items-center gap-2">
+                  <span
+                    class="inline-flex items-center justify-center rounded-full">
+                    <img [src]="'images/sms-job-alert.svg'" alt="" class="w-5 h-5" />
+                  </span>
+                  <p class="text-primary-900 font-semibold text-sm">{{ 'dashboard.smsJobAlert' | transloco }}</p>
+                </span>
+
+                <progress-bar
+                  label="{{ personalData().planAndPointsResponse.totalLeft }} {{ 'dashboard.smsLeft' | transloco }}"
+                  [achievedProgress]="personalData().planAndPointsResponse.totalLeft"
+                  [totalProgressValue]="personalData().planAndPointsResponse.totalPurchased"
+                  [minValue]="0"
+                  [maxValue]="personalData().planAndPointsResponse.totalPurchased"
+                  [progressBarColor]="'#DC6803'"
+                ></progress-bar>
+                <div class="relative group inline-block w-full">
+                  <div class="truncate w-full text-primary-900 text-sm underline underline-offset-4 mb-1.5">
+                    {{ 'dashboard.jobAlertDetails' | transloco }}
+                  </div>
+                  <div
+                    class="absolute bottom-full mb-1 hidden group-hover:block px-2 py-1 text-[11px] text-white bg-gray-800 rounded shadow-lg"
+                  >
+                    {{ 'dashboard.jobAlertDetails' | transloco }}
+                  </div>
+                </div>
+                
+                <a
+                  [href]="'https://mybdjobs.bdjobs.com/mybdjobs/sms/sms-setting.asp'"
+                  class=" px-6 py-2 flex items-center justify-center gap-1.5 border border-[#D0D5DD] rounded-lg text-primary-900  font-medium text-sm">
+                  {{ 'dashboard.buySmsJobAlert' | transloco }}
+                  <img [src]="'images/arrow-up-right-p.svg'" alt="arrow-up-right.svg">
+                </a>
+              </div>
 
             </div>
-
-            <div class="pt-4 sm:pl-4 flex-1 flex flex-col gap-4 ">
-              <span class="flex items-center gap-4 mb-1">
-                <img [src]="'images/point.svg'" alt="" class="w-5 h-5" />
-
-                <p class="text-primary-900 font-medium text-base">My Point</p>
-              </span>
-              <progress-bar [label]="'Total Points'" [achievedProgress]="1229" [minValue]="0"
-                [maxValue]="2000"></progress-bar>
-              <a href="#" class="text-primary-900 text-sm underline underline-offset-4 cursor-pointer mb-1.5">
-                How do I earn points?
-              </a>
-              <a [href]="'https://mybdjobs.bdjobs.com/mybdjobs/point-dashboard.asp'" class=" px-6 py-2 flex items-center justify-center gap-1.5
-                      border border-[#D0D5DD] rounded-lg text-primary-900  font-medium text-sm">
-                My Points
-                <img [src]="'images/arrow-up-right-p.svg'" alt="arrow-up-right.svg">
-
-              </a>
-
+            <div class="mt-4">
+              <app-invitation-board
+                [invitationCounts]="invitationCounts()"
+              ></app-invitation-board>
             </div>
-
-            <div class="pt-4 sm:pl-4 flex-1 flex flex-col gap-4 max-w-[220px] ">
-              <span class="flex items-center gap-4 mb-1">
-                <img [src]="'images/sms-job-alert.svg'" alt="" class="w-5 h-5" />
-                <p class="text-primary-900 font-medium text-base">SMS job alert</p>
-              </span>
-
-              <progress-bar [label]="'Total SMS'" [achievedProgress]="2500" [minValue]="0" [maxValue]="4000"
-                [progressBarColor]="'#DC6803'"></progress-bar>
-              <p class="truncate  text-primary-900 text-sm cursor-pointer mb-1 ">Check your SMS balance and top up to
-                continue sending messages.</p>
-              <a [href]="'https://mybdjobs.bdjobs.com/mybdjobs/sms/sms-setting.asp'" class=" px-6 py-2 flex items-center justify-center gap-1.5
-                      border border-[#D0D5DD] rounded-lg text-primary-900  font-medium text-sm">
-                Buy Now SMS
-                <img [src]="'images/arrow-up-right-p.svg'" alt="arrow-up-right.svg">
-
-              </a>
-
+            <div class="mt-5 w-full min-w-full">
+              <app-dashboard-stat></app-dashboard-stat>
             </div>
+          </div>
+          <div class="col-span-1 md:col-span-2">
+            <app-dashboard-right-panel></app-dashboard-right-panel>
+          </div>
 
-          </div>
-          <div class="mt-4">
-            <app-invitation-board></app-invitation-board>
-          </div>
-          <div class="mt-5 w-full md:min-w-[500px] lg:min-w-[824px]">
-            <app-dashboard-stat></app-dashboard-stat>
-          </div>
-          <div>
-
-          </div>
         </div>
-        <div class="max-w-[304px]">
-          <app-dashboard-right-panel></app-dashboard-right-panel>
+        <div>
+
         </div>
-
-      </div>
-      <div>
-
       </div>
     </div>
   </div>
 
-
-</div>
+  <div
+    class="fixed inset-0 bg-[#101828]/50 flex items-center justify-center z-[9999]"
+    [ngClass]="{
+      'hidden': !isModalOpen()
+    }"
+  >
+    <app-dashboard-modal
+      [modalType]="packageType()"
+      description="{{ packageType() === 'up' ? 'dashboard.upgradeDescription' : 'dashboard.renewDescription' }}"
+      [packageEndDateString]="personalData().planAndPointsResponse.packageEndDate"
+      (cancelEmitter)="isModalOpen.set(false)"
+    />
+  </div>
+} @placeholder {
+  <div class="h-full flex items-center justify-center">
+    <app-dashboard-skeleton/>
+  </div>
+}

@@ -4,6 +4,19 @@ import { map, Observable, tap } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { checkUserNameResponse, ApiResponse, authApiRequest, AuthApiResponse, checkUserNameRequest, editPasswordRequest, getUserListResponse, sendOtpRequest } from '../models/login.model';
 import { CookieService } from '../../../core/services/cookie/cookie.service';
+export const localEnvironment = {
+  production: false,
+  authTokenCookieName: 'authToken',        
+  refreshTokenCookieName: 'refreshToken',  
+  apiBaseUrl: 'https://gateway.bdjobs.com/bdjobs-auth-dev/api'
+};
+
+export const productionEnvironment = {
+  production: true,
+  authTokenCookieName: 'authToken',       
+  refreshTokenCookieName: 'RefreshTokenForJobseeker',   
+  apiBaseUrl: 'https://gateway.bdjobs.com/bdjobs-auth-prod/api'
+};
 
 export type rightPanel = 'username' | 'password' | 'otp' | 'find-acc' | 'choose_acc' | 'welcome' | 'sec_code' | 'access_acc' | 'reset_pass'
 @Injectable({
@@ -25,6 +38,9 @@ export class LoginService {
   readonly authToken = signal<string | null>(null);
   readonly currentUserInfo = signal<any>(null);
   private readonly AUTH_STORAGE_KEY = 'authData';
+  private refreshTokenUrl = "https://gateway.bdjobs.com/bdjobs-auth-dev/api/Login/GetAuthTokenByRefreshToken";
+  private tokenRefreshInterval: any;
+  private readonly REFRESH_INTERVAL = 20 * 1000;
 
 
   currentPanel = signal<rightPanel>('username')
@@ -58,9 +74,6 @@ export class LoginService {
     return this.http.post<{ event: ApiResponse<checkUserNameResponse> }>(this.checkUserNameUrl, userInformation);
   }
 
-  postUserPassword(body: authApiRequest): Observable<{ event: ApiResponse<AuthApiResponse> }> {
-    return this.http.post<{ event: ApiResponse<AuthApiResponse> }>(this.authUrl, body, { withCredentials: true })
-  }
 
   getUserList(username: string): Observable<{ event: ApiResponse<getUserListResponse[]> }> {
     return this.http.get<{ event: ApiResponse<getUserListResponse[]> }>(`${this.getUserListUrl}?UserCredentials=${username}`);
@@ -128,15 +141,74 @@ export class LoginService {
 //   }
 // }
 
-  getAuthData(): { token: string; isBdjobsPro: boolean } | null {
-    const data = localStorage.getItem(this.AUTH_STORAGE_KEY);
-    return data ? JSON.parse(data) : null;
+
+  stopTokenRefreshTimer(): void {
+    if (this.tokenRefreshInterval) {
+      clearInterval(this.tokenRefreshInterval);
+      this.tokenRefreshInterval = null;
+    }
   }
 
-  clearAuthData(): void {
-    localStorage.removeItem(this.AUTH_STORAGE_KEY);
-    this.cookieService.deleteCookie('authToken');
-    this.cookieService.deleteCookie('IsBdjobsPro');
+  refreshAuthToken(refreshToken: string): Observable<any> {
+    return this.http.get<any>(`${this.refreshTokenUrl}?refreshToken=${refreshToken}`);
   }
+
+
+
+postUserPassword(body: authApiRequest): Observable<{ event: ApiResponse<AuthApiResponse> }> {
+  return this.http.post<{ event: ApiResponse<AuthApiResponse> }>(this.authUrl, body).pipe(
+    tap(response => {
+      if (response.event.eventType === 1) {
+        this.handleSuccessfulLogin(response);
+      }
+    })
+  );
+}
+
+
+getAuthData(): { token: string; isBdjobsPro: boolean; refreshToken: string } | null {
+  const data = localStorage.getItem(this.AUTH_STORAGE_KEY);
+  return data ? JSON.parse(data) : null;
+}
+
+startTokenRefreshTimer(refreshToken: string): void {
+  this.stopTokenRefreshTimer();
+  this.tokenRefreshInterval = setInterval(() => {
+    this.refreshAuthToken(refreshToken).subscribe({
+      next: (response) => {
+        if (response.event.eventType === 1) {
+          const newToken = response.event.eventData[0].value.token;
+          const newRefreshToken = response.event.eventData[0].value.refreshToken;
+          
+          this.authToken.set(newToken);
+          this.cookieService.setCookie(productionEnvironment.authTokenCookieName, newToken, 1);
+          this.cookieService.setCookie(productionEnvironment.refreshTokenCookieName, newRefreshToken, 1);
+          
+          // Restart timer with new refresh token
+          this.startTokenRefreshTimer(newRefreshToken);
+          
+          // Update localStorage
+          this.setAuthData(response);
+        }
+      },
+      error: (error) => {
+        console.error('Token refresh failed:', error);
+        this.stopTokenRefreshTimer();
+      }
+    });
+  }, this.REFRESH_INTERVAL);
+}
+
+private handleSuccessfulLogin(response: any): void {
+  const token = response.event.eventData[0]?.value?.token;
+  const refreshToken = response.event.eventData[0]?.value?.refreshToken;
+  
+  if (token && refreshToken) {
+    this.cookieService.setCookie(productionEnvironment.authTokenCookieName, token, 1);
+    this.cookieService.setCookie(productionEnvironment.refreshTokenCookieName, refreshToken, 1);
+    this.startTokenRefreshTimer(refreshToken);
+    this.setAuthData(response);
+  }
+}
 
 }

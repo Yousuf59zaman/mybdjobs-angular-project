@@ -31,6 +31,8 @@ import { CookieService } from '../../../../../core/services/cookie/cookie.servic
   templateUrl: './portfolio.component.html',
   styleUrl: './portfolio.component.scss'
 })
+
+
 export class PortfolioComponent implements OnChanges {
   private accordionService = inject(AccordionManagerService)
   private accompolishmentService = inject(AccomplishmentService)
@@ -55,6 +57,9 @@ export class PortfolioComponent implements OnChanges {
   summary: AccomplishmentEventDataItem | null = null;
   portfolioSummaries: AccomplishmentEventDataItem[] = [];
   editingSummary: AccomplishmentEventDataItem | null = null;
+  userGuidId: string = ''
+ 
+
 
   @ViewChild('container', { static: true }) containerRef!: ElementRef;
   showProfolio = false;
@@ -72,7 +77,7 @@ export class PortfolioComponent implements OnChanges {
   portfolioForm = new FormGroup({
     accomplishmentId: new FormControl<number | null>(null),
     title: new FormControl('', [Validators.required]),
-    url: new FormControl('', [Validators.required]),
+    url: new FormControl(''),
     description: new FormControl('', [Validators.required])
   });
 
@@ -127,14 +132,11 @@ export class PortfolioComponent implements OnChanges {
   }
 
   confirmDelete() {
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || '';
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-
-
+    this.isLoading.set(true)
     if (this.accomPlishmentId !== null) {
       const request: DeleteAccomplishmentRequest = {
         acmId: this.accomPlishmentId,
-        userGuid:  userGuidId ?? ""
+        userGuid: this.userGuidId ?? "",
       };
 
       this.accompolishmentService.deleteInfo(request).subscribe({
@@ -143,18 +145,20 @@ export class PortfolioComponent implements OnChanges {
           if (errorEvent) {
             const errorMessage = errorEvent.eventData.find(d => d.key === 'message')?.value[0] || 'Delete failed';
             console.error('Delete error:', errorMessage);
+            this.isLoading.set(false)
             return;
           }
           this.portfolioSummaries = this.portfolioSummaries.filter(p => p.accomPlishmentId !== this.accomPlishmentId);
-
+          this.isLoading.set(false)
           if (this.editingSummary?.accomPlishmentId === this.accomPlishmentId) {
             this.closeForm();
           }
-
+          this.loadPortfolioInfo()
           this.closeDeleteModal();
         },
         error: (error) => {
           console.error('Error deleting portfolio:', error);
+          this.isLoading.set(false)
         }
       });
     }
@@ -223,12 +227,12 @@ export class PortfolioComponent implements OnChanges {
 
   loadPortfolioInfo(): void {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : '';
 
 
     this.isLoading.set(true);
     const query: AccomplishmentInfoQuery = {
-      UserGuid:  userGuidId ?? ""
+      UserGuid:  this.userGuidId ?? "",
     };
 
     this.accompolishmentService.getAccomplishmentInfo(query, 1).subscribe({
@@ -263,20 +267,18 @@ export class PortfolioComponent implements OnChanges {
   }
 
   savePortfolioSummary() {
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-
-
-    this.isLoading.set(true);
     this.formSubmitted = true;
+    this.portfolioForm.markAllAsTouched();
+
     if (this.portfolioForm.invalid) {
-      this.portfolioForm.markAllAsTouched();
+      this.isLoading.set(false);
       return;
     }
 
+    this.isLoading.set(true);
     const formValue = this.portfolioForm.value;
     const command: AccomplishmentUpdateInsert = {
-      userGuid:  userGuidId ?? "",
+      userGuid:  this.userGuidId ?? "",
       type: 1, // portfolio type
       title: formValue.title || '',
       url: formValue.url || '',
@@ -320,7 +322,7 @@ export class PortfolioComponent implements OnChanges {
             this.portfolioSummaries.push(newSummary);
           }
           this.closePortfolioForm();
-
+          this.loadPortfolioInfo();
           this.toaster.show('Portfolio saved successfully!', {
             iconClass: 'lucide-check-circle',
             imageUrl: 'images/check-circle.svg',
@@ -383,4 +385,11 @@ export class PortfolioComponent implements OnChanges {
     this.showProfolio = true;
     this.cdRef.detectChanges();
   }
+
+  onAddPortfolioClick() {
+  this.resetForm();
+  this.isPortfolioNewFormOpen.set(true);
+  this.editingSummary = null;
+  }
+
 }

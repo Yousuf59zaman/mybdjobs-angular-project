@@ -1,28 +1,35 @@
 <div class="p-4 border border-[#E4E7EC] rounded-lg">
     <div class="flex flex-col gap-4">
-        <p class="title-design">Your Invitation</p>
-        <div class="sm:flex sm:flex-row sm:items-center flex flex-col gap-5 justify-between">
+        <p class="title-design text-primary-900 font-semibold">{{ 'dashboard.myInvitation' | transloco }}</p>
+        <div class="grid sm:grid-cols-4 grid-cols-1 sm:items-center gap-2.5 justify-between">
             @for(board of invitationCard(); track $index){
-            <div class="relative flex items-center gap-2">
-                <span class=" py-1.5 px-1 pb-1 rounded bg-[#F7EAF2]">
-                    <img [src]="board.imageUrl" alt="" class="">
-                </span>
-                <span class="sub-title-design">{{board.title}}</span>
-                @if(board.count > 0){
-                <span class="absolute -top-2.5 left-7 px-[5px] py-[1px] flex items-center justify-center
-                        text-xs font-medium text-white bg-[#D92D20] rounded-[50%]">{{board.count}}</span>
-                }
+                <a
+                    class="relative group overflow-hidden flex items-center gap-1 cursor-pointer rounded-md text-black hover:text-[#C63C92]"
+                    [routerLink]="'/'+board.ridirectionLink">
 
-            </div>
+                    <span class="absolute inset-0 bg-[#F7EAF2] scale-0 group-hover:scale-100 origin-left transition-transform duration-500 ease-out z-0"></span>
+
+                    <span class="relative z-10 py-1.5 px-1 pb-1 rounded bg-[#F7EAF2]">
+                        <img [src]="board.imageUrl" alt="" class="size-7" />
+                    </span>
+                    <span class="relative z-10 sub-title-design text-xs font-medium pe-1">{{ board.title | transloco }}</span>
+
+                    @if(board.count > 0) {
+                        <span
+                            class="absolute z-10 -top-2.5 left-7 px-[5px] py-[1px] flex items-center justify-center text-xs font-medium text-white bg-[#D92D20] rounded-[50%]"
+                        >{{ board.count }}</span>
+                    }
+                </a>
             }
-
         </div>
-        <div class="w-full flex flex-col gap-3">
-            <p class="flex justify-between items-center">
-                <span class="title-design">Upcoming Invitation</span>
-                <span class="cursor-pointer text-[#C63C92] font-medium text-sm">View More</span>
-            </p>
 
+        <div
+            class="w-full flex flex-col gap-3"
+            [ngClass]="{'hidden': !isUpcomingInvitation()}">
+            <p class="flex justify-between items-center">
+                <span class="title-design text-primary-900 font-semibold">{{ 'dashboard.upcomingInvitation' | transloco }}</span>
+                <span class="cursor-pointer text-[#C63C92] font-medium text-sm">{{ 'dashboard.viewMore' | transloco }}</span>
+            </p>
 
             <div class="relative w-full">
                 <div class="w-full relative border border-[#E4E7EC] rounded-md p-2 sm:p-4">
@@ -60,6 +67,5 @@
             </div>
 
         </div>
-
     </div>
 </div>

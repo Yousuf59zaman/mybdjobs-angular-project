@@ -15,13 +15,13 @@ export class HalfDonutChartComponent implements AfterViewInit {
 
   @ViewChildren('myCanvas') canvasRef!: QueryList<ElementRef<HTMLCanvasElement>>;
 
-  readonly progress = computed(() => (this.used() / this.total()))
+  readonly progress = computed(() => (this.used() / (this.total() ? this.total() : 1)))
 
   private ctx!: CanvasRenderingContext2D;
   private readonly centerX = 130;
   private readonly centerY = 130;
-  private readonly radius = 50;
-  private readonly baseLineWidth = 10;
+  private readonly radius = 47;
+  private readonly baseLineWidth = 9;
   private readonly highlightColor = '#C63C92';
   private readonly baseColor = '#DCE1E4';
   private currentAngle = 0;
@@ -41,13 +41,9 @@ export class HalfDonutChartComponent implements AfterViewInit {
     });
   }
 
-
-
-
-
-  private drawBaseArc(ctx: CanvasRenderingContext2D) {
+  private drawBaseArc(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
     ctx.save();
-    ctx.translate(this.centerX, this.centerY);
+    ctx.translate(canvas.width/2, canvas.height/1.15);
     ctx.rotate(Math.PI); // rotate 180°
     ctx.beginPath();
     ctx.lineWidth = this.baseLineWidth;
@@ -58,11 +54,11 @@ export class HalfDonutChartComponent implements AfterViewInit {
     ctx.restore();
   }
 
-  private drawHighlightArc(ctx: CanvasRenderingContext2D, angle: number) {
+  private drawHighlightArc(ctx: CanvasRenderingContext2D, angle: number, canvas: HTMLCanvasElement) {
     if (angle <= 0) return;
 
     ctx.save();
-    ctx.translate(this.centerX, this.centerY);
+    ctx.translate(canvas.width/2, canvas.height/1.15);
     ctx.rotate(Math.PI);
     ctx.beginPath();
     ctx.lineWidth = this.baseLineWidth;
@@ -75,7 +71,6 @@ export class HalfDonutChartComponent implements AfterViewInit {
     ctx.restore();
   }
 
-
   private animate(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
     let currentAngle = 0;
     const progress = Math.max(0, Math.min(1, this.progress()))
@@ -83,17 +78,17 @@ export class HalfDonutChartComponent implements AfterViewInit {
 
     const animateStep = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      this.drawBaseArc(ctx);
+      this.drawBaseArc(ctx, canvas);
 
       if (maxAngle <= 0) return;
 
       if (currentAngle < maxAngle) {
-        currentAngle += 0.02;
+        currentAngle += 0.01;
         if (currentAngle > maxAngle) currentAngle = maxAngle;
-        this.drawHighlightArc(ctx, currentAngle);
+        this.drawHighlightArc(ctx, currentAngle, canvas);
         requestAnimationFrame(animateStep);
       } else {
-        this.drawHighlightArc(ctx, currentAngle); // final frame
+        this.drawHighlightArc(ctx, currentAngle, canvas); // final frame
       }
     };
     animateStep();

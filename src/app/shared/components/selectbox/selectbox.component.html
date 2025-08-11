@@ -1,6 +1,6 @@
 
 <div class="relative w-full ">
-    @if (label()) {
+  @if (label()) {
     <label  class="block text-sm font-medium leading-6 text-[#344054] relative">
       {{ label() }}
       @if(isRequired()){
@@ -8,8 +8,8 @@
       }
       
     </label>
-    }
-<div (click)="isDropdownOpen.set(!isDropdownOpen())" class="relative">
+  }
+  <div (click)="isDropdownOpen.set(!isDropdownOpen())" class="relative">
     <button 
       type="button"
 
@@ -25,7 +25,7 @@
   
   @if (isDropdownOpen()) {
 
-    <div [ngClass]="label() ? 'top-[72px]':'top-[40px]'" class="w-full absolute z-10 top-[72px] mt-1 bg-white dropdown-shadow rounded-md border border-[#DAE5EC] px-2 py-2">
+    <div [ngClass]="label() ? 'top-[72px]':'top-[40px]'" class="w-full absolute z-10 mt-1 bg-white dropdown-shadow rounded-md border border-[#DAE5EC] px-2 py-2">
 
       <div class="max-h-[140px] overflow-y-auto">
         @for (item of options(); track item.value) {
@@ -50,6 +50,7 @@
       
     </div>
   }
+</div>
 
   
   

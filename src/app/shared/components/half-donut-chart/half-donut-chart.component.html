@@ -1,14 +1,14 @@
-<div class="relative border max-h-[134px] w-[260px] max-w-[280px] border-[#E4E7EC] rounded-lg pb-2.5 px-4 pt-4">
+<div class="relative border min-h-[134px] w-full border-[#E4E7EC] rounded-lg pb-2.5 px-2 pt-4">
     <div class=" flex flex-col items-center text-center">
         <p class="sub-title-design">{{ title() }}</p>
-        <p class="text-xs text-primary-700">{{ subtitle() }}</p>
+        <p class="text-[11px] text-primary-700">{{ subtitle() }}</p>
     </div>
 
-    <div class="flex justify-center items-start -mt-16">
-        <canvas #myCanvas class="chart-canvas"></canvas>
+    <div class="flex justify-center items-start w-full h-full">
+        <canvas #myCanvas class="chart-canvas w-full flex justify-center items-center aspect-[3.5/1] md:aspect-[3/1]"></canvas>
     </div>
 
-    <div class="flex justify-center -mt-6 pb-4">
+    <div class="flex justify-center -mt-6 pb-2">
         <div class="sub-title-design">
             <span>{{ used() < 10 && used()> 0 ? '0' + used() : used() }}</span>
             / <span>{{ total() }}</span>

@@ -14,16 +14,11 @@ import { catchError, map, Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class LinkAccountService {
-  // You can switch between local and production URLs by uncommenting the appropriate lines
-  // private readonly getApi = 'https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/EditResume/GetLinkAccounts';
-  // private readonly insertApi = 'https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/EditResume/InsertAccountLink';
-  // private readonly updateApi = 'https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/EditResume/UpdateLinkAccount';
-  // private readonly deleteApi = 'https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/EditResume/DeleteLinkAccount';
-
-  private readonly getApi = 'https://localhost:7211/api/EditResume/GetLinkAccounts';
-  private readonly insertApi = 'https://localhost:7211/api/EditResume/InsertAccountLink';
-  private readonly updateApi = 'https://localhost:7211/api/EditResume/UpdateLinkAccount';
-  private readonly deleteApi = 'https://localhost:7211/api/EditResume/DeleteLinkAccount';
+  
+  private readonly getApi = 'https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/EditResume/GetLinkAccounts';
+  private readonly insertApi = 'https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/EditResume/InsertAccountLink';
+  private readonly updateApi = 'https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/EditResume/UpdateLinkAccount';
+  private readonly deleteApi = 'https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/EditResume/DeleteLinkAccount';
 
   constructor(private http: HttpClient) { }
 

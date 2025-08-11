@@ -1,26 +1,33 @@
 import { NgClass, NgStyle } from '@angular/common';
-import { Component, computed, input, OnInit, signal } from '@angular/core';
+import { Component, computed, input, OnChanges, signal, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-ring-chart',
-  imports: [NgStyle],
+  imports: [
+    NgStyle,
+    NgClass
+  ],
   templateUrl: './ring-chart.component.html',
   styleUrl: './ring-chart.component.scss'
 })
-export class RingChartComponent implements OnInit {
+export class RingChartComponent implements OnChanges {
   backgroundColor = input('#F2F4F7')
   progressColor = input('#0DB14B')
-  achievedProgress = input(50)
+  achievedProgress = input(0)
+  progressText = input('')
   progressValue = signal(0)
+  language = input('en')
 
   progress = computed(() => this.progressValue())
 
-  ngOnInit(): void {
-    this.animateProgress(this.achievedProgress() > 0 ? this.achievedProgress() : 0)
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['achievedProgress'] && changes['achievedProgress'].currentValue) {
+      this.animateProgress(this.achievedProgress() > 0 ? this.achievedProgress() : 0);
+    }
   }
 
   animateProgress(target: number) {
-    const duration = 1500;
+    const duration = 1200;
     const frameRate = 60;
     const totalFrame = (duration / 1000) * frameRate;
     let currentFrame = 0;

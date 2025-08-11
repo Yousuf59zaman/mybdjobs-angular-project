@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
@@ -22,8 +22,11 @@ export class ProfessionalCertificateService {
     return this.http.post<any>(this.updateUrl, payload);
   }
   deleteCertification(prqId: number, UserGuid: string ):Observable<PostApiResponse[]>
-  {
-    return this.http.delete<any>(this.deleteUrl,{body: {prqId , UserGuid}})
+  {  
+      const params = new HttpParams()
+    .set('prqId', prqId.toString())
+    .set('UserGuid', UserGuid);
+    return this.http.delete<PostApiResponse[]>(this.deleteUrl, { params });
   }
   createCertification(payload: InsertProfessionalCertificate) : Observable<any>
   {

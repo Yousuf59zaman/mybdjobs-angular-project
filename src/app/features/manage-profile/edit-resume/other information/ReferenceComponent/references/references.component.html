@@ -12,7 +12,7 @@
   <div class="flex items-center justify-center py-[50px]">
     <img [src]="'/images/loading.gif'" alt="Loading..." />
   </div>
-  }@else { @if(isInfoAvalable()) {
+  }@else { @if(isInfoAvalable() )  {
   <div class="my-5" *ngFor="let ref of referenceData; let i = index">
     <ng-container
       *ngIf="

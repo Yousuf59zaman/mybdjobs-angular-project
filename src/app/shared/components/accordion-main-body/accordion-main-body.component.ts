@@ -21,6 +21,8 @@ export class AccordionMainBodyComponent {
   maxCount = input(0);
   @Input() isAddButtonDisabled: boolean = false;
 
+ 
+
   @Output() formToggleEmitter = new EventEmitter<boolean>();
   @Output() accordionToggleEmitter = new EventEmitter<boolean>();
 

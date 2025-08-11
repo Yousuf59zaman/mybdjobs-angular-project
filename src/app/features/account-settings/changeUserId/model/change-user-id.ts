@@ -76,6 +76,6 @@ export interface UserInfoPayload {
   userName: string;
   hasPassword: boolean;
   categoryId: number;
-  socialMediaId: number;
+  socialMediaId: string | null;
   socialMediaName: string | null;
 }

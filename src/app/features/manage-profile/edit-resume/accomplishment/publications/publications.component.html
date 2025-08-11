@@ -6,7 +6,8 @@
   [maxCount]="5"
   [isAccordionOpen]="isOpen()"
   [isFormOpen]="isPublicationsNewFormOpen()"
-  (formToggleEmitter)="isPublicationsNewFormOpen.set(!isPublicationsNewFormOpen())"
+  [isAddButtonDisabled]="publicationSummaries.length >=5"
+  (formToggleEmitter)="onAddPublicationClick()"
   (accordionToggleEmitter)="toggle()"
 >
 
@@ -66,7 +67,7 @@
                 <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
                   <span class="text-sm leading-[20px] text-slate-700">URL</span>
                 </label>
-                <app-input [type]="'text'" [control]="urlControl" [placeholder]="'Enter your URL'" [isRequired]="true"
+                <app-input [type]="'text'" [control]="urlControl" [placeholder]="'Enter your URL'" 
                   [isNumericOnly]="false"
                   >
                 </app-input>
@@ -119,6 +120,7 @@
 
                 <!-- Delete Button -->
                 <button class="flex items-center gap-1.5 text-slate-600" aria-label="Delete Portfolio"
+                [disabled]="isLoading()"
                   (click)="openDeleteModal(publication.accomPlishmentId)">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"
                     class="w-4 h-4">
@@ -160,14 +162,17 @@
       }
     </div>
 
-    <div [ngClass]="isPublicationsNewFormOpen() ? 'mb-0' : 'mb-5'" *ngIf="publicationSummaries.length < 5 && !isLoading() && !isPublicationsNewFormOpen()">
-      <button
-        class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 hover:bg-pink-50 transition-colors"
-        aria-label="Add Academic Summary" (click)="resetForm(); isPublicationsNewFormOpen.set(true)">
-        <img src="images/plus.svg" alt="Add" />
-        <span class="leading-tight">{{t('editResumeAccomplishment.AddPublication')}}</span>
-      </button>
-    </div>
+    @if(isInfoAvailable){
+
+      <div [ngClass]="isPublicationsNewFormOpen() ? 'mb-0' : 'mb-5'" *ngIf="publicationSummaries.length < 5 && !isLoading() && !isPublicationsNewFormOpen()">
+        <button
+          class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 hover:bg-pink-50 transition-colors"
+          aria-label="Add Academic Summary" (click)="resetForm(); isPublicationsNewFormOpen.set(true)">
+          <img src="images/plus.svg" alt="Add" />
+          <span class="leading-tight">{{t('editResumeAccomplishment.AddPublication')}}</span>
+        </button>
+      </div>
+    }
    
 
     <div class="my-5" [hidden]="!isPublicationsNewFormOpen()">
@@ -215,7 +220,7 @@
                 <span class="text-sm leading-[20px] text-slate-700">URL</span>
                 <span class="sr-only">(required)</span>
               </label>
-              <app-input [type]="'text'" [control]="urlControl" [placeholder]="'Enter your URL'" [isRequired]="true"
+              <app-input [type]="'text'" [control]="urlControl" [placeholder]="'Enter your URL'" 
                 [isNumericOnly]="false"
                 >
               </app-input>
@@ -250,6 +255,7 @@
 
         <div class="mb-3 flex items-center gap-3">
           <button (click)="savePublicationSummary()"
+            [disabled]="isLoading()"
             class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">{{t('editResumeAccomplishment.Save')}}</button>
           <button (click)="isPublicationsNewFormOpen.set(false)"
             class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold ">{{t('editResumeAccomplishment.Close')}}</button>
@@ -268,11 +274,14 @@
       </p>
       <div class="flex justify-center gap-6 mt-6">
         <button (click)="closeDeleteModal()"
+        [disabled]="isLoading()"
           class="px-4 py-2 text-sm rounded-lg border border-[#E4E7EC] bg-white shadow-sm text-primary-900 hover:bg-gray-100">
           {{t('editResumeAccomplishment.Cancel')}}
         </button>
         <button (click)="confirmDelete()"
+        [disabled]="isLoading()"
           class="px-4 py-2 text-sm rounded-lg bg-[#C63C92] shadow-sm text-white hover:bg-pink-700">
+          
           {{t('editResumeAccomplishment.deletepop')}}
         </button>
       </div>

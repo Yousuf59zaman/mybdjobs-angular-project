@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, ElementRef, inject, Injector, input, OnChanges, runInInjectionContext, SimpleChanges, ViewChild } from '@angular/core';
 import Chart from 'chart.js/auto';
 @Component({
   selector: 'line-chart',
@@ -6,46 +6,102 @@ import Chart from 'chart.js/auto';
   templateUrl: './line-chart.component.html',
   styleUrl: './line-chart.component.scss'
 })
-export class LineChartComponent implements OnInit, OnChanges {
+export class LineChartComponent implements OnChanges, AfterViewInit {
   @ViewChild('canvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
   readonly chartName = input('Appplication')
   readonly labels = input<string[]>();
+  readonly dataPoints = input<number[]>();
   chart: any = [];
+  private injector = inject(Injector);
 
-  constructor() { }
+  staticLabels = [
+    '01 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb',
+    '06 Feb', '07 Feb', '08 Feb', '09 Feb'
+  ];
 
-  ngOnInit() {
-    const canvas: any = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+  staticDataPoints = [62, 22, 36, 48, 15, 60, 15, 30, 55, 80];
 
+  tickMaxRange = computed(
+    () => Math.max(...this.dataPoints() as number[])
+  )
+
+  ngAfterViewInit(): void {
+    runInInjectionContext(this.injector, () => {
+      this.initGraph();
+
+      effect(() => {
+        this.setGraphPoints();
+      });
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['labels'] && changes['labels'].currentValue && changes['labels'].currentValue.length &&
+      changes['dataPoints'] && changes['dataPoints'].currentValue && changes['dataPoints'].currentValue.length
+    ) {
+      const labels = this.labels();
+      const data = this.dataPoints();
+      this.setGraphPoints();
+    }
+  }
+
+  setGraphPoints() {
+    this.chart.data = {
+      ...this.chart.data,
+      labels: this.labels(),
+      datasets: [
+        {
+          fill: true,
+          backgroundColor: this.getBgColor(),
+          borderColor: "#C63C92",
+          tension: 0.4,
+          label: 'Application',
+          borderWidth: 2,
+          pointRadius: 0,
+          pointHoverRadius: 6,
+          data: this.dataPoints()?.length ? this.dataPoints() : this.staticDataPoints,
+        },
+      ],
+    }
+    this.chart.options.scales = {
+      y: {
+        ...this.chart.options.scales.y,
+        max: this.tickMaxRange() > 0 ? Math.ceil(this.tickMaxRange()/10)*10 : 100,
+        ticks: { stepSize: this.tickMaxRange() > 0 ? Math.ceil(this.tickMaxRange()/10) : 20 }
+      },
+      x: {
+        grid: { display: false }
+      }
+    }
+    this.chart.update();
+  }
+
+  getBgColor() {
+    const ctx = this.canvasRef.nativeElement.getContext('2d') as CanvasRenderingContext2D;
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0, 'rgba(198, 60, 146, 0.3)');
     gradient.addColorStop(1, 'rgba(198, 60, 146, 0)');
 
-    // const labels = [
-    //   '01 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb',
-    //   '06 Feb', '07 Feb', '08 Feb', '09 Feb', '10 Feb'
-    // ];
+    return gradient;
+  }
 
-    const dataPoints = [62, 22, 36, 48, 15, 60, 15, 60, 55, 80];
+  initGraph() {
+    const canvas = this.canvasRef.nativeElement;
 
-
-
-
-    this.chart = new Chart('canvas', {
+    this.chart = new Chart(canvas, {
       type: 'line',
       data: {
-        labels: this.labels(),
+        labels: this.labels()?.length ? this.labels() : this.staticLabels,
         datasets: [
           {
             fill: true,
-            backgroundColor: gradient,
+            backgroundColor: this.getBgColor(),
             borderColor: "#C63C92",
             tension: 0.4,
-            label: '# of Votes',
-            data: dataPoints,
+            label: 'Application',
+            data: this.dataPoints()?.length ? this.dataPoints() : this.staticDataPoints,
             borderWidth: 2,
-            pointRadius: 0, // start with no visible points
+            pointRadius: 0,
             pointHoverRadius: 6,
 
           },
@@ -110,10 +166,6 @@ export class LineChartComponent implements OnInit, OnChanges {
 
       },
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-
   }
 
 }

@@ -61,7 +61,7 @@ export class OthersComponent implements OnChanges {
   selectedEndDate: Date | null = null;
   dateRangeString = '';
   maxLengthError = signal(false);
-
+  userGuid: string = ''
   @ViewChild('container', { static: true }) containerRef!: ElementRef;
   showOther = false;
 
@@ -76,7 +76,7 @@ export class OthersComponent implements OnChanges {
     accomplishmentId: new FormControl<number | null>(null),
     title: new FormControl('', [Validators.required]),
     issueDate: new FormControl('', [Validators.required]),
-    url: new FormControl('', [Validators.required]),
+    url: new FormControl(''),
     description: new FormControl('', [Validators.required])
   });
 
@@ -164,40 +164,41 @@ export class OthersComponent implements OnChanges {
   }
 
   confirmDelete() {
+  this.isLoading.set(true); // Disable button when delete starts
+    
+  if (this.accomPlishmentId !== null) {
+    const request: DeleteAccomplishmentRequest = {
+      acmId: this.accomPlishmentId,
+      userGuid: this.userGuid ?? ""
+    };
 
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-
-
-    if (this.accomPlishmentId !== null) {
-      const request: DeleteAccomplishmentRequest = {
-        acmId: this.accomPlishmentId,
-        userGuid:  userGuidId ?? ""
-      };
-
-      this.accompolishmentService.deleteInfo(request).subscribe({
-        next: (response) => {
-          const errorEvent = response.find(r => r.eventType === 2);
-          if (errorEvent) {
-            const errorMessage = errorEvent.eventData.find(d => d.key === 'message')?.value[0] || 'Delete failed';
-            console.error('Delete error:', errorMessage);
-            return;
-          }
-          this.otherSummaries = this.otherSummaries.filter(p => p.accomPlishmentId !== this.accomPlishmentId);
-
-          if (this.editingSummary?.accomPlishmentId === this.accomPlishmentId) {
-            this.closeForm();
-          }
-
-          this.closeDeleteModal();
-        },
-        error: (error) => {
-          console.error('Error deleting other:', error);
+    this.accompolishmentService.deleteInfo(request).subscribe({
+      next: (response) => {
+        const errorEvent = response.find(r => r.eventType === 2);
+        if (errorEvent) {
+          const errorMessage = errorEvent.eventData.find(d => d.key === 'message')?.value[0] || 'Delete failed';
+          console.error('Delete error:', errorMessage);
+          this.isLoading.set(false); // Re-enable on error
+          return;
         }
-      });
-    }
-  }
+        this.otherSummaries = this.otherSummaries.filter(p => p.accomPlishmentId !== this.accomPlishmentId);
 
+        if (this.editingSummary?.accomPlishmentId === this.accomPlishmentId) {
+          this.closeForm();
+        }
+
+        this.closeDeleteModal();
+        this.isLoading.set(false); // Re-enable after success
+      },
+      error: (error) => {
+        console.error('Error deleting other:', error);
+        this.isLoading.set(false); // Re-enable on error
+      }
+    });
+  } else {
+    this.isLoading.set(false); // Re-enable if no ID
+  }
+}
 
   toggleOtherSummary() {
     this.isOtherExpanded = !this.isOtherExpanded;
@@ -261,12 +262,12 @@ export class OthersComponent implements OnChanges {
   loadOtherInfo(): void {
 
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+     this.userGuid = rawGuid ? decodeURIComponent(rawGuid) : '';
 
     this.isLoading.set(true);
 
     const query: AccomplishmentInfoQuery = {
-      UserGuid:  userGuidId ?? ""
+      UserGuid:  this.userGuid ?? ""
     };
 
     this.accompolishmentService.getAccomplishmentInfo(query, 5).subscribe({
@@ -303,11 +304,6 @@ export class OthersComponent implements OnChanges {
   }
 
   saveOtherSummary() {
-
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-
-
     this.isLoading.set(true);
     this.formSubmitted = true;
     Object.keys(this.otherForm.controls).forEach(key => {
@@ -320,8 +316,7 @@ export class OthersComponent implements OnChanges {
       this.descriptionControl.setErrors({ required: true });
       this.isLoading.set(false);
       return;
-    }
-
+    }    
     if (this.otherForm.invalid) {
       this.isLoading.set(false);
       return;
@@ -330,7 +325,7 @@ export class OthersComponent implements OnChanges {
 
     const formValue = this.otherForm.value;
     const command: AccomplishmentUpdateInsert = {
-      userGuid:  userGuidId ?? "",
+      userGuid:  this.userGuid ?? "",
       type: 5, // other type
       title: formValue.title || '',
       url: formValue.url || '',
@@ -347,12 +342,10 @@ export class OthersComponent implements OnChanges {
           (r: any) =>
             r.eventType === 1 &&
             r.eventData.some((d: any) => d.key === 'Message' && d.value.includes('successfully'))
-        );
-
+        );        
         if (successMsg) {
-          // Update local state
           if (this.editingSummary) {
-            const idx = this.otherSummaries.findIndex(s => s.accomPlishmentId === this.editingSummary?.accomPlishmentId);
+            const idx = this.otherSummaries.findIndex(s => s.accomPlishmentId === this.editingSummary?.accomPlishmentId);           
             if (idx > -1) {
               this.otherSummaries[idx] = {
                 ...this.otherSummaries[idx],
@@ -363,7 +356,6 @@ export class OthersComponent implements OnChanges {
               };
             }
           } else {
-            // Add new other
             const newSummary: AccomplishmentEventDataItem = {
               accomPlishmentId: response[0]?.eventData?.[0]?.value?.[0]?.accomplishmentId || this.getNextId(),
               type: 5,
@@ -375,7 +367,7 @@ export class OthersComponent implements OnChanges {
             this.otherSummaries.push(newSummary);
           }
           this.closeOtherForm();
-
+          this.loadOtherInfo();
           this.toaster.show('Other accomplishment saved successfully!', {
             iconClass: 'lucide-check-circle',
             imageUrl: 'images/check-circle.svg',
@@ -436,6 +428,13 @@ export class OthersComponent implements OnChanges {
   }
 
   showEditor = false;
+
+onAddOtherClick()
+{
+  this.resetForm();
+  this.isOtherNewFormOpen.set(true);
+  this.editingSummary = null;
+}
 
   showOtherForm() {
     this.showOther = true;

@@ -41,7 +41,7 @@ export class AddressDetailsComponent implements AfterViewInit,OnChanges {
   modalService = inject(ModalService)
   presAddress = <Address>{};
   perAddress = <Address>{};
-  locationResponse: LocationResponse = <LocationResponse>{};
+  locationResponse: LocationResponse = <LocationResponse>{}; 
   districtResponse = signal<selectBoxItem[]>([]);
   thanaResponse = signal<selectBoxItem[]>([]);
   poResponse = signal<selectBoxItem[]>([]);
@@ -100,9 +100,9 @@ export class AddressDetailsComponent implements AfterViewInit,OnChanges {
       this.isBlueCollar = false;
     }
 
-    // const rawGuid = this.cookieService.getCookie('MybdjobsGId'); // for development only
-    // this.userGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
-    this.userGuid="YiDiBES7YxSyYiJiZu00PlS7MTL9PxYyZxJcPiPlBiCuPFZ1BFPtBFVpUXJNeEU=";
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId'); // for development only
+    this.userGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
+    // this.userGuid="YiDiBES7YxSyYiJiZu00PlS7MTL9PxYyZxJcPiPlBiCuPFZ1BFPtBFVpUXJNeEU=";
   }
 
   ngOnChanges(changes: SimpleChanges): void {

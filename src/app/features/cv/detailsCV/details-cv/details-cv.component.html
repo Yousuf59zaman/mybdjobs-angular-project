@@ -233,7 +233,7 @@
       </div>
 
       <!-- Certifications -->
-      @if(bdJamCertificate != null && bdJamCertificate.length > 0) { 
+      @if(bdJamCertificate != null && bdJamCertificate.length > 0) {
         <div class="mb-4">
           <h3 class="text-[12px] font-bold underline underline-offset-1 bg-[#E6E6E6]">Bdjobs-AMCAT Employability Certificates:</h3>
           <div class="pt-[10px]">
@@ -523,7 +523,7 @@
            <p class="text-[11px] pl-[5px] pt-[7px] pb-[10px] break-words">{{cvData.extraCurricularActivities}}</p>
          </div>
        }
-    
+
 
       <!-- Language Proficiency -->
       @if(languages!= null && languages.length > 0){
@@ -567,7 +567,7 @@
                   <td class="w-2/3">{{cvData.fatherName}}</td>
                 </tr>
                 }
-                
+
                 @if(cvData.motherName) {
                 <tr class="text-sm">
                   <td class="pl-[5px]">Mother's Name</td>
@@ -575,7 +575,7 @@
                   <td class="">{{cvData.motherName}}</td>
                 </tr>
                 }
-                
+
                 @if(cvData.dateOfBirth) {
                 <tr class="text-sm">
                   <td class="pl-[5px]">Date of Birth</td>
@@ -583,7 +583,7 @@
                   <td class="">{{formatDate(cvData.dateOfBirth)}}</td>
                 </tr>
                 }
-                
+
                 @if(cvData.gender) {
                 <tr class="text-sm">
                   <td class="pl-[5px]">Gender</td>
@@ -595,7 +595,7 @@
                   }
                 </tr>
                 }
-                
+
                 @if(cvData.maritalStatus) {
                 <tr class="text-sm">
                   <td class="pl-[5px]">Marital Status</td>
@@ -607,7 +607,7 @@
                   }
                 </tr>
                 }
-                
+
                 @if(cvData.nationality) {
                 <tr class="text-sm">
                   <td class="pl-[5px]">Nationality</td>
@@ -615,7 +615,7 @@
                   <td class="">{{cvData.nationality}}</td>
                 </tr>
                 }
-                
+
                 @if(cvData.nationalID) {
                 <tr class="text-sm">
                   <td class="pl-[5px]">National Id No.</td>
@@ -623,7 +623,7 @@
                   <td class="">{{cvData.nationalID}}</td>
                 </tr>
                 }
-                
+
                 @if(cvData.religion) {
                 <tr class="text-sm">
                   <td class="pl-[5px]">Religion</td>
@@ -631,7 +631,7 @@
                   <td class="">{{cvData.religion}}</td>
                 </tr>
                 }
-                
+
                 @if(cvData.passportNumber) {
                 <tr class="text-sm">
                   <td class="pl-[5px]">Passport No</td>
@@ -639,7 +639,7 @@
                   <td class="">{{cvData.passportNumber}}</td>
                 </tr>
                 }
-                
+
                 @if(cvData.passportIssueDate) {
                 <tr class="text-sm">
                   <td class="pl-[5px]">Passport Issue Date</td>
@@ -647,7 +647,7 @@
                   <td class="">{{formatDate(cvData.passportIssueDate)}}</td>
                 </tr>
                 }
-                
+
                 @if(getAddressByType(2)) {
                 <tr class="text-sm">
                   <td class="pl-[5px]">Permanent Address</td>
@@ -655,7 +655,7 @@
                   <td class="p-1">{{getAddressByType(2)}}</td>
                 </tr>
                 }
-                
+
                 @if(getAddressByType(1)) {
                 <tr class="text-sm">
                   <td class="pl-[5px]">Current Location</td>
@@ -663,7 +663,7 @@
                   <td class="p-1">{{getAddressByType(1)}}</td>
                 </tr>
                 }
-                
+
                 @if(cvData.bloodGroup) {
                 <tr class="text-sm">
                   <td class="pl-[5px]">Blood Group</td>
@@ -671,7 +671,7 @@
                   <td class="">{{cvData.bloodGroup}}</td>
                 </tr>
                 }
-                
+
                 @if(cvData.heightInCm) {
                 <tr class="text-sm">
                   <td class="pl-[5px]">Height (Meter):</td>
@@ -679,7 +679,7 @@
                   <td class="">{{cvData.heightInCm}}</td>
                 </tr>
                 }
-                
+
                 @if(cvData.weightInKg) {
                 <tr class="text-sm">
                   <td class="pl-[5px]">Weight (Kg):</td>
@@ -713,53 +713,53 @@
         @if (reference && reference.length > 0) {
           <div class="grid grid-cols-2 gap-4 pt-[10px]">
             @for (ref of reference; track ref.referenceId) {
-              @if (ref.referenceName || ref.referenceOrganization || ref.referenceDesignation || 
-                  ref.referenceAddress || ref.referencePhone || ref.referenceHomePhone || 
+              @if (ref.referenceName || ref.referenceOrganization || ref.referenceDesignation ||
+                  ref.referenceAddress || ref.referencePhone || ref.referenceHomePhone ||
                   ref.referenceMobile || ref.referenceEmail || ref.referenceRelation) {
                 <div class="border-r border-gray-300 pr-4">
                   <table class="w-full text-sm">
                     <tbody>
-                      @if (ref.referenceName?.trim()) {
+                      @if (ref.referenceName.trim()) {
                       <tr class="text-sm">
                         <td class="w-1/3 pl-[5px] align-top">Name</td>
                         <td class="w-2/3">: {{ref.referenceName}}</td>
                       </tr>
                       }
-                      @if (ref.referenceOrganization?.trim()) {
+                      @if (ref.referenceOrganization.trim()) {
                       <tr class="text-sm">
                         <td class="pl-[5px] align-top">Organization</td>
                         <td>: {{ref.referenceOrganization}}</td>
                       </tr>
                       }
-                      @if (ref.referenceDesignation?.trim()) {
+                      @if (ref.referenceDesignation.trim()) {
                       <tr class="text-sm">
                         <td class="pl-[5px] align-top">Designation</td>
                         <td>: {{ref.referenceDesignation}}</td>
                       </tr>
                       }
-                      @if (ref.referenceAddress?.trim()) {
+                      @if (ref.referenceAddress.trim()) {
                       <tr class="text-sm">
                         <td class="pl-[5px] align-top">Address</td>
                         <td>: {{ref.referenceAddress}}</td>
                       </tr>
                       }
-                      @if (ref.referencePhone?.trim() || ref.referenceHomePhone?.trim() || ref.referenceMobile?.trim()) {
+                      @if (ref.referencePhone.trim() || ref.referenceHomePhone.trim() || ref.referenceMobile.trim()) {
                       <tr class="text-sm">
                         <td class="pl-[5px] align-top">Contact</td>
                         <td>
-                          : @if (ref.referencePhone?.trim()) {Phone: {{ref.referencePhone}}<br>}
-                          @if (ref.referenceHomePhone?.trim()) {Home: {{ref.referenceHomePhone}}<br>}
-                          @if (ref.referenceMobile?.trim()) {Mobile: {{ref.referenceMobile}}}
+                          : @if (ref.referencePhone.trim()) {Phone: {{ref.referencePhone}}<br>}
+                          @if (ref.referenceHomePhone.trim()) {Home: {{ref.referenceHomePhone}}<br>}
+                          @if (ref.referenceMobile.trim()) {Mobile: {{ref.referenceMobile}}}
                         </td>
                       </tr>
                       }
-                      @if (ref.referenceEmail?.trim()) {
+                      @if (ref.referenceEmail.trim()) {
                       <tr class="text-sm">
                         <td class="pl-[5px] align-top">Email</td>
                         <td>: {{ref.referenceEmail}}</td>
                       </tr>
                       }
-                      @if (ref.referenceRelation?.trim()) {
+                      @if (ref.referenceRelation.trim()) {
                       <tr class="text-sm">
                         <td class="pl-[5px] align-top">Relation</td>
                         <td>: {{ref.referenceRelation}}</td>
@@ -774,7 +774,7 @@
         }
       </div>
     }
-      
+
 
     </div>
   </div>

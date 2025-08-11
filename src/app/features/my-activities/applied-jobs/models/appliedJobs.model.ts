@@ -18,10 +18,9 @@ export interface SelectItem {
 }
 
 export interface selectBoxItem {
-  
   label: string;
   value: any;
-  id?:string
+  id?: string;
   isSelected?: boolean;
   selectId?: string;
   mainObj?: any;
@@ -79,7 +78,7 @@ export interface VenueParams {
   userID: number;
 }
 
-export interface VanueEditUpdateRequest{
+export interface VanueEditUpdateRequest {
   companyId: string;
   userId: string;
   venueName: string;
@@ -94,7 +93,6 @@ export interface ModalConfig {
   callbacks?: { [key: string]: (...args: any[]) => void };
 }
 
-
 export interface TrainingSummary {
   id: number;
   title: string;
@@ -106,18 +104,14 @@ export interface TrainingSummary {
   location: string;
 }
 
-
 export interface VideoCvStep {
   number: number;
   title: string;
   timeInSeconds: number;
   isActive: boolean;
   isCompleted?: boolean;
-  videoUrl: string | null;  // This can be either string or null
+  videoUrl: string | null; // This can be either string or null
 }
-
-
-
 
 export interface GuidelineItem {
   text: string;
@@ -141,7 +135,6 @@ export interface FileUploadProps {
   };
 }
 
-
 export interface Message {
   id: string;
   avatar: string;
@@ -154,28 +147,27 @@ export interface Message {
   mayMessage: boolean;
   hasBorder?: boolean;
   isSelected?: boolean;
- receivedMessages?: Array<{
+  receivedMessages?: Array<{
     text: string;
     time: string;
     date?: string;
   }>;
 }
 
-export type JobStatusType = 
-  'pending' | 
-  'contacted' | 
-  'offered' | 
-  'joined' | 
-  'not-joined' | 
-  'not-contacted' | 
-  'not-contacted-temp' |  
-  'not-offered' | 
-  'not-offered-temp' |   
-  'not-joined-hidden' |   
-  'rejected';
+export type JobStatusType =
+  | 'pending'
+  | 'contacted'
+  | 'offered'
+  | 'joined'
+  | 'not-joined'
+  | 'not-contacted'
+  | 'not-contacted-temp'
+  | 'not-offered'
+  | 'not-offered-temp'
+  | 'not-joined-hidden'
+  | 'rejected';
 
-
-export type RecruitmentStatus = 
+export type RecruitmentStatus =
   | 'Applied'
   | 'Shortlisted'
   | 'Interviewed'
@@ -184,13 +176,11 @@ export type RecruitmentStatus =
   | 'Rejected'
   | '';
 
-  
-
 export interface JobCardData {
   id: string;
   title: string;
   company: string;
-  hideStatusBadge?: boolean; 
+  hideStatusBadge?: boolean;
   bdjobsPro?: BdjobsPro;
   appliedDate: string;
   conversationId: string;
@@ -241,15 +231,18 @@ export interface JobCardData {
   offerStatus?: 'offered' | 'not-offered' | null;
   showContactButtons?: boolean;
   showOfferButtons?: boolean;
-   viewedByEmployer?: string;  // Changed from boolean to string
+  viewedByEmployer?: string; // Changed from boolean to string
   isCancelled?: number;
-   messageInitiate?: number; 
-    isDetailedViewed?: number; 
-  
-  
-  
+  messageInitiate?: number;
+  isDetailedViewed?: number;
+  matchingScore?: number;
+  positionStatus?: number;
+  topApplicantMatchingPercentage?: number;
+  totalApplicants?: number;
+  totalCVViewed?: number;
+  isBlockCp?: boolean;
+  restrictedServiceName?: string | null;
 }
-
 
 export interface PaginationConfig {
   currentPage: number;
@@ -263,7 +256,6 @@ export interface PaginationEvent {
   type: 'previous' | 'next' | 'page';
   page?: number;
 }
-
 
 export interface ChatMessage {
   textId: number;
@@ -280,12 +272,9 @@ export interface ChatMessage {
   status?: 'sent' | 'delivered' | 'read' | 'sending' | 'failed';
 }
 
-
-
-
 export interface GetCareerInfoQuery {
   UserGuid: string;
-  IsBdjobsPro?: string;
+  IsBdjobsPro?: boolean;
   FromDate?: string;
   ToDate?: string;
   CompanyName?: string;
@@ -295,7 +284,6 @@ export interface GetCareerInfoQuery {
   LastDate?: boolean;
   NoOfRecordPerPage?: number;
 }
-
 
 export interface Activity {
   totalNotContacted: number;
@@ -316,7 +304,7 @@ export interface CareerInfoResponse {
           showMessage: number;
           totalNumberOfPage: number;
         };
-        activity: Activity[]; 
+        activity: Activity[];
         data: {
           langType: number;
           jobId: number;
@@ -352,7 +340,6 @@ export interface CareerInfoResponse {
           basicMatchingPercentage: number;
           totalViewed: number;
           totalShortlisted: number;
-          
         }[];
       };
     }[];
@@ -360,19 +347,11 @@ export interface CareerInfoResponse {
   };
 }
 
-
-
-
-
-
-
-
 export interface GetCareerInfoQuery {
   UserGuid: string;
 }
 
 export interface CareerInfoPayload {
-
   eventType: number;
   eventData: EventData[];
   eventId: number;
@@ -383,7 +362,6 @@ export interface CareerInfoResponseCookies {
 }
 
 export interface EventData {
-
   key: string;
   value: CareerInfo;
 }
@@ -406,11 +384,10 @@ export interface UpdateCareerInfo {
   isWebOrApp: number;
 }
 
-
-export interface JobBoosting{
-  userGuid: string,
-  jobId: number,
-  packageId: number
+export interface JobBoosting {
+  userGuid: string;
+  jobId: number;
+  packageId: number;
 }
 
 export interface ExperienceData {
@@ -418,12 +395,11 @@ export interface ExperienceData {
   company: string;
   startDate: string;
   endDate: string;
-  experience_ID:number;
-  companyName:string;
-  experienceFrom:string;
-  experienceTo:string
+  experience_ID: number;
+  companyName: string;
+  experienceFrom: string;
+  experienceTo: string;
 }
-
 
 export interface FeedbackFormData {
   reason: string;
@@ -435,7 +411,6 @@ export interface RadioOption {
   value: string;
 }
 
-
 export interface GetCareerInfoQuery {
   UserGuid: string;
   Version?: string;
@@ -446,8 +421,6 @@ export interface GetCareerInfoQuery {
   PageNumber?: number;
   NoOfRecordPerPage?: number;
 }
-
-
 
 export interface ExperienceApiResponse {
   event: {
@@ -478,29 +451,29 @@ export interface RawExperienceData {
 }
 
 export interface ExperienceData {
-  id: string;               
-  company: string;       
-  position: string;        
-  department: string;    
-  location: string;     
-  startDate: string;       
-  endDate: string;          
-  isCurrent: boolean;     
-  duration: string;        
-  businessType: string;    
-  skills: string[];       
-  experience_ID: number;    
-  companyId: number;        
+  id: string;
+  company: string;
+  position: string;
+  department: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  isCurrent: boolean;
+  duration: string;
+  businessType: string;
+  skills: string[];
+  experience_ID: number;
+  companyId: number;
 }
 
-export interface UpadteExistAppliedJob{
-    userGuid: string;
-    jobId: number;
-    experienceId: number;
-    status?: number;
-    reasonId?: number;
-    reasonPackage?: string;
-    responseType: number;
+export interface UpadteExistAppliedJob {
+  userGuid: string;
+  jobId: number;
+  experienceId: number;
+  status?: number;
+  reasonId?: number;
+  reasonPackage?: string;
+  responseType: number;
 }
 
 export interface BdjobsPro {
@@ -513,5 +486,4 @@ export interface BdjobsPro {
   messageLimit: number;
 }
 
-
-export type TooltipTag = 'h1' | 'h2' | 'h3' | 'p' | 'span'
+export type TooltipTag = 'h1' | 'h2' | 'h3' | 'p' | 'span';

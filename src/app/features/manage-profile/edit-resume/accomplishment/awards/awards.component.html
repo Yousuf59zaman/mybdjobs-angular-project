@@ -6,7 +6,8 @@
   [maxCount]="5"
   [isAccordionOpen]="isOpen()"
   [isFormOpen]="isAwardNewFormOpen()"
-  (formToggleEmitter)="isAwardNewFormOpen.set(!isAwardNewFormOpen())"
+  [isAddButtonDisabled]="awardSummaries.length >= 5"
+  (formToggleEmitter)="onAddAwardClick()"
   (accordionToggleEmitter)="toggle()"
 >
 
@@ -66,7 +67,7 @@
                 <label class="flex gap-0.5 items-start self-start text-sm font-medium leading-none">
                   <span class="text-sm leading-[20px] text-slate-700">URL</span>
                 </label>
-                <app-input [type]="'text'" [control]="urlControl" [placeholder]="'Enter your URL'" [isRequired]="true"
+                <app-input [type]="'text'" [control]="urlControl" [placeholder]="'Enter your URL'"
                   [isNumericOnly]="false"
                   >
                 </app-input>
@@ -99,6 +100,7 @@
 
           <div class="mb-3 flex items-center gap-3">
             <button (click)="saveAwardSummary()"
+                  [disabled]="isLoading()"
               class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">{{t('editResumeAccomplishment.Save')}}</button>
             <button (click)="closeForm()"
               class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold">{{t('editResumeAccomplishment.Close')}}</button>
@@ -160,14 +162,17 @@
       }
     </div>
 
-    <div [ngClass]="isAwardNewFormOpen() ? 'mb-0' : 'mb-5'" *ngIf="awardSummaries.length < 5 && !isLoading() && !isAwardNewFormOpen()">
-      <button
-        class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 hover:bg-pink-50 transition-colors"
-        aria-label="Add Academic Summary" (click)="resetForm(); isAwardNewFormOpen.set(true)">
-        <img src="images/plus.svg" alt="Add" />
-        <span class="leading-tight">{{t('editResumeAccomplishment.AddAward')}}</span>
-      </button>
-    </div>
+    @if(isInfoAvailable)
+    {
+      <div [ngClass]="isAwardNewFormOpen() ? 'mb-0' : 'mb-5'" *ngIf="awardSummaries.length < 5 && !isLoading() && !isAwardNewFormOpen()">
+        <button
+          class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 text-sm font-semibold leading-none text-[#B32D7D] bg-white rounded-lg border border-solid shadow-sm border-[#F0B1DE] focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-opacity-50 hover:bg-pink-50 transition-colors"
+          aria-label="Add Academic Summary" (click)="resetForm(); isAwardNewFormOpen.set(true)">
+          <img src="images/plus.svg" alt="Add" />
+          <span class="leading-tight">{{t('editResumeAccomplishment.AddAward')}}</span>
+        </button>
+      </div>
+    }
    
 
     <div class="my-5" [hidden]="!isAwardNewFormOpen()">
@@ -217,7 +222,7 @@
               </label>
 
 
-              <app-input [type]="'text'" [control]="urlControl" [placeholder]="'Enter your URL'" [isRequired]="true"
+              <app-input [type]="'text'" [control]="urlControl" [placeholder]="'Enter your URL'"
                 [isNumericOnly]="false"
                 [customClasses]="'flex gap-2 items-center py-2.5 mt-[8px] w-full text-sm text-gray-500 rounded-lg border border-solid shadow-sm bg-white border-gray-300 px-4 max-md:max-w-full h-10 focus:border-[#C63C92] focus:ring-1 focus:ring-[#C63C92] focus:outline-none transition-colors'">
               </app-input>
@@ -251,6 +256,7 @@
 
         <div class="mb-3 flex items-center gap-3">
           <button (click)="saveAwardSummary()"
+            [disabled]="isLoading()"
             class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#ffffff1f] bg-[#C63C92] text-white text-sm font-semibold">{{t('editResumeAccomplishment.Save')}}</button>
           <button (click)="isAwardNewFormOpen.set(false)"
             class="flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg shadow-skeuomorphic border border-[#D0D5D] text-[#344054] text-sm font-semibold ">{{t('editResumeAccomplishment.Close')}}</button>
@@ -273,6 +279,7 @@
           {{t('editResumeAccomplishment.Cancel')}}
         </button>
         <button (click)="confirmDelete()"
+        [disabled]="isLoading()"
           class="px-4 py-2 text-sm rounded-lg bg-[#C63C92] shadow-sm text-white hover:bg-pink-700">
           {{t('editResumeAccomplishment.deletepop')}}
         </button>

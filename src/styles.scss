@@ -1,5 +1,5 @@
 @use "@danielmoncada/angular-datetime-picker/assets/style/picker.min.css";
-@import 'ngx-toastr/toastr';
+@use 'ngx-toastr/toastr' as toastr;
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -122,10 +122,10 @@ body {
 }
 
 .text-primary-700 {
-   color: #344054; 
+   color: #344054;
 }
-.text-primary-500 { 
-  color: #667085; 
+.text-primary-500 {
+  color: #667085;
 }
 .border-primary{
   border: 1px solid #D0D5DD;
@@ -134,12 +134,12 @@ body {
 
 @layer components {
   .button-save {
-    @apply flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg border border-[#ffffff1f] 
+    @apply flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg border border-[#ffffff1f]
            bg-[#C63C92] text-white text-sm font-semibold;
     @apply shadow-skeuomorphic; /* custom shadow class */
   }
   .button-close {
-    @apply flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg 
+    @apply flex-1 w-full sm:max-w-fit px-5 py-2.5 rounded-lg
            shadow-skeuomorphic border border-[#D0D5DD]
            text-[#344054] text-sm font-semibold;
   }
@@ -158,17 +158,17 @@ body {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
   border-radius: 10px;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #D9D9D9;
-  border-radius: 50px;  
+  border-radius: 50px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }

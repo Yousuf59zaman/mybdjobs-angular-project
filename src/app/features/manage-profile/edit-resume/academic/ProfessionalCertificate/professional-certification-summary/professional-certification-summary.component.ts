@@ -8,7 +8,6 @@ import {
   input,
   OnChanges,
   Output,
-  Signal,
   signal,
   SimpleChanges,
   ViewChild,
@@ -24,15 +23,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule, NgClass } from '@angular/common';
-import { DatepickerComponent } from '../../../../../../shared/components/datepicker/datepicker.component';
 import { AccordionManagerService } from '../../../../../../shared/services/accordion.service';
 import { DateRangePickerComponent } from '../../../../../../shared/components/date-range-picker/date-range-picker.component';
 import { AccordionMainBodyComponent } from '../../../../../../shared/components/accordion-main-body/accordion-main-body.component';
 
 import { InputComponent } from '../../../../../../shared/components/input/input.component';
-import { SelectboxComponent } from '../../../../../../shared/components/selectbox/selectbox.component';
 import { NoDetailsComponent } from '../../../../../../shared/components/no-details/no-details.component';
-import { NoDetailsSummaryComponent } from '../../no-details-training-summary/no-details-training-summary.component';
 import { ProfessionalCertificateService } from '../services/professional-certificate.service';
 import {
   InsertProfessionalCertificate,
@@ -53,7 +49,6 @@ import { CookieService } from '../../../../../../core/services/cookie/cookie.ser
     NgClass,
     CommonModule,
     ReactiveFormsModule,
-    NoDetailsSummaryComponent,
     AccordionMainBodyComponent,
     NoDetailsComponent,
     TranslocoDirective,
@@ -147,14 +142,14 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
     this.showCertificationForm()
   }
 
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
+  // @HostListener('document:click', ['$event'])
+  // onClickOutside(event: MouseEvent): void {
+  //   const target = event.target as HTMLElement;
 
-    if (!this.containerRef.nativeElement.contains(target)) {
-      this.calendarVisible = false;
-    }
-  }
+  //   if (!this.containerRef.nativeElement.contains(target)) {
+  //     this.calendarVisible = false;
+  //   }
+  // }
 
   toggleCalendar() {
     this.calendarVisible = !this.calendarVisible;
@@ -324,6 +319,7 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
   }
 
   saveCertification() {
+    
     if (this.certificationForm.invalid) {
       this.certificationForm.markAllAsTouched();
       return;
@@ -377,6 +373,9 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
   showCertificationForm() {
     this.isProfCertificateSummaryFormOpen.set(true);
     this.newCertificationForm.reset();
+    this.newSelectedStartDate = null;
+  this.newSelectedEndDate = null;
+  this.newDateRangeString = '';
   }
   isSaving = signal(false);
 
@@ -401,6 +400,7 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
     this.certificationService.createCertification(newAddPayload).subscribe({
       next: () => {
         this.loadCertifications();
+        this.isSaving.set(false);
         this.closeNewCertificationForm();
       },
       error: (err) => {
@@ -412,6 +412,9 @@ export class ProfessionalCertificationSummaryComponent implements OnChanges {
   closeNewCertificationForm() {
     this.isProfCertificateSummaryFormOpen.set(false);
     this.newCertificationForm.reset();
+    this.newSelectedStartDate = null;
+  this.newSelectedEndDate = null;
+  this.newDateRangeString = '';
   }
   editCalendarVisible = false;
   editSelectedStartDate: Date | null = null;
@@ -527,6 +530,7 @@ closeDeleteModal() {
 }
 
 confirmDelete() {
+  this.isLoading.set(true);
   const id = this.pendingDeleteId();
   if (id === null) return;
 

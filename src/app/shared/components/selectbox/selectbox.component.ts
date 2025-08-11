@@ -20,7 +20,7 @@ export class SelectboxComponent implements OnInit   {
   readonly options = input<selectBoxItem[]>([]);
   @Input() control!: FormControl;
   @Input() placeholder = 'Select an option';
-  readonly label = input("Label");
+  readonly label = input('');
   readonly isRequired = input(false);
   @Input() name = 'dropdown';
   @Input() onChange?: (value: any, index?: number) => void; // index is optional now

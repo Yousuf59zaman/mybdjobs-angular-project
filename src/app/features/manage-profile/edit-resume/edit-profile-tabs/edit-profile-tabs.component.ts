@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, EventEmitter, OnInit, Output, signal } from '@angular/core';
+import { AfterViewInit, Component, computed, EventEmitter, input, OnInit, Output, signal } from '@angular/core';
 import { CommonModule, DatePipe, NgClass } from '@angular/common';
 import { AccomplishmentSubTabs, EducationSubTabs, EmploymentSubTabs, MainTabs, OtherInfoSubTabs, PersonalInfoSubtabs, TabEmitterModel, TabsElementModel} from '../../../common/edit-resume-tabs.const';
 import { ViewResumeComponent } from "../../view-profile/view_resume/view-resume/view-resume.component";
@@ -21,6 +21,9 @@ export class EditProfileTabsComponent implements OnInit, AfterViewInit {
   mainTabs = MainTabs;
   activeMainTab = signal(this.mainTabs[0]);
 
+  mainTabIdFromDashboard = input('');
+  subTabIdFromDashboard = input('');
+
   subTabs = computed(
     () => this.getSubTabs(this.activeMainTab().id)
   );
@@ -33,6 +36,10 @@ export class EditProfileTabsComponent implements OnInit, AfterViewInit {
   @Output() subTabEmitter = new EventEmitter<TabEmitterModel>();
 
   ngOnInit(): void {
+    if(this.mainTabIdFromDashboard().length && this.subTabIdFromDashboard().length) {
+      this.activeMainTab.set(this.mainTabs.find(val => val.paramMainId === this.mainTabIdFromDashboard()) as TabsElementModel);
+      this.activeSubtab.set(this.subTabs().find(val => val.paramSubId === this.subTabIdFromDashboard()) as TabsElementModel)
+    }
     this.subTabEmitter.emit({
       mainTab: this.activeMainTab().value,
       subTab: this.activeSubtab()

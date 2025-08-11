@@ -1,0 +1,98 @@
+
+<div class="relative max-w-[560px] min-w-full p-3 rounded-lg border mx-auto bg-white">
+  <span
+    class="icon-times-o text-[#98A2B3] text-base absolute right-3 top-3 cursor-pointer font-thin"
+    (click)="onCancel()"
+  ></span>
+  <div class="flex flex-col items-center">
+    <div
+      [ngClass]="{
+        'hidden': modalType() === 'up'
+      }"
+    >
+      <span class="text-lg font-semibold py-3 text-primary-900 flex justify-center">
+        {{ modalTitle() | transloco }}
+      </span>
+      <form class="flex items-center justify-center gap-5">
+        @for(option of purchaseOptions();track $index) {
+          <label
+            [for]="option.label"
+            class="flex items-start gap-2"
+          >
+            <input
+              type="radio"
+              [value]="option.value"
+              [formControl]="subscriptionType"
+              class="mt-1 accent-blue-500 cursor-pointer focus:ring-0"
+            />
+
+            <div>
+              <div class="font-semibold text-gray-800 text-[15px]">{{ option.label }}</div>
+              <div class="text-gray-500 text-[13px]">
+                {{ option.label === 'Repurchase' ? option.subLabel : option.subLabel + (packageEndDateString() | date: 'dd MMM y') }}
+              </div>
+            </div>
+          </label>
+        }
+      </form>
+    </div>
+    <div
+      class="flex overflow-hidden relative gap-6 pt-16 flex-col bg-white rounded-xl max-w-[480px] w-[580px] mx-auto"
+      [ngClass]="{
+        'hidden': modalType() === 'rep'
+      }">
+      <header class="relative w-full flex justify-center mb-10">
+        <div
+          class="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-[80px] h-[80px] border border-black border-opacity-20 z-0"
+        ></div>
+        <div
+          class="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-[140px] h-[140px] border border-black border-opacity-15 z-0"
+        ></div>
+        <div
+          class="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-48 h-48 border border-black border-opacity-10 z-0"
+        ></div>
+        <div
+        class="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full w-60 h-60 border border-black border-opacity-5 z-0"
+        ></div>
+
+        <img
+          src="images/Confirm_upgrade.svg"
+          alt="pro package upgrade"
+          class="object-contain absolute -top-6 left-2/4 z-10 w-12 h-12 rounded-3xl -translate-x-1/2 aspect-square translate-y-[0%]"
+        />
+      </header>
+    </div>
+    <section class="px-4 text-center font-medium flex flex-col">
+      <span class="text-sm text-primary-900 px-3"
+        [ngClass]="{
+          'mt-1 mb-5': modalType() === 'up',
+          'mt-3': modalType() === 'rep',
+        }">
+        {{ description() | transloco }}
+      </span>
+      <span
+        class="text-primary-700 text-xs py-2"
+        [ngClass]="{
+          'hidden': modalType() === 'up'
+        }"
+      >Do you want to buy?</span>
+    </section>
+    <div
+      class="w-full flex items-center gap-5"
+      [ngClass]="{
+        'px-16': modalType() === 'rep',
+        'px-5': modalType() === 'up',
+      }"
+    >
+      <button
+        class="btn-cancel w-full !text-[12px]"
+        (click)="onCancel()"
+      >{{ (modalType() === 'rep' ? 'dashboard.modalNoRep' : 'dashboard.modalNoUp') | transloco }}</button>
+      <button
+        class="btn-save w-full !text-[12px]"
+        (click)="onClickConfirm()"
+        [disabled]="subscriptionType.value === 'renew' && this.remainingDaysForPackage() > 7"
+      >{{ 'dashboard.modalYes' | transloco }}</button>
+    </div>
+  </div>
+</div>

@@ -7,7 +7,7 @@ declare global {
   }
 }
 
-export interface SelectItem {
+export interface SelectItem extends LanguageTitles {
   label: string;
   value: any;
   isSelected?: boolean;
@@ -15,6 +15,11 @@ export interface SelectItem {
   mainObj?: any;
   icon?: string;
   count?: number;
+}
+
+export interface LanguageTitles {
+  en?: string;
+  bn?: string;
 }
 
 export interface Message {

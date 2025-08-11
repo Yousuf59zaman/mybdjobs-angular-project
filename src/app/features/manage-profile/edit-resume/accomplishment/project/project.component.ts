@@ -67,7 +67,7 @@ export class ProjectComponent implements OnChanges {
   @ViewChild('textEditor') textEditor: any;
   @Output() contentChanged = new EventEmitter<string>();
   nextId = 2;
-
+  userGuidId: string = ''
   descriptionCharCount = signal(0);
   readonly MAX_DESCRIPTION_LENGTH = 300;
 
@@ -177,13 +177,11 @@ export class ProjectComponent implements OnChanges {
   }
 
   confirmDelete() {
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-
+    this.isLoading.set(true)
     if (this.accomPlishmentId !== null) {
       const request: DeleteAccomplishmentRequest = {
         acmId: this.accomPlishmentId,
-        userGuid:  userGuidId ?? ""
+        userGuid:  this.userGuidId ?? ""
       };
 
       this.accompolishmentService.deleteInfo(request).subscribe({
@@ -199,11 +197,13 @@ export class ProjectComponent implements OnChanges {
           if (this.editingSummary?.accomPlishmentId === this.accomPlishmentId) {
             this.closeForm();
           }
-
+          this.isLoading.set(false)
+          this.loadProjectInfo()
           this.closeDeleteModal();
         },
         error: (error) => {
           console.error('Error deleting project:', error);
+          this.isLoading.set(false)
         }
       });
     }
@@ -272,11 +272,11 @@ export class ProjectComponent implements OnChanges {
 
   loadProjectInfo(): void {
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : '';
 
     this.isLoading.set(true);
     const query: AccomplishmentInfoQuery = {
-      UserGuid:  userGuidId ?? ""
+      UserGuid:  this.userGuidId ?? ""
     };
 
     this.accompolishmentService.getAccomplishmentInfo(query, 4).subscribe({
@@ -312,9 +312,6 @@ export class ProjectComponent implements OnChanges {
   }
 
   saveProjectSummary() {
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-
     this.isLoading.set(true);
     this.formSubmitted = true;
       Object.keys(this.projectForm.controls).forEach(key => {
@@ -337,7 +334,7 @@ export class ProjectComponent implements OnChanges {
 
     const formValue = this.projectForm.value;
     const command: AccomplishmentUpdateInsert = {
-      userGuid:  userGuidId ?? "",
+      userGuid:  this.userGuidId ?? "",
       type: 4, // project type
       title: formValue.title || '',
       url: formValue.url || '',
@@ -357,7 +354,6 @@ export class ProjectComponent implements OnChanges {
         );
 
         if (successMsg) {
-          // Update local state
           if (this.editingSummary) {
             const idx = this.projectSummaries.findIndex(s => s.accomPlishmentId === this.editingSummary?.accomPlishmentId);
             if (idx > -1) {
@@ -370,7 +366,6 @@ export class ProjectComponent implements OnChanges {
               };
             }
           } else {
-            // Add new project
             const newSummary: AccomplishmentEventDataItem = {
               accomPlishmentId: response[0]?.eventData?.[0]?.value?.[0]?.accomplishmentId || this.getNextId(),
               type: 4,
@@ -382,7 +377,7 @@ export class ProjectComponent implements OnChanges {
             this.projectSummaries.push(newSummary);
           }
           this.closeProjectForm();
-
+          this.loadProjectInfo()
           this.toaster.show('Project saved successfully!', {
             iconClass: 'lucide-check-circle',
             imageUrl: 'images/check-circle.svg',
@@ -440,6 +435,13 @@ export class ProjectComponent implements OnChanges {
 
   get descriptionControl(): FormControl {
     return this.projectForm.get('description') as FormControl;
+  }
+  onAddProjectClick()
+  {
+    this.resetForm();
+    this.isProjectNewFormOpen.set(true);
+    this.editingSummary = null;
+    
   }
 
   showEditor = false;

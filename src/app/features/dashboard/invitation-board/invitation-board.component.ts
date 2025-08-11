@@ -1,10 +1,18 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, input, OnChanges, signal, SimpleChanges } from '@angular/core';
+import { InvitationResponse } from '../models/dashboard.models';
+import { provideTranslocoScope, TranslocoModule } from '@jsverse/transloco';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-invitation-board',
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    TranslocoModule,
+    RouterLink
+  ],
+  providers:[provideTranslocoScope('dashboard')],
   templateUrl: './invitation-board.component.html',
   styleUrl: './invitation-board.component.scss',
   animations: [
@@ -19,48 +27,70 @@ import { Component, signal } from '@angular/core';
     ]),
   ],
 })
-export class InvitationBoardComponent {
+export class InvitationBoardComponent implements OnChanges {
+
+  invitationCounts = input({} as InvitationResponse);
+  isUpcomingInvitation = signal(false);
+
   invitationCard = signal([
     {
       id: '1',
-      title: "Online Test",
+      title: "dashboard.onlineTest",
       imageUrl: 'images/online-test.svg',
-      count: 2
+      count: 0,
+      ridirectionLink: '/online-test'
     },
-
     {
       id: '2',
-      title: "Video Interview",
+      title: "dashboard.videoInterview",
       imageUrl: 'images/video-interview.svg',
-      count: 0
+      count: 0,
+      ridirectionLink: '/video-interview'
     },
-
     {
       id: '3',
-      title: "General Interview",
+      title: "dashboard.generalInterview",
       imageUrl: 'images/general-interview.svg',
-      count: 0
+      count: 0,
+      ridirectionLink: '/general-interview'
     },
-
     {
       id: '4',
-      title: "Personality Test by Voice",
+      title: "dashboard.personalityTest",
       imageUrl: 'images/personality-test.svg',
-      count: 0
+      count: 0,
+      ridirectionLink: '/personality-test'
     }
 
 
   ])
-
-  ngOnInit(): void {
-    // Auto-slide every 4 seconds
-    // this.intervalId = setInterval(() => {
-    //   this.next();
-    // }, 1000);
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['invitationCounts'] && changes['invitationCounts'].currentValue) {
+      this.updateInvitationCount();
+    }
   }
 
   ngOnDestroy(): void {
     clearInterval(this.intervalId);
+  }
+
+  updateInvitationCount() {
+    this.invitationCard().map(
+      (card) => {
+        return {
+          ...card,
+          count: card.id === '1'
+            ? this.invitationCounts().onlineTest
+            : card.id === '2'
+              ? this.invitationCounts().videoInterview
+              : card.id === '3'
+                ? this.invitationCounts().generalInterview
+                : this.invitationCounts().personalityTestByVoice
+        }
+      }
+    )
+    // this.isUpcomingInvitation.set(this.invitationCard().some((card)=> card.count));
   }
 
   inviationCarousel = signal([

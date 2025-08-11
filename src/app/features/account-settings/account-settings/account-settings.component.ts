@@ -3,7 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-account-settings',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './account-settings.component.html',
   styleUrl: './account-settings.component.scss'
 })

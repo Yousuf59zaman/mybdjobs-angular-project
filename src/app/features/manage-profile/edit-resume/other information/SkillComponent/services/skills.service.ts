@@ -113,7 +113,10 @@ export class SkillService {
     return this.http.post(this.insertSkillUrl, payload);
   }
   deleteSkill(payload: DeleteSkillPayload) {
-    return this.http.delete<any>(this.deleteSkillUrl, {body:payload});
+    const params = new HttpParams()
+    .set('SkillId', payload.skillId)
+    .set('UserGuid', payload.userGuid);
+    return this.http.delete<any>(this.deleteSkillUrl, {params});
   }
   updateSkill(payload: UpdateSkillPayload){
     return this.http.post<any>(this.updateSkillUrl , payload);

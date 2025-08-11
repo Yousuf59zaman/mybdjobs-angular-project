@@ -21,6 +21,7 @@ import { MultiSelectComponent } from "../../../../../shared/components/multi-sel
 import { autoSuggestionEduResponse, Data } from './models/autoSuggestionEduResponse.model';
 import { provideTranslocoScope, TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { convertToBanglaDigits } from '../../../../common/utility';
+import { CookieService } from '../../../../../core/services/cookie/cookie.service';
 
 @Component({
   selector: 'app-edit-education',
@@ -66,7 +67,7 @@ export class EditEducationComponent implements OnChanges {
   degreeList : any[] = []
 
   showForeignInstituteCountry = signal(false);
-  userGuid = "ZiZuPid0ZRLyZ7S3YQ00PRg7MRgwPELyBTYxPRLzZESuYTU0BFPtBFVUIGL3Ung="
+  userGuid = '';
   educationService = inject(EducationService);
   educationLevels = signal<selectBoxItem[]>([]);
   currentlanguage = 'en';
@@ -104,7 +105,7 @@ export class EditEducationComponent implements OnChanges {
   majorSuggestions = signal<Data[]>([]);
   currentLanguage  :string = 'en';
 
-  constructor(private translocoService: TranslocoService)
+  constructor(private translocoService: TranslocoService, private cookieService: CookieService)
   {
     if (this.isBlueCollar) {
       this.translocoService.setActiveLang('bn'); // Set 'bn' first
@@ -116,9 +117,17 @@ export class EditEducationComponent implements OnChanges {
 
   }
 
+  ngOnInit() {
+
+  }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.isAcademicSummaryOpen && !this.isOpen()) {
+
+    const rawCookie = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    this.userGuid = rawCookie ? decodeURIComponent(rawCookie) : '';
+
       this.toggle();
       this.populateYears();
       this.fetchUserEduInfo(this.userGuid);

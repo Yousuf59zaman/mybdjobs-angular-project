@@ -11,12 +11,14 @@
     <input 
       type="text" 
       [value]="dateRangeString"
+      readonly
       (click)="toggleCalendar()" 
       [formControl]="control()"
       [ngClass]="{'text-sm': selectedLang === 'en', 'text-[12px]': selectedLang === 'bn'}"
       class="w-full block p-2 py-2 sm:pr-3 ps-9 text-primary-700 bg-white rounded-lg
              border-primary focus:ring-0 focus:border-2 focus:border-[#D95BB0]"
       [placeholder]="placeholder()" 
+      readonly
     />
 
     <img 

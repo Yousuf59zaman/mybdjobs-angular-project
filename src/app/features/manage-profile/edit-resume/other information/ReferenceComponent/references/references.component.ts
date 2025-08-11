@@ -21,15 +21,11 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SelectboxComponent } from '../../../../../../shared/components/selectbox/selectbox.component';
-import { DateRangePickerComponent } from '../../../../../../shared/components/date-range-picker/date-range-picker.component';
 import { AccordionMainBodyComponent } from '../../../../../../shared/components/accordion-main-body/accordion-main-body.component';
 import { AccordionManagerService } from '../../../../../../shared/services/accordion.service';
-import { TrainingSummary } from '../../../../../../shared/models/models';
-import { NoDetailsSummaryComponent } from '../../../academic/no-details-training-summary/no-details-training-summary.component';
 import { TextEditorComponent } from '../../../../../../shared/components/text-editor/text-editor.component';
 import { ReferencesService } from '../services/references.service';
 import {
-  DeleteReferencePayload,
   EventResponse,
   InsertReferencePayload,
   UpdateReferencePayload,
@@ -43,8 +39,6 @@ import { CookieService } from '../../../../../../core/services/cookie/cookie.ser
   selector: 'app-references',
   imports: [
     SelectboxComponent,
-    DateRangePickerComponent,
-    NoDetailsSummaryComponent,
     ReactiveFormsModule,
     CommonModule,
     FormsModule,
@@ -94,7 +88,7 @@ export class ReferencesComponent {
     }
   }
   ngOnInit() {
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId');  //uncomment this line before testing/live
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId');
     this.userGuid = rawGuid ? decodeURIComponent(rawGuid) : "";
 
   }
@@ -159,7 +153,7 @@ export class ReferencesComponent {
   }
 
   referenceData: ReferenceModel[] = [];
-  loadReference(userGuid: string): void {
+  loadReference(userGuid: string): void {    
     this.referenceService
       .getReference(userGuid)
       .pipe(
@@ -230,14 +224,13 @@ export class ReferencesComponent {
     const addressHtml = addressValue
       ? this.prosemirrorToHtml(addressValue)
       : null;
-
     const payload: UpdateReferencePayload = {
       r_ID: this.referenceCheckingId || 0,
       userGuid: this.userGuid,
       referenceName: this.referenceForm.value.name!,
       designation: this.referenceForm.value.designation!,
       organization: this.referenceForm.value.organization!,
-      address: addressHtml,
+      address: addressValue,
       phoneOffice: this.referenceForm.value.officialPhoneNo || null,
       phoneHome: this.referenceForm.value.residentalPhoneNo || null,
       mobile: this.referenceForm.value.mobile || null,
@@ -318,10 +311,10 @@ export class ReferencesComponent {
     }
     this.referenceCheckingId = null;
     this.isReferencesEditFormOpen.set(true);
-    const addressValue = this.referenceForm.value;
+    const addressValue = this.referenceForm.value.address;
     const addressHtml = addressValue
       ? this.prosemirrorToHtml(addressValue)
-      : null;
+      : null;    
     const payload: InsertReferencePayload = {
       userGuid: this.userGuid,
       name: this.referenceForm.value.name!,
@@ -348,7 +341,6 @@ export class ReferencesComponent {
     this.referenceForm.reset();
   }
 
-  deleteSummary(id: number) {}
 
   resetForm() {
     this.referenceForm.reset();
@@ -375,19 +367,18 @@ export class ReferencesComponent {
     return date.toLocaleDateString();
   }
 
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    if (!this.containerRef.nativeElement.contains(target)) {
-      this.calendarVisible = false;
-    }
-  }
+  // @HostListener('document:click', ['$event'])
+  // onClickOutside(event: MouseEvent): void {
+  //   const target = event.target as HTMLElement;
+  //   if (!this.containerRef.nativeElement.contains(target)) {
+  //     this.calendarVisible = false;
+  //   }
+  // }
 
   showEditor = false;
 
   showTraining2Form() {
     this.showTraining2 = true;
-    this.cdRef.detectChanges(); // Force change detection
   }
   openArmyData() {
     this.isReferencesNewFormOpen.set(true);
@@ -409,6 +400,14 @@ export class ReferencesComponent {
     this.isDeleteModalOpen.set(false);
     document.body.style.overflow = '';
   }
+  private clearAllFormStates(): void {
+  this.referenceCheckingId = null;
+  this.isReferencesEditFormOpen.set(false);
+  this.isReferencesNewFormOpen.set(false);
+  this.referenceForm.reset();
+  this.addressControl().setValue('');
+  this.cdRef.detectChanges();
+}
   confirmDelete() {
     const id = this.pendingDeleteId();
     if (this.isSaving) return;
@@ -416,23 +415,28 @@ export class ReferencesComponent {
     this.isSaving = true;
     this.referenceService.deleteReference(this.userGuid, id).subscribe({
       next: (res) => {
+        this.clearAllFormStates();
         // reload your list
         this.loadReference(this.userGuid);
-        // now that it's done, close the modal
+        if (this.referenceData.length === 1) {
+        this.isReferencesNewFormOpen.set(false);
+        this.referenceData = []; 
+        this.referenceCount.set(0);
+      }
+
         this.closeDeleteModal();
         this.isSaving = false;
+        this.clearAllFormStates();
       },
       error: (err) => {
         console.error('Delete failed', err);
-        // optionally show a toast or keep the dialog open
       },
     });
   }
 
   onExpandClick() {
     const willOpen = !this.accordionService.isOpen(this.id)();
-    this.toggle(); // toggles the accordion
-
+    this.toggle(); 
     if (willOpen) {
       this.loadReference(this.userGuid);
     }

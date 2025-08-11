@@ -22,7 +22,6 @@ import { TextEditorComponent } from '../../../../../../shared/components/text-ed
 import { AccordionManagerService } from '../../../../../../shared/services/accordion.service';
 import { AccordionMainBodyComponent } from '../../../../../../shared/components/accordion-main-body/accordion-main-body.component';
 import { NoDetailsComponent } from '../../../../../../shared/components/no-details/no-details.component';
-import { CheckboxComponent } from '../../../../../../shared/components/checkbox/checkbox.component';
 import { SkillService } from '../services/skills.service';
 import {
   DeleteSkillPayload,
@@ -44,7 +43,6 @@ import { CookieService } from '../../../../../../core/services/cookie/cookie.ser
     AccordionMainBodyComponent,
     NoDetailsComponent,
     CommonModule,
-    CheckboxComponent,
     ReactiveFormsModule,
     TranslocoModule,
   ],
@@ -71,7 +69,7 @@ export class SkillComponent {
   isLoading = signal(true);
   private id = 'skillinfo';
   userGuid: string =
-    '';
+'';
 
   ntqfLevels = [
     { value: '-1', label: 'Select' },
@@ -105,7 +103,9 @@ export class SkillComponent {
   ]
 
   ntvqfValueHold: string = '5';
-  ngOnChanges(changes: SimpleChanges): void {
+   ngOnChanges(changes: SimpleChanges): void {
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId'); 
+    this.userGuid = rawGuid ? decodeURIComponent(rawGuid) : "";
     if (this.isSkillOpen() && !this.isOpen()) {
       const willOpen = !this.accordionService.isOpen(this.id)();
       this.toggle();
@@ -114,17 +114,23 @@ export class SkillComponent {
       }
     }
   }
-  ngOnInit() {
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId');  //uncomment this line before testing/live
-    this.userGuid = rawGuid ? decodeURIComponent(rawGuid) : "";
-
-  }
+  
+  
+  
   isOpen() {
     return this.accordionService.isOpen(this.id)();
   }
 
   toggle() {
     this.accordionService.toggle(this.id);
+  }
+   onExpandClick() {
+    const willOpen = !this.accordionService.isOpen(this.id)();
+    this.toggle(); // toggles the accordion
+
+    if (willOpen) {
+      this.loadSkills(this.userGuid);
+    }
   }
 
   currentSkillDetails = computed(() => {
@@ -376,36 +382,41 @@ export class SkillComponent {
   onClickDescSave() {
     if (this.isSaving) return;
     this.isSaving = true;
+    // Get plain text content from the editor
     let divElem = document.createElement('div');
     divElem.innerHTML = this.descriptionControl.value as string;
-    const description = this.descriptionControl.value as string;
-    this.skillDescription.set(divElem.innerText);
-    if (description.length > 500) {
+    const newDescription = divElem.innerText;
+    
+    if (newDescription.length > 500) {
       this.charLimitExceeded = true;
       this.isSaving = false;
       return;
     }
+    
     const payload = {
       userGuid: this.userGuid,
       skill_Description: this.descriptionControl.value || '',
       extraCurricular_Activities: '',
       isSkillDes: true,
     };
+
     this.skillService.updateDescription(payload).subscribe({
       next: (response) => {
         if (response[0]?.eventType === 1) {
+          // Only update the description if API returned success
+          this.skillDescription.set(newDescription);
           this.loadSkills(this.userGuid);
         } else {
-          // Handle API error
           console.error('Update failed', response);
         }
         this.isSaving = false;
+        this.isDescFormOpen.set(false);
       },
       error: (err) => {
         console.error('API error', err);
+        this.isSaving = false;
       },
     });
-    this.onClickDescCancel();
   }
 
   onClickDescCancel() {

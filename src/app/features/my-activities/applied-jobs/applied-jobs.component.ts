@@ -120,7 +120,7 @@ export class AppliedJobsComponent {
   editingJobId: string | null = null;
   originalSalary: string | null = null;
   selectedOption: string = '';
-  IsBdjobsPro: string = 'false';
+  IsBdjobsPro: boolean = false;
   insightUnlocked: boolean = false;
   chatApiResponse: any;
   public isModalOpen = false;
@@ -184,17 +184,31 @@ export class AppliedJobsComponent {
         },
       ],
     },
+
+        {
+      title: 'appliedJobs.appliedJobs.filters.priority.title',
+      sectionName: 'Boosting',
+      options: [
+        {
+          id: 'high',
+          label: 'appliedJobs.appliedJobs.filters.priority.high',
+          checked: false,
+          value: 7,
+        },
+        {
+          id: 'regular',
+          label: 'appliedJobs.appliedJobs.filters.priority.regular',
+          checked: false,
+          value: 8,
+        },
+      ],
+    },
+
     {
       title: 'appliedJobs.appliedJobs.filters.recruitmentStatus.title',
       sectionName: 'recruitment-status',
       options: [
-        {
-          id: 'interview-invitation',
-          label:
-            'appliedJobs.appliedJobs.filters.recruitmentStatus.interviewInvitation',
-          checked: false,
-          value: 6,
-        },
+  
         {
           id: 'joined',
           label: 'appliedJobs.appliedJobs.filters.recruitmentStatus.joined',
@@ -215,36 +229,7 @@ export class AppliedJobsComponent {
         },
       ],
     },
-    {
-      title: 'appliedJobs.appliedJobs.filters.priority.title',
-      sectionName: 'priority',
-      options: [
-        {
-          id: 'high',
-          label: 'appliedJobs.appliedJobs.filters.priority.high',
-          checked: false,
-          value: 7,
-        },
-        {
-          id: 'regular',
-          label: 'appliedJobs.appliedJobs.filters.priority.regular',
-          checked: false,
-          value: 8,
-        },
-      ],
-    },
-    {
-      title: 'appliedJobs.appliedJobs.filters.other.title',
-      sectionName: 'other',
-      options: [
-        {
-          id: 'other',
-          label: 'appliedJobs.appliedJobs.filters.other.other',
-          checked: false,
-          value: 9,
-        },
-      ],
-    },
+
   ];
 
   @Input() config: PaginationConfig = {
@@ -269,50 +254,52 @@ export class AppliedJobsComponent {
   }
 
 private loadCareerInfoCookies(): void {
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId');
-    this.UserGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
+  const rawGuid = this.cookieService.getCookie('MybdjobsGId');
+  this.UserGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
 
-    if (!this.UserGuid) {
-      console.error('UserGuid not found in cookies');
-      return;
-    }
+  if (!this.UserGuid) {
+    console.error('UserGuid not found in cookies');
+    return;
+  }
 
-    const query: GetCareerInfoQuery = {
-      UserGuid: this.UserGuid,
-    };
+  const query: GetCareerInfoQuery = {
+    UserGuid: this.UserGuid,
+  };
 
-    this.careerService.getCareerInfo(query).subscribe({
-      next: (res) => {
-        const payload = res.event;
-        if (payload.eventData.length > 0 && payload.eventData[0].value) {
-          const res = payload.eventData[0].value;
-          this.isInfoAvailable = true;
-          this.careerForm.patchValue({
-            obj: res.obj || '',
-            cur_Sal: res.cur_Sal?.toString() || '',
-            exp_Sal: res.exp_Sal?.toString() || '',
-            pref: res.pref || '',
-            available: res.available || '',
-          });
-        } else {
-          this.isInfoAvailable = false;
-        }
-      },
-      error: (error) => {
-        console.error('Error loading career info:', error);
+  this.careerService.getCareerInfo(query).subscribe({
+    next: (res) => {
+      const payload = res.event;
+      if (payload.eventData.length > 0 && payload.eventData[0].value) {
+        const res = payload.eventData[0].value;
+        this.isInfoAvailable = true;
+        this.careerForm.patchValue({
+          obj: res.obj || '',
+          cur_Sal: res.cur_Sal?.toString() || '',
+          exp_Sal: res.exp_Sal?.toString() || '',
+          pref: res.pref || '',
+          available: res.available || '',
+        });
+      } else {
         this.isInfoAvailable = false;
-      },
-    });
+      }
+    },
+    error: (error) => {
+      console.error('Error loading career info:', error);
+      this.isInfoAvailable = false;
+    },
+  });
+
   const authData = this.loginService.getAuthData();
 
   if (authData) {
-    this.IsBdjobsPro = authData.isBdjobsPro.toString();
+    this.IsBdjobsPro = authData.isBdjobsPro; 
     this.loadSupportingInfo(authData.token);
     return;
   }
+  
   const token = this.cookieService.getCookie('authToken');
   this.UserGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
-  this.IsBdjobsPro = this.cookieService.getCookie('IsBdjobsPro') || 'false';
+  this.IsBdjobsPro = false; 
 
   if (!token || !this.UserGuid) {
     console.error('Authentication failed - missing token or GUID');
@@ -331,6 +318,7 @@ private loadSupportingInfo(token: string): void {
 
       if (bdjobsProData) {
         this.bdjobsProInfo = bdjobsProData;
+        this.IsBdjobsPro = bdjobsProData.isProUser; 
         this.loginService.setAuthData(supportingInfo);
       }
 
@@ -464,18 +452,6 @@ private loadSupportingInfo(token: string): void {
     return job.id;
   }
 
-  toggleInsight(job: JobCardData) {
-    job.insightExpanded = !job.insightExpanded;
-
-    if (job.insightExpanded) {
-      job.needleAngle = -84;
-      setTimeout(() => {
-        job.needleAngle = this.calculateNeedleAngle(job.matchPercentage || 0);
-      }, 10);
-    } else {
-      job.needleAngle = -84;
-    }
-  }
 
   toggleProgressImage(job: JobCardData) {
     job.progressImageExpanded = !job.progressImageExpanded;
@@ -742,8 +718,7 @@ private loadSupportingInfo(token: string): void {
         (conv: any) => conv.jobId === job.jobId
       );
       if (conversation) {
-        job.conversationId =
-          conversation.conversationId?.toString() || job.conversationId;
+       job.conversationId = job.conversationId || conversation.conversationId?.toString();
         job.lastMessage = conversation.lastMessage;
         job.lastChattedOn = conversation.lastChattedOn;
         job.unreadMessage = conversation.unreadMessage;
@@ -755,67 +730,7 @@ private loadSupportingInfo(token: string): void {
     });
   }
 
-  fetchMessages(conversationId: string) {
-    if (!conversationId || !this.selectedJob?.jobId) {
-      console.error('Missing required parameters');
-      return;
-    }
 
-    if (!this.UserGuid) {
-      console.error('UserGuid not available - cannot fetch messages');
-      return;
-    }
-
-    const params = {
-      DeviceType: 'web',
-      UserGuid: this.UserGuid,
-      ConversationId: conversationId,
-      SenderType: 'A',
-      JobId: this.selectedJob.jobId,
-    };
-
-    this.http
-      .get<any>(
-        'https://mybdjobsorchestrator-odcx6humqq-as.a.run.app/api/EmployerActivities/GetMessages',
-        { params }
-      )
-      .subscribe({
-        next: (response) => {
-          if (response && response.length > 0) {
-            const eventData = response[0].eventData;
-            const chatData = eventData.find(
-              (item: any) => item.key === 'Chat Message '
-            );
-            if (chatData && chatData.value) {
-              this.chatMessages = chatData.value.map((msg: any) => ({
-                textId: msg.textId,
-                text: msg.text,
-                textSenderType: msg.textSenderType,
-                cnvId: msg.cnvId,
-                textReadDate: msg.textReadDate,
-                textReadTime: msg.textReadTime,
-                textSendDate: msg.textSendDate,
-                textSendTime: msg.textSendTime,
-                employeeEmail: msg.employeeEmail,
-                personalEmail: msg.personalEmail,
-                textSendBy: msg.textSendBy,
-                status: 'delivered',
-              }));
-              this.checkMessageLimit();
-            }
-            const remainingMsgData = eventData.find(
-              (item: any) => item.key === 'RemainingMessage'
-            );
-            if (remainingMsgData) {
-              this.remainingMessages = remainingMsgData.value;
-            }
-          }
-        },
-        error: (error) => {
-          console.error('Error fetching messages:', error);
-        },
-      });
-  }
 
   toggleMessagePopup(job?: any) {
     if (job) {
@@ -837,7 +752,7 @@ private loadSupportingInfo(token: string): void {
       UserGuid: this.UserGuid,
       JobId: job.jobId,
       SenderType: 'A',
-      ConversationId: job.conversationId,
+      ...(job.conversationId && { ConversationId: job.conversationId })
     };
 
     this.http
@@ -1117,7 +1032,7 @@ private loadSupportingInfo(token: string): void {
       return;
     }
 
-    const isPro = this.IsBdjobsPro?.toLowerCase() === 'true';
+    const isPro = this.IsBdjobsPro; 
 
     if (isPro) {
       this.showBoostModalForPro(job);
@@ -1213,7 +1128,7 @@ private loadSupportingInfo(token: string): void {
       isFairJob: job.isFairJob,
       isLinkedInApply: job.isLinkedInApply,
       hasInsight: true,
-      isInsightBlurred: this.IsBdjobsPro?.toLowerCase() !== 'true',
+      isInsightBlurred: !this.IsBdjobsPro, 
       insightUnlocked: false,
       reasonId: job.reasonId,
       status: job.status,
@@ -2070,4 +1985,167 @@ private loadSupportingInfo(token: string): void {
       no: 'appliedJobs.appliedJobs.buttons.no',
     };
   }
+
+  onGetProClick() {
+  console.log('Get Pro button clicked');
+  }
+
+isProUser(): boolean {
+  return this.bdjobsProInfo?.isProUser || this.IsBdjobsPro;
 }
+
+
+hasRecruiterMessages(): boolean {
+  return this.chatMessages.some(message => message.textSenderType === 'R');
+}
+
+
+fetchMessages(conversationId: string) {
+  if (!conversationId || !this.selectedJob?.jobId) {
+    console.error('Missing required parameters');
+    return;
+  }
+
+  if (!this.UserGuid) {
+    console.error('UserGuid not available - cannot fetch messages');
+    return;
+  }
+
+  const params = {
+    DeviceType: 'web',
+    UserGuid: this.UserGuid,
+    ConversationId: conversationId,
+    SenderType: 'A',
+    JobId: this.selectedJob.jobId,
+  };
+
+  this.http
+    .get<any>(
+      'https://mybdjobsorchestrator-odcx6humqq-as.a.run.app/api/EmployerActivities/GetMessages',
+      { params }
+    )
+    .subscribe({
+      next: (response) => {
+        console.log('API Response:', response);
+        if (response && response.length > 0) {
+          const eventData = response[0].eventData;
+          const chatData = eventData.find(
+            (item: any) => item.key === 'Chat Message '
+          );
+          if (chatData && chatData.value) {
+            this.chatMessages = chatData.value.map((msg: any) => ({
+              textId: msg.textId,
+              text: msg.text,
+              textSenderType: msg.textSenderType,
+              cnvId: msg.cnvId,
+              textReadDate: msg.textReadDate,
+              textReadTime: msg.textReadTime,
+              textSendDate: msg.textSendDate,
+              textSendTime: msg.textSendTime,
+              employeeEmail: msg.employeeEmail,
+              personalEmail: msg.personalEmail,
+              textSendBy: msg.textSendBy,
+              status: 'delivered',
+            }));
+            console.log('Processed messages:', this.chatMessages);
+            this.updateMessageInputState();
+            
+            this.checkMessageLimit();
+          }
+          const remainingMsgData = eventData.find(
+            (item: any) => item.key === 'RemainingMessage'
+          );
+          if (remainingMsgData) {
+            this.remainingMessages = remainingMsgData.value;
+          }
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching messages:', error);
+      },
+    });
+}
+
+updateMessageInputState(): void {
+  if (this.isProUser()) {
+    this.disableSendButton = false;
+  } else {
+    this.disableSendButton = !this.hasRecruiterMessages();
+  }
+}
+
+getMessagePlaceholder(): string {
+  if (this.disableSendButton) {
+    return this.isProUser() 
+      ? 'Write your message to ' + this.selectedJob?.company
+      : 'Get Bdjobs Pro to initiate message';
+  }
+  return 'Write your message to ' + this.selectedJob?.company;
+}
+
+
+fetchJobInsights(job: JobCardData) {
+  if (!this.UserGuid || !job.jobId) {
+    console.log('Skipping fetchJobInsights - missing UserGuid or jobId', {
+      UserGuid: this.UserGuid,
+      jobId: job.jobId
+    });
+    return;
+  }
+
+  console.log('Fetching insights for job', job.jobId);
+  
+  this.careerService.getApplyPositionCalculation(this.UserGuid, job.jobId)
+    .subscribe({
+      next: (response) => {
+        console.log('Insights API response', response);
+        if (response?.event?.eventData?.[0]?.value) {
+          const insightData = response.event.eventData[0].value;
+          this.updateJobWithInsightData(job, insightData);
+        }
+      },
+      error: (error) => {
+        console.error('Error loading job insights:', error);
+      }
+    });
+}
+
+private updateJobWithInsightData(job: JobCardData, insightData: any) {
+  job.matchingScore = insightData.matchingScore;
+  job.positionStatus = insightData.positionStatus;
+  job.topApplicantMatchingPercentage = insightData.topApplicantMatchingPercentage;
+  job.totalApplicants = insightData.totalApplicants;
+  job.totalShortlisted = insightData.totalShortlisted;
+  job.totalCVViewed = insightData.totalCVViewed;
+  job.isBlockCp = insightData.isBlockCp;
+  job.restrictedServiceName = insightData.restrictedServiceName;
+  if (insightData.matchingScore) {
+    job.matchPercentage = insightData.matchingScore;
+    job.needleAngle = this.calculateNeedleAngle(insightData.matchingScore);
+  }
+
+  this.isTopApplicant = insightData.positionStatus === 1;
+  this.topPositionPercentage = insightData.topApplicantMatchingPercentage || 0;
+}
+
+
+toggleInsight(job: JobCardData) {
+  const wasExpanded = job.insightExpanded;
+  job.insightExpanded = !wasExpanded;
+
+  if (job.insightExpanded) {
+    if (!job.matchingScore && !job.positionStatus) {
+      this.fetchJobInsights(job);
+    }
+    job.needleAngle = -84;
+    setTimeout(() => {
+      job.needleAngle = this.calculateNeedleAngle(job.matchPercentage || 0);
+    }, 10);
+  } else {
+    job.needleAngle = -84;
+  }
+}
+  
+}
+
+

@@ -83,13 +83,9 @@ downloadAsDOC() {
     return;
   }
 
-  // Clone the element to avoid modifying the original
   const clone = resumeElement.cloneNode(true) as HTMLElement;
   
-  // Clean up the clone for DOC export
   this.cleanElementForDOC(clone);
-  
-  // Create HTML content
   const html = `
     <!DOCTYPE html>
     <html>
@@ -126,7 +122,6 @@ downloadAsDOC() {
 }
 
 private cleanElementForDOC(element: HTMLElement) {
-  // Remove any elements that shouldn't be in the DOC
   const elementsToRemove = element.querySelectorAll('.no-print, button, [onclick]');
   elementsToRemove.forEach(el => el.remove());
   
@@ -149,12 +144,10 @@ async downloadAsPDF() {
     return;
   }
 
-  // Store original styles and scroll position
   const originalOverflow = resumeElement.style.overflow;
   const originalHeight = resumeElement.style.height;
   const originalPosition = resumeElement.style.position;
   
-  // Temporarily modify styles for capture
   resumeElement.style.overflow = 'visible';
   resumeElement.style.height = 'auto';
   resumeElement.style.position = 'relative';
@@ -181,14 +174,12 @@ async downloadAsPDF() {
     // Create canvas
     const canvas = await html2canvas(resumeElement, options);
     
-    // Calculate PDF dimensions
     const imgData = canvas.toDataURL('image/png');
 
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
     
-    // Calculate image dimensions to fit PDF
     const imgWidth = canvas.width;
     const imgHeight = canvas.height;
     const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight) * 0.95; // 5% margin
@@ -282,7 +273,6 @@ async downloadAsPDF() {
     // Wait for content and images to load
     const waitForPrint = () => {
       if (iframe.contentDocument?.readyState === 'complete') {
-        // Trigger print
         iframe.contentWindow?.focus();
         iframe.contentWindow?.print();
         
@@ -301,7 +291,6 @@ async downloadAsPDF() {
 
 cancel(){
   this.showResume = false;
-  // Re-enable body scrolling
   document.body.style.overflow = '';
 
 }

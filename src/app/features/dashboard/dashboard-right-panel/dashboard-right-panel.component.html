@@ -1,12 +1,20 @@
 <div class="flex flex-col gap-4">
   <div class="border border-[#E4E7EC] rounded-lg p-3 sm:p-4">
-    <p class="text-primary-900 font-semibold text-base mb-5">Your Profile Progress</p>
-    <div class="flex items-center gap-1.5 relative">
+    <p
+      class="text-primary-900 font-semibold text-base mb-5"
+      [ngClass]="{
+        'text-[14.5px]': activeLanguage() === 'bn'
+      }"
+    >{{ 'dashboard.profileProgress' | transloco }}
+    </p>
+    <div class="flex items-center gap-1.5 relative justify-between w-full">
       @for(btn of buttons; track $index){
       <div class="relative flex flex-col items-center">
-        <button class=" text-xs text-primary-700  font-medium px-1" [ngClass]="{ 'font-semibold': selectedBtn === btn }"
+        <button
+          class=" text-xs text-primary-700 font-medium hover:text-[#C63C92]"
+          [ngClass]="{ 'font-semibold': selectedBtn === btn }"
           [ngStyle]="{ color: selectedBtn === btn ? '#C63C92' : '' }" (click)="selectedBtn = btn">
-          {{ btn }}
+          {{ btn | transloco }}
         </button>
         @if(selectedBtn === btn){
         <div class="absolute h-0.5 -bottom-[5px] bg-[#C63C92] w-full"></div>
@@ -16,135 +24,186 @@
       }
     </div>
     <hr class="mt-1">
-    @if(selectedBtn === 'Bdjobs Profile'){
-    <div class="flex items-center justify-center my-5">
-      <app-ring-chart [achievedProgress]="profileProgression"></app-ring-chart>
-    </div>
-
-    <div class="flex items-center justify-between gap-3 sm:gap-4 mb-4">
-      <button
-        class="flex items-center gap-1.5 text-[#B32D7D] font-semibold text-sm border border-[#B32D7D] px-2 md:px-3 py-2 rounded-lg">
-        <span class="icon-eye"></span>
-        View Profile
-      </button>
-      <button class="px-10 py-2.5 bg-[#B32D7D] text-white flex items-center gap-1.5
-           text-sm font-semibold rounded-lg custome-border shadow-skeu">
-        <span class="icon-edit "></span>
-        Edit
-      </button>
-    </div>
-
-    <div class="flex flex-col gap-4">
-      @for(section of profileSection; track $index){
-      <a [routerLink]="section.url" [queryParams]="section.queryParams"
-        class="cursor-pointer flex items-center justify-between group">
-        <p class="text-primary-700 font-medium text-sm flex items-center gap-2.5 group-hover:text-[#0E73A9]">
-          <img [src]="section.isCompleted ? 'images/checkmark.svg':'images/cross-mark.svg'"
-            [alt]="section.isCompleted ? 'checkmark.svg':'cross-mark.svg'">
-          <span class="underline underline-offset-4">{{section.title}}</span>
-        </p>
-        <span class="icon-angle-right-n inline-block transform -rotate-45
-              opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-        </span>
-
-      </a>
-      }
-
-    </div>
-
-
-
-
-    }
-
-    @if(selectedBtn === 'Video CV'){
-    @if(isVideoCvAvailable()){
-    <div class="flex items-center justify-center my-5">
-      <app-ring-chart [achievedProgress]="videoCvProgression"></app-ring-chart>
-    </div>
-
-    <div class="flex items-center justify-between gap-3 sm:gap-4 mb-4">
-      <button
-        class="flex items-center gap-1.5 text-[#B32D7D] font-semibold text-sm border border-[#B32D7D] px-2 md:px-3 py-2 rounded-lg">
-        <span class="icon-eye"></span>
-        View Profile
-      </button>
-      <button class="px-10 py-2.5 bg-[#B32D7D] text-white flex items-center gap-1.5
-             text-sm font-semibold rounded-lg custome-border shadow-skeu">
-        <span class="icon-edit "></span>
-        Edit
-      </button>
-    </div>
-    <div class="flex flex-col gap-4">
-      @for(section of videoCvSection; track $index){
-      <a [href]="section.id" class="cursor-pointer flex items-center justify-between group">
-        <p class="text-primary-700 font-medium text-sm flex items-center  gap-2.5 group-hover:text-[#0E73A9] mr-2.5">
-          <img [src]="section.isCompleted ? 'images/checkmark.svg':'images/cross-mark.svg'"
-            [alt]="section.isCompleted ? 'checkmark.svg':'cross-mark.svg'">
-          <span class="underline underline-offset-4">{{section.title}}</span>
-        </p>
-        <span class="icon-angle-right-n inline-block transform -rotate-45
-                opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
-
-      </a>
-      }
-
-    </div>
-    }
-    @else {
-    <div>
-      <div class="flex flex-col items-center justify-center gap-5 mt-5">
-        <span class="bg-[#FEF3F2] p-5 rounded-[50%]">
-          <img [src]="'images/video_cv.svg'" alt="video_cv">
-        </span>
-        <p class="text-primary-700 text-sm text-center">
-          You have no Video Resume. Please create your Video Resume.
-        </p>
-
-        <button class="w-full text-white text-sm flex items-center justify-center gap-2 bg-[#C63C92]
-               rounded-lg custom-border shadow-skeu py-2.5">
-          <span class="icon-plus font-thin"></span>
-          Create Video Resume
-        </button>
+    @if(selectedBtn === 'dashboard.bdjobsProfile'){
+      <div class="flex items-center justify-center my-5">
+        <app-ring-chart
+          [achievedProgress]="profileProgression()"
+          progressText="{{ 'dashboard.profileCompleted' | transloco }}"
+          [language]="activeLanguage()"
+        ></app-ring-chart>
       </div>
-    </div>
-    }
 
-    }
-
-    @if(selectedBtn === 'Customized CV'){
-    @if(isCustomizedCvAvailable()){
-    <div class="flex flex-col items-center justify-center  mt-5">
-      <span class="bg-[#FEF3F2] p-5 rounded-[50%]">
-        <img [src]="'images/pdf.svg'" alt="pdf">
-      </span>
-      <span class="text-center text-primary-700 text-sm mt-4 mb-2.5">Sajeeb Molla.docx</span>
-      <span class="text-center text-primary-700 text-sm mb-2.5">Last updated on: 12 May 2025</span>
-
-      <button class="w-full text-white text-sm flex items-center justify-center gap-2 bg-[#C63C92]
-             rounded-lg custom-border shadow-skeu py-2.5">
-        View
-      </button>
-    </div>
-    }
-    @else {
-    <div>
-      <div class="flex flex-col items-center justify-center gap-5 mt-5">
-        <span class="bg-[#FEF3F2] p-5 rounded-[50%]">
-          <img [src]="'images/customized_cv.svg'" alt="customized_cv">
-        </span>
-        <p class="text-primary-700 text-sm text-center">
-          You have no Customized CV. Please create your Customized CV.
-        </p>
-
-        <button class="w-full text-white text-sm flex items-center justify-center gap-2 bg-[#C63C92]
-               rounded-lg custom-border shadow-skeu py-2.5">
-          <img [src]="'images/upload_cv.svg'" alt="">
-          Upload Personalize Resume
-        </button>
+      <div class="grid grid-cols-2 items-center justify-between text-xs gap-1.5 md:gap-2.5 mb-4">
+        <a
+          href="javascript:void(0);"
+          (click)="onClcikViewResume()"
+          class="col-span-1 w-full text-nowrap px-2.5 py-2.5 flex justify-center items-center gap-1.5 text-[#B32D7D] font-semibold border border-[#B32D7D] rounded-lg"
+          [ngClass]="{
+            'text-[10.5px]': activeLanguage() === 'bn'
+          }">
+          <span class="icon-eye"></span>
+          {{ 'dashboard.viewProfile' | transloco }}
+        </a>
+        <a
+          [routerLink]="'/edit-profile'"
+          class="col-span-1 w-full text-nowrap px-2.5 py-2.5 flex justify-center items-center gap-1.5 font-semibold bg-[#B32D7D] text-white rounded-lg custome-border shadow-skeu"
+          [ngClass]="{
+            'text-[10.5px]': activeLanguage() === 'bn'
+          }">
+          <span class="icon-edit "></span>
+          {{ 'dashboard.edit' | transloco }}
+        </a>
       </div>
-    </div>
+
+      <div class="flex flex-col gap-4">
+        @for(section of profileSection; track $index){
+        <a [routerLink]="section.url" [queryParams]="section.queryParams"
+          class="cursor-pointer flex items-center justify-between group">
+          <p class="text-primary-700 font-medium text-sm flex items-center gap-2.5 group-hover:text-[#0E73A9]">
+            <img [src]="section.isCompleted ? 'images/checkmark.svg':'images/cross-mark.svg'"
+              [alt]="section.isCompleted ? 'checkmark.svg':'cross-mark.svg'">
+            <span
+              class="underline underline-offset-4"
+              [ngClass]="{
+                'text-[12px]': activeLanguage() === 'bn'
+              }"
+            >{{ section.title | transloco }}</span>
+          </p>
+          <span class="icon-angle-right-n inline-block transform -rotate-45
+                opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          </span>
+
+        </a>
+        }
+      </div>
     }
+
+    @if(selectedBtn === 'dashboard.videoCV'){
+      @if(isVideoCvAvailable()){
+        <div class="flex items-center justify-center my-5">
+          <app-ring-chart
+            [achievedProgress]="videoCvProgression()"
+            progressText="{{ 'dashboard.profileCompleted' | transloco }}"
+            [language]="activeLanguage()"
+          ></app-ring-chart>
+        </div>
+
+        <div class="grid grid-cols-2 items-center justify-between text-xs gap-1.5 md:gap-2.5 mb-4">
+          <a
+            href="javascript:void(0);"
+            (click)="onClcikViewResume()"
+            class="col-span-1 w-full text-nowrap px-2.5 py-2.5 flex justify-center items-center gap-1.5 text-[#B32D7D] font-semibold border border-[#B32D7D] rounded-lg"
+            [ngClass]="{
+              'text-[10.5px]': activeLanguage() === 'bn'
+            }">
+            <span class="icon-eye"></span>
+            {{ 'dashboard.viewProfile' | transloco }}
+          </a>
+          <a
+            [routerLink]="'/edit-profile'"
+            class="col-span-1 w-full text-nowrap px-2.5 py-2.5 flex justify-center items-center gap-1.5 font-semibold bg-[#B32D7D] text-white rounded-lg custome-border shadow-skeu"
+            [ngClass]="{
+              'text-[10.5px]': activeLanguage() === 'bn'
+            }">
+            <span class="icon-edit "></span>
+            {{ 'dashboard.edit' | transloco }}
+          </a>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          @for(section of videoCvData(); track $index){
+            <a href="#" class="cursor-pointer flex items-center justify-between group">
+              <p class="text-primary-700 font-medium text-[13px] flex items-start gap-2.5 group-hover:text-[#0E73A9] mr-2.5">
+                <img
+                  [src]="section.aId ? 'images/checkmark.svg':'images/cross-mark.svg'"
+                  [alt]="section.aId ? 'checkmark.svg':'cross-mark.svg'"
+                  class="mt-1">
+                <span
+                  class="underline underline-offset-4"
+                  [ngClass]="{
+                    'text-[12.5px]': activeLanguage() === 'bn'
+                  }">
+                  {{ activeLanguage() === 'en' ? section.questionText : section.questionTextBangla }}
+                </span>
+              </p>
+              <span class="icon-angle-right-n inline-block transform -rotate-45
+                      opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
+            </a>
+          }
+
+        </div>
+      }
+      @else {
+        <div>
+          <div class="flex flex-col items-center justify-center gap-5 mt-5">
+            <span class="bg-[#FEF3F2] p-5 rounded-[50%]">
+              <img [src]="'images/video_cv.svg'" alt="video_cv">
+            </span>
+            <p
+              class="text-primary-700 text-[13px] text-center"
+              [ngClass]="{
+                'text-[11.5px]': activeLanguage() === 'bn'
+              }">
+              {{ 'dashboard.noVideoCV' | transloco }}
+            </p>
+
+            <button class="w-full text-white text-xs flex items-center justify-center gap-1.5 bg-[#C63C92]
+              rounded-lg custom-border shadow-skeu py-[7px]">
+              <span class="icon-plus font-thin text-[11px]"></span>
+              {{ 'dashboard.createVideoCV' | transloco }}
+            </button>
+          </div>
+        </div>
+      }
+    }
+
+    @if(selectedBtn === 'dashboard.customizedCV'){
+      @if(!isCustomizedCvAvailable()){
+        <div class="flex flex-col items-center justify-center text-xs mt-5">
+          <span class="bg-[#FEF3F2] p-3.5 rounded-[50%] relative">
+            <img 
+              [src]="customizedCvData().fileType.includes('pdf')
+                ? 'images/pdf.svg'
+                : 'images/pdf-01-solid-standard.svg'"
+              alt="pdf"
+              class="size-7"
+            >
+            <img src="images/checkmark.svg" alt="" class="absolute right-0.5 bottom-0.5 size-5">
+          </span>
+          <span class="text-center text-primary-700 mt-4 mb-2.5">
+            {{ `${customizedCvData().firstName} ${customizedCvData().lastName}${customizedCvData().fileType}` }}
+          </span>
+          <span class="text-center font-semibold text-primary-700 mb-2.5">
+            Last updated on: {{ customizedCvData().updatedOn | date: 'dd MMM yyyy' }}
+          </span>
+          <button class="w-full text-white flex items-center justify-center gap-1.5 bg-[#C63C92] 
+            rounded-lg custom-border shadow-skeu py-[7px]">
+            View
+          </button>
+        </div>
+      }
+      @else {
+        <div>
+          <div class="flex flex-col items-center justify-center gap-5 mt-5">
+            <span class="bg-[#FEF3F2] p-3.5 rounded-[50%] flex items-center justify-center">
+              <img [src]="'images/customized_cv.svg'" alt="customized_cv">
+            </span>
+            <p
+              class="text-primary-700 text-[13px] text-center"
+              [ngClass]="{
+                'text-[11.5px]': activeLanguage() === 'bn'
+              }">
+              {{ 'dashboard.noCustomizedCV' | transloco }}
+            </p>
+
+            <button class="w-full text-white text-xs flex items-center justify-center gap-1.5 bg-[#C63C92]
+                  rounded-lg custom-border shadow-skeu py-1.5">
+              <img [src]="'images/upload_cv.svg'" alt="">
+              {{ 'dashboard.createCustomizedCV' | transloco }}
+            </button>
+          </div>
+        </div>
+      }
     }
 
   </div>

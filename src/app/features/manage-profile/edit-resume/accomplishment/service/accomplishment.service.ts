@@ -10,7 +10,6 @@ export class AccomplishmentService {
   private readonly getApiUrl = 'https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/EditResume/GetAccomplishmentInfo';
   private readonly insertApi = 'https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/EditResume/InsertOrUpdateAccomplishment';
  private readonly deleteAPI = 'https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/EditResume/DeleteAccomplishment';
-  //private readonly deleteApi = 'https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/EditResume/DeleteLanguage';
 
   constructor(private http: HttpClient) { }
 
@@ -27,7 +26,6 @@ export class AccomplishmentService {
         if (!response?.event?.eventData?.[0]?.value) {
           return [];
         }
-        // Filter data based on the specified type
         const filteredData = response.event.eventData[0].value.filter(item => item.type === type);
         return filteredData;
       }),

@@ -24,3 +24,16 @@ export interface IResponse extends ApiResponse<any> {
   Error: string;
   Message: string;
 }
+
+export interface GenericApiResponse<T> {
+  event: {
+    eventType: number;
+    eventData: EventDataResponse<T>[];
+    eventId: number;
+  }
+}
+
+export interface EventDataResponse<T> {
+  key: string;
+  value: T
+}

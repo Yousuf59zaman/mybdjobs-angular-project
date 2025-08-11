@@ -79,12 +79,6 @@ export class PersonalInformationComponent implements OnChanges {
   loadPersonalInfo(): void {
     // const UserGuid = 'ZRDhZ7YxZEYyITPbBQ00PFPiMTDhBTUyPRmbPxdxYiObIFZ9BFPtBFVUIGL3Ung=';
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') // for development only
-
-    if (!rawGuid) {
-      console.error('User Guid is not available');
-    } else {
-      console.log('User Guid:', rawGuid);
-    }
     this.userGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
 
     console.log('Decoded User Guid:', this.userGuid);

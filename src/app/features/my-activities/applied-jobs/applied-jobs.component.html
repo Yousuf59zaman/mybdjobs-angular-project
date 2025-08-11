@@ -104,7 +104,7 @@
           @if (showDropdown) {
             <div class="absolute z-10 mt-1 w-full bg-white rounded-lg border border-gray-300 border-solid shadow-md overflow-y-auto max-h-[400px]" role="listbox">
               <div class="px-3 py-2 w-full">
-                <span class="text-sm mb-2">{{ t('appliedJobs.filters.categoryIndustry') }}</span>
+                <span class="text-sm mb-2">{{ t('appliedJobs.appliedJobs.filters.categoryIndustry') }}</span>
                 @for (section of filterSections; track section.title) {
                   <div class="w-full mb-4 mt-1">
                     <h3 class="text-xs font-semibold leading-5 text-gray-900 mb-2">
@@ -143,467 +143,443 @@
   </section>
 
   <!-- Main Content Section -->
-  <section class="gap-5 px-6 pt-4 pb-5 w-full rounded-xl max-md:px-5 max-md:max-w-full">
-    <!-- Tabs Section -->
-    <nav class="flex gap-10 items-center p-0 w-full text-lg font-medium leading-loose border-b border-solid border-b-gray-200 max-md:max-w-full">
-      <div class="flex items-center self-stretch my-auto min-w-60">
-        <div class="flex gap-2 items-center self-stretch px-4 pt-3 pb-4 my-auto text-pink-600 rounded-md border-b-4 border-solid border-b-pink-600">
-          <span class="gap-2 self-stretch my-auto text-lg leading-7 text-pink-600">
-            {{ t('appliedJobs.appliedJobs.regularJobsTab') }}
-          </span>
-        </div>
+<section class="gap-4 sm:gap-5 px-4 sm:px-6 pt-4 pb-5 w-full rounded-xl">
+  <!-- Tabs Section -->
+  <nav class="flex gap-5 sm:gap-10 items-center p-0 w-full text-base sm:text-lg font-medium leading-loose border-b border-solid border-b-gray-200">
+    <div class="flex items-center self-stretch my-auto min-w-[150px] sm:min-w-[240px]">
+      <div class="flex gap-2 items-center self-stretch px-3 sm:px-4 pt-3 pb-4 my-auto text-pink-600 rounded-md border-b-4 border-solid border-b-pink-600">
+        <span class="gap-2 self-stretch my-auto text-base sm:text-lg leading-7 text-pink-600">
+          {{ t('appliedJobs.appliedJobs.regularJobsTab') }}
+        </span>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <!-- Stats Section -->
-    <div class="flex flex-wrap gap-5 items-start mt-5 w-full max-md:max-w-full">
-      <!-- Total Jobs Card -->
-      <div class="flex overflow-hidden gap-3 items-center p-3 rounded-md border-gray-300 border-solid shadow-sm border-[1.5px] min-w-60 w-[258px]">
+  <!-- Stats Section -->
+  <div class="flex flex-col sm:flex-row gap-3 sm:gap-5 items-start mt-5 w-full">
+    <!-- Total Jobs Card -->
+    <div class="flex overflow-hidden gap-3 items-center p-3 w-full sm:w-auto rounded-md border-gray-300 border-solid shadow-sm border-[1.5px] min-w-[150px] sm:min-w-[240px]">
+      <div class="flex overflow-hidden flex-col justify-center items-center self-stretch p-2 my-auto w-10 h-10 rounded">
+        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/17e8f756c8d79e18d47fd1c2f065969ec4d654f2?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
+          class="object-contain w-6 aspect-square" alt="Total jobs icon" />
+      </div>
+      <div class="flex flex-col gap-0.5 justify-center self-stretch my-auto">
+        <p class="text-xs font-medium leading-5 text-gray-500">
+          {{ t('appliedJobs.appliedJobs.totalJobsLabel') }}
+        </p>
+        <p class="text-base font-semibold leading-6 text-gray-900">
+          {{ totalJobsCount }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Stats Container -->
+<div class="flex flex-col sm:flex-row flex-1 w-full sm:w-auto gap-3 sm:gap-4 items-stretch rounded-md border-gray-300 border-solid border-[1.5px] min-w-[150px] max-h-[72px]">
+
+      <!-- Contacted Card -->
+      <div class="flex overflow-hidden flex-1 gap-3 items-center p-3 rounded-md shadow-sm">
         <div class="flex overflow-hidden flex-col justify-center items-center self-stretch p-2 my-auto w-10 h-10 rounded">
-          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/17e8f756c8d79e18d47fd1c2f065969ec4d654f2?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
-            class="object-contain w-6 aspect-square" alt="Total jobs icon" />
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/426629c3214f0d51f65b6bcde8675091de21a778?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
+            class="object-contain w-6 aspect-square" alt="Contacted icon" />
         </div>
-        <div class="flex flex-col gap-0.5 justify-center self-stretch my-auto">
+        <div class="flex flex-col gap-0.5 justify-center self-stretch my-auto whitespace-nowrap">
           <p class="text-xs font-medium leading-5 text-gray-500">
-            {{ t('appliedJobs.appliedJobs.totalJobsLabel') }}
+            {{ t('appliedJobs.appliedJobs.contactedLabel') }}
           </p>
           <p class="text-base font-semibold leading-6 text-gray-900">
-            {{ totalJobsCount }}
+            {{ contactedCount }}
           </p>
         </div>
       </div>
 
-      <!-- Stats Container -->
-      <div class="flex flex-wrap flex-1 shrink gap-4 items-center rounded-md border-gray-300 border-solid basis-6 border-[1.5px] min-w-60 max-md:max-w-full">
-        <!-- Contacted Card -->
-        <div class="flex overflow-hidden flex-1 shrink gap-3 items-center self-stretch p-3 my-auto rounded-md shadow-sm basis-0 min-w-60">
-          <div class="flex overflow-hidden flex-col justify-center items-center self-stretch p-2 my-auto w-10 h-10 rounded">
-            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/426629c3214f0d51f65b6bcde8675091de21a778?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
-              class="object-contain w-6 aspect-square" alt="Contacted icon" />
-          </div>
-          <div class="flex flex-col gap-0.5 justify-center self-stretch my-auto whitespace-nowrap">
-            <p class="text-xs font-medium leading-5 text-gray-500">
-              {{ t('appliedJobs.appliedJobs.contactedLabel') }}
-            </p>
-            <p class="text-base font-semibold leading-6 text-gray-900">
-              {{ contactedCount }}
-            </p>
-          </div>
+     <hr class="hidden sm:block w-px h-[50px] bg-gray-300 border-0 my-3" />
+
+
+      <!-- Offered Card -->
+      <div class="flex overflow-hidden flex-1 gap-3 items-center p-3 rounded-md shadow-sm">
+        <div class="flex overflow-hidden flex-col justify-center items-center self-stretch p-2 my-auto w-10 h-10 rounded">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/24b8a383611d53e40d5bfe3a06aebc5f7b724237?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
+            class="object-contain w-6 aspect-square" alt="Offered icon" />
         </div>
-
-        <hr class="w-px h-[50px] bg-gray-300 border-0" />
-
-        <!-- Offered Card -->
-        <div class="flex overflow-hidden flex-1 shrink gap-3 items-center self-stretch p-3 my-auto rounded-md shadow-sm basis-0 min-w-60">
-          <div class="flex overflow-hidden flex-col justify-center items-center self-stretch p-2 my-auto w-10 h-10 rounded">
-            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/24b8a383611d53e40d5bfe3a06aebc5f7b724237?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
-              class="object-contain w-6 aspect-square" alt="Offered icon" />
-          </div>
-          <div class="flex flex-col gap-0.5 justify-center self-stretch my-auto whitespace-nowrap">
-            <p class="text-xs font-medium leading-5 text-gray-500">
-              {{ t('appliedJobs.appliedJobs.offeredLabel') }}
-            </p>
-            <p class="text-base font-semibold leading-6 text-gray-900">
-              {{ offeredCount }}
-            </p>
-          </div>
+        <div class="flex flex-col gap-0.5 justify-center self-stretch my-auto whitespace-nowrap">
+          <p class="text-xs font-medium leading-5 text-gray-500">
+            {{ t('appliedJobs.appliedJobs.offeredLabel') }}
+          </p>
+          <p class="text-base font-semibold leading-6 text-gray-900">
+            {{ offeredCount }}
+          </p>
         </div>
+      </div>
 
-        <hr class="w-px h-[50px] bg-gray-300 border-0" />
+<hr class="hidden sm:block w-px h-[50px] bg-gray-300 border-0 my-3" />
 
-        <!-- Joined Card -->
-        <div class="flex overflow-hidden flex-1 shrink gap-3 items-center self-stretch p-3 my-auto rounded-md shadow-sm basis-0 min-w-60">
-          <div class="flex overflow-hidden flex-col justify-center items-center self-stretch p-2 my-auto w-10 h-10 rounded">
-            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9ae61003fa3d9aadc3dad41f0e4c92c54379968?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
-              class="object-contain w-6 aspect-square" alt="Joined icon" />
-          </div>
-          <div class="flex flex-col gap-0.5 justify-center self-stretch my-auto whitespace-nowrap">
-            <p class="text-xs font-medium leading-5 text-gray-500">
-              {{ t('appliedJobs.appliedJobs.joinedLabel') }}
-            </p>
-            <p class="text-base font-semibold leading-6 text-gray-900">
-              {{ joinedCount }}
-            </p>
-          </div>
+
+      <!-- Joined Card -->
+      <div class="flex overflow-hidden flex-1 gap-3 items-center p-3 rounded-md shadow-sm">
+        <div class="flex overflow-hidden flex-col justify-center items-center self-stretch p-2 my-auto w-10 h-10 rounded">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9ae61003fa3d9aadc3dad41f0e4c92c54379968?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
+            class="object-contain w-6 aspect-square" alt="Joined icon" />
+        </div>
+        <div class="flex flex-col gap-0.5 justify-center self-stretch my-auto whitespace-nowrap">
+          <p class="text-xs font-medium leading-5 text-gray-500">
+            {{ t('appliedJobs.appliedJobs.joinedLabel') }}
+          </p>
+          <p class="text-base font-semibold leading-6 text-gray-900">
+            {{ joinedCount }}
+          </p>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Job Cards Section -->
-    <div class="gap-8 mt-5 w-full max-md:max-w-full">
-      @for (job of paginatedJobs; track job.id) {
-        <article class="flex relative flex-col gap-2 p-0 w-full bg-white rounded-lg border-2 border-gray-300 overflow-hidden max-md:max-w-full mb-6">
-          <div class="flex overflow-hidden z-0 flex-wrap justify-between px-4 pt-4 pb-2 w-full bg-white max-md:max-w-full">
-            <div class="flex flex-col flex-1 shrink gap-3 items-start self-start basis-0 min-w-60 max-md:max-w-full">
-              <div class="flex gap-3 items-start">
-                <div class="gap-2 min-w-60 text-slate-700">
-                  <h3 class="text-base font-bold leading-6 text-gray-900">
-                    {{ job.title }}
-                  </h3>
-                  <p class="mt-2 text-sm font-medium leading-5 text-slate-700">
-                    {{ job.company }}
-                  </p>
-                  <p class="mt-2 text-xs leading-5 text-slate-700">
-                    <span style="font-weight: 600; font-size: 14px; line-height: 20px; color: rgba(52, 64, 84, 1)">
-                      Applied on:
-                    </span>
-                    <span style="font-weight: 500; color: rgba(52, 64, 84, 1)">
-                      {{ job.appliedDate }}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="flex overflow-hidden flex-wrap flex-1 shrink gap-10 justify-between items-start h-full basis-0 min-w-60 max-md:max-w-full">
-              <!-- Expected Salary Section with compact inline edit -->
-              <div class="flex flex-col justify-center">
-                <p class="text-sm font-medium leading-5 text-gray-500">
-                  {{ t('appliedJobs.appliedJobs.salarySection.expectedSalary') }}:
+  <!-- Job Cards Section -->
+  <div class="gap-4 sm:gap-6 mt-5 w-full">
+    @for (job of paginatedJobs; track job.id) {
+      <article class="flex relative flex-col gap-2 p-0 w-full bg-white rounded-lg border-2 border-gray-300 overflow-hidden mb-4 sm:mb-6">
+        <!-- Job Header Section -->
+        <div class="flex flex-col sm:flex-row overflow-hidden z-0 justify-between px-4 pt-4 pb-2 w-full bg-white gap-4">
+          <!-- Job Info Section -->
+          <div class="flex flex-col flex-1 gap-3 items-start self-start min-w-[150px] sm:min-w-[240px]">
+            <div class="flex gap-3 items-start">
+              <div class="gap-2 min-w-[150px] sm:min-w-[240px] text-slate-700">
+                <h3 class="text-base font-bold leading-6 text-gray-900 line-clamp-2">
+                  {{ job.title }}
+                </h3>
+                <p class="mt-2 text-sm font-medium leading-5 text-slate-700">
+                  {{ job.company }}
                 </p>
-                <div class="flex flex-col gap-1 self-start mt-1">
-                  <!-- Display mode -->
-                  @if (!isEditingSalary(job)) {
-                    <div class="flex items-center gap-2">
-                      <span class="text-base font-semibold leading-6 text-slate-700">
-                        {{
-                        (job.salary != null)
-                        ? (job.salary.toString().length > 7
-                        ? job.salary.toString().slice(0, 7) + '…'
-                        : job.salary)
-                        : ''
-                        }}
-                      </span>
-                      @if (canEditSalary(job)) {
-                        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/5a6f9415ec04692906069ca0c5dcbc7eabdba0e4?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
-                          class="w-5 h-5 cursor-pointer" [alt]="t('appliedJobs.appliedJobs.salarySection.editSalaryAlt')" (click)="startSalaryEdit(job)" />
-                      }
-                    </div>
-                  }
-
-                  <!-- Edit mode -->
-                  @if (isEditingSalary(job)) {
-                    <div class="flex flex-col gap-1 w-[120px]">
-                      <input type="number" [(ngModel)]="job.salary"
-                        class="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        [placeholder]="t('appliedJobs.appliedJobs.salarySection.enterSalary')">
-                      <div class="flex items-center gap-2">
-                        <!-- Cancel button -->
-                        <button (click)="cancelSalaryEdit()" class="h-8 pl-2 pr-5 text-[11px] font-medium text-gray-700 bg-white hover:bg-gray-50 
-                          border border-gray-200 rounded-md flex items-center justify-start" style="width: 53px;">
-                          {{ t('appliedJobs.appliedJobs.common.cancel') }}
-                        </button>
-
-                        <!-- Save button -->
-                        <button (click)="saveSalaryEdit(job)" class="h-8 px-3 text-xs font-medium text-white bg-[#C63C92] hover:bg-[#AE347F] 
-                          border border-[#C63C92] rounded-md" style="width: 61px;">
-                          {{ t('appliedJobs.appliedJobs.common.save') }}
-                        </button>
-                      </div>
-                    </div>
-                  }
-                </div>
-              </div>
-
-              <div class="flex flex-col gap-1 justify-center">
-                <div class="flex gap-1 justify-center items-center self-start text-sm font-medium leading-none text-gray-500 whitespace-nowrap">
-                  <span class="self-stretch my-auto text-sm leading-5 text-gray-500">
-                    {{ t('appliedJobs.appliedJobs.statusSection.pending') }}:
+                <p class="mt-2 text-xs leading-5 text-slate-700">
+                  <span class="font-semibold text-sm">
+                    {{ t('appliedJobs.appliedJobs.status.appliedOn') }}:
                   </span>
-                  <img src="images/question.svg" [alt]="t('appliedJobs.appliedJobs.common.helpIconAlt')" class="w-3 h-3 sm:w-4 sm:h-4" />
-                </div>
-                <div class="gap-2 mt-1 text-base font-semibold text-slate-700">
-                  <div class="flex gap-2 items-center">
-                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d4195a2d6703d4c3921e4b219df87518a31b579d?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
-                      class="object-contain shrink-0 self-stretch my-auto w-5 aspect-square" [alt]="t('appliedJobs.appliedJobs.statusSection.videoResumeAlt')" />
-                    <span class="self-stretch my-auto text-base leading-6 text-slate-700">
-                      {{ t('appliedJobs.appliedJobs.statusSection.videoResume') }}
-                    </span>
-                  </div>
-                  <div class="flex gap-2 items-center mt-2">
-                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/02ceec78b07e9adf265f59a252e3c5e407f3fee7?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
-                      class="object-contain shrink-0 self-stretch my-auto w-5 aspect-square" [alt]="t('appliedJobs.appliedJobs.statusSection.customizedCvAlt')" />
-                    <span class="self-stretch my-auto text-base leading-6 text-slate-700">
-                      {{ t('appliedJobs.appliedJobs.statusSection.customizedCv') }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="flex flex-col gap-3 justify-center w-44 text-sm font-semibold leading-none">
-                <button class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 w-full text-pink-700 bg-pink-50 rounded-lg border border-pink-300 border-solid shadow-sm"
-                  (click)="toggleMessagePopup(job)" [attr.aria-label]="t('appliedJobs.appliedJobs.messageSection.sendMessageAriaLabel')">
-                  <span class="self-stretch px-0.5 py-0 my-auto text-sm leading-5 text-pink-700">
-                    {{ t('appliedJobs.appliedJobs.messageSection.sendMessage') }}
+                  <span class="font-medium">
+                    {{ job.appliedDate }}
                   </span>
-                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7a81d678ac49b9c04f5474daf72cf9a82cc3a92a?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
-                    class="object-contain shrink-0 self-stretch my-auto w-5 aspect-square" [alt]="t('appliedJobs.appliedJobs.messageSection.messageIconAlt')" />
-                </button>
-                @if (job.isBoosted === 0) {
-                  <button (click)="handleBoostApplication(job)"
-                    class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 mt-3 text-sky-700 bg-sky-50 rounded-lg border border-sky-300 border-solid shadow-sm hover:bg-sky-100 transition-colors">
-                    <span class="self-stretch px-0.5 py-0 my-auto text-[12px] leading-5 text-sky-700">
-                      {{ t('appliedJobs.appliedJobs.boostSection.boostApplication') }}
-                    </span>
-                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/19f9480abefb71edf6052ef9e2f4f5ffc38ce6f5?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
-                      class="object-contain shrink-0 self-stretch my-auto w-5 aspect-square" [alt]="t('appliedJobs.appliedJobs.boostSection.boostIconAlt')" />
-                  </button>
-                } @else {
-                  <button disabled
-                    class="flex overflow-hidden gap-1 justify-center items-center px-3.5 py-2.5 mt-3 text-sky-700 bg-sky-50 rounded-lg border border-sky-300 border-solid shadow-sm hover:bg-sky-100 transition-colors">
-                    <span class="self-stretch px-0.5 py-0 my-auto text-[12px] leading-5 text-sky-700">
-                      {{ t('appliedJobs.appliedJobs.boostSection.boosted') }}
-                    </span>
-                    <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/19f9480abefb71edf6052ef9e2f4f5ffc38ce6f5?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
-                      class="object-contain shrink-0 self-stretch my-auto w-5 aspect-square opacity-50"
-                      [alt]="t('appliedJobs.appliedJobs.boostSection.boostedIconAlt')" />
-                  </button>
-                }
+                </p>
               </div>
             </div>
           </div>
 
-          <div class="flex z-0 flex-col justify-center px-4 py-0 mt-2 w-full min-h-[34px] max-md:max-w-full">
-            @if (job.hasProgressImage) {
-              <div class="flex-1 max-w-full w-[1048px]">
-                <img [src]="job.progressImageUrl" class="object-contain flex-1 w-full aspect-[31.25] max-md:max-w-full"
-                  alt="Progress indicator" />
-              </div>
-            }
-            <!-- Insight Container -->
-            <div class="flex flex-col border border-gray-300 rounded-lg overflow-hidden">
-              <!-- Dropdown Header -->
-              <div class="flex justify-between items-center px-4 py-2 w-full bg-white cursor-pointer relative z-10"
-                (click)="toggleInsight(job)">
-                <p class="text-sm font-medium leading-5 text-gray-900">{{ t('appliedJobs.appliedJobs.exclusiveInsight') }}</p>
-                <img [src]="job.insightExpanded ? 'images/arrow-down.svg' : 'images/arrow-down.svg'"
-                  class="w-5 h-5 transition-transform duration-200" [class.rotate-180]="job.insightExpanded"
-                  alt="Insight icon" />
-              </div>
-
-              <!-- Dropdown Content Container -->
-              @if (job.insightExpanded) {
-                <div class="relative">
-                  <!-- Unlock button -->
-                  @if (job.isInsightBlurred && !job.insightUnlocked && IsBdjobsPro !== 'true') {
-                    <button disabled
-                      class="absolute z-20 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-2 items-center px-4 py-2 text-sm font-semibold text-white bg-green-600 rounded-lg shadow-sm hover:bg-green-700 transition-colors"
-                      (click)="unlockInsight(job); $event.stopPropagation()">
-                      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/15b0d0d20de44f9b495382eeda92df9b9aa2596f?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
-                        class="w-5 h-5" alt="Unlock icon" />
-                      <span>Unlock Insight</span>
-                    </button>
-                  }
-
-                  <!-- Content with blur effect -->
-                  <div class="w-full relative overflow-hidden"
-                    [class.blur-[7px]]="job.isInsightBlurred && !job.insightUnlocked && IsBdjobsPro !== 'true'">
-
-                    <!-- Actual content -->
-                    <div class="flex flex-wrap gap-4 justify-between items-center px-3 py-2 w-full bg-white relative z-10 inset-0 bg-[linear-gradient(0deg,theme(colors.green.100)_0%,theme(colors.green.50)_30%,rgba(255,255,255,0.3)_70%,rgba(255,255,255,0)_100%)]">
-                      <!-- Position Section -->
-                      <div class="self-stretch my-auto text-sm leading-none min-w-60 w-[280px]">
-                        <p class="text-sm font-medium -translate-y-[60%] leading-5 text-gray-500">
-                          {{ t('appliedJobs.appliedJobs.positionLabel') }}
-                        </p>
-                        <div class="flex flex-col gap-1 justify-center w-full">
-                          @if (isTopApplicant) {
-                            <div class="self-start px-2.5 py-0.5 text-sm font-medium leading-5 text-center text-emerald-700 bg-emerald-50 rounded-full border border-emerald-200 border-solid">
-                              {{ t('appliedJobs.appliedJobs.topApplicant', { percent: topPositionPercentage }) }}
-                            </div>
-                          } @else {
-                            <div class="self-start px-2.5 py-0.5 text-sm font-medium leading-5 text-center text-gray-700 bg-gray-50 rounded-full border border-gray-200 border-solid">
-                              {{ t('appliedJobs.appliedJobs.yourPosition', { percent: topPositionPercentage }) }}
-                            </div>
-                          }
-                          <p class="mt-1 text-[10px] leading-5 text-slate-700">
-                            {{ t('appliedJobs.appliedJobs.profileMatchNote') }}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div class="flex shrink-0 self-stretch my-auto w-px h-9 bg-gray-200 rounded-full"></div>
-
-                      <!-- Recruitment Progress Section -->
-                      <div class="flex flex-col gap-1 justify-center self-stretch my-auto">
-                        <p class="text-sm font-medium leading-5 text-gray-500">
-                          {{ t('appliedJobs.appliedJobs.recruitmentProgress') }}
-                        </p>
-                        <div class="flex gap-3 items-center mt-1">
-                          <div class="flex flex-col gap-0.5 justify-center items-center self-stretch my-auto whitespace-nowrap">
-                            <p class="text-base font-semibold leading-6 text-pink-600">
-                              {{ job.totalShortlisted | number:'2.0-0' }}
-                            </p>
-                            <p class="text-xs font-medium leading-5 text-slate-700">
-                              {{ t('appliedJobs.appliedJobs.shortlistedLabel') }}
-                            </p>
-                          </div>
-                          <div class="flex shrink-0 self-stretch my-auto w-px h-5 bg-gray-200 rounded-full"></div>
-                          <div class="flex flex-col gap-0.5 justify-center items-center self-stretch my-auto">
-                            <p class="text-base font-semibold leading-6 text-pink-600">
-                              {{ job.totalViewed | number:'2.0-0' }}
-                            </p>
-                            <p class="text-xs font-medium leading-5 text-slate-700">
-                              {{ t('appliedJobs.appliedJobs.profilesViewedLabel') }}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="flex shrink-0 self-stretch my-auto w-px h-9 bg-gray-200 rounded-full"></div>
-
-                      <!-- Profile View Section -->
-                      <div class="flex flex-col translate-y-[20%] items-center self-stretch my-auto text-xs font-medium min-h-[70px] w-[100px]">
-                        <img [src]="job.profileViewIcon" class="object-contain w-8 aspect-square"
-                          [alt]="job.profileViewText" />
-                        <p class="mt-1 text-xs leading-5 text-slate-700 whitespace-nowrap">
-                          {{ t(job.viewedByEmployer === 'Yes' ? 'appliedJobs.appliedJobs.profileStatus.viewed' : 'appliedJobs.appliedJobs.profileStatus.notViewed') }}
-                        </p>
-                      </div>
-
-                      <div class="flex shrink-0 self-stretch my-auto w-px h-9 bg-gray-200 rounded-full"></div>
-
-                      <!-- Profile Match Section -->
-                      <div class="flex flex-col self-stretch px-1 py-0 my-auto text-xs font-medium text-slate-700 w-[140px]">
-                        <div class="relative flex h-36 w-full flex-col items-center">
-                          <p class="text-xs leading-5 text-slate-700 relative left-[-10px] top-[16px]">
-                            {{ getMatchLevel(job.matchPercentage || 80) }}
-                          </p>
-
-                          <div class="relative h-20 w-[110px] mr-5" (mouseenter)="showTooltipAt('gauge')"
-                            (mouseleave)="hideTooltip()" #gaugeRef>
-                            <svg viewBox="0 0 200 100" class="h-full w-full">
-                              <path d="M 10 100 A 90 90 0 0 1 70 20" class="fill-none stroke-green-300 stroke-[20]" />
-                              <path d="M 70 20 A 90 90 0 0 1 130 20" class="fill-none stroke-green-500 stroke-[20]" />
-                              <path d="M 130 20 A 90 90 0 0 1 190 100" class="fill-none stroke-green-700 stroke-[20]" />
-                            </svg>
-
-                            <div
-                              class="absolute bottom-5 left-[45%] h-[50px] w-3 origin-bottom -translate-x-1/2 transition-transform duration-700 ease-out"
-                              [style.transform]="'rotate(' + job.needleAngle + 'deg)'"
-                              [class.animating]="job.insightExpanded">
-                              <svg viewBox="0 0 12 140" class="h-full w-full">
-                                <path d="M6 0 L11 135 A5 5 0 0 1 1 135 Z" class="fill-black-600" stroke="#cc0000"
-                                  stroke-width="0.5" />
-                              </svg>
-                            </div>
-                          </div>
-
-                          <div class="flex justify-between w-full mt-1 px-2">
-                            <p class="absolute bottom-[70px] -left-7 text-xs text-slate-700">
-                           Low
-                            </p>
-                            <p class="absolute bottom-[70px] -right-3 text-xs text-slate-700">
-                            High
-                            </p>
-                          </div>
-
-                          <div class="flex items-center justify-center gap-1 relative group">
-                            <p class="text-xs text-gray-500 whitespace-nowrap">
-                              <span class="text-gray-700">{{ t('appliedJobs.appliedJobs.profileMatched') }}:</span>
-                              <span class="font-semibold">{{ job.matchPercentage }}%</span>
-                            </p>
-                            @if (job.matchIcon) {
-                              <img [src]="job.matchIcon" alt="Match indicator" class="w-3 h-3 ml-[2px] mb-1 cursor-pointer"
-                                (mouseenter)="showTooltip = true" (mouseleave)="showTooltip = false" #tooltipTarget />
-                            }
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              }
-            </div>
-          </div>
-
-          <div class="flex absolute z-0 self-start h-3 left-[29px] min-h-3" [class]="getProInsightPosition(job)"></div>
-
-          <!-- Footer Section -->
-          <footer class="flex z-0 flex-wrap justify-between items-center p-4 mt-2 w-full text-sm bg-slate-100 max-md:max-w-full">
-            <!-- LEFT SIDE: status + yes/no buttons -->
-            <div class="flex flex-wrap gap-3 items-center min-w-60">
-              <!-- Status indicator with edit icon -->
-              @if (shouldShowStatusBadge(job)) {
-                <div class="flex items-center gap-2">
-                  <div class="flex gap-1 items-center py-0.5 pr-1.5 pl-2 my-auto text-xs text-center text-pink-700 whitespace-nowrap bg-pink-50 rounded-full border border-pink-200 border-solid">
-                    <span class="text-xs leading-5 text-pink-700">
-                      {{ t(getStatusBadgeTranslationKey(job)) }}
+          <!-- Right Side Sections -->
+          <div class="flex flex-col sm:flex-row flex-1 gap-4 sm:gap-6 md:gap-8 lg:gap-10 justify-between items-start">
+            <!-- Expected Salary Section -->
+            <div class="flex flex-col justify-center min-w-[120px]">
+              <p class="text-sm font-medium leading-5 text-gray-500">
+                {{ t('appliedJobs.appliedJobs.salarySection.expectedSalary') }}:
+              </p>
+              <div class="flex flex-col gap-1 self-start mt-1">
+                @if (!isEditingSalary(job)) {
+                  <div class="flex items-center gap-2">
+                    <span class="text-base font-semibold leading-6 text-slate-700 truncate max-w-[100px] sm:max-w-none">
+                      {{ job.salary != null ? (job.salary.toString().length > 7 ? job.salary.toString().slice(0, 7) + '…' : job.salary) : '' }}
                     </span>
-                    @if (shouldShowEditIcon(job)) {
-                      <button (click)="resetStatus(job)"
-                        class="flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 hover:bg-gray-200">
-                        <img src="images/Iconedit.svg" [alt]="t('appliedJobs.appliedJobs.common.editAlt')" class="w-3 h-3" />
-                      </button>
+                    @if (canEditSalary(job)) {
+                      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/5a6f9415ec04692906069ca0c5dcbc7eabdba0e4?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
+                        class="w-5 h-5 cursor-pointer" [alt]="t('appliedJobs.appliedJobs.salarySection.editSalaryAlt')" (click)="startSalaryEdit(job)" />
                     }
                   </div>
-                </div>
-              }
-
-              <!-- Status message display - always show for not-joined, even when hidden -->
-              @if (job.statusMessage && (job.statusType === 'not-joined' || job.statusType === 'not-joined-hidden')) {
-                <div class="text-sm font-medium text-gray-900">
-                  <span class="font-semibold">{{ t('appliedJobs.appliedJobs.status.reasonLabel') }}:</span>
-                  <span class="font-normal text-gray-700"> {{ job.statusMessage }}</span>
-                </div>
-              }
-
-              <!-- Status message display -->
-              @if (job.statusType !== 'joined') {
-                @if (shouldShowOptions(job)) {
-                  <p class="my-auto text-sm font-medium leading-5 text-gray-900">
-                    {{ t(getStatusMessageTranslationKey(job)) }}
-                  </p>
                 }
-              } @else {
-                <span class="status-bubble">{{ t('appliedJobs.appliedJobs.status.joinedStatus') }}</span>
-              }
-
-              <!-- Yes/No buttons -->
-              @if (shouldShowOptions(job)) {
-                <div class="flex items-center gap-2 my-auto font-semibold leading-none">
-                  <button (click)="handleYesClick(job)"
-                    class="flex overflow-hidden gap-1 justify-center items-center px-3 py-2 whitespace-nowrap rounded-lg border-solid bg-white border border-gray-300 shadow-sm text-slate-700">
-                    <span class="px-0.5 py-0 text-sm leading-5">
-                      {{ t('appliedJobs.appliedJobs.buttons.yes') }}
-                    </span>
-                  </button>
-
-                  <button (click)="job.statusType === 'offered' ? handleNoClick(job) : handleNotYetClick(job)"
-                    class="flex overflow-hidden gap-1 justify-center items-center px-3 py-2 whitespace-nowrap rounded-lg border-solid bg-white border border-gray-300 shadow-sm text-slate-700">
-                    <span class="px-0.5 py-0 text-sm leading-5">
-                      {{ t(job.statusType === 'offered' ? 'appliedJobs.appliedJobs.buttons.no' : 'appliedJobs.appliedJobs.buttons.notYet') }}
-                    </span>
-                  </button>
-                </div>
-              }
+                @if (isEditingSalary(job)) {
+                  <div class="flex flex-col gap-1 w-[120px]">
+                    <input type="number" [(ngModel)]="job.salary"
+                      class="w-full px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      [placeholder]="t('appliedJobs.appliedJobs.salarySection.enterSalary')">
+                    <div class="flex items-center gap-2">
+                      <button (click)="cancelSalaryEdit()" class="h-8 px-2 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-200 rounded-md">
+                        {{ t('appliedJobs.appliedJobs.common.cancel') }}
+                      </button>
+                      <button (click)="saveSalaryEdit(job)" class="h-8 px-3 text-xs font-medium text-white bg-[#C63C92] hover:bg-[#AE347F] border border-[#C63C92] rounded-md">
+                        {{ t('appliedJobs.appliedJobs.common.save') }}
+                      </button>
+                    </div>
+                  </div>
+                }
+              </div>
             </div>
 
-            <!-- RIGHT SIDE: Undo Application -->
-            @if (shouldShowUndoButton(job)) {
-              <div class="flex gap-4 items-center my-auto font-semibold text-slate-600 ml-auto"
-                [class]="getUndoButtonClasses(job)">
-                <button (click)="handleUndoClick(job)"
-                  class="flex overflow-hidden gap-1 justify-center items-center px-3 py-2 rounded-lg">
-                  <span class="px-0.5 py-0 text-sm leading-5 text-slate-600">
-                    {{ t('appliedJobs.appliedJobs.actions.undoApplication') }}
+            <!-- Pending Status Section -->
+            <div class="flex flex-col gap-1 justify-center min-w-[150px]">
+              <div class="flex gap-1 justify-center items-center self-start text-sm font-medium leading-none text-gray-500 whitespace-nowrap">
+                <span class="self-stretch my-auto text-sm leading-5 text-gray-500">
+                  {{ t('appliedJobs.appliedJobs.statusSection.pending') }}:
+                </span>
+                <img src="/assets/images/question.svg" [alt]="t('appliedJobs.appliedJobs.common.helpIconAlt')" class="w-3 h-3 sm:w-4 sm:h-4" />
+              </div>
+              <div class="gap-2 mt-1 text-base font-semibold text-slate-700">
+                <div class="flex gap-2 items-center">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d4195a2d6703d4c3921e4b219df87518a31b579d?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
+                    class="object-contain shrink-0 self-stretch my-auto w-5 aspect-square" [alt]="t('appliedJobs.appliedJobs.statusSection.videoResumeAlt')" />
+                  <span class="self-stretch my-auto text-sm sm:text-base leading-6 text-slate-700">
+                    {{ t('appliedJobs.appliedJobs.statusSection.videoResume') }}
                   </span>
-                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/5541d18345162a083b4c783f4fa48bb4184e0e93?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
-                    class="object-contain shrink-0 w-5 aspect-square" [alt]="t('appliedJobs.appliedJobs.actions.undoIconAlt')" />
+                </div>
+                <div class="flex gap-2 items-center mt-2">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/02ceec78b07e9adf265f59a252e3c5e407f3fee7?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
+                    class="object-contain shrink-0 self-stretch my-auto w-5 aspect-square" [alt]="t('appliedJobs.appliedJobs.statusSection.customizedCvAlt')" />
+                  <span class="self-stretch my-auto text-sm sm:text-base leading-6 text-slate-700">
+                    {{ t('appliedJobs.appliedJobs.statusSection.customizedCv') }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col gap-2 sm:gap-3 justify-center w-full sm:w-44 text-sm font-semibold leading-none">
+              <button class="flex overflow-hidden gap-1 justify-center items-center px-3 py-2 w-full text-pink-700 bg-pink-50 rounded-lg border border-pink-300 border-solid shadow-sm whitespace-nowrap"
+                (click)="toggleMessagePopup(job)" [attr.aria-label]="t('appliedJobs.appliedJobs.messageSection.sendMessageAriaLabel')">
+                <span class="self-stretch px-0.5 py-0 my-auto text-sm leading-5 text-pink-700">
+                  {{ t('appliedJobs.appliedJobs.messageSection.sendMessage') }}
+                </span>
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/7a81d678ac49b9c04f5474daf72cf9a82cc3a92a?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
+                  class="object-contain shrink-0 self-stretch my-auto w-5 aspect-square" [alt]="t('appliedJobs.appliedJobs.messageSection.messageIconAlt')" />
+              </button>
+              @if (job.isBoosted === 0) {
+                <button (click)="handleBoostApplication(job)"
+                  class="flex overflow-hidden gap-1 justify-center items-center px-3 py-2 w-full text-sky-700 bg-sky-50 rounded-lg border border-sky-300 border-solid shadow-sm hover:bg-sky-100 transition-colors whitespace-nowrap">
+                  <span class="self-stretch px-0.5 py-0 my-auto text-xs sm:text-[12px] leading-5 text-sky-700">
+                    {{ t('appliedJobs.appliedJobs.boostSection.boostApplication') }}
+                  </span>
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/19f9480abefb71edf6052ef9e2f4f5ffc38ce6f5?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
+                    class="object-contain shrink-0 self-stretch my-auto w-5 aspect-square" [alt]="t('appliedJobs.appliedJobs.boostSection.boostIconAlt')" />
                 </button>
+              } @else {
+                <button disabled
+                  class="flex overflow-hidden gap-1 justify-center items-center px-3 py-2 w-full text-sky-700 bg-sky-50 rounded-lg border border-sky-300 border-solid shadow-sm hover:bg-sky-100 transition-colors whitespace-nowrap">
+                  <span class="self-stretch px-0.5 py-0 my-auto text-xs sm:text-[12px] leading-5 text-sky-700">
+                    {{ t('appliedJobs.appliedJobs.boostSection.boosted') }}
+                  </span>
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/19f9480abefb71edf6052ef9e2f4f5ffc38ce6f5?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
+                    class="object-contain shrink-0 self-stretch my-auto w-5 aspect-square opacity-50"
+                    [alt]="t('appliedJobs.appliedJobs.boostSection.boostedIconAlt')" />
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Image -->
+        @if (job.hasProgressImage) {
+          <div class="flex-1 w-full px-4">
+            <img [src]="job.progressImageUrl" class="object-contain w-full" alt="Progress indicator" />
+          </div>
+        }
+
+        <!-- Insight Container -->
+        <div class="flex flex-col border border-gray-300 rounded-lg overflow-hidden mx-4">
+          <!-- Dropdown Header -->
+          <div class="flex justify-between items-center px-4 py-2 w-full bg-white cursor-pointer"
+            (click)="toggleInsight(job)">
+            <p class="text-sm font-medium leading-5 text-gray-900">{{ t('appliedJobs.appliedJobs.exclusiveInsight') }}</p>
+            <img [src]="job.insightExpanded ? '/assets/images/arrow-down.svg' : '/assets/images/arrow-down.svg'"
+              class="w-5 h-5 transition-transform duration-200" [class.rotate-180]="job.insightExpanded"
+              alt="Insight icon" />
+          </div>
+
+          <!-- Dropdown Content -->
+          @if (job.insightExpanded) {
+            <div class="relative">
+              @if (job.isInsightBlurred && !job.insightUnlocked && !bdjobsProInfo?.isProUser) {
+                <button disabled
+                  class="absolute z-20 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-2 items-center px-4 py-2 text-sm font-semibold text-white bg-green-600 rounded-lg shadow-sm hover:bg-green-700 transition-colors"
+                  (click)="unlockInsight(job); $event.stopPropagation()">
+                  <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/15b0d0d20de44f9b495382eeda92df9b9aa2596f?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
+                    class="w-5 h-5" alt="Unlock icon" />
+                  <span>Unlock Insight</span>
+                </button>
+              }
+
+              <div class="w-full relative overflow-hidden" [class.blur-sm]="job.isInsightBlurred && !job.insightUnlocked && !bdjobsProInfo?.isProUser">
+                <div class="flex flex-col sm:flex-row flex-wrap gap-4 justify-between items-center px-3 py-2 w-full bg-white bg-gradient-to-t from-green-100 via-green-50/30 to-transparent">
+                  <!-- Position Section -->
+                  <div class="self-stretch my-auto text-sm leading-none min-w-[150px] sm:w-[240px]">
+                    <p class="text-sm font-medium leading-5 text-gray-500 mb-1">
+                      {{ t('appliedJobs.appliedJobs.positionLabel') }}
+                    </p>
+                    <div class="flex flex-col gap-1 justify-center w-full">
+                     @if (job.positionStatus === 1) {
+        <div class="self-start px-2.5 py-0.5 text-sm font-medium leading-5 text-center text-emerald-700 bg-emerald-50 rounded-full border border-emerald-200 border-solid">
+          {{ t('appliedJobs.appliedJobs.topApplicant', { percent: job.topApplicantMatchingPercentage }) }}
+        </div>
+      } @else {
+        <div class="self-start px-2.5 py-0.5 text-sm font-medium leading-5 text-center text-gray-700 bg-gray-50 rounded-full border border-gray-200 border-solid">
+          {{ t('appliedJobs.appliedJobs.yourPosition', { percent: job.topApplicantMatchingPercentage }) }}
+        </div>
+      }
+      <p class="mt-1 text-[10px] leading-5 text-slate-700">
+        {{ t('appliedJobs.appliedJobs.profileMatchNote') }}
+      </p>
+    </div>
+  </div>
+
+  <div class="flex shrink-0 self-stretch my-auto w-px h-9 bg-gray-200 rounded-full"></div>
+
+  <!-- Recruitment Progress Section -->
+  <div class="flex flex-col gap-1 justify-center self-stretch my-auto">
+    <p class="text-sm font-medium leading-5 text-gray-500">
+      {{ t('appliedJobs.appliedJobs.recruitmentProgress') }}
+    </p>
+    <div class="flex gap-3 items-center mt-1">
+      <div class="flex flex-col gap-0.5 justify-center items-center self-stretch my-auto whitespace-nowrap">
+        <p class="text-base font-semibold leading-6 text-pink-600">
+          {{ job.totalShortlisted | number:'2.0-0' }}
+        </p>
+        <p class="text-xs font-medium leading-5 text-slate-700">
+          {{ t('appliedJobs.appliedJobs.shortlistedLabel') }}
+        </p>
+      </div>
+      <div class="flex shrink-0 self-stretch my-auto w-px h-5 bg-gray-200 rounded-full"></div>
+      <div class="flex flex-col gap-0.5 justify-center items-center self-stretch my-auto">
+        <p class="text-base font-semibold leading-6 text-pink-600">
+          {{ job.totalCVViewed | number:'2.0-0' }}
+        </p>
+        <p class="text-xs font-medium leading-5 text-slate-700">
+          {{ t('appliedJobs.appliedJobs.profilesViewedLabel') }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+                  <div class="hidden sm:flex shrink-0 self-stretch my-auto w-px h-9 bg-gray-200 rounded-full"></div>
+
+                  <!-- Profile View Section -->
+                  <div class="flex flex-col items-center self-stretch my-auto text-xs font-medium min-h-[70px] w-[100px]">
+                    <img [src]="job.profileViewIcon" class="object-contain w-8 aspect-square"
+                      [alt]="job.profileViewText" />
+                    <p class="mt-1 text-xs leading-5 text-slate-700 whitespace-nowrap">
+                      {{ t(job.viewedByEmployer === 'Yes' ? 'appliedJobs.appliedJobs.profileStatus.viewed' : 'appliedJobs.appliedJobs.profileStatus.notViewed') }}
+                    </p>
+                  </div>
+
+                  <div class="hidden sm:flex shrink-0 self-stretch my-auto w-px h-9 bg-gray-200 rounded-full"></div>
+
+                  <!-- Profile Match Section -->
+                  <div class="flex flex-col self-stretch px-1 py-0 my-auto text-xs font-medium text-slate-700 w-full sm:w-[140px]">
+                    <div class="relative flex h-36 w-full flex-col items-center">
+                      <p class="text-xs leading-5 text-slate-700 relative left-[-10px] top-[16px]">
+                        {{ getMatchLevel(job.matchPercentage || 80) }}
+                      </p>
+
+                      <div class="relative h-20 w-[110px] mr-5" (mouseenter)="showTooltipAt('gauge')"
+                        (mouseleave)="hideTooltip()" #gaugeRef>
+                        <svg viewBox="0 0 200 100" class="h-full w-full">
+                          <path d="M 10 100 A 90 90 0 0 1 70 20" class="fill-none stroke-green-300 stroke-[20]" />
+                          <path d="M 70 20 A 90 90 0 0 1 130 20" class="fill-none stroke-green-500 stroke-[20]" />
+                          <path d="M 130 20 A 90 90 0 0 1 190 100" class="fill-none stroke-green-700 stroke-[20]" />
+                        </svg>
+
+                        <div
+                          class="absolute bottom-5 left-[45%] h-[50px] w-3 origin-bottom -translate-x-1/2 transition-transform duration-700 ease-out"
+                          [style.transform]="'rotate(' + job.needleAngle + 'deg)'"
+                          [class.animating]="job.insightExpanded">
+                          <svg viewBox="0 0 12 140" class="h-full w-full">
+                            <path d="M6 0 L11 135 A5 5 0 0 1 1 135 Z" class="fill-black-600" stroke="#cc0000"
+                              stroke-width="0.5" />
+                          </svg>
+                        </div>
+                      </div>
+
+                      <div class="flex justify-between w-full mt-1 px-2">
+                        <p class="absolute bottom-[70px] -left-7 text-xs text-slate-700">
+                          {{ t('appliedJobs.appliedJobs.lowLabel') }}
+                        </p>
+                        <p class="absolute bottom-[70px] -right-3 text-xs text-slate-700">
+                          {{ t('appliedJobs.appliedJobs.highLabel') }}
+                        </p>
+                      </div>
+
+                      <div class="flex items-center justify-center gap-1 relative group">
+                        <p class="text-xs text-gray-500 whitespace-nowrap">
+                          <span class="text-gray-700">{{ t('appliedJobs.appliedJobs.profileMatched') }}:</span>
+                          <span class="font-semibold">{{ job.matchPercentage }}%</span>
+                        </p>
+                        @if (job.matchIcon) {
+                          <img [src]="job.matchIcon" alt="Match indicator" class="w-3 h-3 ml-[2px] mb-1 cursor-pointer"
+                            (mouseenter)="showTooltip = true" (mouseleave)="showTooltip = false" #tooltipTarget />
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Footer Section -->
+        <footer class="flex flex-col sm:flex-row justify-between items-center p-4 mt-2 w-full text-sm bg-slate-100 gap-3">
+          <!-- LEFT SIDE: status + yes/no buttons -->
+          <div class="flex flex-wrap gap-3 items-center w-full sm:w-auto">
+            @if (shouldShowStatusBadge(job)) {
+              <div class="flex items-center gap-2">
+                <div class="flex gap-1 items-center py-0.5 pr-1.5 pl-2 my-auto text-xs text-center text-pink-700 whitespace-nowrap bg-pink-50 rounded-full border border-pink-200 border-solid">
+                  <span class="text-xs leading-5 text-pink-700">
+                    {{ t(getStatusBadgeTranslationKey(job)) }}
+                  </span>
+                  @if (shouldShowEditIcon(job)) {
+                    <button (click)="resetStatus(job)"
+                      class="flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 hover:bg-gray-200">
+                      <img src="/assets/images/Iconedit.svg" [alt]="t('appliedJobs.appliedJobs.common.editAlt')" class="w-3 h-3" />
+                    </button>
+                  }
+                </div>
               </div>
             }
 
-            @if (isModalOpen) {
-              <app-applied-jobs-undo-application-modal [jobId]="selectedJob?.id || ''" [userGuid]="UserGuid || ''"
-                (applicationCancelled)="onApplicationCancelled()">
-              </app-applied-jobs-undo-application-modal>
+            @if (job.statusMessage && (job.statusType === 'not-joined' || job.statusType === 'not-joined-hidden')) {
+              <div class="text-sm font-medium text-gray-900">
+                <span class="font-semibold">{{ t('appliedJobs.appliedJobs.status.reasonLabel') }}:</span>
+                <span class="font-normal text-gray-700"> {{ job.statusMessage }}</span>
+              </div>
             }
-          </footer>
-        </article>
-      }
-    </div>
-  </section>
+
+            @if (job.statusType !== 'joined') {
+              @if (shouldShowOptions(job)) {
+                <p class="my-auto text-sm font-medium leading-5 text-gray-900">
+                  {{ t(getStatusMessageTranslationKey(job)) }}
+                </p>
+              }
+            } @else {
+              <span class="status-bubble">{{ t('appliedJobs.appliedJobs.status.joinedStatus') }}</span>
+            }
+
+            @if (shouldShowOptions(job)) {
+              <div class="flex items-center gap-2 my-auto font-semibold leading-none">
+                <button (click)="handleYesClick(job)"
+                  class="flex overflow-hidden gap-1 justify-center items-center px-3 py-2 whitespace-nowrap rounded-lg border-solid bg-white border border-gray-300 shadow-sm text-slate-700">
+                  <span class="px-0.5 py-0 text-sm leading-5">
+                    {{ t('appliedJobs.appliedJobs.buttons.yes') }}
+                  </span>
+                </button>
+
+                <button (click)="job.statusType === 'offered' ? handleNoClick(job) : handleNotYetClick(job)"
+                  class="flex overflow-hidden gap-1 justify-center items-center px-3 py-2 whitespace-nowrap rounded-lg border-solid bg-white border border-gray-300 shadow-sm text-slate-700">
+                  <span class="px-0.5 py-0 text-sm leading-5">
+                    {{ t(job.statusType === 'offered' ? 'appliedJobs.appliedJobs.buttons.no' : 'appliedJobs.appliedJobs.buttons.notYet') }}
+                  </span>
+                </button>
+              </div>
+            }
+          </div>
+
+          <!-- RIGHT SIDE: Undo Application -->
+          @if (shouldShowUndoButton(job)) {
+            <div class="flex gap-4 items-center my-auto font-semibold text-slate-600 ml-auto w-full sm:w-auto justify-end"
+              [class]="getUndoButtonClasses(job)">
+              <button (click)="handleUndoClick(job)"
+                class="flex overflow-hidden gap-1 justify-center items-center px-3 py-2 rounded-lg">
+                <span class="px-0.5 py-0 text-sm leading-5 text-slate-600">
+                  {{ t('appliedJobs.appliedJobs.actions.undoApplication') }}
+                </span>
+                <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/5541d18345162a083b4c783f4fa48bb4184e0e93?placeholderIfAbsent=true&apiKey=410b526392064503a6bea6dba214136e"
+                  class="object-contain shrink-0 w-5 aspect-square" [alt]="t('appliedJobs.appliedJobs.actions.undoIconAlt')" />
+              </button>
+            </div>
+          }
+        </footer>
+      </article>
+    }
+  </div>
+</section>
   <hr class="w-full h-0.5 bg-[#E4E7EC] my-4 border-0">
 
   <!-- Pagination -->
@@ -798,59 +774,110 @@
         </div>
 
         <!-- Chat Input -->
-        <section class="flex flex-col items-start self-stretch p-3 border-t border-gray-200">
-          <div class="flex gap-2 items-center self-stretch w-full bg-[#F1F9FE] rounded-lg p-2">
-            <div class="flex flex-1 gap-1 items-center py-1 pr-2 pl-3 bg-white rounded-full border border-gray-200 border-solid shadow-sm">
-              <input type="text"
-                [placeholder]="disableSendButton ? 'Wait for recruiter response' : 'Write your message to ' + selectedJob.company"
-                class="flex-1 text-xs leading-4 text-gray-500 bg-transparent border-none outline-none focus:ring-0 focus:outline-none focus:shadow-none"
-                [(ngModel)]="messageText" (keyup.enter)="!disableSendButton && onSendMessage()"
-                [disabled]="disableSendButton" />
+   <!-- Message Input Section -->
+@if (!isProUser() && !hasRecruiterMessages()) {
+  <!-- Show Bdjobs Pro promotion banner -->
+  <section
+    class="box-border flex relative flex-col gap-2 items-start self-stretch p-3 mx-auto w-full max-w-none bg-sky-50 rounded-none max-md:p-2.5 max-md:max-w-[991px] max-sm:p-2 max-sm:max-w-screen-sm"
+    role="banner"
+    aria-label="Bdjobs Pro promotion banner"
+  >
+    <div
+      class="flex relative gap-3 items-center self-stretch w-full max-md:flex-col max-md:gap-2.5 max-md:items-start max-sm:gap-2"
+    >
+      <header
+        class="flex relative flex-col gap-1 justify-center items-start flex-[1_0_0] max-md:w-full"
+      >
+        <div
+          class="flex relative gap-1 items-center self-stretch p-0 rounded-full max-sm:flex-wrap"
+        >
+          <span
+            class="relative text-base font-medium leading-6 text-slate-700 max-sm:text-sm max-sm:leading-5"
+          >
+            Get
+          </span>
+          <img
+            src="https://api.builder.io/api/v1/image/assets/TEMP/3011c1280a61058b6d9ac52a759ca08efdbc9883?width=170"
+            alt="Pro Logo"
+            class="relative aspect-[84.77/15.04] h-[15px] w-[85px]"
+          />
+          <span
+            class="relative text-base font-medium leading-6 flex-[1_0_0] text-slate-700 max-sm:text-sm max-sm:leading-5"
+          >
+            to initiate message
+          </span>
+        </div>
+        <p
+          class="flex relative gap-1 items-center self-stretch p-0 rounded-full"
+        >
+          <span
+            class="relative text-base font-medium leading-6 flex-[1_0_0] text-slate-700 max-sm:text-sm max-sm:leading-5"
+          >
+            with this employer.
+          </span>
+        </p>
+      </header>
+      <button
+        type="button"
+        class="flex relative gap-1 justify-center items-center px-3 py-2 bg-green-600 rounded-lg border-2 border-solid shadow-sm cursor-pointer border-white border-opacity-10 max-md:self-start max-sm:px-2.5 max-sm:py-1.5 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+        (click)="onGetProClick()"
+        aria-label="Get Bdjobs Pro subscription"
+      >
+        <span class="flex relative justify-center items-center px-0.5 py-0">
+          <span class="relative text-sm font-semibold leading-5 text-white max-sm:text-xs max-sm:leading-5">
+            Get Bdjobs Pro
+          </span>
+        </span>
+      </button>
+    </div>
+  </section>
+} @else {
+  <!-- Show message input (when Pro user OR has recruiter messages) -->
+  <section class="flex flex-col items-start self-stretch p-3 border-t border-gray-200">
+    <div class="flex gap-2 items-center self-stretch w-full bg-[#F1F9FE] rounded-lg p-2">
+      <div class="flex flex-1 gap-1 items-center py-1 pr-2 pl-3 bg-white rounded-full border border-gray-200 border-solid shadow-sm">
+    <input type="text"
+  [placeholder]="getMessagePlaceholder()"
+  class="flex-1 text-xs leading-4 text-gray-500 bg-transparent border-none outline-none focus:ring-0 focus:outline-none focus:shadow-none"
+  [(ngModel)]="messageText" 
+  (keyup.enter)="!disableSendButton && onSendMessage()"
+  [disabled]="disableSendButton" />
 
-              <div class="relative w-7 h-7 flex items-center justify-center">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" class="absolute">
-                  <circle cx="14" cy="14" r="10" stroke="#E4E7EC" stroke-width="2" fill="none" />
-                  <circle cx="14" cy="14" r="10" [attr.stroke]="getProgressColor()" stroke-width="2"
-                    stroke-dasharray="62.8" [attr.stroke-dashoffset]="getProgressOffset()" fill="none"
-                    transform="rotate(-90 14 14)" />
-                </svg>
-                <div class="relative z-10 text-[10px] font-semibold text-gray-900">
-                  {{ getProgressDisplay() }}
-                </div>
-
-                @if (consecutiveACount > 0) {
-                  <div class="w-full mt-2 text-center text-xs" [class.text-green-600]="!disableSendButton"
-                    [class.text-red-500]="disableSendButton">
-                    {{ disableSendButton ?
-                    'Wait for recruiter response (00/03)' :
-                    (getStatusMessageRemain() + ' consecutive messages left') }}
-                  </div>
-                }
-              </div>
-            </div>
-
-            <button
-              class="flex gap-1 items-center p-3 bg-[#0E73A9] rounded-full border border-gray-200 border-solid shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              (click)="onSendMessage()" [disabled]="!messageText.trim() || disableSendButton" #sendButton>
-              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M8.75182 10.0003H4.16849M4.09794 10.2432L2.15217 16.0555C1.99931 16.5121 1.92288 16.7404 1.97773 16.881C2.02536 17.0031 2.12767 17.0957 2.2539 17.1309C2.39927 17.1715 2.61882 17.0727 3.05793 16.8751L16.9842 10.6083C17.4128 10.4154 17.6271 10.319 17.6933 10.185C17.7508 10.0686 17.7508 9.93203 17.6933 9.81564C17.6271 9.68168 17.4128 9.58524 16.9842 9.39237L3.05308 3.12342C2.61529 2.92641 2.3964 2.82791 2.25118 2.86832C2.12506 2.90341 2.02277 2.99573 1.97497 3.1176C1.91993 3.25793 1.99555 3.48574 2.14678 3.94137L4.09848 9.82159C4.12446 9.89984 4.13744 9.93897 4.14257 9.97899C4.14712 10.0145 4.14707 10.0504 4.14243 10.0859C4.1372 10.1259 4.12412 10.165 4.09794 10.2432Z"
-                  stroke="#FCF3FA" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-                </path>
-              </svg>
-            </button>
+        <div class="relative w-7 h-7 flex items-center justify-center">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" class="absolute">
+            <circle cx="14" cy="14" r="10" stroke="#E4E7EC" stroke-width="2" fill="none" />
+            <circle cx="14" cy="14" r="10" [attr.stroke]="getProgressColor()" stroke-width="2"
+              stroke-dasharray="62.8" [attr.stroke-dashoffset]="getProgressOffset()" fill="none"
+              transform="rotate(-90 14 14)" />
+          </svg>
+          <div class="relative z-10 text-[10px] font-semibold text-gray-900">
+            {{ getProgressDisplay() }}
           </div>
+        </div>
+      </div>
 
-          <!-- Dynamic message based on remaining count -->
-          @if (sentMessagesCount > 0) {
-            <div class="w-full mt-2 text-center text-xs" [class.text-green-600]="!disableSendButton"
-              [class.text-red-500]="disableSendButton">
-              {{ disableSendButton ?
-              'You have reached the maximum of 3 messages' :
-              (getRemainingMessagesCount() + ' messages remaining') }}
-            </div>
-          }
-        </section>
+      <button
+        class="flex gap-1 items-center p-3 bg-[#0E73A9] rounded-full border border-gray-200 border-solid shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        (click)="onSendMessage()" [disabled]="!messageText.trim() || disableSendButton" #sendButton>
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M8.75182 10.0003H4.16849M4.09794 10.2432L2.15217 16.0555C1.99931 16.5121 1.92288 16.7404 1.97773 16.881C2.02536 17.0031 2.12767 17.0957 2.2539 17.1309C2.39927 17.1715 2.61882 17.0727 3.05793 16.8751L16.9842 10.6083C17.4128 10.4154 17.6271 10.319 17.6933 10.185C17.7508 10.0686 17.7508 9.93203 17.6933 9.81564C17.6271 9.68168 17.4128 9.58524 16.9842 9.39237L3.05308 3.12342C2.61529 2.92641 2.3964 2.82791 2.25118 2.86832C2.12506 2.90341 2.02277 2.99573 1.97497 3.1176C1.91993 3.25793 1.99555 3.48574 2.14678 3.94137L4.09848 9.82159C4.12446 9.89984 4.13744 9.93897 4.14257 9.97899C4.14712 10.0145 4.14707 10.0504 4.14243 10.0859C4.1372 10.1259 4.12412 10.165 4.09794 10.2432Z"
+            stroke="#FCF3FA" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          </path>
+        </svg>
+      </button>
+    </div>
+
+    @if (sentMessagesCount > 0) {
+      <div class="w-full mt-2 text-center text-xs" [class.text-green-600]="!disableSendButton"
+        [class.text-red-500]="disableSendButton">
+        {{ disableSendButton ?
+        'You have reached the maximum of 3 messages' :
+        (getRemainingMessagesCount() + ' messages remaining') }}
+      </div>
+    }
+  </section>
+}
       </div>
     </div>
   }

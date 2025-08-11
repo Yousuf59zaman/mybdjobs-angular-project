@@ -10,6 +10,7 @@ import { provideTranslocoScope, TranslocoModule } from '@jsverse/transloco';
 import { CookieService } from '../../../../../core/services/cookie/cookie.service';
 import { NoDetailsComponent } from "../../../../../shared/components/no-details/no-details.component";
 import { AccordionMainBodyComponent } from "../../../../../shared/components/accordion-main-body/accordion-main-body.component";
+import { GetCareerInfoQuery } from '../career-application-info/model/career-application-info';
 @Component({
   selector: 'app-other-relevant-info',
   imports: [TextEditorComponent, TooltipsComponent, TranslocoModule, NoDetailsComponent, AccordionMainBodyComponent],
@@ -195,8 +196,12 @@ export class OtherRelevantInfoComponent implements OnChanges {
 }
 
   loadOtherInfo(): void {
-  const rawGuid = this.cookieService.getCookie('MybdjobsGId');
+  const rawGuid = this.cookieService.getCookie('MybdjobsGId');  // for development only
   this.UserGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
+
+ const query: GetOtherRelevantInfoQuery = {
+      UserGuid: this.UserGuid ?? '',
+    };
 
   this.otherService.getOtherInfo(this.UserGuid ?? '')
     .subscribe({

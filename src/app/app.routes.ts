@@ -355,6 +355,31 @@ export const routes: Routes = [
     import(
       './features/account-settings/changeUserId/change-user-id/change-user-id.component'
     ).then((c) => c.ChangeUserIdComponent),
+  },
+
+
+  {
+
+     path: 'changepassword',
+    data: {layout:'left'},
+    loadComponent: () =>
+      import('./features/signin/forget-password/create-new-pass/create-new-pass.component').then(
+        (c) => c.CreateNewPassComponent
+      ),
+
+  },
+
+
+
+    {
+
+     path: 'change-password',
+    data: {layout:'left'},
+    loadComponent: () =>
+      import('./features/account-settings/change-password/change-password.component').then(
+        (c) => c.ChangePasswordComponent
+      ),
+
   }
 
 ];

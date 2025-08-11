@@ -1,22 +1,27 @@
 <div class="relative flex items-center  justify-center w-[150px] h-[150px]">
     <div class="absolute w-full h-full rounded-full border-[14px]"
-    [style.borderColor]="backgroundColor()"
+      [style.borderColor]="backgroundColor()"
     ></div>
     <div
       class="absolute w-full h-full rounded-full flex items-center justify-center"
       [ngStyle]="{
         background: 'conic-gradient('+progressColor()+' ' + progress() + '%, transparent ' + progress() + '%)',
-        transform: 'rotate(-180deg)'
       }"
     >
+      <!-- transform: 'rotate(-180deg)' -->
       <div class="w-[82%] h-[82%] bg-white rounded-full"></div>
     </div>
 
     
 
-    <div class="absolute left-[34px] flex flex-col items-center justify-center">
-      <p class=" text-2xl font-semibold text-black -ml-[30px] ">{{ progress() }}%</p>
-      <p class="text-primary-700 text-xs">Of Your Profile Completeness</p>
+    <div class="z-10 w-[67%] flex flex-col items-center justify-center">
+      <p class=" text-2xl font-semibold text-black">{{ progress() }}%</p>
+      <p
+        class="text-primary-700 text-xs text-center"
+        [ngClass]="{
+          'text-[10.5px]': language() === 'bn'
+        }"
+      >{{ progressText() }}</p>
     </div>
     
   </div>

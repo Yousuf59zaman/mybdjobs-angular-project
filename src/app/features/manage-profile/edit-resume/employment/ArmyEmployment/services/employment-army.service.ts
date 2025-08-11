@@ -18,12 +18,11 @@ export class EmploymentArmyService {
     return this.http.post<PostApiReponse>(this.postUrl, payload)
   }
   deleteRetiredArmy(userGuidId: string ):Observable<any>{
-    const body = { userGuidId };
-
-
+    const params = new HttpParams()
+      .set('userGuidId', userGuidId);
   return this.http.delete<any>(
     this.deleteUrl,
-    { body }
+    { params }
   );
   }
 }

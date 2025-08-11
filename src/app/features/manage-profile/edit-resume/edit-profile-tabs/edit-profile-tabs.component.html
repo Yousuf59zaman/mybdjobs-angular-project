@@ -79,15 +79,16 @@
 </div>
 
 <!-- edit profile tabs -->
-<div class=" sticky top-[56px] z-10 w-full bg-[#fff] hidden md:grid">
+<div class=" sticky top-[60px] z-10 w-full bg-[#fff] hidden md:grid">
   <div class="rounded-md mx-6">
     <div class="flex justify-between w-full">
       @for (tab of mainTabs; track tab.value) {
-      <button (click)="setMainTab(tab)"
-        class="flex items-center justify-center w-full px-3 py-3 text-lg gap-2 font-medium rounded-t-lg relative"
-        [ngClass]="{
-            'text-[#C63C92] bg-[#F9FAFB] border border-[#E4E7EC] border-b-0': isMainTabActive(tab.value),
-            'text-primary-700 botder border-b border-[#E4E7EC]': !isMainTabActive(tab.value),
+        <button 
+          (click)="setMainTab(tab)"
+          class="flex items-center justify-center w-full border-[#E4E7EC] px-3 py-3 text-base gap-1 font-medium rounded-t-lg relative"
+          [ngClass]="{
+            'text-[#C63C92] border border-b-0 bg-[#F9FAFB]': isMainTabActive(tab.value),
+            'text-primary-700 border-b': !isMainTabActive(tab.value),
           }">
         <span [class]="tab.iconClass || ''"
           [ngClass]="isMainTabActive(tab.value) ? 'text-[#C63C92]' : 'text-[#344054]'"></span>
@@ -101,7 +102,10 @@
   <div class="pt-2 pb-1 px-3 mx-6 bg-[#F9FAFB] border-l border-r border-b border-[#E4E7EC] rounded-b-lg">
     <div class="flex space-x-5 w-full">
       @for (subtab of subTabs(); track subtab.value) {
-      <button (click)="setSubtab(subtab)" class="pb-3 pt-3 text-base font-medium px-3" [ngClass]="{
+        <button 
+          (click)="setSubtab(subtab)" 
+          class="pb-3 pt-3 text-sm font-medium px-3"
+          [ngClass]="{
             'text-[#C63C92] bg-[#F9FAFB] border-b-[3px] border-[#C63C92]': isSubtabActive(subtab.value),
             'text-primary-700': !isSubtabActive(subtab.value),
           }">

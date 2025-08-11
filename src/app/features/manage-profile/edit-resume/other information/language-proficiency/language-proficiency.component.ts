@@ -28,14 +28,14 @@ export class LanguageProficiencyComponent implements OnChanges {
   private accordionService = inject(AccordionManagerService);
   private languageService = inject(LanguageProficiencyService);
   currentLanguage = 'en';
-
+  isDeleting = false;
   isLanguageProficiencyOpen = input(false);
   isLanguageNewFormOpen = signal(false);
   isLanguageEditFormOpen = signal(false);
   editingForms = new Map<number, FormGroup>(); // key = language id
   isDeleteModalOpen = signal(false);
   isInfoAvailable = false;
-
+  userGuidId = ''
 
   private id = "languageproficiency";
 
@@ -112,127 +112,12 @@ proficiencyLevels: any[] = [];
     }
   }
 
-    createFormGroup(language?: LanguageResponse): FormGroup {
-    return new FormGroup({
-      languageName: new FormControl(language?.languageName || '', [Validators.required]),
-      readingLevel: new FormControl(language?.readingLevel || '', [Validators.required]),
-      writingLevel: new FormControl(language?.writingLevel || '', [Validators.required]),
-      speakingLevel: new FormControl(language?.speakingLevel || '', [Validators.required])
-    });
-  }
-editLanguage(language: LanguageResponse) {
-  const formGroup = this.createFormGroup(language);
-  this.editingForms.set(language.languageId, formGroup);
-  this.isLanguageNewFormOpen.set(false);
-  this.isLanguageEditFormOpen.set(true);
-  this.editingLanguage = language;
-}
-
- saveLanguageProficiency() {
-
-  const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
-
-  if (this.editingLanguage) {
-    // Handle edit form
-    const editForm = this.editingForms.get(this.editingLanguage.languageId);
-    if (!editForm || editForm.invalid) {
-      editForm?.markAllAsTouched();
-      return;
-    }
-
-    const formValue = editForm.value;
-    const userGuid = userGuidId ?? "";
-
-    const updateCommand: updateLanguage = {
-      userGuid: userGuid,
-      languageID: this.editingLanguage.languageId,
-      languageName: formValue.languageName || '',
-      languageReading: formValue.readingLevel || '',
-      languageWriting: formValue.writingLevel || '',
-      languageSpeaking: formValue.speakingLevel || ''
-    };
-
-    this.languageService.updateLanguage(updateCommand).subscribe({
-      next: (response) => {
-        const index = this.languageProficiencies.findIndex(l => l.languageId === this.editingLanguage.languageId);
-        if (index !== -1) {
-          this.languageProficiencies[index] = {
-            languageId: this.editingLanguage.languageId,
-            languageName: formValue.languageName || '',
-            readingLevel: formValue.readingLevel || '',
-            writingLevel: formValue.writingLevel || '',
-            speakingLevel: formValue.speakingLevel || ''
-          };
-        }
-        this.isLanguageEditFormOpen.set(false);
-        this.editingForms.delete(this.editingLanguage.languageId);
-        this.editingLanguage = null;
-        this.loadLanguageInfo();
-      },
-      error: (error) => {
-        console.error('Error updating language:', error);
-      }
-    });
-  } else {
-    if (this.languageProficiencies.length >= 3) {
-      alert('You can only add up to 3 languages.');
-      this.isLanguageNewFormOpen.set(false);
-      return;
-    }
-
-    if (this.languageform.invalid) {
-      this.languageform.markAllAsTouched();
-      return;
-    }
-
-    const formValue = this.languageform.value;
-    const userGuid = userGuidId ?? ""
-
-    const insertCommand: insertLanguage = {
-      userGuid: userGuid,
-      languageName: formValue.languageName || '',
-      languageReading: formValue.readingLevel || '',
-      languageWriting: formValue.writingLevel || '',
-      languageSpeaking: formValue.speakingLevel || ''
-    };
-
-    this.languageService.insertLanguage(insertCommand).subscribe({
-      next: (response) => {
-        this.isLanguageNewFormOpen.set(false);
-        this.resetForm();
-        this.loadLanguageInfo();
-      },
-      error: (error) => {
-        console.error('Error inserting language:', error);
-      }
-    });
-  }
-}
-
-
-    cancelEdit(languageId: number) {
-    this.editingForms.delete(languageId);
-  }
-
-
-   addNewLanguage() {
-    this.isLanguageNewFormOpen.set(true);
-    this.editingForms.clear(); // Close any open edit forms
-  }
-
-
-  ngOnInit(): void {
-    //this.loadLanguageInfo();
-
-  }
-
-  loadLanguageInfo(): void{
+    loadLanguageInfo(): void{
     const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
+    this.userGuidId = rawGuid ? decodeURIComponent(rawGuid) : "";
 
      const query: LanguageQuery = {
-       UserGuid: userGuidId ?? ""
+       UserGuid: this.userGuidId ?? ""
      };
 
 
@@ -262,6 +147,128 @@ editLanguage(language: LanguageResponse) {
      });
    }
 
+    createFormGroup(language?: LanguageResponse): FormGroup {
+    return new FormGroup({
+      languageName: new FormControl(language?.languageName || '', [Validators.required]),
+      readingLevel: new FormControl(language?.readingLevel || '', [Validators.required]),
+      writingLevel: new FormControl(language?.writingLevel || '', [Validators.required]),
+      speakingLevel: new FormControl(language?.speakingLevel || '', [Validators.required])
+    });
+  }
+editLanguage(language: LanguageResponse) {
+  const formGroup = this.createFormGroup(language);
+  this.editingForms.set(language.languageId, formGroup);
+  this.isLanguageNewFormOpen.set(false);
+  this.isLanguageEditFormOpen.set(true);
+  this.editingLanguage = language;
+}
+
+isSaving = false; // Add this as a class property
+
+saveLanguageProficiency() {
+  if (this.isSaving) return; // Prevent double submission
+  
+  if (this.editingLanguage) {
+    // Handle edit form
+    const editForm = this.editingForms.get(this.editingLanguage.languageId);
+    if (!editForm || editForm.invalid) {
+      editForm?.markAllAsTouched();
+      return;
+    }
+
+    this.isSaving = true; // Set loading state
+    const formValue = editForm.value;
+    const userGuid = this.userGuidId ?? "";
+
+    const updateCommand: updateLanguage = {
+      userGuid: userGuid,
+      languageID: this.editingLanguage.languageId,
+      languageName: formValue.languageName || '',
+      languageReading: formValue.readingLevel || '',
+      languageWriting: formValue.writingLevel || '',
+      languageSpeaking: formValue.speakingLevel || ''
+    };
+
+    this.languageService.updateLanguage(updateCommand).subscribe({
+      next: (response) => {
+        const index = this.languageProficiencies.findIndex(l => l.languageId === this.editingLanguage.languageId);
+        if (index !== -1) {
+          this.languageProficiencies[index] = {
+            languageId: this.editingLanguage.languageId,
+            languageName: formValue.languageName || '',
+            readingLevel: formValue.readingLevel || '',
+            writingLevel: formValue.writingLevel || '',
+            speakingLevel: formValue.speakingLevel || ''
+          };
+        }
+        this.isLanguageEditFormOpen.set(false);
+        this.editingForms.delete(this.editingLanguage.languageId);
+        this.editingLanguage = null;
+        this.loadLanguageInfo();
+        this.isSaving = false; // Reset loading state
+      },
+      error: (error) => {
+        console.error('Error updating language:', error);
+        this.isSaving = false; // Reset loading state on error
+      }
+    });
+  } else {
+    if (this.languageProficiencies.length >= 3) {
+      alert('You can only add up to 3 languages.');
+      this.isLanguageNewFormOpen.set(false);
+      return;
+    }
+
+    if (this.languageform.invalid) {
+      this.languageform.markAllAsTouched();
+      return;
+    }
+
+    this.isSaving = true; // Set loading state
+    const formValue = this.languageform.value;
+    const userGuid = this.userGuidId    
+    const insertCommand: insertLanguage = {
+      userGuid: userGuid,
+      languageName: formValue.languageName || '',
+      languageReading: formValue.readingLevel || '',
+      languageWriting: formValue.writingLevel || '',
+      languageSpeaking: formValue.speakingLevel || ''
+    };
+
+    this.languageService.insertLanguage(insertCommand).subscribe({
+      next: (response) => {
+        this.isLanguageNewFormOpen.set(false);
+        this.resetForm();
+        this.loadLanguageInfo();
+        this.isSaving = false; // Reset loading state
+      },
+      error: (error) => {
+        console.error('Error inserting language:', error);
+        this.isSaving = false; // Reset loading state on error
+      }
+    });
+  }
+}
+
+
+    cancelEdit(languageId: number) {
+    this.editingForms.delete(languageId);
+  }
+
+
+   addNewLanguage() {
+    this.isLanguageNewFormOpen.set(true);
+    this.editingForms.clear(); // Close any open edit forms
+  }
+
+
+  ngOnInit(): void {
+    //this.loadLanguageInfo();
+
+  }
+
+
+
   saveNewLanguage() {
     const newForm = this.newLanguageForm;
     if (newForm.invalid) {
@@ -285,28 +292,32 @@ editLanguage(language: LanguageResponse) {
   // New language form
   newLanguageForm = this.createFormGroup();
 
-  deleteLanguage(languageId: number) {
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
-    const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
 
-    const command: deleteLanguage = {
-      userGuid: userGuidId ?? "",
-      l_ID: languageId
-    };
 
-    this.languageService.deleteLanguage(command).subscribe({
-      next: () => {
-        this.languageProficiencies = this.languageProficiencies.filter(l => l.languageId !== languageId);
-        this.editingForms.delete(languageId);
-        this.closeDeleteModal();
-        this.isInfoAvailable = this.languageProficiencies.length > 0;
-      },
-      error: (error: Error) => {
-        console.error('Failed to delete language proficiency', error);
-        alert('An error occurred while deleting. Please try again.');
-      }
-    });
-  }
+deleteLanguage(languageId: number) {
+  if (this.isDeleting) return; // Prevent double click
+  
+  this.isDeleting = true;
+  const command: deleteLanguage = {
+    userGuid: this.userGuidId ?? "",
+    l_ID: languageId
+  };
+
+  this.languageService.deleteLanguage(command).subscribe({
+    next: () => {
+      this.loadLanguageInfo();
+      this.languageProficiencies = this.languageProficiencies.filter(l => l.languageId !== languageId);
+      this.editingForms.delete(languageId);
+      this.closeDeleteModal();
+      this.isInfoAvailable = this.languageProficiencies.length > 0;
+      this.isDeleting = false; // Reset flag after successful operation
+    },
+    error: (error: Error) => {
+      this.isDeleting = false; // Reset flag in case of error too
+      // Consider adding error handling here
+    }
+  });
+}
 
   openDeleteModal(languageId: number) {
     this.editingLanguage = this.languageProficiencies.find(l => l.languageId === languageId);

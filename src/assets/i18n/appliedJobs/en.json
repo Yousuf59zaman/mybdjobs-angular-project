@@ -48,9 +48,9 @@
                 "contracted": "Contracted"
             },
             "priority": {
-                "title": "Priority",
-                "high": "High",
-                "regular": "Regular"
+                "title": "Boosting",
+                "high": "Boosted",
+                "regular": "Not Boosted"
             },
             "other": {
                 "title": "Other",

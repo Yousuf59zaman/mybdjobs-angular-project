@@ -213,11 +213,12 @@ export class CareerApplicationInfoComponent implements OnChanges {
     }
   }
   loadCareerInfo(): void {
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId');  // for development only
+    this.UserGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
+
     const query: GetCareerInfoQuery = {
       UserGuid: this.UserGuid ?? '',
     };
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId'); // for development only
-    this.UserGuid = rawGuid ? decodeURIComponent(rawGuid) : null;
 
     this.careerService.getCareerInfo(query).subscribe({
       next: (res) => {

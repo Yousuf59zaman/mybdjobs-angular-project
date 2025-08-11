@@ -1,19 +1,23 @@
 <div *transloco="let t">
-@if(userNameType === 1)  
+
+@if(userNameType === 1)
 {
 
-<div class="bg-gray-100 flex flex-col gap-6">
-    <div class="bg-white rounded-t-xl shadow-md outline outline-1 outline-gray-200 flex flex-col gap-0.5">
-        <div class="px-6 py-5 border-b border-gray-200 flex items-center gap-5">
-            <div class="flex flex-1 items-start gap-4">
-                <div class="flex flex-col gap-1.5">
-                    <h2 class="text-2xl font-semibold text-gray-900">{{ t('accountChangeUserId.titleEM') }}</h2>
-                    <p class="text-sm font-medium text-gray-500">
-                        {{ t('accountChangeUserId.descriptionEM') }}
-                    </p>
-                </div>
+<div class="bg-gray-100 flex flex-col justify-center">
+    <div class="bg-white rounded-t-xl shadow-md outline outline-1 outline-gray-200 flex flex-col gap-0.5 flex-1 justify-center">
+        <header
+          class="flex gap-5 items-center px-6 py-5 w-full border-b border-solid border-b-gray-200 max-md:px-5 max-md:max-w-full">
+          <div class="flex flex-1 shrink gap-4 items-start self-stretch my-auto w-full basis-0 min-w-60 max-md:max-w-full">
+            <div class="gap-1.5 min-w-60 max-md:max-w-full">
+              <h1 class="text-2xl font-semibold leading-8 text-gray-900">
+                {{ t('accountChangeUserId.titleEM') }}
+              </h1>
+              <p class="mt-1.5 text-sm font-medium leading-5 text-gray-500 max-md:max-w-full">
+                {{ t('accountChangeUserId.descriptionEM') }}
+              </p>
             </div>
-        </div>
+          </div>
+        </header>
 
         <div class="p-6 flex flex-col items-start gap-6 overflow-hidden w-full">
             <div class="w-full flex flex-col items-center gap-6">
@@ -31,7 +35,6 @@
                             </p>
                         </div>
                     </div>
-                    <!-- STEP 1: Email + Password form -->
                     <ng-container *ngIf="!showOtpSection">
                         <form [formGroup]="emailForm" (ngSubmit)="onSave()" class="w-full flex flex-col gap-8">
                             <div class="w-full flex flex-col gap-5">
@@ -66,7 +69,6 @@
                         </form>
                     </ng-container>
 
-                    <!-- STEP 2: Secure code input -->
                     <ng-container *ngIf="showOtpSection">
                         <div class="p-6 flex flex-col items-start gap-10">
                             <div class="flex flex-col items-start gap-2 w-full">
@@ -140,8 +142,8 @@
 }
 @else if(userNameType === 2)
 {
-<div class="bg-gray-100 flex flex-col gap-6">
-    <div class="bg-white rounded-t-xl shadow-md outline outline-1 outline-gray-200 flex flex-col gap-0.5">
+<div class="bg-gray-100 flex flex-col min-h-screen justify-center">
+    <div class="bg-white rounded-t-xl shadow-md outline outline-1 outline-gray-200 flex flex-col gap-0.5 flex-1 justify-center">
         <div class="px-6 py-5 border-b border-gray-200 flex items-center gap-5">
             <div class="flex flex-1 items-start gap-4">
                 <div class="flex flex-col gap-1.5">
@@ -254,7 +256,12 @@
 </div>
 }
 
-
+@else if (isLoading) {
+  <div class="flex items-center justify-center py-12">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#C63C92]"></div>
+      <span class="ml-3 text-gray-600">Loading ...</span>
+  </div>
+}
 
 <!-- Add this success modal at the bottom of your template -->
 @if(isSuccessModalOpen) {

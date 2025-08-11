@@ -316,16 +316,15 @@
           ></app-date-single-date-picker>
         </div>
       </div>
-      <div
-        *ngIf="
-          DateOfRetirementControl().touched || DateOfRetirementControl().dirty
-        "
-        class="text-red-600 text-xs mt-1"
-      >
-        <span *ngIf="DateOfRetirementControl().errors?.['required']"
-          >{{t('armyEmployment.endDateError')}}</span
-        >
-      </div>
+      <div *ngIf="DateOfRetirementControl().touched || DateOfRetirementControl().dirty"
+         class="text-red-600 text-xs mt-1">
+      <span *ngIf="DateOfRetirementControl().errors?.['required']">
+        {{t('armyEmployment.endDateError')}}
+      </span>
+      <span *ngIf="employmentArmyForm.errors?.['retirementBeforeCommission']">
+        Retirement date must be after commission date
+      </span>
+    </div>
 
       <div class="mb-3 flex items-center gap-3">
         <button

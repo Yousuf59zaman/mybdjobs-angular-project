@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, input, effect, computed } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, input, effect, computed, inject, Injector, OnChanges, runInInjectionContext, SimpleChanges } from '@angular/core';
 import Chart, { ChartTypeRegistry } from 'chart.js/auto';
 import 'chart.js';
 
@@ -33,14 +33,13 @@ Chart.register({
   templateUrl: './donut-chart.component.html',
   styleUrl: './donut-chart.component.scss'
 })
-export class DonutChartComponent implements AfterViewInit {
+export class DonutChartComponent implements AfterViewInit, OnChanges {
   readonly data = input<number[]>([]);
   readonly labels = input<string[]>([])
   @ViewChild('chartCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
 
   chart: Chart | null = null;
-
-  
+  private injector = inject(Injector);
 
   readonly backgroundColor = computed(() => {
     const len = this.data().length;
@@ -51,29 +50,40 @@ export class DonutChartComponent implements AfterViewInit {
     return ['#DCE1E4'];
   });
   
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['data'] && changes['data'].currentValue && changes['data'].currentValue.length) {
+      this.setChartData();
+    }
+  }
 
   ngAfterViewInit(): void {
-    this.initChart();
+    runInInjectionContext(this.injector, () => {
+      this.initChart();
 
-    effect(() => {
-      if (this.chart) {
-        const newData = this.data().length > 0 ? this.data() : [100];
-        this.chart.data.datasets[0].data = newData;
-        this.chart.data.datasets[0].backgroundColor = this.backgroundColor();
-        this.chart.data.datasets[0].borderWidth = this.data().length > 0 ? 1 : 0;
-    
-        const centerValue = this.getCenterValue();
-        (this.chart.options.plugins as any).centerText.text = centerValue;
-    
-        this.chart.update();
-      }
+      effect(() => {
+        this.setChartData();
+      });
     });
-    
+  }
+
+  setChartData() {
+    if (this.chart) {
+      const newData = this.data().length > 0 ? this.data() : [100];
+      this.chart.data.datasets[0].data = newData;
+      this.chart.data.datasets[0].backgroundColor = this.backgroundColor();
+      this.chart.data.datasets[0].borderWidth = this.data().length > 0 ? 1 : 0;
+      this.chart.data.labels = this.labels();
+  
+      const centerValue = this.getCenterValue();
+      (this.chart.options.plugins as any).centerText.text = centerValue;
+  
+      this.chart.update();
+    }
   }
 
   private getCenterValue(): string {
     const sum = this.data().reduce((total, val) => total + val, 0);
-    return sum > 0 ? sum.toString() : '';
+    return sum > 0 ? sum.toString() : '0';
   }
   
   private initChart() {

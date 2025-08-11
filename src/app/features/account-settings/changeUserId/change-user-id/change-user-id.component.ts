@@ -30,7 +30,7 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
   digits = [0, 1, 2, 3, 4, 5]; // 6 digits for OTP
   code: string[] = ['', '', '', '', '', ''];
 
-
+  isLoading = false;
   countdown = 600; // 10 minutes in seconds
   resendDisabled = false;
   private countdownSubscription?: Subscription;
@@ -54,7 +54,7 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
   userName: string = '';
   userNameType: number = 0;
   hasPassword: boolean = false;
-  socialMediaId: number = 0;
+  socialMediaId: string | null = null;
 
   constructor(private fb: FormBuilder, private changeUserIdService: ChangeUserIdService,private cookieService: CookieService) {
     this.emailForm = this.fb.group({
@@ -78,13 +78,14 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
   }
 
   loadCheckUserInfo(): void {
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || 'YlPjYTZuBEGyPTPhZb00IFOhMRc7BiUyBiY1PlL9ZEL7BRJjBFPtBFVoRRVZBcw=';
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
 
     const query: ChangeUserIdQuery = {
       userGuid: userGuidId ?? ""
 
     };
+    this.isLoading = true;
 
     this.changeUserIdService.checkUserInfo(query)
       .subscribe({
@@ -131,7 +132,7 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
     return this.userNameType === 1;
   }
   get showPasswordField(): boolean {
-    return this.isEmailUser && this.hasPassword && this.socialMediaId === 0;
+    return this.isEmailUser && this.hasPassword && (this.socialMediaId === null || this.socialMediaId === '');
   }
   get emailControl(): FormControl {
     return this.emailForm.get('email') as FormControl;
@@ -299,7 +300,6 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
         }
       },
       error: (err) => {
-        console.error('API error:', err);
         this.errorMessage = 'An unexpected error occurred. Please try again later.';
       }
     });
@@ -364,7 +364,6 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
       }
     }
   }
-
   onKeyDown(event: KeyboardEvent, index: number) {
     const input = event.target as HTMLInputElement;
     if ([8, 9, 27, 13, 46, 37, 39].indexOf(event.keyCode) !== -1) {
@@ -382,7 +381,6 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
       }
     }
   }
-
 
   onSubmit(): void {
 
@@ -414,7 +412,6 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
         }
       },
       error: (err) => {
-        console.error('API error:', err);
         this.errorMessage = 'An unexpected error occurred. Please try again later.';
       }
     });
@@ -441,7 +438,6 @@ export class ChangeUserIdComponent implements OnInit, OnDestroy {
         }
       },
       error: (err) => {
-        console.error('Error sending OTP:', err);
         this.errorMessage = 'Failed to send OTP. Please try again.';
       }
     });

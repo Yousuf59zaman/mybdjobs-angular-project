@@ -254,7 +254,7 @@ export class DetailsCVComponent implements OnInit {
   }
 
   loadCv(): void {
-    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || ''; // for development only
+    const rawGuid = this.cookieService.getCookie('MybdjobsGId') || 'Z7YzZFZuPiUyITDjIQ00ZxCuMTLuITSyBiL7P7VjBTL9IRL3BFPtBFVRIGL3UWg='; // for development only
     const userGuidId = rawGuid ? decodeURIComponent(rawGuid) : null;
 
     const query: GetDetailsCvViewInfoRequest = {
@@ -299,7 +299,6 @@ export class DetailsCVComponent implements OnInit {
       this.isLoading = false;
     },
     error: (err) => {
-      console.error('API Error:', err);
       this.errorMessage = 'Failed to load CV data';
       this.isLoading = false;
     }

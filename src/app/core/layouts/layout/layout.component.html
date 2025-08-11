@@ -26,36 +26,32 @@
 }
 
 @if(layout==='left'){
-  <ng-container>
-    <main class="">
-      <div class="mx-auto max-w-full">
+<ng-container>
+  <main class="">
+    <div class="mx-auto max-w-full">
+      <div class="max-w-[1420px] mx-auto flex flex-col md:flex-row w-full">
+        <div class="basis-full md:basis-1/5 grid md:hidden">
+          <aside
+            class="fixed top-0 left-0 h-[100vh] w-[100vw] bg-white z-[15] transform transition-transform duration-300"
+            [class.-translate-x-full]="!isSidebarOpen()" [class.translate-x-0]="isSidebarOpen()">
+            <app-sidebar (sideBarToggleEmitter)="isSidebarOpen.set($event)" />
+          </aside>
+        </div>
+        <div class="max-w-[280px] basis-full md:basis-1/5 bg-[#fff] hidden md:grid">
+          <app-sidebar />
+          <!-- <app-left-bar></app-left-bar> -->
+        </div>
         <div
-          class="flex flex-col md:flex-row w-full">
-          <div class="basis-full md:basis-1/5 grid md:hidden">
-            <aside
-              class="fixed top-0 left-0 h-[100vh] w-[100vw] bg-white z-[15] transform transition-transform duration-300"
-              [class.-translate-x-full]="!isSidebarOpen()"
-              [class.translate-x-0]="isSidebarOpen()">
-              <app-sidebar (sideBarToggleEmitter)="isSidebarOpen.set($event)"/>
-            </aside>
-          </div>
-          <div
-            class="basis-full md:basis-1/5 bg-[#fff] hidden md:grid">
-            <app-sidebar/>
-            <!-- <app-left-bar></app-left-bar> -->
-          </div>
-          <div
-            class="basis-full md:basis-4/5 bg-[#F9FAFB] p-0 md:p-4 border-b-2 border-[#bdbdbd] md:border-none hidden md:grid">
-            <router-outlet></router-outlet>
-          </div>
-          <div
-            class="basis-full md:basis-4/5 bg-[#F9FAFB] p-0 md:p-4 border-b-2 border-[#bdbdbd] md:border-none"
-            [hidden]="isSidebarOpen()">
-            <router-outlet></router-outlet>
-          </div>
+          class="basis-full md:basis-4/5 bg-[#F9FAFB] p-0 md:p-4 border-b-2 border-[#bdbdbd] md:border-none hidden md:grid">
+          <router-outlet></router-outlet>
+        </div>
+        <div class="basis-full md:basis-4/5 bg-[#F9FAFB] p-0 md:p-4 border-b-2 border-[#bdbdbd] md:border-none"
+          [hidden]="isSidebarOpen()">
+          <router-outlet></router-outlet>
         </div>
       </div>
-    </main>
+    </div>
+  </main>
 
   </ng-container>
 }

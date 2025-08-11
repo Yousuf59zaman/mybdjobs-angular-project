@@ -10,14 +10,14 @@ import {
   JobBoosting,
   UpadteExistAppliedJob,
   UpdateCareerInfo,
-} from '../models/appliedJobs.model'
+} from '../models/appliedJobs.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CareerApplicationInfoServiceService {
   private apiUrl =
-    'https://useractivitysubsystem-odcx6humqq-as.a.run.app/api/AppliedJob/GetApplyPositionInfo';
+    'https://useractivitysubsystem-odcx6humqq-as.a.run.app/api/AppliedJob/GetApplyPositionInfoV1';
   private getApi =
     'https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/EditResume/GetCareerInfo';
   private updateApi =
@@ -28,6 +28,7 @@ export class CareerApplicationInfoServiceService {
     'https://useractivitysubsystem-odcx6humqq-as.a.run.app/api/AppliedJob/CancelApply';
   private updateJobStatusApi =
     'https://useractivitysubsystem-odcx6humqq-as.a.run.app/api/AppliedJob/UpdateAppliedJobStatus';
+      private insight ='https://useractivitysubsystem-odcx6humqq-as.a.run.app/api/AppliedJob/GetApplyPositionCalculation';  
   private cachedCompanies: string[] = [];
   private companiesLoaded = false;
 
@@ -91,7 +92,6 @@ export class CareerApplicationInfoServiceService {
     return this.http.get<CareerInfoResponseCookies>(this.getApi, { params });
   }
 
-
   boostJob(boostJobDate: JobBoosting) {
     return this.http.post<void>(this.boostApi, boostJobDate);
   }
@@ -139,6 +139,22 @@ export class CareerApplicationInfoServiceService {
   getExperienceList(userGuid: string) {
     return this.http.get<ExperienceApiResponse>(
       `https://jobseekerresumesubsystem-odcx6humqq-as.a.run.app/api/EditResume/GetExperienceList?userGuid=${userGuid}`
+    );
+  }
+
+  getApplyPositionCalculation(
+    userGuid: string,
+    jobId: number
+  ): Observable<any> {
+    const params = new HttpParams()
+      .set('UserGuid', userGuid)
+      .set('JobId', jobId.toString());
+
+    return this.http.get<any>(this.insight, { params }).pipe(
+      catchError((error) => {
+        console.error('Error fetching job insights:', error);
+        return throwError(() => error);
+      })
     );
   }
 }
