@@ -15,6 +15,29 @@
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#C63C92]"></div>
       </div>
     </div>
+  } @else if (hasSocialMedia()) {
+    <!-- Fallback UI for users without linked social media -->
+    <div class="max-w-[668px] mx-auto">
+      <div class="w-full p-5">
+        <div class="rounded-full p-0.5 pe-1 flex items-center gap-1 bg-[#FCF3FA] border border-[#F6D4ED] w-fit mb-3">
+          <img src="images/profile-avatar.jpeg" alt="" class="size-3.5 rounded-full" />
+          <span class="text-[10px] text-[#B32D7D]">{{ profileUsername() }}</span>
+        </div>
+        <h3 class="text-primary-900 font-semibold text-[17px]">Delete your resume</h3>
+        <p class="text-xs text-[#667085] mb-4">
+          This will remove your posted and uploaded resume. Your account will be available after this operation.
+        </p>
+        <button
+          type="button"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-[#D0D5DD] text-[13px] font-medium text-[#344054] bg-white hover:bg-gray-50 shadow-sm"
+          aria-label="Please sign in with Google"
+          (click)="signInWithGoogle()">
+          <span class="social icon-5 text-base leading-none"></span>
+          <span class="font-semibold ">Please Sign In With</span>
+          <img src="images/Social icon-5.svg" alt="Google" class="size-4 mb-0.5" />
+        </button>
+      </div>
+    </div>
   } @else if (currentStep() === 'initial' && !isBlueCaller()) {
     <!-- White Collar User Form -->
    <div class="max-w-[668px] mx-auto">
@@ -112,7 +135,16 @@
           [(ngModel)]="phoneNumber"
         >
       </div>
-
+      <div class="w-full mb-3 md:mb-5">
+        <label for="confirm-reason" class="text-[13px] md:text-xs font-medium text-primary-700">Reason To Delete Resume</label>
+        <textarea
+          name="confirm-reason"
+          id="confirm-reason"
+          class="rounded-md w-full px-3 py-2 border text-[13px] border-[#D0D5DD] focus:ring-0 focus:border-[#B32D7D]"
+          rows="4"
+          placeholder="Type reason"
+          [(ngModel)]="reason"></textarea>
+      </div>
       <button
         class="bg-[#C63C92] text-white text-xs px-3.5 py-2.5 rounded-lg border border-[#ccc] font-semibold"
         (click)="onClickConfirmDelete()">
@@ -187,74 +219,69 @@
   </div>
   } @else if (currentStep() === 'confirmation') {
     <!-- Final Confirmation Step -->
-  <div class="max-w-[668px] mx-auto">
-    <div class="w-full p-5">
-      <!-- phone pill -->
-      <div class="rounded-full p-0.5 pe-1 flex items-center gap-1 bg-[#FCF3FA] border border-[#F6D4ED] w-fit mb-2">
-        <span class="flex items-center gap-1 text-[10px] text-[#B32D7D] px-1.5 py-0.5 rounded-full">
-          <svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.84.31 1.66.57 2.46a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.62-1.14a2 2 0 0 1 2.11-.45c.8.26 1.62.45 2.46.57A2 2 0 0 1 22 16.92z" />
-          </svg>
-          01702 369987
-        </span>
-      </div>
-
-      <h3 class="text-[15px] font-semibold text-primary-900 mb-2">
-        Confirm Resume Deletion
-      </h3>
-
-      <p class="text-[13px] text-primary-900">
-        You’re about to permanently delete your resume from your Bdjobs profile.
-      </p>
-      <p class="text-xs text-[#667085] mb-4">
-        This means employers will no longer be able to view or access it. This action cannot be undone.
-      </p>
-
-      <div class="flex items-center gap-3">
-        <!-- Secondary -->
-        <button
-          type="button"
-          class="px-3.5 py-2.5 rounded-lg text-[13px] font-medium border border-[#D0D5DD] bg-white text-[#344054] hover:bg-gray-50"
-          (click)="onKeepResume()">
-          No, Keep It
-        </button>
-
-        <!-- Primary -->
-        <button
-          type="button"
-          class="px-3.5 py-2.5 rounded-lg text-[13px] font-semibold text-white bg-[#C63C92] hover:opacity-95"
-          (click)="onContinueDeletion()">
-          Yes, Continue
-        </button>
+    <div class="max-w-[668px] mx-auto">
+      <div class="w-full p-5">
+        <div class="rounded-full p-0.5 pe-1 flex items-center gap-1 bg-[#FCF3FA] border border-[#F6D4ED] w-fit mb-2">
+          <span class="flex items-center gap-1 text-[10px] text-[#B32D7D] px-1.5 py-0.5 rounded-full">
+            <svg class="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.84.31 1.66.57 2.46a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.62-1.14a2 2 0 0 1 2.11-.45c.8.26 1.62.45 2.46.57A2 2 0 0 1 22 16.92z" />
+            </svg>
+            01702 369987
+          </span>
+        </div>
+        <h3 class="text-[15px] font-semibold text-primary-900 mb-2">Confirm Resume Deletion</h3>
+        <p class="text-[13px] text-primary-900">You’re about to permanently delete your resume from your Bdjobs profile.</p>
+        <p class="text-xs text-[#667085] mb-4">This means employers will no longer be able to view or access it. This action cannot be undone.</p>
+        <div class="flex items-center gap-3">
+          <button
+            type="button"
+            class="px-3.5 py-2.5 rounded-lg text-[13px] font-medium border border-[#D0D5DD] bg-white text-[#344054] hover:bg-gray-50"
+            (click)="onKeepResume()">No, Keep It</button>
+          <button
+            type="button"
+            class="px-3.5 py-2.5 rounded-lg text-[13px] font-semibold text-white bg-[#C63C92] hover:opacity-95"
+            (click)="onContinueDeletion()">Yes, Continue</button>
+        </div>
       </div>
     </div>
-  </div>
-  } @else {
-    <!-- Fallback UI -->
-  <div class="max-w-[668px] mx-auto">
-    <div class="w-full p-5">
-      <!-- small pill with username (optional) -->
-      <div class="rounded-full p-0.5 pe-1 flex items-center gap-1 bg-[#FCF3FA] border border-[#F6D4ED] w-fit mb-3">
-        <img src="images/profile-avatar.jpeg" alt="" class="size-3.5 rounded-full" />
-        <span class="text-[10px] text-[#B32D7D]">{{ profileUsername() }}</span>
+  }
+  <!-- Custom Confirmation Modal (White Collar) -->
+  @if (showConfirmModal()) {
+    <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div class="bg-white w-full max-w-md rounded-lg overflow-hidden shadow-xl transform transition-all">
+        <div class="p-6 text-center">
+          <div class="mx-auto mb-4 w-12 h-12 rounded-full bg-[#FEF0C7] flex items-center justify-center">
+            <!-- Warning triangle SVG icon replacing help-circle image -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-[#DC6803]">
+              <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Are you sure you want to Delete this Resume?</h3>
+          <p class="text-sm text-gray-500">If you agree, the resume will be removed from your collection and cannot be restored.</p>
+        </div>
+        <div class="bg-gray-50 px-4 py-4 sm:px-6 flex flex-col-reverse sm:flex-row justify-center items-center gap-3">
+          <button type="button" (click)="cancelDelete()" class="w-full sm:w-auto px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">No, Keep It</button>
+          <button type="button" (click)="confirmDelete()" class="w-full sm:w-auto px-4 py-2 bg-[#C63C92] text-white rounded-md text-sm font-medium hover:bg-[#B32D7D]">Yes, Continue</button>
+        </div>
       </div>
-
-      <h3 class="text-primary-900 font-semibold text-[17px]">Delete your resume</h3>
-      <p class="text-xs text-[#667085] mb-4">
-        This will remove your posted and uploaded resume. Your account will be available after this operation.
-      </p>
-
-      <!-- Google sign-in button -->
-      <button
-        type="button"
-        class="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-[#D0D5DD] text-[13px] font-medium text-[#344054] bg-white hover:bg-gray-50 shadow-sm"
-        aria-label="Please sign in with Google"
-      >
-        <span class="social icon-5 text-base leading-none"></span>
-        <span class="font-semibold ">Please Sign In With</span>
-        <img src="images/Social icon-5.svg" alt="Google" class="size-4 mb-0.5" />
-      </button>
     </div>
-  </div>
+  }
+  <!-- Custom Success Modal -->
+  @if (showSuccessModal()) {
+    <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div class="bg-white w-full max-w-md rounded-lg overflow-hidden shadow-xl transform transition-all relative">
+        <div class="p-6 text-center">
+          <button type="button" class="absolute right-3 top-3 text-gray-400 hover:text-gray-600" (click)="closeSuccessModal()">
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+          </button>
+          <div class="mx-auto mb-4 w-12 h-12 rounded-full bg-[#D1FADF] flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#039855]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Your Resume Delete Successfully.</h3>
+          <p class="text-sm text-gray-500 mb-6">You've deleted your resume from your Bdjobs profile. Employers can no longer view or access it.</p>
+          <button type="button" (click)="closeSuccessModal()" class="w-full px-4 py-2 bg-[#C63C92] text-white rounded-md text-sm font-medium hover:bg-[#B32D7D]">Okay</button>
+        </div>
+      </div>
+    </div>
   }
 </div>

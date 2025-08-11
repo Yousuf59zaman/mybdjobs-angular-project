@@ -4,7 +4,6 @@ import {
 
 import { NumericOnlyDirective } from '../../../core/directives/numeric-only.dir';
 import { ToastrService } from 'ngx-toastr';
-import { ConfirmationModalService } from '../../../core/services/confirmationModal/confirmation-modal.service';
 import { DeleteResumeService } from './service/delete-resume.service';
 import { DeleteResumeQuery } from './model/delete-resume';
 import { SendOtpRequest, DeleteResumeOtpQuery } from './model/delete-resume';
@@ -12,10 +11,13 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LoginService } from '../../signin/services/login.service';
 import { CookieService } from '../../../core/services/cookie/cookie.service';
+import { SocialAuthService, GoogleLoginProvider, GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
+import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-delete-resume',
-  imports: [NumericOnlyDirective, FormsModule, CommonModule],
+  imports: [NumericOnlyDirective, FormsModule, CommonModule, GoogleSigninButtonModule],
   templateUrl: './delete-resume.component.html',
   styleUrl: './delete-resume.component.scss'
 })
@@ -27,7 +29,10 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
   private loginService = inject(LoginService);
   private cookieService = inject(CookieService);
   private toastr = inject(ToastrService);
-  private confirmModal = inject(ConfirmationModalService);
+  private socialAuthService = inject(SocialAuthService);
+  private http = inject(HttpClient);
+
+  private socialAuthSub?: Subscription;
 
   // Bound properties for form inputs
   password: string = '';
@@ -35,10 +40,16 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
   phoneNumber: string = '';
 
   profileUsername = signal('YousufTest');
+  // Whether user has any linked social media (null until loaded)
+  hasSocialMedia = signal<boolean | null>(null);
+  // Custom confirmation modal visibility
+  showConfirmModal = signal(false);
+  // Custom success modal visibility
+  showSuccessModal = signal(false);
 
   // User info
   isBlueCaller = signal<boolean>(true);
-  userGuid: string = "YiLzZxZuPiCyIFU6Bb00ITBbMTDbIRLyZiS1ZTZ3PEc0PRg6BFPtBFU7d7kRZ7U=";
+  userGuid: string = "YRPhBiG0BlZyYRhbYb00IFJjMRc7YTGyIFDbPFZxIEJiZRg7BFPtBFVUIGL3Ung=";
   isLoading = signal(true);
 
   // Static values for BlueCollar users as specified
@@ -53,16 +64,50 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
   @ViewChildren('otpBox') otpBoxes!: QueryList<ElementRef<HTMLInputElement>>;
   timerSeconds = signal(120); // Start with 2 minutes
   private timerId?: any;
+  // Stores verified OTP until final confirmation (blue collar flow)
+  private otpCode: string = '';
 
   ngOnInit(): void {
     this.loadUserInfo();
     this.startTimer();
+    // Subscribe to Google auth state; will emit when user completes popup flow
+    this.socialAuthSub = this.socialAuthService.authState.subscribe(result => {
+      if (!result) return;
+      // Use the email as both UserGuid & UserName per requirement
+      const email = (result as any).email;
+      if (!email) {
+        this.toastr.error('Google sign-in did not return an email.');
+        return;
+      }
+      const deleteQuery: DeleteResumeQuery = {
+        UserGuid: this.userGuid,
+        UserName: email,
+        IsSocialMedia: 1,
+        SocialMediaType: 'Google'
+      };
+      this.isLoading.set(true);
+      this.deleteResumeService.deleteResume(deleteQuery).subscribe({
+        next: () => {
+          this.isLoading.set(false);
+          this.toastr.success('Resume deleted via Google sign-in.');
+          // Show confirmation modal / step
+          this.openSuccessModal();
+          this.currentStep.set('confirmation');
+        },
+        error: (err) => {
+          console.error('Social resume deletion failed', err);
+          this.toastr.error('Failed to delete resume after Google sign-in.');
+          this.isLoading.set(false);
+        }
+      });
+    });
   }
 
   ngOnDestroy(): void {
     if (this.timerId) {
       clearInterval(this.timerId);
     }
+    this.socialAuthSub?.unsubscribe();
   }
 
   private loadUserInfo(): void {
@@ -115,9 +160,12 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
       if (currentUser) {
         console.log('Current User:', currentUser);
         console.log('is BlueCollar:', currentUser.isBlueCaller);
-        this.isBlueCaller.set(true);
-        this.profileUsername.set(currentUser.username || 'User');
+        this.isBlueCaller.set(!!currentUser.isBlueCaller);
+        this.profileUsername.set(currentUser.username || currentUser.email || 'User');
         this.userGuid = currentUser.guid;
+        // Determine social media linkage
+        this.hasSocialMedia.set(currentUser.socialMedia !== null && currentUser.socialMedia !== undefined);
+        console.log('Has social media:', this.hasSocialMedia());
 
         // Store auth data if not already stored
         this.loginService.setAuthData(response);
@@ -139,16 +187,17 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
         this.toastr.error('Please fill in all required fields.');
         return;
       }
+      // Show custom confirmation modal
+      this.showConfirmModal.set(true);
+      return;
     } else {
       // Blue collar validation
       if (!this.phoneNumber) {
         this.toastr.error('Please enter your phone number.');
         return;
       }
-    }
 
-    // For BlueCollar users, directly call the OTP API
-    if (this.isBlueCaller()) {
+      // For BlueCollar users, directly call the OTP API
       this.isLoading.set(true);
 
       const request: SendOtpRequest = {
@@ -172,27 +221,6 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
           console.error('Error sending OTP:', error);
         }
       });
-    } else {
-      // Keep existing modal confirmation logic for white collar users
-      this.confirmModal.openModal({
-        content: {
-          title: 'Are you sure you want to Delete this Resume?',
-          content:
-            'If you agree, the resume will be removed from your collection and cannot be restored.',
-          closeButtonText: 'No, Keep it',
-          saveButtonText: 'Yes, Continue',
-          isCloseButtonVisible: true,
-          isSaveButtonVisible: true
-        }
-      })
-        .subscribe(({ event }) => {
-          if (event?.isConfirm) {
-            // For white collar, proceed with deletion
-            this.deleteResume();
-          } else {
-            this.toastr.info('Deletion cancelled.');
-          }
-        });
     }
   }
 
@@ -279,30 +307,20 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
   onClickVerify() {
     const code = this.otp.join('');
     if (code.length !== 6) {
-      this.toastr.error('Please enter the 6‑digit code.');
+      this.toastr.error('Please enter a valid 6-digit verification code.');
       return;
     }
 
-    this.isLoading.set(true);
+    // Store OTP and advance to confirmation WITHOUT calling delete API yet
+    this.otpCode = code;
+    this.currentStep.set('confirmation');
 
-    const query: DeleteResumeOtpQuery = {
-      userGuid: this.blueCollarUserGuid,
-      UserName: this.blueCollarUserName,
-      OTPCode: code
-    };
-
-    this.deleteResumeService.verifyOtpAndDeleteResume(query).subscribe({
-      next: (response) => {
-        this.isLoading.set(false);
-        this.currentStep.set('confirmation');
-        this.toastr.success('Code verified successfully.');
-      },
-      error: (error) => {
-        this.isLoading.set(false);
-        this.toastr.error('Failed to verify code. Please check and try again.');
-        console.error('Error verifying OTP:', error);
-      }
-    });
+    // Stop timer
+    if (this.timerId) {
+      clearInterval(this.timerId);
+      this.timerId = null;
+    }
+    this.toastr.success('Code captured. Please confirm deletion.');
   }
 
   // ===== From previous step (kept for completeness) =====
@@ -327,20 +345,16 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
 
   /** Modal that looks like the provided screenshot */
   private openSuccessModal() {
-    this.confirmModal.openModal({
-      content: {
-        title: 'Your Resume Delete Successfully.',
-        content:
-          "You've deleted your resume from your Bdjobs profile. Employers can no longer view or access it.",
-        closeButtonText: 'Okay',
-        saveButtonText: '',
-        isCloseButtonVisible: true,
-        isSaveButtonVisible: false
-      }
-    }).subscribe(() => {
-      // Optional: redirect or refresh state after user clicks "Okay"
-      // this.router.navigate(['/jobseeker-panel']);
-    });
+    this.showSuccessModal.set(true);
+    // Clear form fields (optional reset)
+    this.password = '';
+    this.reason = '';
+    this.phoneNumber = '';
+  }
+
+  closeSuccessModal() {
+    this.showSuccessModal.set(false);
+    // Potential redirect can be placed here.
   }
 
   onKeepResume() {
@@ -351,11 +365,56 @@ export class DeleteResumeComponent implements OnInit, OnDestroy {
 
   onContinueDeletion() {
     if (this.isBlueCaller()) {
-      // For blue collar, we've already verified the OTP, just show success
-      this.openSuccessModal();
+      // Blue collar: now call API with stored OTP & reason
+      if (!this.otpCode || this.otpCode.length !== 6) {
+        this.toastr.error('Missing or invalid OTP. Please restart the process.');
+        return;
+      }
+      const query: DeleteResumeOtpQuery & { Reason?: string } = {
+        userGuid: this.blueCollarUserGuid,
+        UserName: this.blueCollarUserName,
+        OTPCode: this.otpCode,
+        Reason: this.reason || undefined
+      };
+      this.isLoading.set(true);
+      this.deleteResumeService.verifyOtpAndDeleteResume(query).subscribe({
+        next: () => {
+          this.isLoading.set(false);
+          this.openSuccessModal();
+        },
+        error: (error) => {
+          this.isLoading.set(false);
+          console.error('Error deleting resume (blue collar):', error);
+          this.toastr.error('Failed to delete resume. Please try again.');
+        }
+      });
     } else {
-      // For white collar, use existing deleteResume method
+      // White collar: call existing delete
       this.deleteResume();
     }
+  }
+
+  // ===== Google Sign-In (Fallback UI) =====
+  signInWithGoogle(): void {
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
+      .then(() => {
+        // Flow continues in authState subscription
+      })
+      .catch(err => {
+        console.error('Error starting Google sign-in', err);
+        this.toastr.error('Unable to start Google sign-in.');
+      });
+  }
+
+  // Custom confirmation modal actions (white collar)
+  cancelDelete() {
+    this.showConfirmModal.set(false);
+    this.toastr.info('Deletion cancelled.');
+  }
+
+  confirmDelete() {
+    this.showConfirmModal.set(false);
+    // Only applies to white collar flow
+    this.deleteResume();
   }
 }

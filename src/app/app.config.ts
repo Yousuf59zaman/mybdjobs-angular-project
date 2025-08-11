@@ -52,7 +52,7 @@ export const appConfig: ApplicationConfig = {
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
-              '656340698751-kt8lk3hujr2grfo7rnjmddb85rmg1c2q.apps.googleusercontent.com', {
+              '635232139280-nokr2kdgufk0faq9rgla4kcvjr0fcgch.apps.googleusercontent.com', {
               oneTapEnabled: false,
               prompt: 'consent',
             }
